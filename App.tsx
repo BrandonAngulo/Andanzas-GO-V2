@@ -18,7 +18,7 @@ import { newsService } from './services/news.service';
 import { Site, Evento, Ruta, Review, ActivePanelType, Notificacion, FeedItem, Insignia } from './types';
 import { cn, getTranslated } from './lib/utils';
 import Sidebar from "./components/layout/Sidebar";
-import MapaLeaflet from "./components/map/MapaLeaflet";
+
 import MapaGoogle from "./components/map/MapaGoogle";
 import ExplorarPanel from "./components/panels/ExplorarPanel";
 import EventosPanel from "./components/panels/EventosPanel";
