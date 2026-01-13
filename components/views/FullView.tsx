@@ -8,6 +8,7 @@ import AddReviewInline from '../shared/AddReviewInline';
 import { cn, getTranslated } from '../../lib/utils';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
+import { LazyImage } from '../ui/lazy-image';
 
 interface FullViewProps {
     view: { type: string; data: any };
@@ -60,7 +61,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
                 <div className="mx-auto max-w-5xl p-3 grid gap-3 pb-safe">
                     {(data.img || data.logoUrl) && (
                         <div className="relative w-full h-[36vh] md:h-[44vh] overflow-hidden rounded-2xl group">
-                            <img src={data.img || data.logoUrl} alt={viewTitle as string} className="w-full h-full object-cover" loading="lazy" />
+                            <LazyImage src={data.img || data.logoUrl} alt={viewTitle as string} className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
                             {(data.image_credit) && (
                                 <div className="absolute bottom-2 right-3 text-[10px] text-white/70 bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">

@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
+import { LazyImage } from '../ui/lazy-image';
 
 // --- Reusable Card Components for the Feed ---
 
@@ -12,7 +13,7 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
   const { t, language } = useI18n();
   return (
     <Card className="overflow-hidden flex flex-col">
-      <img src={site.logoUrl} alt={getTranslated(site, 'nombre', language) as string} className="w-full h-32 object-cover bg-white" loading="lazy" />
+      <LazyImage src={site.logoUrl} alt={getTranslated(site, 'nombre', language) as string} className="w-full h-32 object-cover bg-white" fallbackSrc="https://placehold.co/600x400?text=No+Image" />
       <CardHeader className="py-2">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(site, 'nombre', language)}</CardTitle>
       </CardHeader>
@@ -28,7 +29,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void 
   const { t, language } = useI18n();
   return (
     <Card className="overflow-hidden flex flex-col">
-      <img src={event.img} alt={getTranslated(event, 'titulo', language) as string} className="w-full h-32 object-cover" loading="lazy" />
+      <LazyImage src={event.img} alt={getTranslated(event, 'titulo', language) as string} className="w-full h-32 object-cover" />
       <CardHeader className="py-2">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(event, 'titulo', language)}</CardTitle>
       </CardHeader>
