@@ -197,7 +197,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             </div>
                             <div className="text-center px-4 space-y-2 border-t pt-3 w-full">
                                 <p className="text-xs text-muted-foreground">
-                                    Al continuar, aceptas nuestros <a href="#" className="underline hover:text-foreground">Términos de Servicio</a> y <a href="#" className="underline hover:text-foreground">Política de Privacidad</a>.
+                                    Al continuar, aceptas nuestros <a href="/terms" className="underline hover:text-foreground">Términos de Servicio</a> y <a href="/privacy" className="underline hover:text-foreground">Política de Privacidad</a>.
                                 </p>
                             </div>
                         </CardFooter>
