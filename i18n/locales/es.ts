@@ -13,7 +13,7 @@ const es = {
     cancel: "Cancelar",
     shareText: "¡Descubre Cali con Andanzas GO! Una app para explorar la cultura de la ciudad.",
     shareNotSupported: "La función de compartir no es compatible con tu navegador.",
-    
+
     // Header
     openMenu: "Abrir menú",
     nav: {
@@ -27,7 +27,7 @@ const es = {
     accessibility: "Accesibilidad",
     focusModeOn: "Activar modo enfoque",
     focusModeOff: "Desactivar modo enfoque",
-    
+
     // Panels
     panelTitles: {
         mapa: "Mapa vivo",
@@ -43,7 +43,7 @@ const es = {
         soporte: "Soporte",
         noticias: "Noticias",
     },
-    
+
     // Map
     createRoute: "Crear ruta",
     myLocation: "Mi ubicación",
@@ -55,7 +55,7 @@ const es = {
     noPlacesFound: "No hay lugares para mostrar.",
     mappedSites: "{{count}} sitios en el mapa",
     showAll: "Mostrar todo",
-    
+
     // Sidebar
     menu: "Menú",
     arExperiences: "Experiencias AR",
@@ -82,6 +82,7 @@ const es = {
         email: "Correo Electrónico",
         notSpecified: "No especificado",
         culturalInterests: "Intereses culturales",
+        interests: "Intereses",
         interestsPlaceholder: "Salsa, museos, arte urbano…",
         enableNotifications: "Activar notificaciones",
         saveChanges: "Guardar Cambios",
@@ -118,7 +119,7 @@ const es = {
         normal: "Normal",
         large: "Grande"
     },
-    
+
     // Bottom Nav
     bottomNav: {
         map: "Mapa",
@@ -244,7 +245,7 @@ const es = {
         noNotifications: "No tienes notificaciones.",
         read: "Leído",
     },
-    
+
     // Eventos Panel
     eventosFilters: {
         all: "Todos",
@@ -281,7 +282,7 @@ const es = {
         faq4_q: "¿Mis datos de ubicación son privados?",
         faq4_a: "Absolutamente. Tu ubicación solo se usa para funciones como 'Cerca de ti' o 'Mi ubicación' en el mapa y no se comparte con terceros. Revisa nuestras 'Preferencias de privacidad' en tu perfil para más control.",
         moreHelp: "¿Necesitas más ayuda?",
-        
+
         // Call Me Back
         callMeBackTitle: "¿Te llamamos?",
         callMeBackDesc: "Déjanos tus datos y te contactaremos en las próximas 48 horas.",
@@ -290,7 +291,7 @@ const es = {
         reasonLabel: "Motivo",
         requestCallback: "Solicitar llamada",
         successCallback: "¡Solicitud recibida! Te llamaremos pronto.",
-        
+
         // Write Us
         writeUsTitle: "Escríbenos",
         emailLabel: "Correo electrónico",
@@ -298,7 +299,7 @@ const es = {
         contactPlaceholder: "Cuéntanos cómo podemos ayudarte...",
         send: "Enviar mensaje",
         successMessage: "Mensaje enviado. Revisa tu correo.",
-        
+
         chat: "Chat en vivo"
     },
 
@@ -311,7 +312,7 @@ const es = {
         touristLine: "Policía de Turismo",
         understood: "Entendido",
     },
-    
+
     // Privacy Banner
     privacyBanner: {
         text1: "Andanzas GO protege tus datos. Administra preferencias en",

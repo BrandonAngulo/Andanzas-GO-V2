@@ -143,3 +143,15 @@ export type ActivePanelType =
   | 'sobre'
   | 'soporte'
   | 'noticias';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  full_name?: string;
+  city?: string;
+  language?: string;
+  avatar_url?: string;
+  points: number;
+  interests: string[];
+}
+

@@ -52,6 +52,31 @@ export const gamificationService = {
             ...mapBadge(b),
             obtenida: earnedSet.has(b.id)
         }));
+    },
+
+    async addPoints(userId: string, amount: number) {
+        // First get current points
+        const { data: profile, error: fetchError } = await supabase
+            .from('profiles')
+            .select('points')
+            .eq('id', userId)
+            .single();
+
+        if (fetchError) {
+            console.error('Error fetching points for update:', fetchError);
+            return;
+        }
+
+        const newPoints = (profile?.points || 0) + amount;
+
+        const { error: updateError } = await supabase
+            .from('profiles')
+            .update({ points: newPoints })
+            .eq('id', userId);
+
+        if (updateError) {
+            console.error('Error updating points:', updateError);
+        }
     }
 };
 

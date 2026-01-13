@@ -40,6 +40,7 @@ import AccessibilityMenu from "./components/layout/AccessibilityMenu";
 import { useI18n } from "./i18n";
 import NoticiasPanel from "./components/panels/NoticiasPanel";
 import ConfiguracionPanel from "./components/panels/ConfiguracionPanel";
+import OnboardingModal from "./components/panels/OnboardingModal";
 import { storage } from './lib/storage';
 import { useAuth } from './contexts/AuthContext';
 
@@ -101,6 +102,7 @@ export default function App() {
   const [routesCompleted, setRoutesCompleted] = useState<string[]>([]);
   const [feed, setFeed] = useState<FeedItem[]>([]);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(storage.getTheme());
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Cargar datos estáticos al inicio
   useEffect(() => {
@@ -145,6 +147,12 @@ export default function App() {
       gamificationService.getBadgesForUser(user.id).then(badges => {
         setAllInsignias(badges);
         setEarnedInsignias(badges.filter(b => b.obtenida).map(b => b.id));
+      });
+      // Check for onboarding
+      userService.getProfile(user.id).then(profile => {
+        if (profile && (!profile.interests || profile.interests.length === 0)) {
+          setShowOnboarding(true);
+        }
       });
     } else {
       setFavIds([]);
@@ -613,6 +621,7 @@ export default function App() {
       {activeGuidedRoute && (
         <GuidedRouteModal route={activeGuidedRoute} currentStep={currentRouteStep} onClose={handleCloseGuidedRoute} onNext={handleNextStep} onPrev={handlePrevStep} onComplete={() => completeRoute(activeGuidedRoute.id)} />
       )}
+      <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
     </div>
   );
 }

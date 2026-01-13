@@ -1,6 +1,29 @@
 import { supabase } from '../lib/supabaseClient';
+import { UserProfile } from '../types';
 
 export const userService = {
+    async getProfile(userId: string): Promise<UserProfile | null> {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', userId)
+            .single();
+
+        if (error) {
+            console.error('Error fetching profile:', error);
+            return null;
+        }
+        return data as UserProfile;
+    },
+
+    async updateInterests(userId: string, interests: string[]) {
+        const { error } = await supabase
+            .from('profiles')
+            .update({ interests })
+            .eq('id', userId);
+        if (error) throw error;
+    },
+
     async getFavorites(userId: string): Promise<string[]> {
         const { data, error } = await supabase
             .from('favorites')
@@ -11,6 +34,7 @@ export const userService = {
             console.error('Error fetching favorites:', error);
             return [];
         }
+        // @ts-ignore
         return data.map((f: any) => f.site_id);
     },
 

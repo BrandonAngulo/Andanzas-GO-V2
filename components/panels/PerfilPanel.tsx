@@ -8,6 +8,9 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2 } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
+import { userService } from '../../services/user.service';
+import OnboardingModal from '../panels/OnboardingModal';
+import { UserProfile } from '../../types';
 
 interface PerfilPanelProps {
     favCount: number;
@@ -39,6 +42,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [formPassword, setFormPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [loading, setLoading] = useState(false);
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const [showInterestsModal, setShowInterestsModal] = useState(false);
+
+    React.useEffect(() => {
+        if (user) {
+            userService.getProfile(user.id).then(setUserProfile);
+        }
+    }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -164,7 +175,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{t('profile.culturePoints')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-3 pt-0">
-                            <p className="text-3xl font-black text-primary">{(favCount * 10) + (reviewsCount * 50) + (rutasCount * 100) + (routesCompletedCount * 200)}</p>
+                            <p className="text-3xl font-black text-primary">{userProfile?.points || 0}</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -197,6 +208,19 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                            <div>
+                                <h4 className="text-sm font-medium">{t('profile.interests')}</h4>
+                                <p className="text-xs text-muted-foreground">
+                                    {userProfile?.interests && userProfile.interests.length > 0
+                                        ? `${userProfile.interests.length} seleccionado(s)`
+                                        : 'Sin seleccionar'}
+                                </p>
+                            </div>
+                            <Button variant="outline" size="sm" onClick={() => setShowInterestsModal(true)}>
+                                {t('edit')}
+                            </Button>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
                             <label htmlFor="notifications-switch" className="text-sm font-medium">{t('profile.enableNotifications')}</label>
                             <Switch defaultChecked id="notifications-switch" />
                         </div>
@@ -210,6 +234,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 </Card>
 
             </div>
+            <OnboardingModal isOpen={showInterestsModal} onClose={() => setShowInterestsModal(false)} />
         </ScrollArea>
     );
 };

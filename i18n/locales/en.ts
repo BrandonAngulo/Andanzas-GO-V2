@@ -82,6 +82,7 @@ const en = {
         email: "Email Address",
         notSpecified: "Not specified",
         culturalInterests: "Cultural Interests",
+        interests: "Interests",
         interestsPlaceholder: "Salsa, museums, urban art…",
         enableNotifications: "Enable notifications",
         saveChanges: "Save Changes",
@@ -211,7 +212,7 @@ const en = {
         completed: "Completed!",
         start: "Start"
     },
-    
+
     // Guided Route Modal
     guidedRoute: {
         point: "Point",
@@ -244,7 +245,7 @@ const en = {
         noNotifications: "You have no notifications.",
         read: "Read",
     },
-    
+
     // Eventos Panel
     eventosFilters: {
         all: "All",
@@ -281,7 +282,7 @@ const en = {
         faq4_q: "Is my location data private?",
         faq4_a: "Absolutely. Your location is only used for features like 'Near You' or 'My Location' on the map and is not shared with third parties. Check our 'Privacy Preferences' in your profile for more control.",
         moreHelp: "Need more help?",
-        
+
         // Call Me Back
         callMeBackTitle: "Call me back?",
         callMeBackDesc: "Leave us your details and we will contact you within the next 48 hours.",
@@ -290,7 +291,7 @@ const en = {
         reasonLabel: "Reason",
         requestCallback: "Request Call",
         successCallback: "Request received! We'll call you soon.",
-        
+
         // Write Us
         writeUsTitle: "Write to us",
         emailLabel: "Email Address",
@@ -298,7 +299,7 @@ const en = {
         contactPlaceholder: "Tell us how we can help you...",
         send: "Send message",
         successMessage: "Message sent. Check your email.",
-        
+
         chat: "Live Chat"
     },
 
@@ -311,7 +312,7 @@ const en = {
         touristLine: "Tourist Police",
         understood: "Understood",
     },
-    
+
     // Privacy Banner
     privacyBanner: {
         text1: "Andanzas GO protects your data. Manage preferences in",
