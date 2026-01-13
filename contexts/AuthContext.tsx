@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     logout,
     resetPassword,
     signInWithGoogle,
-    isAuthenticated: !!user
+    isAuthenticated: true // Desactivado temporalmente
   };
 
   return (
