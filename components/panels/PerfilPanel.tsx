@@ -5,7 +5,7 @@ import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2 } from 'lucide-react';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { userService } from '../../services/user.service';
@@ -34,7 +34,7 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
 
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount }) => {
     const { t } = useI18n();
-    const { user, signIn, signUp, logout, isAuthenticated, resetPassword } = useAuth();
+    const { user, signIn, signUp, logout, isAuthenticated, resetPassword, signInWithGoogle } = useAuth();
 
     const [isRegistering, setIsRegistering] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
@@ -74,6 +74,15 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
             setErrorMsg(err.message || "Error de autenticación");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        try {
+            await signInWithGoogle();
+        } catch (error) {
+            console.error("Google login error:", error);
+            setErrorMsg("Error al iniciar con Google");
         }
     };
 
@@ -145,6 +154,23 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     {isResetting ? 'Enviar Enlace' : (isRegistering ? 'Registrarse' : 'Entrar')}
                                 </Button>
                             </form>
+
+                            {!isResetting && (
+                                <>
+                                    <div className="relative my-4">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <span className="w-full border-t" />
+                                        </div>
+                                        <div className="relative flex justify-center text-xs uppercase">
+                                            <span className="bg-background px-2 text-muted-foreground">O continúa con</span>
+                                        </div>
+                                    </div>
+                                    <Button variant="outline" type="button" className="w-full" onClick={handleGoogleLogin}>
+                                        <Chrome className="mr-2 h-4 w-4" />
+                                        Google
+                                    </Button>
+                                </>
+                            )}
                         </CardContent>
                         <CardFooter className="flex-col gap-3 pt-0">
                             <div className="text-sm text-center">
