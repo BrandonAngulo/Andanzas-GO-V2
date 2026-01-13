@@ -38,6 +38,8 @@ import InsigniasModal from "./components/panels/InsigniasModal";
 import GuidedRouteModal from "./components/views/GuidedRouteModal";
 import Logo from "./components/layout/Logo";
 import AccessibilityMenu from "./components/layout/AccessibilityMenu";
+import PrivacyPolicy from './components/legal/PrivacyPolicy';
+import TermsOfService from './components/legal/TermsOfService';
 import { useI18n } from "./i18n";
 import NoticiasPanel from "./components/panels/NoticiasPanel";
 import ConfiguracionPanel from "./components/panels/ConfiguracionPanel";
@@ -81,6 +83,11 @@ const defaultAccessibilitySettings = {
 };
 
 export default function App() {
+  // Simple routing for legal pages
+  const path = window.location.pathname;
+  if (path === '/privacy') return <PrivacyPolicy />;
+  if (path === '/terms') return <TermsOfService />;
+
   const { language, t } = useI18n();
   const { isAuthenticated, user } = useAuth();
 
