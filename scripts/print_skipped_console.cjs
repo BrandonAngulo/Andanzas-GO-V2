@@ -1,0 +1,49 @@
+const fs = require('fs');
+const path = require('path');
+
+// Re-run the logic to get the list locally in memory, then print.
+// This avoids reading the file that might have encoding issues or wasn't saved correctly by the previous pipe?
+// Actually the previous pipe worked but the require failed likely due to path resolution or encoding.
+
+const matches = JSON.parse(fs.readFileSync(path.join(__dirname, 'google_api_matches.json'), 'utf8'));
+
+function normalize(str) {
+    if (!str) return "";
+    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+for (const match of matches) {
+    const dbName = normalize(match.nombre);
+    const googleName = normalize(match.google_name);
+    const contains = googleName.includes(dbName) || dbName.includes(googleName);
+
+    // Similarity check
+    const s1 = dbName;
+    const s2 = googleName;
+    let distance = s2.length;
+    if (s1.length > 0) {
+        const costs = [];
+        for (let i = 0; i <= s1.length; i++) {
+            let lastValue = i;
+            for (let j = 0; j <= s2.length; j++) {
+                if (i == 0) costs[j] = j;
+                else if (j > 0) {
+                    let newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) != s2.charAt(j - 1)) newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
+            }
+            if (i > 0) costs[s2.length] = lastValue;
+        }
+        distance = costs[s2.length];
+    }
+
+    const longer = s1.length > s2.length ? s1 : s2;
+    const sim = longer.length === 0 ? 1.0 : (longer.length - distance) / parseFloat(longer.length);
+
+    if (sim <= 0.4 && !contains) {
+        // Print it clearly
+        console.log(`${match.id}|${match.nombre}`);
+    }
+}

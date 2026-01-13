@@ -1,0 +1,67 @@
+[
+  {
+    "id": "e1",
+    "titulo": "Festival de Música del Pacífico Petronio Álvarez",
+    "titulo_en": "Petronio Álvarez Pacific Music Festival",
+    "fecha": "2024-08-14",
+    "lugar": "Unidad Deportiva Alberto Galindo",
+    "lugar_en": "Alberto Galindo Sports Unit",
+    "resumen": "El festival de cultura afro más importante de Latinoamérica.",
+    "resumen_en": "The most important Afro culture festival in Latin America.",
+    "img": "https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?auto=format&fit=crop&w=800",
+    "descripcion": "Una celebración vibrante de la herencia africana en Colombia. Durante cinco días, Cali se convierte en la capital del Pacífico. Disfruta de la música de marimba, los cantos tradicionales, la comida típica (viche, arrechón, mariscos) y la moda afro. Es una experiencia cultural inmersiva llena de alegría y sabor.",
+    "descripcion_en": "A vibrant celebration of African heritage in Colombia. For five days, Cali becomes the capital of the Pacific. Enjoy marimba music, traditional songs, typical food (viche, arrechón, seafood), and Afro fashion. It is an immersive cultural experience full of joy and flavor."
+  },
+  {
+    "id": "e2",
+    "titulo": "Feria de Cali",
+    "titulo_en": "Cali Fair",
+    "fecha": "2024-12-25",
+    "lugar": "Autopista Suroriental y varios puntos",
+    "lugar_en": "Southeastern Highway and various locations",
+    "resumen": "La fiesta más grande de la ciudad: salsa, desfiles y alegría.",
+    "resumen_en": "The city's biggest party: salsa, parades, and joy.",
+    "img": "https://images.unsplash.com/photo-1545959720-333d6b38c227?auto=format&fit=crop&w=800",
+    "descripcion": "El evento cumbre del año. Comienza con el Salsódromo (un desfile de bailarines de salsa de talla mundial) y continúa con el Desfile de Autos Clásicos, el Carnaval de Cali Viejo y el Encuentro de Melómanos. Es una semana donde la ciudad no duerme y la salsa se respira en cada esquina.",
+    "descripcion_en": "The pinnacle event of the year. It starts with the Salsódromo (a parade of world-class salsa dancers) and continues with the Classic Car Parade, the Old Cali Carnival, and the Music Lovers Meeting. It's a week where the city doesn't sleep and salsa is breathed in every corner."
+  },
+  {
+    "id": "e3",
+    "titulo": "Festival Internacional de Ballet",
+    "titulo_en": "International Ballet Festival",
+    "fecha": "2024-10-20",
+    "lugar": "Teatro Municipal y Plazoleta Jairo Varela",
+    "lugar_en": "Municipal Theater and Jairo Varela Square",
+    "resumen": "Lo mejor de la danza clásica y contemporánea mundial.",
+    "resumen_en": "The best of world classical and contemporary dance.",
+    "img": "https://images.unsplash.com/photo-1514306191717-452ec28c7f91?auto=format&fit=crop&w=800",
+    "descripcion": "Cali abre sus telones para recibir a compañías de ballet de Europa, América y Asia. Además de las galas en teatros, el festival se caracteriza por sus presentaciones gratuitas al aire libre, acercando el arte de la danza a todo el público. Una muestra de elegancia y técnica.",
+    "descripcion_en": "Cali opens its curtains to welcome ballet companies from Europe, America, and Asia. In addition to theater galas, the festival is characterized by its free outdoor performances, bringing the art of dance to the general public. A display of elegance and technique."
+  },
+  {
+    "id": "e4",
+    "titulo": "Festival Internacional de Cine de Cali",
+    "titulo_en": "Cali International Film Festival",
+    "fecha": "2024-11-05",
+    "lugar": "Museo La Tertulia y cines locales",
+    "lugar_en": "La Tertulia Museum and local cinemas",
+    "resumen": "Cine independiente, vanguardista y documental.",
+    "resumen_en": "Independent, avant-garde, and documentary cinema.",
+    "img": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800",
+    "descripcion": "Un espacio para el cine que arriesga. El FICCALI proyecta películas que difícilmente llegan a las salas comerciales, con un fuerte enfoque en el cine colombiano y latinoamericano. Incluye talleres, conversatorios con directores y proyecciones al aire libre junto al río.",
+    "descripcion_en": "A space for cinema that takes risks. FICCALI screens films that rarely reach commercial theaters, with a strong focus on Colombian and Latin American cinema. It includes workshops, talks with directors, and outdoor screenings by the river."
+  },
+  {
+    "id": "e5",
+    "titulo": "Mundial de Salsa",
+    "titulo_en": "World Salsa Festival",
+    "fecha": "2024-09-20",
+    "lugar": "Coliseo El Pueblo",
+    "lugar_en": "El Pueblo Coliseum",
+    "resumen": "Competencia de los mejores bailarines de salsa del planeta.",
+    "resumen_en": "Competition of the best salsa dancers on the planet.",
+    "img": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800",
+    "descripcion": "Siente la adrenalina de la competencia. Bailarines de todo el mundo vienen a Cali a desafiar a los locales en estilo caleño, en línea y cabaret. Es un espectáculo de acrobacias, velocidad y precisión que te dejará sin aliento.",
+    "descripcion_en": "Feel the adrenaline of the competition. Dancers from all over the world come to Cali to challenge the locals in Cali style, On1/On2, and cabaret. It is a spectacle of acrobatics, speed, and precision that will leave you breathless."
+  }
+]

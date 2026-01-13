@@ -1,0 +1,34 @@
+[
+  {
+    "id": "insignia-fav-1",
+    "nombre": "Primer Favorito",
+    "nombre_en": "First Favorite",
+    "descripcion": "Guardaste tu primer lugar favorito.",
+    "descripcion_en": "You saved your first favorite place.",
+    "icono": "Heart"
+  },
+  {
+    "id": "insignia-review-1",
+    "nombre": "Crítico Local",
+    "nombre_en": "Local Critic",
+    "descripcion": "Escribiste tu primera reseña.",
+    "descripcion_en": "You wrote your first review.",
+    "icono": "PenTool"
+  },
+  {
+    "id": "insignia-route-1",
+    "nombre": "Creador de Rutas",
+    "nombre_en": "Route Creator",
+    "descripcion": "Creaste tu primera ruta personalizada.",
+    "descripcion_en": "You created your first custom route.",
+    "icono": "MapIcon"
+  },
+  {
+    "id": "insignia-route-complete",
+    "nombre": "Andariego",
+    "nombre_en": "Wanderer",
+    "descripcion": "Completaste una ruta guiada.",
+    "descripcion_en": "You completed a guided route.",
+    "icono": "Flag"
+  }
+]

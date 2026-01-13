@@ -1,0 +1,7 @@
+{
+  "name": "Andanzas GO",
+  "description": "Una aplicación web progresiva de exploración cultural y navegación para la ciudad de Cali, con mapas interactivos, listado de eventos, rutas temáticas y sugerencias inteligentes.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
