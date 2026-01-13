@@ -86,33 +86,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         }
     };
 
-    // Si isAuthenticated es true pero no hay user real, estamos en modo bypass
-    if (!user && isAuthenticated) {
-        return (
-            <ScrollArea className="h-[72vh]">
-                <div className="p-3 space-y-6">
-                    <div className="flex flex-col sm:flex-row gap-4 items-start justify-between bg-card p-4 rounded-xl border shadow-sm">
-                        <div className="space-y-1">
-                            <h2 className="text-2xl font-bold">Explorador Invitado</h2>
-                            <p className="text-muted-foreground text-sm flex items-center gap-1.5">
-                                <Award className="h-4 w-4 text-orange-500" />
-                                Nivel: Explorador Novato
-                            </p>
-                        </div>
-                    </div>
-                    <Card className="border-none shadow-none ring-1 ring-border">
-                        <CardHeader className="pb-3">
-                            <CardTitle className="text-base flex items-center gap-2">⚠️ Modo de Prueba</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground">Estás usando la aplicación en modo de prueba. Algunas funciones de persistencia de datos están desactivadas.</p>
-                        </CardContent>
-                    </Card>
-                </div>
-            </ScrollArea>
-        );
-    }
-
     if (!isAuthenticated) {
         return (
             <ScrollArea className="h-[72vh]">
