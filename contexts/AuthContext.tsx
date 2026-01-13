@@ -11,6 +11,7 @@ interface AuthContextType {
   signIn: (e: string, p: string) => Promise<any>;
   signUp: (e: string, p: string, n: string) => Promise<any>;
   logout: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -30,7 +31,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     const { data: { subscription } } = authService.onAuthStateChange((_event, session) => {
-      console.log('Auth state changed:', _event, session);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -51,6 +51,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return authService.signOut();
   };
 
+  const resetPassword = async (email: string) => {
+    return authService.resetPasswordForEmail(email);
+  };
+
   const value = {
     user,
     session,
@@ -58,6 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signIn,
     signUp,
     logout,
+    resetPassword,
     isAuthenticated: !!user
   };
 

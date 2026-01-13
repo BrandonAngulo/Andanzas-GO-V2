@@ -34,13 +34,15 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
 
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount }) => {
     const { t } = useI18n();
-    const { user, signIn, signUp, logout, isAuthenticated } = useAuth();
+    const { user, signIn, signUp, logout, isAuthenticated, resetPassword } = useAuth();
 
     const [isRegistering, setIsRegistering] = useState(false);
+    const [isResetting, setIsResetting] = useState(false);
     const [formName, setFormName] = useState('');
     const [formEmail, setFormEmail] = useState('');
     const [formPassword, setFormPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
     const [loading, setLoading] = useState(false);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
@@ -54,16 +56,16 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setErrorMsg('');
+        setSuccessMsg('');
         setLoading(true);
 
         try {
-            if (isRegistering) {
+            if (isResetting) {
+                await resetPassword(formEmail);
+                setSuccessMsg("Si el correo existe, recibirás un enlace de recuperación.");
+            } else if (isRegistering) {
                 await signUp(formEmail, formPassword, formName);
-                // Auto login or show success message? Supabase handles session if confirmed?
-                // Usually requires email confirmation unless disabled. 
-                // For MVP I should check if "email confirmation" is OFF in my Supabase project or handle "Check your email".
-                // Assuming default Supabase setup might require confirmation.
-                alert("Cuenta creada. Si la confirmación de email está activa, revisa tu correo.");
+                setSuccessMsg("Cuenta creada. Por favor verifica tu correo electrónico.");
             } else {
                 await signIn(formEmail, formPassword);
             }
@@ -82,19 +84,26 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary">
                         <CardHeader className="text-center pb-2">
                             <UserCircle className="w-16 h-16 mx-auto text-primary mb-4" />
-                            <CardTitle className="text-2xl">{isRegistering ? 'Crear Cuenta' : 'Iniciar Sesión'}</CardTitle>
+                            <CardTitle className="text-2xl">
+                                {isResetting ? 'Recuperar Contraseña' : (isRegistering ? 'Crear Cuenta' : 'Iniciar Sesión')}
+                            </CardTitle>
                             <p className="text-muted-foreground mt-2 text-sm">
-                                {isRegistering ? 'Únete a la comunidad de exploradores.' : 'Accede a tus rutas y progresos.'}
+                                {isResetting ? 'Ingresa tu email para recibir un enlace de recuperación.' : (isRegistering ? 'Únete a la comunidad de exploradores.' : 'Accede a tus rutas y progresos.')}
                             </p>
                         </CardHeader>
                         <CardContent>
                             {errorMsg && (
-                                <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-md mb-4 flex items-center gap-2">
+                                <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-md mb-4 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
                                     <span>⚠️</span> {errorMsg}
                                 </div>
                             )}
+                            {successMsg && (
+                                <div className="bg-green-100 text-green-800 text-sm p-3 rounded-md mb-4 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+                                    <span>✅</span> {successMsg}
+                                </div>
+                            )}
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                {isRegistering && (
+                                {isRegistering && !isResetting && (
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium">Nombre</label>
                                         <Input
@@ -115,37 +124,56 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         required
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Contraseña</label>
-                                    <Input
-                                        type="password"
-                                        placeholder="••••••••"
-                                        value={formPassword}
-                                        onChange={(e) => setFormPassword(e.target.value)}
-                                        required
-                                        minLength={6}
-                                    />
-                                </div>
+                                {!isResetting && (
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <label className="text-sm font-medium">Contraseña</label>
+                                            {!isRegistering && <button type="button" onClick={() => { setIsResetting(true); setErrorMsg(''); setSuccessMsg(''); }} className="text-xs text-primary hover:underline">¿Olvidaste tu contraseña?</button>}
+                                        </div>
+                                        <Input
+                                            type="password"
+                                            placeholder="••••••••"
+                                            value={formPassword}
+                                            onChange={(e) => setFormPassword(e.target.value)}
+                                            required
+                                            minLength={6}
+                                        />
+                                    </div>
+                                )}
                                 <Button type="submit" className="w-full h-11 text-base" disabled={loading}>
                                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                    {isRegistering ? 'Registrarse' : 'Entrar'}
+                                    {isResetting ? 'Enviar Enlace' : (isRegistering ? 'Registrarse' : 'Entrar')}
                                 </Button>
                             </form>
                         </CardContent>
                         <CardFooter className="flex-col gap-3 pt-0">
                             <div className="text-sm text-center">
-                                <span className="text-muted-foreground">{isRegistering ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}</span>{' '}
-                                <button
-                                    type="button"
-                                    className="text-primary font-medium hover:underline"
-                                    onClick={() => { setIsRegistering(!isRegistering); setErrorMsg(''); }}
-                                >
-                                    {isRegistering ? 'Inicia sesión' : 'Regístrate'}
-                                </button>
+                                {isResetting ? (
+                                    <button
+                                        type="button"
+                                        className="text-primary font-medium hover:underline"
+                                        onClick={() => { setIsResetting(false); setErrorMsg(''); setSuccessMsg(''); }}
+                                    >
+                                        Volver al inicio de sesión
+                                    </button>
+                                ) : (
+                                    <>
+                                        <span className="text-muted-foreground">{isRegistering ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}</span>{' '}
+                                        <button
+                                            type="button"
+                                            className="text-primary font-medium hover:underline"
+                                            onClick={() => { setIsRegistering(!isRegistering); setErrorMsg(''); setSuccessMsg(''); }}
+                                        >
+                                            {isRegistering ? 'Inicia sesión' : 'Regístrate'}
+                                        </button>
+                                    </>
+                                )}
                             </div>
-                            <p className="text-xs text-muted-foreground text-center px-4">
-                                Al continuar, aceptas nuestros términos y condiciones de uso.
-                            </p>
+                            <div className="text-center px-4 space-y-2 border-t pt-3 w-full">
+                                <p className="text-xs text-muted-foreground">
+                                    Al continuar, aceptas nuestros <a href="#" className="underline hover:text-foreground">Términos de Servicio</a> y <a href="#" className="underline hover:text-foreground">Política de Privacidad</a>.
+                                </p>
+                            </div>
                         </CardFooter>
                     </Card>
                 </div>

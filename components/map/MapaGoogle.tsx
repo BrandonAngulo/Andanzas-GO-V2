@@ -352,9 +352,9 @@ const MapWrapper = (props: MapaGoogleProps) => {
 export default function MapaGoogle(props: MapaGoogleProps) {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-    useEffect(() => {
-        console.log("MapaGoogle mounted. API Key present:", !!API_KEY);
-    }, [API_KEY]);
+    // useEffect(() => {
+    //      console.log("MapaGoogle mounted. API Key present:", !!API_KEY);
+    // }, [API_KEY]);
 
     if (!API_KEY) {
         return (

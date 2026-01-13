@@ -50,6 +50,13 @@ export const authService = {
         return data.session;
     },
 
+    async resetPasswordForEmail(email: string) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/reset-password',
+        });
+        if (error) throw error;
+    },
+
     onAuthStateChange(callback: (event: any, session: any) => void) {
         return supabase.auth.onAuthStateChange(callback);
     }

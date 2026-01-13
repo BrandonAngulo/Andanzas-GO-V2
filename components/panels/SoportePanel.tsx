@@ -9,7 +9,8 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../ui/tabs';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
-import { Phone, Mail, MessageCircle, CheckCircle2, User, HelpCircle, Send } from 'lucide-react';
+import { supportService } from '../../services/support.service';
+import { Phone, Mail, MessageCircle, CheckCircle2, User, HelpCircle, Send, Loader2 } from 'lucide-react';
 
 const SoportePanel: React.FC = () => {
     const { t } = useI18n();
@@ -20,11 +21,13 @@ const SoportePanel: React.FC = () => {
     const [callbackPhone, setCallbackPhone] = useState('');
     const [callbackReason, setCallbackReason] = useState('');
     const [callbackSuccess, setCallbackSuccess] = useState(false);
+    const [isSubmittingCallback, setIsSubmittingCallback] = useState(false);
 
     // State for Contact Form
     const [contactEmail, setContactEmail] = useState('');
     const [contactMessage, setContactMessage] = useState('');
     const [contactSuccess, setContactSuccess] = useState(false);
+    const [isSubmittingContact, setIsSubmittingContact] = useState(false);
 
     // Autofill user data if available
     useEffect(() => {
@@ -35,22 +38,45 @@ const SoportePanel: React.FC = () => {
         }
     }, [user]);
 
-    const handleCallbackSubmit = (e: React.FormEvent) => {
+    const handleCallbackSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate API call
-        setTimeout(() => {
+        setIsSubmittingCallback(true);
+        try {
+            await supportService.createTicket({
+                user_id: user?.id,
+                ticket_type: 'callback',
+                phone: callbackPhone,
+                subject: 'Call Request: ' + callbackReason,
+                message: `Name: ${callbackName}\nReason: ${callbackReason}`
+            });
             setCallbackSuccess(true);
-            // Reset form (optional, or keep to show what was sent)
-        }, 800);
+        } catch (error) {
+            console.error(error);
+            alert("Error enviando solicitud. Intente nuevamente.");
+        } finally {
+            setIsSubmittingCallback(false);
+        }
     };
 
-    const handleContactSubmit = (e: React.FormEvent) => {
+    const handleContactSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate API call
-        setTimeout(() => {
+        setIsSubmittingContact(true);
+        try {
+            await supportService.createTicket({
+                user_id: user?.id,
+                ticket_type: 'contact',
+                email: contactEmail,
+                message: contactMessage,
+                subject: 'Support Message'
+            });
             setContactSuccess(true);
             setContactMessage('');
-        }, 800);
+        } catch (error) {
+            console.error(error);
+            alert("Error enviando mensaje. Intente nuevamente.");
+        } finally {
+            setIsSubmittingContact(false);
+        }
     };
 
     const faqs = [
@@ -120,7 +146,10 @@ const SoportePanel: React.FC = () => {
                                                 <label htmlFor="cb-reason" className="text-xs font-medium">{t('support.reasonLabel')}</label>
                                                 <Input id="cb-reason" placeholder="Motivo breve (opcional)" value={callbackReason} onChange={(e) => setCallbackReason(e.target.value)} />
                                             </div>
-                                            <Button type="submit" className="w-full mt-1">{t('support.requestCallback')}</Button>
+                                            <Button type="submit" className="w-full mt-1" disabled={isSubmittingCallback}>
+                                                {isSubmittingCallback && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                                {t('support.requestCallback')}
+                                            </Button>
                                         </form>
                                     )}
                                 </CardContent>
@@ -150,7 +179,10 @@ const SoportePanel: React.FC = () => {
                                                 <label htmlFor="ct-msg" className="text-xs font-medium">{t('support.messageLabel')}</label>
                                                 <Textarea id="ct-msg" placeholder={t('support.contactPlaceholder')} value={contactMessage} onChange={(e) => setContactMessage(e.target.value)} required className="min-h-[100px]" />
                                             </div>
-                                            <Button type="submit" variant="secondary" className="w-full mt-1">{t('support.send')}</Button>
+                                            <Button type="submit" variant="secondary" className="w-full mt-1" disabled={isSubmittingContact}>
+                                                {isSubmittingContact && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                                {t('support.send')}
+                                            </Button>
                                         </form>
                                     )}
                                 </CardContent>

@@ -1,6 +1,6 @@
 
 import React, { useMemo, useState, useEffect, useRef } from "react";
-import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone } from "lucide-react";
+import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Accessibility, Map } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
@@ -502,7 +502,69 @@ export default function App() {
           <div className="hidden md:flex items-center gap-2 w-[300px] lg:w-[360px]">
             <div className="relative w-full group">
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-              <Input aria-label="Buscar lugares" placeholder={t('searchPlaceholder')} className="pl-9 rounded-full bg-muted/50 border-transparent focus:bg-background focus:border-primary/50 transition-all shadow-none" value={query} onChange={(e) => setQuery(e.target.value)} />
+              <Input
+                aria-label="Buscar lugares"
+                placeholder={t('searchPlaceholder')}
+                className="pl-9 rounded-full bg-muted/50 border-transparent focus:bg-background focus:border-primary/50 transition-all shadow-none"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {query.length > 0 && (
+                <div className="absolute top-full mt-2 left-0 w-full bg-popover rounded-xl border shadow-lg overflow-hidden z-[60] animate-in slide-in-from-top-2 fade-in duration-200">
+                  <ScrollArea className="max-h-[300px]">
+                    <div className="p-1 space-y-0.5">
+                      {(() => {
+                        const siteMatches = SITES.filter(s => s.titulo.toLowerCase().includes(query.toLowerCase()) || s.tags?.some(tag => tag.toLowerCase().includes(query.toLowerCase())));
+                        const eventMatches = EVENTOS.filter(e => e.titulo.toLowerCase().includes(query.toLowerCase()));
+
+                        if (siteMatches.length === 0 && eventMatches.length === 0) {
+                          return (
+                            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+                              <p>No encontramos resultados para "{query}"</p>
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <>
+                            {siteMatches.length > 0 && <div className="px-3 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-muted/30">Sitios</div>}
+                            {siteMatches.map(s => (
+                              <button
+                                key={s.id}
+                                className="w-full text-left px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground rounded-lg flex items-center gap-2 transition-colors"
+                                onClick={() => {
+                                  pushHash({ type: 'site', id: s.id });
+                                  setQuery('');
+                                }}
+                              >
+                                <Map className="h-4 w-4 text-muted-foreground" />
+                                <span className="truncate flex-1 font-medium">{s.titulo}</span>
+                                <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded ml-2 capitalize">{s.categoria}</span>
+                              </button>
+                            ))}
+
+                            {eventMatches.length > 0 && <div className="px-3 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-muted/30 mt-2">Eventos</div>}
+                            {eventMatches.map(e => (
+                              <button
+                                key={e.id}
+                                className="w-full text-left px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground rounded-lg flex items-center gap-2 transition-colors"
+                                onClick={() => {
+                                  pushHash({ type: 'event', id: e.id });
+                                  setQuery('');
+                                }}
+                              >
+                                <Sparkles className="h-4 w-4 text-orange-500" />
+                                <span className="truncate flex-1 font-medium">{e.titulo}</span>
+                                <span className="text-xs text-muted-foreground">{e.fecha}</span>
+                              </button>
+                            ))}
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </ScrollArea>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-1.5">
@@ -514,7 +576,9 @@ export default function App() {
               {showNotifications && <NotificationsPanel notifications={notifications} onMarkAsRead={markAsRead} onMarkAllAsRead={markAllAsRead} />}
             </div>
             <div className="relative" ref={accessibilityMenuRef}>
-              <Button id="accessibility-button" variant="ghost" size="icon" className="rounded-full" onClick={() => handleShowAccessibilityMenu(!showAccessibilityMenu)}><Shield className="h-5 w-5" /></Button>
+              <Button id="accessibility-button" variant="ghost" size="icon" className="rounded-full hover:bg-muted" onClick={() => handleShowAccessibilityMenu(!showAccessibilityMenu)} aria-label={t('accessibilityOptions')} title={t('accessibilityOptions')}>
+                <Accessibility className="h-6 w-6" />
+              </Button>
               {showAccessibilityMenu && <AccessibilityMenu settings={accessibilitySettings} onSettingsChange={setAccessibilitySettings} onReset={() => setAccessibilitySettings(defaultAccessibilitySettings)} />}
             </div>
             <Button variant={focusMode ? "default" : "outline"} size="icon" className="ml-1 rounded-full shadow-sm" aria-label={focusMode ? t('focusModeOff') : t('focusModeOn')} onClick={() => setFocusMode((v) => !v)}>

@@ -12,7 +12,7 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
   const { t, language } = useI18n();
   return (
     <Card className="overflow-hidden flex flex-col">
-      <img src={site.logoUrl} alt={getTranslated(site, 'nombre', language) as string} className="w-full h-32 object-cover bg-white" />
+      <img src={site.logoUrl} alt={getTranslated(site, 'nombre', language) as string} className="w-full h-32 object-cover bg-white" loading="lazy" />
       <CardHeader className="py-2">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(site, 'nombre', language)}</CardTitle>
       </CardHeader>
@@ -28,7 +28,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void 
   const { t, language } = useI18n();
   return (
     <Card className="overflow-hidden flex flex-col">
-      <img src={event.img} alt={getTranslated(event, 'titulo', language) as string} className="w-full h-32 object-cover" />
+      <img src={event.img} alt={getTranslated(event, 'titulo', language) as string} className="w-full h-32 object-cover" loading="lazy" />
       <CardHeader className="py-2">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(event, 'titulo', language)}</CardTitle>
       </CardHeader>

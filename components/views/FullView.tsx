@@ -7,6 +7,7 @@ import ExpandableText from '../shared/ExpandableText';
 import AddReviewInline from '../shared/AddReviewInline';
 import { cn, getTranslated } from '../../lib/utils';
 import { useI18n } from '../../i18n';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface FullViewProps {
     view: { type: string; data: any };
@@ -25,46 +26,56 @@ interface FullViewProps {
 
 const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, addReview, addToRoute, goToPlaceInMap, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, sites }) => {
     const { t, language } = useI18n();
+    const { user } = useAuth();
     const { type, data } = view;
 
     if (!data) return null;
 
     const viewTitle = getTranslated(data, type === 'event' ? 'titulo' : 'nombre', language);
 
+    const handleAuthAction = (action: () => void) => {
+        if (!user) {
+            alert(language === 'es' ? 'Debes iniciar sesión para realizar esta acción.' : 'You must be logged in to perform this action.');
+            return;
+        }
+        action();
+    };
+
     return (
-        <div className="fixed inset-0 z-[1100] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 overflow-y-auto">
-            <div className="sticky top-0 border-b bg-background/90 px-3 py-2 flex items-center gap-2 z-10">
-                <Button variant="ghost" size="icon" onClick={onClose} aria-label={t('close')}><X /></Button>
-                <div className="font-medium truncate">
-                    {viewTitle}
-                </div>
-                <div className="flex-1" />
-                {type === 'site' && (
-                    <Button size="sm" onClick={() => toggleFav(data.id)}>
-                        <Heart className={cn("h-4 w-4 mr-1", isFav(data.id) ? "fill-red-500 text-red-500" : "")} />
-                        {isFav(data.id) ? t('fullView.remove') : t('fullView.save')}
-                    </Button>
-                )}
-            </div>
-
-            <div className="mx-auto max-w-5xl p-3 grid gap-3">
-                {(data.img || data.logoUrl) && (
-                    <div className="relative w-full h-[36vh] md:h-[44vh] overflow-hidden rounded-2xl group">
-                        <img src={data.img || data.logoUrl} alt={viewTitle as string} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
-                        {(data.image_credit) && (
-                            <div className="absolute bottom-2 right-3 text-[10px] text-white/70 bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                                📷 {data.image_credit}
-                            </div>
-                        )}
+        <div className="fixed inset-0 z-[1100] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200" onClick={onClose}>
+            <div className="min-h-full w-full" onClick={(e) => e.stopPropagation()}>
+                <div className="sticky top-0 border-b bg-background/90 px-3 py-2 flex items-center gap-2 z-10 backdrop-blur-md">
+                    <Button variant="ghost" size="icon" onClick={onClose} aria-label={t('close')}><X /></Button>
+                    <div className="font-medium truncate flex-1">
+                        {viewTitle}
                     </div>
-                )}
+                    {type === 'site' && (
+                        <Button size="sm" onClick={() => handleAuthAction(() => toggleFav(data.id))}>
+                            <Heart className={cn("h-4 w-4 mr-1", isFav(data.id) ? "fill-red-500 text-red-500" : "")} />
+                            {isFav(data.id) ? t('fullView.remove') : t('fullView.save')}
+                        </Button>
+                    )}
+                </div>
 
-                {type === 'site' && <SiteDetail data={data} addReview={addReview} addToRoute={addToRoute} goToPlaceInMap={goToPlaceInMap} />}
-                {type === 'event' && <EventDetail data={data} addToRoute={addToRoute} goToPlaceInMap={goToPlaceInMap} sites={sites} />}
-                {type === 'route' && <RouteDetail data={data} goToPlaceInMap={goToPlaceInMap} onStartRoute={onStartRoute} onCompleteRoute={onCompleteRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
+                <div className="mx-auto max-w-5xl p-3 grid gap-3 pb-safe">
+                    {(data.img || data.logoUrl) && (
+                        <div className="relative w-full h-[36vh] md:h-[44vh] overflow-hidden rounded-2xl group">
+                            <img src={data.img || data.logoUrl} alt={viewTitle as string} className="w-full h-full object-cover" loading="lazy" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+                            {(data.image_credit) && (
+                                <div className="absolute bottom-2 right-3 text-[10px] text-white/70 bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                                    📷 {data.image_credit}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
-                <div className="h-8" />
+                    {type === 'site' && <SiteDetail data={data} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} />}
+                    {type === 'event' && <EventDetail data={data} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} sites={sites} />}
+                    {type === 'route' && <RouteDetail data={data} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r: Ruta) => handleAuthAction(() => onStartRoute(r))} onCompleteRoute={onCompleteRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
+
+                    <div className="h-8" />
+                </div>
             </div>
         </div>
     );
