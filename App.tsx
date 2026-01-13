@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./components/ui/dialog";
 import { Sheet, SheetContent } from "./components/ui/sheet";
+import { ScrollArea } from "./components/ui/scroll-area";
 import { SITES, EVENTOS, RUTAS_TEMATICAS, NOTIFICACIONES, INSIGNIAS, NOTICIAS_FEED } from './constants';
 import { sitesService } from './services/sites.service';
 import { eventsService } from './services/events.service';
@@ -514,7 +515,7 @@ export default function App() {
                   <ScrollArea className="max-h-[300px]">
                     <div className="p-1 space-y-0.5">
                       {(() => {
-                        const siteMatches = SITES.filter(s => s.titulo.toLowerCase().includes(query.toLowerCase()) || s.tags?.some(tag => tag.toLowerCase().includes(query.toLowerCase())));
+                        const siteMatches = SITES.filter(s => s.nombre.toLowerCase().includes(query.toLowerCase()) || s.tipo.toLowerCase().includes(query.toLowerCase()));
                         const eventMatches = EVENTOS.filter(e => e.titulo.toLowerCase().includes(query.toLowerCase()));
 
                         if (siteMatches.length === 0 && eventMatches.length === 0) {
@@ -538,8 +539,8 @@ export default function App() {
                                 }}
                               >
                                 <Map className="h-4 w-4 text-muted-foreground" />
-                                <span className="truncate flex-1 font-medium">{s.titulo}</span>
-                                <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded ml-2 capitalize">{s.categoria}</span>
+                                <span className="truncate flex-1 font-medium">{s.nombre}</span>
+                                <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded ml-2 capitalize">{s.tipo}</span>
                               </button>
                             ))}
 
