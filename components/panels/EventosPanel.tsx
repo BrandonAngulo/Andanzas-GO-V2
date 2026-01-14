@@ -59,53 +59,53 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
       )}
       onClick={() => onOpenEvent(event)}
     >
-      <CardHeader className={cn("p-4 pb-2 flex flex-row items-start gap-4 space-y-0 relative overflow-hidden")}>
+      <CardHeader className={cn("p-3 pb-2 flex flex-row items-start gap-3 space-y-0 relative overflow-hidden")}>
         {/* Subtle background int for header only if desired, or keep clean */}
         <div className={cn("absolute inset-0 opacity-30 pointer-events-none", colorClass.split(' ')[1])} />
 
         {/* Date Box */}
-        <div className="relative z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm border rounded-lg p-2 min-w-[3.5rem] shadow-sm text-center">
-          <span className="text-xs font-bold text-muted-foreground uppercase">{monthStr}</span>
-          <span className="text-xl font-extrabold leading-none">{dayStr}</span>
+        <div className="relative z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm border rounded-lg p-1.5 min-w-[3rem] shadow-sm text-center">
+          <span className="text-[10px] font-bold text-muted-foreground uppercase">{monthStr}</span>
+          <span className="text-lg font-extrabold leading-none">{dayStr}</span>
         </div>
 
         <div className="relative z-10 flex-1 min-w-0">
           {/* Category Badge */}
           <div className="flex items-center justify-between mb-1">
-            <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-background/50 border shadow-sm text-foreground/80")}>
+            <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-background/50 border shadow-sm text-foreground/80")}>
               {category}
             </span>
           </div>
 
-          <CardTitle className="text-lg leading-snug line-clamp-2 mb-1">
+          <CardTitle className="text-base leading-tight line-clamp-2 mb-1">
             {getTranslated(event, 'titulo', language)}
           </CardTitle>
 
-          <div className="flex items-center text-xs text-muted-foreground">
-            <Clock className="h-3 w-3 mr-1" />
+          <div className="flex items-center text-[10px] text-muted-foreground">
+            <Clock className="h-2.5 w-2.5 mr-1" />
             {timeStr}
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 pt-2 flex-grow">
-        <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-3">
-          <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
+      <CardContent className="p-3 pt-1 flex-grow">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
+          <MapPin className="h-3 w-3 flex-shrink-0 text-primary" />
           <span className="truncate font-medium">{getTranslated(event, 'lugar', language)}</span>
         </div>
 
-        <p className="text-sm text-muted-foreground/90 line-clamp-3 leading-relaxed">
+        <p className="text-xs text-muted-foreground/90 line-clamp-2 leading-relaxed">
           {getTranslated(event, 'resumen', language) || getTranslated(event, 'descripcion', language)}
         </p>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0 mt-auto">
-        <div className="w-full pt-3 border-t border-dashed flex justify-between items-center text-xs">
+      <CardFooter className="p-3 pt-0 mt-auto">
+        <div className="w-full pt-2 border-t border-dashed flex justify-between items-center text-[10px]">
           <span className="text-muted-foreground capitalize font-medium">{weekdayStr}</span>
 
           <span className="font-medium text-primary flex items-center group-hover:underline">
             {t('seeMore')}
-            <span className="ml-1 text-[10px]">→</span>
+            <span className="ml-1 text-[9px]">→</span>
           </span>
         </div>
       </CardFooter>
@@ -210,16 +210,16 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
 
   return (
     <ScrollArea className="h-[72vh]">
-      <div className="p-4 space-y-6">
+      <div className="p-2 space-y-4">
 
-        {/* Filters Header */}
-        <div className="flex flex-col gap-3 bg-muted/40 p-3 rounded-xl border">
+        {/* Filters Header - reduced padding */}
+        <div className="flex flex-col gap-2 bg-muted/40 p-2 rounded-xl border">
           <div className="flex flex-wrap gap-2">
             <Button
               variant={dateFilter === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setDateFilter('all')}
-              className="rounded-full h-8 text-xs"
+              className="rounded-full h-7 text-xs"
             >
               {t('eventosFilters.all')}
             </Button>
@@ -227,7 +227,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
               variant={dateFilter === 'today' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setDateFilter('today')}
-              className="rounded-full h-8 text-xs"
+              className="rounded-full h-7 text-xs"
             >
               {t('eventosFilters.today')}
             </Button>
@@ -235,7 +235,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
               variant={dateFilter === 'week' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setDateFilter('week')}
-              className="rounded-full h-8 text-xs"
+              className="rounded-full h-7 text-xs"
             >
               {t('eventosFilters.week')}
             </Button>
@@ -244,7 +244,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{t('eventosFilters.category')}:</span>
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="h-8 max-w-[200px] text-xs">
+              <SelectTrigger className="h-7 max-w-[200px] text-xs">
                 <SelectValue placeholder="Todas" />
               </SelectTrigger>
               <SelectContent>
@@ -260,10 +260,10 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
 
         {/* Results Info */}
         <div className="flex items-center justify-between px-1">
-          <h3 className="font-semibold text-lg flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-primary" />
+          <h3 className="font-semibold text-base flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-primary" />
             {t('panelTitles.eventos')}
-            <span className="text-xs font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-normal text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
               {filteredEvents.length}
             </span>
           </h3>
@@ -271,7 +271,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
 
         {/* Grid */}
         {filteredEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {filteredEvents.map(event => (
               <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} sites={sites} />
             ))}
