@@ -3,11 +3,15 @@ import { Evento } from '../types';
 
 export const eventsService = {
     async getAll(): Promise<Evento[]> {
-        const today = new Date().toISOString();
+        // Fetch events starting from *yesterday* to avoid timezone issues hiding today's events
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setHours(0, 0, 0, 0);
+
         const { data, error } = await supabase
             .from('events')
             .select('*')
-            .gte('fecha', today)
+            .gte('fecha', yesterday.toISOString())
             .order('fecha', { ascending: true });
 
         if (error) {
