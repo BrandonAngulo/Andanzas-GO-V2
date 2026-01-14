@@ -1,7 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
-import { Review } from '../../types';
-import { SITES } from '../../constants';
+import { Review, Site } from '../../types';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import StarRating from '../shared/StarRating';
@@ -11,9 +10,10 @@ import { getTranslated } from '../../lib/utils';
 
 interface ResenasPanelProps {
   reviews: Review[];
+  sites: Site[];
 }
 
-const ResenasPanel: React.FC<ResenasPanelProps> = ({ reviews }) => {
+const ResenasPanel: React.FC<ResenasPanelProps> = ({ reviews, sites }) => {
   const { t, language } = useI18n();
 
   if (reviews.length === 0) {
@@ -30,7 +30,7 @@ const ResenasPanel: React.FC<ResenasPanelProps> = ({ reviews }) => {
     <ScrollArea className="h-[72vh] p-3">
       <div className="grid gap-3">
         {reviews.map((r) => {
-          const site = SITES.find((s) => s.id === r.siteId);
+          const site = sites.find((s) => s.id === r.siteId);
           return (
             <Card key={r.id}>
               <CardHeader className="pb-2"><CardTitle className="text-base">{getTranslated(site, 'nombre', language)}</CardTitle></CardHeader>

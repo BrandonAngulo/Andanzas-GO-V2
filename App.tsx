@@ -7,7 +7,7 @@ import { Input } from "./components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./components/ui/dialog";
 import { Sheet, SheetContent } from "./components/ui/sheet";
 import { ScrollArea } from "./components/ui/scroll-area";
-import { SITES, EVENTOS, RUTAS_TEMATICAS, NOTIFICACIONES, INSIGNIAS, NOTICIAS_FEED } from './constants';
+import { EVENTOS, RUTAS_TEMATICAS, NOTIFICACIONES, INSIGNIAS, NOTICIAS_FEED } from './constants';
 import { sitesService } from './services/sites.service';
 import { eventsService } from './services/events.service';
 import { routesService } from './services/routes.service';
@@ -483,7 +483,7 @@ export default function App() {
 
   const RightRailWrapper = () => (
     <div className="sticky top-[70px] space-y-4">
-      <RightRail aiTips={false} onOpenSite={openSite} />
+      <RightRail aiTips={false} onOpenSite={openSite} sites={sites} />
     </div>
   );
 
@@ -522,7 +522,7 @@ export default function App() {
                   <ScrollArea className="max-h-[300px]">
                     <div className="p-1 space-y-0.5">
                       {(() => {
-                        const siteMatches = SITES.filter(s => s.nombre.toLowerCase().includes(query.toLowerCase()) || s.tipo.toLowerCase().includes(query.toLowerCase()));
+                        const siteMatches = sites.filter(s => s.nombre.toLowerCase().includes(query.toLowerCase()) || s.tipo.toLowerCase().includes(query.toLowerCase()));
                         const eventMatches = EVENTOS.filter(e => e.titulo.toLowerCase().includes(query.toLowerCase()));
 
                         if (siteMatches.length === 0 && eventMatches.length === 0) {
@@ -609,9 +609,9 @@ export default function App() {
               {activePanel === 'explorar' && <ExplorarPanel sites={sites} events={eventos} query={query} onOpenSite={openSite} onOpenEvent={openEvent} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
-              {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={toggleFav} />}
-              {activePanel === 'reseñas' && <ResenasPanel reviews={reviews} />}
-              {activePanel === 'rutas' && <RutasPanel query={query} rutas={rutas} newPoints={newRoutePoints} onAddPoint={(p) => setNewRoutePoints((prev) => (prev.find((x) => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints((prev) => prev.filter((x) => x.id !== id))} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
+              {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={toggleFav} sites={sites} />}
+              {activePanel === 'reseñas' && <ResenasPanel reviews={reviews} sites={sites} />}
+              {activePanel === 'rutas' && <RutasPanel query={query} rutas={rutas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints((prev) => (prev.find((x) => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints((prev) => prev.filter((x) => x.id !== id))} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
               {activePanel === 'perfil' && <PerfilPanel favCount={favIds.length} reviewsCount={reviews.length} rutasCount={rutas.length} insigniasCount={earnedInsignias.length} onOpenInsigniasModal={() => setShowInsigniasModal(true)} routesInProgressCount={routesInProgress.length} routesCompletedCount={routesCompleted.length} />}
               {activePanel === 'configuracion' && <ConfiguracionPanel theme={theme} setTheme={setTheme} />}
               {activePanel === 'sobre' && <SobrePanel />}
@@ -691,7 +691,7 @@ export default function App() {
       <InsigniasModal open={showInsigniasModal} onOpenChange={setShowInsigniasModal} earnedInsigniaIds={earnedInsignias} allInsignias={allInsignias} />
 
       {activeGuidedRoute && (
-        <GuidedRouteModal route={activeGuidedRoute} currentStep={currentRouteStep} onClose={handleCloseGuidedRoute} onNext={handleNextStep} onPrev={handlePrevStep} onComplete={() => completeRoute(activeGuidedRoute.id)} />
+        <GuidedRouteModal route={activeGuidedRoute} currentStep={currentRouteStep} onClose={handleCloseGuidedRoute} onNext={handleNextStep} onPrev={handlePrevStep} onComplete={() => completeRoute(activeGuidedRoute.id)} sites={sites} />
       )}
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
     </div>

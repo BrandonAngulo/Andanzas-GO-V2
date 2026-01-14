@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
-import { SITES, RECOMENDADOS_IDS } from '../../constants';
+import { RECOMENDADOS_IDS } from '../../constants';
 import { Site } from '../../types';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
@@ -10,11 +10,12 @@ import { ScrollArea } from '../ui/scroll-area';
 interface RightRailProps {
   aiTips: boolean;
   onOpenSite: (site: Site) => void;
+  sites: Site[];
 }
 
-const RightRail: React.FC<RightRailProps> = ({ aiTips, onOpenSite }) => {
+const RightRail: React.FC<RightRailProps> = ({ aiTips, onOpenSite, sites }) => {
   const { t, language } = useI18n();
-  const recomendados = SITES.filter(site => RECOMENDADOS_IDS.includes(site.id));
+  const recomendados = sites.filter(site => RECOMENDADOS_IDS.includes(site.id));
 
   return (
     <div className="sticky top-[56px] space-y-3">

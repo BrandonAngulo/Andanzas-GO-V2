@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Heart, Share2, Trash2 } from 'lucide-react';
-import { SITES } from '../../constants';
+import { Site } from '../../types';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
@@ -13,13 +13,14 @@ interface FavoritosPanelProps {
   query?: string;
   onOpen: (id: string) => void;
   onToggleFav: (id: string) => void;
+  sites: Site[];
 }
 
-const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onToggleFav }) => {
+const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onToggleFav, sites }) => {
   const { t, language } = useI18n();
 
   const favs = useMemo(() => {
-    let filtered = SITES.filter((s) => ids.includes(s.id));
+    let filtered = sites.filter((s) => ids.includes(s.id));
     if (query) {
       const lowerQuery = query.toLowerCase();
       filtered = filtered.filter(s =>

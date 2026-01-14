@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Plus, Share2, Search, Trash2, Edit, CheckCircle } from 'lucide-react';
 import { Ruta, Site } from '../../types';
-import { SITES, RUTAS_TEMATICAS } from '../../constants';
+import { RUTAS_TEMATICAS } from '../../constants';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
@@ -16,6 +16,7 @@ import { getTranslated } from '../../lib/utils';
 interface RutasPanelProps {
     rutas: Ruta[];
     newPoints: Site[];
+    allSites: Site[];
     query?: string;
     onAddPoint: (point: Site) => void;
     onRemovePoint: (id: string) => void;
@@ -30,7 +31,7 @@ interface RutasPanelProps {
     routesCompleted: string[];
 }
 
-const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, newPoints, query, onAddPoint, onRemovePoint, onSave, onOpenDetail, onTogglePrivacy, onDelete, onUpdateDetails, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted }) => {
+const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, newPoints, allSites, query, onAddPoint, onRemovePoint, onSave, onOpenDetail, onTogglePrivacy, onDelete, onUpdateDetails, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted }) => {
     const { t, language } = useI18n();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -75,8 +76,8 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, newPoints, query, onAddP
     }, [editingRoute, language]);
 
     const filteredSites = useMemo(() => {
-        if (!searchQuery) return SITES;
-        return SITES.filter(site =>
+        if (!searchQuery) return allSites;
+        return allSites.filter(site =>
             (getTranslated(site, 'nombre', language) as string).toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [searchQuery, language]);

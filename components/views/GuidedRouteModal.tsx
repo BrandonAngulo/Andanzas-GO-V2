@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Ruta, Site } from '../../types';
-import { SITES } from '../../constants';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
@@ -20,9 +19,10 @@ interface GuidedRouteModalProps {
   onNext: () => void;
   onPrev: () => void;
   onComplete: () => void;
+  sites: Site[];
 }
 
-const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep, onClose, onNext, onPrev, onComplete }) => {
+const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep, onClose, onNext, onPrev, onComplete, sites }) => {
   const { t, language } = useI18n();
   const { user } = useAuth();
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
@@ -31,7 +31,7 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
   const [showPointsInfo, setShowPointsInfo] = useState(false);
 
   const currentPointId = route.puntos[currentStep];
-  const currentPoint = SITES.find(site => site.id === currentPointId);
+  const currentPoint = sites.find(site => site.id === currentPointId);
   const gamificationData = route.gamificacion ? route.gamificacion[currentStep] : null;
 
   useEffect(() => {
