@@ -3,21 +3,18 @@ import { Evento } from '../types';
 
 export const eventsService = {
     async getAll(): Promise<Evento[]> {
-        // Fetch events starting from *yesterday* to avoid timezone issues hiding today's events
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        yesterday.setHours(0, 0, 0, 0);
-
+        console.log('EventsService: Fetching all events...');
         const { data, error } = await supabase
             .from('events')
             .select('*')
-            .gte('fecha', yesterday.toISOString())
             .order('fecha', { ascending: true });
 
         if (error) {
-            console.error('Error fetching events:', error);
+            console.error('EventsService Error:', error);
             return [];
         }
+
+        console.log(`EventsService: Fetched ${data?.length} events.`);
         return data.map(mapEvent);
     }
 };
