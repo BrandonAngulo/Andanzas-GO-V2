@@ -33,7 +33,7 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
 );
 
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount }) => {
-    const { t } = useI18n();
+    const { t, language } = useI18n();
     const { user, signIn, signUp, logout, isAuthenticated, resetPassword, signInWithGoogle } = useAuth();
 
     const [isRegistering, setIsRegistering] = useState(false);
@@ -210,6 +210,13 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     // Get name from user metadata if available
     const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Explorador";
 
+    const getLevelTitle = (lvl: number) => {
+        if (!lvl || lvl < 3) return language === 'es' ? 'Explorador Novato' : 'Novice Explorer';
+        if (lvl < 6) return language === 'es' ? 'Caminante Urbano' : 'Urban Trekker';
+        if (lvl < 10) return language === 'es' ? 'Maestro Cultural' : 'Culture Master';
+        return language === 'es' ? 'Leyenda de Cali' : 'Legend of Cali';
+    };
+
     return (
         <ScrollArea className="h-[72vh]">
             <div className="p-3 space-y-6">
@@ -220,7 +227,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         <h2 className="text-2xl font-bold">{displayName}</h2>
                         <p className="text-muted-foreground text-sm flex items-center gap-1.5">
                             <Award className="h-4 w-4 text-orange-500" />
-                            {t('profile.level')}: {t('profile.noviceExplorer')}
+                            {t('profile.level')}: <span className="font-semibold text-foreground">{getLevelTitle(userProfile?.level || 1)} (Lvl {userProfile?.level || 1})</span>
                         </p>
                         <p className="text-xs text-muted-foreground bg-muted inline-block px-2 py-0.5 rounded-full">{user?.email}</p>
                     </div>

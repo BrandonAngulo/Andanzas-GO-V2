@@ -54,29 +54,44 @@ export const gamificationService = {
         }));
     },
 
-    async addPoints(userId: string, amount: number) {
-        // First get current points
-        const { data: profile, error: fetchError } = await supabase
-            .from('profiles')
-            .select('points')
-            .eq('id', userId)
+    async awardPoints(amount: number, reason: string) {
+        const { data, error } = await supabase.rpc('award_points', {
+            points_to_add: amount,
+            reason_text: reason
+        });
+
+        if (error) {
+            console.error('Error awarding points:', error);
+            return null;
+        }
+        return data;
+    },
+
+    async unlockBadge(userId: string, badgeId: string): Promise<boolean> {
+        // Check if already obtained to avoid errors (or rely on unique constraint db side)
+        const { data: existing, error: checkError } = await supabase
+            .from('user_badges')
+            .select('id')
+            .eq('user_id', userId)
+            .eq('badge_id', badgeId)
             .single();
 
-        if (fetchError) {
-            console.error('Error fetching points for update:', fetchError);
-            return;
+        if (existing) return false; // Already has it
+
+        const { error } = await supabase
+            .from('user_badges')
+            .insert({ user_id: userId, badge_id: badgeId });
+
+        if (error) {
+            console.error('Error unlocking badge:', error);
+            return false;
         }
+        return true;
+    },
 
-        const newPoints = (profile?.points || 0) + amount;
-
-        const { error: updateError } = await supabase
-            .from('profiles')
-            .update({ points: newPoints })
-            .eq('id', userId);
-
-        if (updateError) {
-            console.error('Error updating points:', updateError);
-        }
+    // Deprecated legacy method signature support if needed, or remove
+    async addPoints(userId: string, amount: number) {
+        return this.awardPoints(amount, 'Generic Action');
     }
 };
 

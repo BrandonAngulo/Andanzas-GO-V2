@@ -155,6 +155,7 @@ export interface UserProfile {
   language?: string;
   avatar_url?: string;
   points: number;
+  level?: number;
   interests: string[];
 }
 

@@ -42,13 +42,13 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
   }, [currentStep]);
 
   const handleCheckAnswer = () => {
-    if (!userAnswer || !gamificationData) return;
+    if (!userAnswer || !gamificationData || !currentPoint) return;
     setIsAnswered(true);
     if (userAnswer === getTranslated(gamificationData, 'respuestaCorrecta', language)) {
       setIsCorrect(true);
       if (user) {
         // Add 10 points for correct answer/visit
-        gamificationService.addPoints(user.id, 10);
+        gamificationService.awardPoints(10, `Respuesta correcta: ${currentPoint.nombre}`);
       }
     }
   };

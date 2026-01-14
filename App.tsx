@@ -353,6 +353,19 @@ export default function App() {
           await userService.removeFavorite(user.id, id);
         } else {
           await userService.addFavorite(user.id, id);
+          gamificationService.awardPoints(5, 'Favorito: ' + id);
+          const badgeUnlocked = await gamificationService.unlockBadge(user.id, 'insignia-fav-1');
+          if (badgeUnlocked) {
+            addNotification({
+              titulo: '¡Nueva Insignia!',
+              titulo_en: 'New Badge!',
+              descripcion: 'Has desbloqueado: Primer Favorito',
+              descripcion_en: 'You unlocked: First Favorite',
+              leida: false,
+              icono: 'Award' as any,
+            });
+            setEarnedInsignias(prev => [...prev, 'insignia-fav-1']);
+          }
         }
       } catch (error) {
         console.error("Error toggling favorite", error);
@@ -368,7 +381,16 @@ export default function App() {
     setReviews((prev) => [r, ...prev]);
 
     if (isAuthenticated && user) {
-      reviewsService.addReview({ siteId, text, rating, fotos }, user.id).catch(console.error);
+      reviewsService.addReview({ siteId, text, rating, fotos }, user.id)
+        .then(async () => {
+          gamificationService.awardPoints(20, 'Reseña: ' + siteId);
+          const badgeUnlocked = await gamificationService.unlockBadge(user.id, 'insignia-review-1');
+          if (badgeUnlocked) {
+            addNotification({ titulo: '¡Nueva Insignia!', titulo_en: 'New Badge!', descripcion: 'Has desbloqueado: Crítico Local', descripcion_en: 'You unlocked: Local Critic', leida: false, icono: 'Award' as any });
+            setEarnedInsignias(prev => [...prev, 'insignia-review-1']);
+          }
+        })
+        .catch(console.error);
     }
   };
 
@@ -433,6 +455,17 @@ export default function App() {
     setRoutesInProgress(prev => prev.filter(rId => rId !== id));
     setRoutesCompleted(prev => [...new Set([...prev, id])]);
     setActiveGuidedRoute(null);
+
+    if (isAuthenticated && user) {
+      gamificationService.awardPoints(100, 'Ruta completada: ' + id);
+      gamificationService.unlockBadge(user.id, 'insignia-route-complete').then(unlocked => {
+        if (unlocked) {
+          setEarnedInsignias(prev => [...prev, 'insignia-route-complete']);
+          // Notification handled below generic
+        }
+      });
+    }
+
     addNotification({
       titulo: '¡Ruta Completada!',
       titulo_en: 'Route Completed!',
@@ -476,6 +509,9 @@ export default function App() {
   const openSite = (s: Site) => {
     pushHash({ type: "site", id: s.id });
     sitesService.incrementVisit(s.id);
+    if (isAuthenticated && user) {
+      gamificationService.awardPoints(1, 'Visita: ' + s.nombre);
+    }
   };
   const openEvent = (e: Evento) => pushHash({ type: "event", id: e.id });
   const openRoute = (r: Ruta) => pushHash({ type: "route", id: r.id });
