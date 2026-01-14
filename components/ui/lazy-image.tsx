@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '../../lib/utils';
-import { Image as ImageIcon, AlertCircle } from 'lucide-react';
+import { Image as ImageIcon } from 'lucide-react';
 
 interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     fallbackSrc?: string;
@@ -17,6 +17,16 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+
+    useEffect(() => {
+        if (!src) {
+            setHasError(true);
+            setIsLoading(false);
+        } else {
+            setHasError(false);
+            setIsLoading(true);
+        }
+    }, [src]);
 
     const handleLoad = () => {
         setIsLoading(false);
@@ -48,7 +58,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
     return (
         <div className={cn("relative overflow-hidden bg-muted", className)}>
             {/* Loading Skeleton */}
-            {isLoading && (
+            {isLoading && !hasError && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-800 animate-pulse z-10">
                     <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
                 </div>
@@ -72,21 +82,19 @@ export const LazyImage: React.FC<LazyImageProps> = ({
             )}
 
             {/* If no error, or if error but no text fallback, try to show the img (src or fallbackSrc) */}
-            {(!hasError || (hasError && !textFallback)) && (
-                <img
-                    src={hasError ? fallbackSrc : src}
-                    alt={alt}
-                    loading="lazy"
-                    onLoad={handleLoad}
-                    onError={handleError}
-                    className={cn(
-                        "h-full w-full object-cover transition-opacity duration-300",
-                        isLoading ? "opacity-0" : "opacity-100",
-                        hasError && textFallback ? "hidden" : "" // Hide img tag if showing text fallback
-                    )}
-                    {...props}
-                />
-            )}
+            <img
+                src={hasError ? fallbackSrc : src}
+                alt={alt}
+                loading="lazy"
+                onLoad={handleLoad}
+                onError={handleError}
+                className={cn(
+                    "h-full w-full object-cover transition-opacity duration-300",
+                    isLoading ? "opacity-0" : "opacity-100"
+                )}
+                style={{ display: hasError && textFallback ? 'none' : 'block' }}
+                {...props}
+            />
         </div>
     );
 };
