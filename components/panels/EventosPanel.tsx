@@ -141,7 +141,12 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
           </div>
         ) : (
           <div className="text-center py-10">
-            <p className="text-muted-foreground">{query ? `No se encontraron eventos para "${query}"` : t('eventosFilters.noEvents')}</p>
+            <p className="text-muted-foreground mb-2">{query ? `No se encontraron eventos para "${query}"` : t('eventosFilters.noEvents')}</p>
+            {dateFilter !== 'all' && (
+              <Button variant="outline" size="sm" onClick={() => setDateFilter('all')}>
+                Ver todos los eventos
+              </Button>
+            )}
           </div>
         )}
       </div>
