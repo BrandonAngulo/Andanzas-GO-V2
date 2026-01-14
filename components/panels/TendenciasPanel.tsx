@@ -7,6 +7,7 @@ import { Badge } from '../ui/badge';
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
+import { LazyImage } from '../ui/lazy-image';
 
 interface TendenciasPanelProps {
   items: Site[];
@@ -34,7 +35,11 @@ const TendenciasPanel: React.FC<TendenciasPanelProps> = ({ items, query, onOpenS
           <Card key={s.id}>
             <CardContent className="p-3 flex items-start gap-4">
               <Badge variant="secondary" className="rounded-full h-7 w-7 flex items-center justify-center flex-shrink-0 mt-1">{idx + 1}</Badge>
-              <img src={s.logoUrl} alt={getTranslated(s, 'nombre', language) as string} className="h-16 w-16 object-cover rounded-lg flex-shrink-0 bg-white" />
+              <LazyImage
+                src={s.logoUrl}
+                alt={getTranslated(s, 'nombre', language) as string}
+                className="h-16 w-16 object-cover rounded-lg flex-shrink-0 bg-white"
+              />
               <div className="flex-1">
                 <div className="font-semibold leading-tight">{getTranslated(s, 'nombre', language)}</div>
                 <div className="text-sm text-muted-foreground">{getTranslated(s, 'tipo', language)} · {s.visitas} {t('rightRail.visits')}</div>

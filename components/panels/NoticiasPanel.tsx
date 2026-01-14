@@ -8,6 +8,7 @@ import { getTranslated } from '../../lib/utils';
 import { useI18n } from '../../i18n';
 import StarRating from '../shared/StarRating';
 import { Megaphone, MessageSquare } from 'lucide-react';
+import { LazyImage } from '../ui/lazy-image';
 
 const timeSince = (date: Date, t: (key: string, options?: any) => string): string => {
     const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
@@ -73,7 +74,11 @@ const NoticiasPanel: React.FC<NoticiasPanelProps> = ({ feed, onOpenSite, sites }
                             <Card key={item.id}>
                                 <CardHeader>
                                     <div className="flex items-center gap-3">
-                                        <img src={site.logoUrl} alt={getTranslated(site, 'nombre', language) as string} className="h-10 w-10 rounded-full object-cover bg-white" />
+                                        <LazyImage
+                                            src={site.logoUrl}
+                                            alt={getTranslated(site, 'nombre', language) as string}
+                                            className="h-10 w-10 rounded-full object-cover bg-white"
+                                        />
                                         <div>
                                             <p className="font-semibold">{getTranslated(site, 'nombre', language)}</p>
                                             <p className="text-xs text-muted-foreground">{t('noticias.sitePost')} · {timeSince(new Date(item.fecha), t)}</p>

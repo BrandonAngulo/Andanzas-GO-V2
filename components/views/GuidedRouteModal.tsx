@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '../../lib/utils';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
+import { LazyImage } from '../ui/lazy-image';
 import { useAuth } from '../../contexts/AuthContext';
 import { gamificationService } from '../../services/gamification.service';
 
@@ -85,7 +86,11 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
           <ScrollArea className="flex-1">
             <div className="p-6 grid md:grid-cols-2 gap-8 items-start">
               <div className="flex flex-col items-center">
-                <img src={currentPoint.logoUrl} alt={getTranslated(currentPoint, 'nombre', language) as string} className="w-full h-64 object-cover rounded-lg mb-4 bg-white" />
+                <LazyImage
+                  src={currentPoint.logoUrl}
+                  alt={getTranslated(currentPoint, 'nombre', language) as string}
+                  className="w-full h-64 object-cover rounded-lg mb-4 bg-white"
+                />
               </div>
 
               <div className="space-y-4">

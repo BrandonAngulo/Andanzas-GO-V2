@@ -6,6 +6,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
+import { LazyImage } from '../ui/lazy-image';
 
 interface EventosPanelProps {
   eventos: Evento[];
@@ -18,7 +19,11 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void 
   const { t, language } = useI18n();
   return (
     <Card className="overflow-hidden flex flex-col">
-      <img src={event.img} alt={getTranslated(event, 'titulo', language) as string} className="w-full h-32 object-cover" />
+      <LazyImage
+        src={event.img}
+        alt={getTranslated(event, 'titulo', language) as string}
+        className="w-full h-32 object-cover"
+      />
       <CardHeader className="py-2">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(event, 'titulo', language)}</CardTitle>
       </CardHeader>

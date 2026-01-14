@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
+import { LazyImage } from '../ui/lazy-image';
 
 interface FavoritosPanelProps {
   ids: string[];
@@ -53,7 +54,11 @@ const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onT
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
         {favs.map((s) => (
           <Card key={s.id} className="overflow-hidden">
-            <img src={s.logoUrl} alt={getTranslated(s, 'nombre', language) as string} className="w-full h-36 object-cover bg-white" />
+            <LazyImage
+              src={s.logoUrl}
+              alt={getTranslated(s, 'nombre', language) as string}
+              className="w-full h-36 object-cover bg-white"
+            />
             <CardHeader className="pb-1"><CardTitle className="text-base truncate" title={getTranslated(s, 'nombre', language) as string}>{getTranslated(s, 'nombre', language)}</CardTitle></CardHeader>
             <CardContent className="text-sm -mt-2 text-muted-foreground">{getTranslated(s, 'tipo', language)}</CardContent>
             <CardFooter className="flex items-center justify-between">
