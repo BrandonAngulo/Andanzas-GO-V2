@@ -46,7 +46,10 @@ export const authService = {
                 redirectTo: window.location.origin
             }
         });
-        if (error) throw error;
+        if (error) {
+            console.error("GOOGLE AUTH ERROR:", error);
+            throw error;
+        }
         return data;
     },
 
