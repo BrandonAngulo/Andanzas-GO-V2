@@ -83,6 +83,7 @@ const defaultAccessibilitySettings = {
 };
 
 export default function App() {
+  console.log("ANDANZAS GO - VERSION UI REFACTOR LAUNCH - " + new Date().toISOString());
   // Simple routing for legal pages
   const path = window.location.pathname;
   if (path === '/privacy') return <PrivacyPolicy />;
