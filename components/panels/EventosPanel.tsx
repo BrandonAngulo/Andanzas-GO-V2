@@ -5,8 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { ScrollArea } from '../ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useI18n } from '../../i18n';
-import { getTranslated } from '../../lib/utils';
-import { LazyImage } from '../ui/lazy-image';
+import { getTranslated, cn } from '../../lib/utils';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 
 interface EventosPanelProps {
@@ -16,49 +15,99 @@ interface EventosPanelProps {
   onOpenEvent: (event: Evento) => void;
 }
 
-const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void }> = ({ event, onOpenEvent }) => {
+const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void; sites: Site[] }> = ({ event, onOpenEvent, sites }) => {
   const { t, language } = useI18n();
   const dateObj = new Date(event.fecha);
 
-  // Format: "Lun 14 Ene • 18:00"
-  const dateStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+  // Format: "14 Ene", "18:00"
+  const dayStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { day: 'numeric' });
+  const monthStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { month: 'short' }).toUpperCase();
+  const weekdayStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { weekday: 'long' });
   const timeStr = dateObj.toLocaleTimeString(language === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' });
 
-  return (
-    <Card className="overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-300 group cursor-pointer" onClick={() => onOpenEvent(event)}>
-      <div className="relative h-40 overflow-hidden">
-        <LazyImage
-          src={event.img}
-          alt={getTranslated(event, 'titulo', language) as string}
-          textFallback={getTranslated(event, 'titulo', language) as string}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute top-2 right-2 bg-background/90 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
-          <Calendar className="h-3 w-3" />
-          {dateStr}
-        </div>
-      </div>
+  // Find linked site for category
+  let site = sites.find(s => s.id === event.siteId);
+  if (!site && event.lugar) {
+    site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
+  }
+  const category = site ? (getTranslated(site, 'tipo', language) as string) : (language === 'es' ? 'Evento' : 'Event');
 
-      <CardHeader className="p-3 pb-0">
-        <CardTitle className="text-base leading-tight line-clamp-2 min-h-[2.5rem]">
-          {getTranslated(event, 'titulo', language)}
-        </CardTitle>
-        <CardDescription className="flex items-center gap-1 text-xs pt-1">
-          <MapPin className="h-3 w-3" />
-          <span className="truncate">{getTranslated(event, 'lugar', language)}</span>
-        </CardDescription>
+  // Generate color based on category
+  const getCategoryColor = (cat: string) => {
+    if (!cat) return "border-l-gray-500 bg-gray-50 dark:bg-gray-950/20";
+    const colors = [
+      "border-l-indigo-500 bg-indigo-50 dark:bg-indigo-950/20",
+      "border-l-rose-500 bg-rose-50 dark:bg-rose-950/20",
+      "border-l-emerald-500 bg-emerald-50 dark:bg-emerald-950/20",
+      "border-l-amber-500 bg-amber-50 dark:bg-amber-950/20",
+      "border-l-cyan-500 bg-cyan-50 dark:bg-cyan-950/20",
+      "border-l-purple-500 bg-purple-50 dark:bg-purple-950/20",
+    ];
+    let hash = 0;
+    for (let i = 0; i < cat.length; i++) hash = cat.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  };
+
+  const colorClass = getCategoryColor(category);
+
+  return (
+    <Card
+      className={cn(
+        "overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 group cursor-pointer border-l-4",
+        colorClass.split(' ')[0], // Only use the border color for the card's border prop
+        "bg-card" // base background
+      )}
+      onClick={() => onOpenEvent(event)}
+    >
+      <CardHeader className={cn("p-4 pb-2 flex flex-row items-start gap-4 space-y-0 relative overflow-hidden")}>
+        {/* Subtle background int for header only if desired, or keep clean */}
+        <div className={cn("absolute inset-0 opacity-30 pointer-events-none", colorClass.split(' ')[1])} />
+
+        {/* Date Box */}
+        <div className="relative z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm border rounded-lg p-2 min-w-[3.5rem] shadow-sm text-center">
+          <span className="text-xs font-bold text-muted-foreground uppercase">{monthStr}</span>
+          <span className="text-xl font-extrabold leading-none">{dayStr}</span>
+        </div>
+
+        <div className="relative z-10 flex-1 min-w-0">
+          {/* Category Badge */}
+          <div className="flex items-center justify-between mb-1">
+            <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-background/50 border shadow-sm text-foreground/80")}>
+              {category}
+            </span>
+          </div>
+
+          <CardTitle className="text-lg leading-snug line-clamp-2 mb-1">
+            {getTranslated(event, 'titulo', language)}
+          </CardTitle>
+
+          <div className="flex items-center text-xs text-muted-foreground">
+            <Clock className="h-3 w-3 mr-1" />
+            {timeStr}
+          </div>
+        </div>
       </CardHeader>
 
-      <CardContent className="p-3 pt-2 flex-grow">
-        <p className="text-xs text-muted-foreground line-clamp-3">
+      <CardContent className="p-4 pt-2 flex-grow">
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-3">
+          <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
+          <span className="truncate font-medium">{getTranslated(event, 'lugar', language)}</span>
+        </div>
+
+        <p className="text-sm text-muted-foreground/90 line-clamp-3 leading-relaxed">
           {getTranslated(event, 'resumen', language) || getTranslated(event, 'descripcion', language)}
         </p>
       </CardContent>
 
-      <CardFooter className="p-3 pt-0 mt-auto">
-        <Button size="sm" variant="secondary" className="w-full h-8 text-xs font-medium bg-primary/10 hover:bg-primary/20 text-primary border-none shadow-none">
-          {t('seeMore')}
-        </Button>
+      <CardFooter className="p-4 pt-0 mt-auto">
+        <div className="w-full pt-3 border-t border-dashed flex justify-between items-center text-xs">
+          <span className="text-muted-foreground capitalize font-medium">{weekdayStr}</span>
+
+          <span className="font-medium text-primary flex items-center group-hover:underline">
+            {t('seeMore')}
+            <span className="ml-1 text-[10px]">→</span>
+          </span>
+        </div>
       </CardFooter>
     </Card>
   );
@@ -86,9 +135,6 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
       if (site) {
         const cat = getTranslated(site, 'tipo', language) as string;
         if (cat) categories.add(cat);
-      } else {
-        // Optional: Add 'Otros' or 'General' if no site linked? 
-        // For now, ignoring unlinked events for categorization list to avoid clutter
       }
     });
     return ['all', ...Array.from(categories).sort()];
@@ -147,7 +193,8 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
         let site = sites.find(s => s.id === e.siteId);
         if (!site) site = sites.find(s => s.nombre === e.lugar || s.nombre_en === e.lugar_en);
 
-        // If no site found, we can't categorize it, so filter it out if a specific category is selected
+        // If no site found, we can't categorize it to a specific category, 
+        // unless maybe we implement a 'Sin Categoría' bucket, for now we filter it out.
         if (!site) return false;
 
         const cat = getTranslated(site, 'tipo', language) as string;
@@ -226,7 +273,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
         {filteredEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredEvents.map(event => (
-              <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} />
+              <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} sites={sites} />
             ))}
           </div>
         ) : (
