@@ -186,17 +186,26 @@ const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPl
 
 const EventDetail: React.FC<{ data: Evento, addToRoute: (site: Site) => void, goToPlaceInMap: (placeName: string) => void, sites: Site[] }> = ({ data, addToRoute, goToPlaceInMap, sites }) => {
     const { t, language } = useI18n();
-    const siteForRoute = sites.find(s => s.nombre === data.lugar || s.nombre_en === data.lugar_en);
+    const siteForRoute = sites.find(s => s.id === data.siteId) || sites.find(s => s.nombre === data.lugar || s.nombre_en === data.lugar_en);
     return (
         <div className="grid gap-4">
             <div className="flex items-start justify-between gap-3">
                 <div>
                     <h2 className="text-2xl font-semibold leading-tight">{getTranslated(data, 'titulo', language)}</h2>
-                    <div className="text-sm text-muted-foreground -mt-1">{new Date(data.fecha).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                    <div className="text-sm text-muted-foreground -mt-1">{new Date(data.fecha).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                 </div>
                 <Badge variant="secondary"><MapPin className="h-3 w-3 mr-1" /> {getTranslated(data, 'lugar', language)}</Badge>
             </div>
             <ExpandableText text={getTranslated(data, 'descripcion', language) as string} />
+
+            <div className="bg-muted/30 p-3 rounded-lg border border-border/50 text-xs text-muted-foreground">
+                <span className="font-semibold block mb-1">{language === 'es' ? 'Aviso Legal' : 'Legal Notice'}:</span>
+                {language === 'es'
+                    ? "Esta es una lista de eventos del calendario cultural de la ciudad (Cali) rastreada por Andanzas GO a través de fuentes oficiales, sitios mapeados y aliados. Estos eventos no son ofertados ni gestionados por Andanzas GO."
+                    : "This is a list of events from the cultural calendar of the city (Cali) tracked by Andanzas GO through official sources, mapped sites, and partners. These events are not offered or managed by Andanzas GO."
+                }
+            </div>
+
             <div className="flex flex-wrap items-center gap-2 border-b pb-4">
                 <Button size="sm" onClick={() => goToPlaceInMap(getTranslated(data, 'lugar', language) as string)}>{t('fullView.viewOnMap')}</Button>
                 {siteForRoute && <Button variant="outline" size="sm" onClick={() => addToRoute(siteForRoute)}><Route className="h-4 w-4 mr-1" /> {t('fullView.addToRoute')}</Button>}

@@ -7,7 +7,7 @@ import { Input } from "./components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./components/ui/dialog";
 import { Sheet, SheetContent } from "./components/ui/sheet";
 import { ScrollArea } from "./components/ui/scroll-area";
-import { EVENTOS, RUTAS_TEMATICAS, NOTIFICACIONES, INSIGNIAS, NOTICIAS_FEED } from './constants';
+// import { EVENTOS, RUTAS_TEMATICAS, NOTIFICACIONES, INSIGNIAS, NOTICIAS_FEED } from './constants';
 import { sitesService } from './services/sites.service';
 import { eventsService } from './services/events.service';
 import { routesService } from './services/routes.service';
@@ -473,7 +473,10 @@ export default function App() {
     root.lang = language;
   }, [accessibilitySettings, language]);
 
-  const openSite = (s: Site) => pushHash({ type: "site", id: s.id });
+  const openSite = (s: Site) => {
+    pushHash({ type: "site", id: s.id });
+    sitesService.incrementVisit(s.id);
+  };
   const openEvent = (e: Evento) => pushHash({ type: "event", id: e.id });
   const openRoute = (r: Ruta) => pushHash({ type: "route", id: r.id });
   const closeFull = () => clearHash();
@@ -523,7 +526,7 @@ export default function App() {
                     <div className="p-1 space-y-0.5">
                       {(() => {
                         const siteMatches = sites.filter(s => s.nombre.toLowerCase().includes(query.toLowerCase()) || s.tipo.toLowerCase().includes(query.toLowerCase()));
-                        const eventMatches = EVENTOS.filter(e => e.titulo.toLowerCase().includes(query.toLowerCase()));
+                        const eventMatches = eventos.filter(e => e.titulo.toLowerCase().includes(query.toLowerCase()));
 
                         if (siteMatches.length === 0 && eventMatches.length === 0) {
                           return (
@@ -611,7 +614,7 @@ export default function App() {
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={toggleFav} sites={sites} />}
               {activePanel === 'reseñas' && <ResenasPanel reviews={reviews} sites={sites} />}
-              {activePanel === 'rutas' && <RutasPanel query={query} rutas={rutas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints((prev) => (prev.find((x) => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints((prev) => prev.filter((x) => x.id !== id))} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
+              {activePanel === 'rutas' && <RutasPanel query={query} rutas={rutas} suggestedRoutes={rutasTematicas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints((prev) => (prev.find((x) => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints((prev) => prev.filter((x) => x.id !== id))} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
               {activePanel === 'perfil' && <PerfilPanel favCount={favIds.length} reviewsCount={reviews.length} rutasCount={rutas.length} insigniasCount={earnedInsignias.length} onOpenInsigniasModal={() => setShowInsigniasModal(true)} routesInProgressCount={routesInProgress.length} routesCompletedCount={routesCompleted.length} />}
               {activePanel === 'configuracion' && <ConfiguracionPanel theme={theme} setTheme={setTheme} />}
               {activePanel === 'sobre' && <SobrePanel />}

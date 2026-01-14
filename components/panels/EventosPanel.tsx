@@ -45,7 +45,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
   const eventCategories = useMemo(() => {
     const categories = new Set<string>();
     eventos.forEach(event => {
-      const site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
+      const site = sites.find(s => s.id === event.siteId) || sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
       if (site) {
         categories.add(getTranslated(site, 'tipo', language) as string);
       }
@@ -90,7 +90,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
 
       // 4. Category filtering
       if (categoryFilter !== 'all') {
-        const site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
+        const site = sites.find(s => s.id === event.siteId) || sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
         if (!site || (getTranslated(site, 'tipo', language) as string) !== categoryFilter) return false;
       }
 

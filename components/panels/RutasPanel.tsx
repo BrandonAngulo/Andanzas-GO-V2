@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Plus, Share2, Search, Trash2, Edit, CheckCircle } from 'lucide-react';
 import { Ruta, Site } from '../../types';
-import { RUTAS_TEMATICAS } from '../../constants';
+// import { RUTAS_TEMATICAS } from '../../constants';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
@@ -15,6 +15,7 @@ import { getTranslated } from '../../lib/utils';
 
 interface RutasPanelProps {
     rutas: Ruta[];
+    suggestedRoutes: Ruta[];
     newPoints: Site[];
     allSites: Site[];
     query?: string;
@@ -31,7 +32,7 @@ interface RutasPanelProps {
     routesCompleted: string[];
 }
 
-const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, newPoints, allSites, query, onAddPoint, onRemovePoint, onSave, onOpenDetail, onTogglePrivacy, onDelete, onUpdateDetails, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted }) => {
+const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoints, allSites, query, onAddPoint, onRemovePoint, onSave, onOpenDetail, onTogglePrivacy, onDelete, onUpdateDetails, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted }) => {
     const { t, language } = useI18n();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -45,7 +46,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, newPoints, allSites, que
 
     // Filter routes based on global query
     const misRutas = useMemo(() => {
-        let r = rutas.filter(r => !RUTAS_TEMATICAS.some(tr => tr.id === r.id));
+        let r = rutas.filter(r => !suggestedRoutes.some(tr => tr.id === r.id));
         if (query) {
             const lowerQuery = query.toLowerCase();
             r = r.filter(route =>
@@ -54,10 +55,10 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, newPoints, allSites, que
             );
         }
         return r;
-    }, [rutas, query, language]);
+    }, [rutas, suggestedRoutes, query, language]);
 
     const rutasSugeridas = useMemo(() => {
-        let r = RUTAS_TEMATICAS;
+        let r = suggestedRoutes;
         if (query) {
             const lowerQuery = query.toLowerCase();
             r = r.filter(route =>
@@ -66,7 +67,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, newPoints, allSites, que
             );
         }
         return r;
-    }, [query, language]);
+    }, [suggestedRoutes, query, language]);
 
     useEffect(() => {
         if (editingRoute) {

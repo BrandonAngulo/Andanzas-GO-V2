@@ -1,120 +1,33 @@
-INSERT INTO public.events (
-        id, titulo, titulo_en, fecha, lugar, lugar_en, 
-        resumen, resumen_en, img, descripcion, descripcion_en, is_published
-    ) VALUES (
-        'e1',
-        'Festival de Música del Pacífico Petronio Álvarez',
-        'Petronio Álvarez Pacific Music Festival',
-        '2024-08-14',
-        'Unidad Deportiva Alberto Galindo',
-        'Alberto Galindo Sports Unit',
-        'El festival de cultura afro más importante de Latinoamérica.',
-        'The most important Afro culture festival in Latin America.',
-        'https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?auto=format&fit=crop&w=800',
-        'Una celebración vibrante de la herencia africana en Colombia. Durante cinco días, Cali se convierte en la capital del Pacífico. Disfruta de la música de marimba, los cantos tradicionales, la comida típica (viche, arrechón, mariscos) y la moda afro. Es una experiencia cultural inmersiva llena de alegría y sabor.',
-        'A vibrant celebration of African heritage in Colombia. For five days, Cali becomes the capital of the Pacific. Enjoy marimba music, traditional songs, typical food (viche, arrechón, seafood), and Afro fashion. It is an immersive cultural experience full of joy and flavor.',
-        TRUE
-    ) ON CONFLICT (id) DO UPDATE SET 
-        titulo = EXCLUDED.titulo,
-        titulo_en = EXCLUDED.titulo_en,
-        fecha = EXCLUDED.fecha,
-        img = EXCLUDED.img,
-        descripcion = EXCLUDED.descripcion,
-        descripcion_en = EXCLUDED.descripcion_en;
-
-INSERT INTO public.events (
-        id, titulo, titulo_en, fecha, lugar, lugar_en, 
-        resumen, resumen_en, img, descripcion, descripcion_en, is_published
-    ) VALUES (
-        'e2',
-        'Feria de Cali',
-        'Cali Fair',
-        '2024-12-25',
-        'Autopista Suroriental y varios puntos',
-        'Southeastern Highway and various locations',
-        'La fiesta más grande de la ciudad: salsa, desfiles y alegría.',
-        'The city''s biggest party: salsa, parades, and joy.',
-        'https://images.unsplash.com/photo-1545959720-333d6b38c227?auto=format&fit=crop&w=800',
-        'El evento cumbre del año. Comienza con el Salsódromo (un desfile de bailarines de salsa de talla mundial) y continúa con el Desfile de Autos Clásicos, el Carnaval de Cali Viejo y el Encuentro de Melómanos. Es una semana donde la ciudad no duerme y la salsa se respira en cada esquina.',
-        'The pinnacle event of the year. It starts with the Salsódromo (a parade of world-class salsa dancers) and continues with the Classic Car Parade, the Old Cali Carnival, and the Music Lovers Meeting. It''s a week where the city doesn''t sleep and salsa is breathed in every corner.',
-        TRUE
-    ) ON CONFLICT (id) DO UPDATE SET 
-        titulo = EXCLUDED.titulo,
-        titulo_en = EXCLUDED.titulo_en,
-        fecha = EXCLUDED.fecha,
-        img = EXCLUDED.img,
-        descripcion = EXCLUDED.descripcion,
-        descripcion_en = EXCLUDED.descripcion_en;
-
-INSERT INTO public.events (
-        id, titulo, titulo_en, fecha, lugar, lugar_en, 
-        resumen, resumen_en, img, descripcion, descripcion_en, is_published
-    ) VALUES (
-        'e3',
-        'Festival Internacional de Ballet',
-        'International Ballet Festival',
-        '2024-10-20',
-        'Teatro Municipal y Plazoleta Jairo Varela',
-        'Municipal Theater and Jairo Varela Square',
-        'Lo mejor de la danza clásica y contemporánea mundial.',
-        'The best of world classical and contemporary dance.',
-        'https://images.unsplash.com/photo-1514306191717-452ec28c7f91?auto=format&fit=crop&w=800',
-        'Cali abre sus telones para recibir a compañías de ballet de Europa, América y Asia. Además de las galas en teatros, el festival se caracteriza por sus presentaciones gratuitas al aire libre, acercando el arte de la danza a todo el público. Una muestra de elegancia y técnica.',
-        'Cali opens its curtains to welcome ballet companies from Europe, America, and Asia. In addition to theater galas, the festival is characterized by its free outdoor performances, bringing the art of dance to the general public. A display of elegance and technique.',
-        TRUE
-    ) ON CONFLICT (id) DO UPDATE SET 
-        titulo = EXCLUDED.titulo,
-        titulo_en = EXCLUDED.titulo_en,
-        fecha = EXCLUDED.fecha,
-        img = EXCLUDED.img,
-        descripcion = EXCLUDED.descripcion,
-        descripcion_en = EXCLUDED.descripcion_en;
-
-INSERT INTO public.events (
-        id, titulo, titulo_en, fecha, lugar, lugar_en, 
-        resumen, resumen_en, img, descripcion, descripcion_en, is_published
-    ) VALUES (
-        'e4',
-        'Festival Internacional de Cine de Cali',
-        'Cali International Film Festival',
-        '2024-11-05',
-        'Museo La Tertulia y cines locales',
-        'La Tertulia Museum and local cinemas',
-        'Cine independiente, vanguardista y documental.',
-        'Independent, avant-garde, and documentary cinema.',
-        'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800',
-        'Un espacio para el cine que arriesga. El FICCALI proyecta películas que difícilmente llegan a las salas comerciales, con un fuerte enfoque en el cine colombiano y latinoamericano. Incluye talleres, conversatorios con directores y proyecciones al aire libre junto al río.',
-        'A space for cinema that takes risks. FICCALI screens films that rarely reach commercial theaters, with a strong focus on Colombian and Latin American cinema. It includes workshops, talks with directors, and outdoor screenings by the river.',
-        TRUE
-    ) ON CONFLICT (id) DO UPDATE SET 
-        titulo = EXCLUDED.titulo,
-        titulo_en = EXCLUDED.titulo_en,
-        fecha = EXCLUDED.fecha,
-        img = EXCLUDED.img,
-        descripcion = EXCLUDED.descripcion,
-        descripcion_en = EXCLUDED.descripcion_en;
-
-INSERT INTO public.events (
-        id, titulo, titulo_en, fecha, lugar, lugar_en, 
-        resumen, resumen_en, img, descripcion, descripcion_en, is_published
-    ) VALUES (
-        'e5',
-        'Mundial de Salsa',
-        'World Salsa Festival',
-        '2024-09-20',
-        'Coliseo El Pueblo',
-        'El Pueblo Coliseum',
-        'Competencia de los mejores bailarines de salsa del planeta.',
-        'Competition of the best salsa dancers on the planet.',
-        'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800',
-        'Siente la adrenalina de la competencia. Bailarines de todo el mundo vienen a Cali a desafiar a los locales en estilo caleño, en línea y cabaret. Es un espectáculo de acrobacias, velocidad y precisión que te dejará sin aliento.',
-        'Feel the adrenaline of the competition. Dancers from all over the world come to Cali to challenge the locals in Cali style, On1/On2, and cabaret. It is a spectacle of acrobatics, speed, and precision that will leave you breathless.',
-        TRUE
-    ) ON CONFLICT (id) DO UPDATE SET 
-        titulo = EXCLUDED.titulo,
-        titulo_en = EXCLUDED.titulo_en,
-        fecha = EXCLUDED.fecha,
-        img = EXCLUDED.img,
-        descripcion = EXCLUDED.descripcion,
-        descripcion_en = EXCLUDED.descripcion_en;
-
+DELETE FROM events;
+INSERT INTO events (titulo, titulo_en, fecha, lugar, lugar_en, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Candlelight – Tributo a Coldplay', 'Candlelight – Tribute to Coldplay', '2026-01-17T18:00:00-05:00', 'Auditorio Diego Garcés Giraldo (Biblioteca Departamental)', 'Diego Garcés Giraldo Auditorium (Departmental Library)', 'Conciertos íntimos a la luz de las velas.', 'Intimate concerts by candlelight.', 'Serie de conciertos íntimos a la luz de las velas; un cuarteto de cuerdas reinterpreta los éxitos de Coldplay.', 'Series of intimate concerts by candlelight; a string quartet reinterprets Coldplay''s greatest hits.', 'https://images.unsplash.com/photo-1470229722913-7ea038627e77?q=80&w=2070&auto=format&fit=crop', 's15');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Candlelight – Las Cuatro Estaciones de Vivaldi', 'Candlelight – Vivaldi''s Four Seasons', '2026-01-17T20:30:00-05:00', 'Auditorio Diego Garcés Giraldo (Biblioteca Departamental)', 'La obra de Vivaldi en un ambiente de velas.', 'Vivaldi''s work in a candlelight setting.', 'La obra de Vivaldi interpretada por un ensamble clásico en un ambiente de velas.', 'Vivaldi''s work performed by a classical ensemble in a candlelight setting.', 'https://images.unsplash.com/photo-1514117445516-2ec90dd9051a?q=80&w=2070&auto=format&fit=crop', 's15');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('The Jazz Room: Un viaje al corazón de Nueva Orleans', 'The Jazz Room: A trip to the heart of New Orleans', '2026-01-23T21:00:00-05:00', 'Nuevo Teatro San Fernando', 'Revive la atmósfera del jazz de Nueva Orleans.', 'Relive the atmosphere of New Orleans jazz.', 'Espectáculo que revive la atmósfera del jazz de Nueva Orleans con banda en vivo.', 'Show that revives the atmosphere of New Orleans jazz with a live band.', 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=2070&auto=format&fit=crop', 3.432, -76.545);
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Candlelight – Rock Classics', '2026-01-31T18:00:00-05:00', 'Auditorio Diego Garcés Giraldo (Biblioteca Departamental)', 'Versiones clásicas de éxitos de Queen, Led Zeppelin.', 'Classical versions of Queen, Led Zeppelin hits.', 'Versiones clásicas de éxitos de Queen, Led Zeppelin y otros grupos de rock.', 'Classical versions of hits by Queen, Led Zeppelin and other rock bands.', 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=2070&auto=format&fit=crop', 's15');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Candlelight – Tributo a Adele', 'Candlelight – Tribute to Adele', '2026-01-31T20:30:00-05:00', 'Auditorio Diego Garcés Giraldo (Biblioteca Departamental)', 'Reinterpretación acústica de Adele.', 'Acoustic reinterpretation of Adele.', 'Reinterpretación en versión acústica de los grandes éxitos de Adele.', 'Acoustic reinterpretation of Adele''s greatest hits.', 'https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=2070&auto=format&fit=crop', 's15');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Flow – Cali', '2026-02-06T14:00:00-05:00', 'Centro de Eventos Valle del Pacífico', 'Festival de música electrónica.', 'Electronic music festival.', 'Festival de música electrónica con sets de house y techno; presenta a Franky Rizardo, Manda Moor y otros DJs.', 'Electronic music festival featuring house and techno sets; presenting Franky Rizardo, Manda Moor and other DJs.', 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop', 3.53, -76.48);
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Blessd – El mejor hombre del mundo Tour', '2026-02-13T21:00:00-05:00', 'Diamante de Béisbol', 'Concierto del cantante de música urbana.', 'Urban music singer concert.', 'Concierto del cantante de música urbana, parte de su gira nacional.', 'Concert by the urban music singer, part of his national tour.', 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2070&auto=format&fit=crop', 's87');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Candlelight – Queen vs ABBA', '2026-02-14T18:00:00-05:00', 'Auditorio Diego Garcés Giraldo', 'Duelo musical entre clásicos.', 'Musical duel between classics.', 'Duelo musical entre los clásicos de las dos bandas.', 'Musical duel between the classics of both bands.', 'https://images.unsplash.com/photo-1459749411177-d4a414c9ff5f?q=80&w=2070&auto=format&fit=crop', 's15');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Candlelight – Especial de San Valentín', 'Candlelight – Valentine''s Special', '2026-02-14T20:30:00-05:00', 'Auditorio Diego Garcés Giraldo', 'Recital romántico con piano y cuerdas.', 'Romantic recital with piano and strings.', 'Recital romántico con piezas de piano y cuerdas.', 'Romantic recital with piano and specific pieces.', 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=2070&auto=format&fit=crop', 's15');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Maca & Gero – Tour 2026', '2026-02-21T19:00:00-05:00', 'Teatrino del Teatro Municipal', 'Dúo argentino de pop.', 'Argentine pop duo.', 'Dúo argentino de pop presenta su gira en Colombia.', 'Argentine pop duo presents their tour in Colombia.', 'https://images.unsplash.com/photo-1501612780327-45045538702b?q=80&w=2070&auto=format&fit=crop', 's2');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('El Cuarteto de Nos y Kany García', '2026-02-25T18:00:00-05:00', 'CIDS', 'Show en el Centro Internacional de Desarrollo Social.', 'Show at the International Social Development Center.', 'Banda uruguaya de rock y hip‑hop conocida por sus letras satíricas.', 'Uruguayan rock and hip-hop band known for their satirical lyrics.', 'https://images.unsplash.com/photo-1459305272254-33a7d593a851?q=80&w=2070&auto=format&fit=crop', 3.42, -76.51);
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('BiblioFest 2026', '2026-02-28T19:30:00-05:00', 'Teatro Municipal Enrique Buenaventura', 'Festival musical y cultural.', 'Musical and cultural festival.', 'Festival musical y cultural en el Teatro Municipal, con conciertos y lecturas.', 'Musical and cultural festival at the Municipal Theater, with concerts and readings.', 'https://images.unsplash.com/photo-1503095392237-736240200117?q=80&w=2070&auto=format&fit=crop', 's2');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Candlelight: A Tribute to Coldplay', '2026-03-14T20:30:00-05:00', 'Auditorio Diego Garces Giraldo', 'Tributo sinfónico a Coldplay.', 'Symphonic tribute to Coldplay.', 'Tributo sinfónico al repertorio de Coldplay con cientos de velas.', 'Symphonic tribute to Coldplay performed by candlelight.', 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=2070&auto=format&fit=crop', 's15');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('J Balvin – Ciudad Primavera Tour', '2026-03-21T20:00:00-05:00', 'Estadio Olímpico Pascual Guerrero', 'Show de estadio con invitados sorpresa.', 'Stadium show with surprise guests.', 'Uno de los artistas de reggaeton más importantes; show de estadio con invitados sorpresa.', 'One of the most important reggaeton artists; stadium show with surprise guests.', 'https://images.unsplash.com/photo-1501386761106-e84b72d13ec2?q=80&w=2069&auto=format&fit=crop', 3.429, -76.536);
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Procesiones de Semana Santa en San Antonio', 'Holy Week Processions in San Antonio', '2026-04-02T18:00:00-05:00', 'Barrio San Antonio', 'Procesiones íntimas por las calles empedradas.', 'Intimate processions through cobblestone streets.', 'Procesiones íntimas por las calles empedradas del barrio San Antonio; los vecinos sacan sillas, ofrecen agua de panela y crean una comunidad efímera alrededor de la fe.', 'Intimate processions through the cobblestone streets of the San Antonio neighborhood.', 'https://images.unsplash.com/photo-1533568971488-84dc24838b05?q=80&w=2070&auto=format&fit=crop', 's1');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Grupo Frontera – Triste pero bien C*brón Tour', '2026-04-17T21:00:00-05:00', 'Arena Cañaveralejo (Plaza de Toros)', 'Concierto de música regional mexicana.', 'Mexican regional music concert.', 'Concierto de la agrupación de música regional mexicana.', 'Concert by the Mexican regional music group.', 'https://images.unsplash.com/photo-1533174072545-e8d4aa97d848?q=80&w=2070&auto=format&fit=crop', 's88');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Grupo Firme – La Última Peda Tour', '2026-04-25T20:00:00-05:00', 'Estadio Pascual Guerrero', 'Banda mexicana de corridos y banda.', 'Mexican corrido and banda group.', 'La banda mexicana regresa a Colombia con su gira de corridos y banda.', 'The Mexican band returns to Colombia with their corridos and banda tour.', 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=2070&auto=format&fit=crop', 3.429, -76.536);
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Festival de Cometas', 'Kite Festival', '2026-05-01T15:00:00-05:00', 'Cerro de las Tres Cruces', 'Evento familiar para elevar cometas.', 'Family event to fly kites.', 'Evento familiar en el que las familias elevan cometas artesanales desde temprano.', 'Family event where families fly handmade kites starting early in the day.', 'https://images.unsplash.com/photo-1534944883477-9caea66b8dd8?q=80&w=1974&auto=format&fit=crop', 's65');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Kany García – Tour El amor que merecemos', '2026-05-24T19:00:00-05:00', 'Plaza de Toros Cañaveralejo', 'Cantautora puertorriqueña ganadora de varios Latin Grammy', 'Puerto Rican singer-songwriter and multi Latin Grammy winner.', 'Cantautora puertorriqueña ganadora de varios Latin Grammy que regresa a Colombia con nueva producción.', 'Puerto Rican singer-songwriter and multi Latin Grammy winner returning to Colombia with a new production.', 'https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=2070&auto=format&fit=crop', 's88');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Festival Mundial de Salsa', 'World Salsa Festival', '2026-05-25T10:00:00-05:00', 'Varios espacios (Estadio Pascual Guerrero, Otros)', 'Evento anual de competencia de salsa.', 'Annual salsa competition event.', 'Evento anual donde cientos de bailarines compiten y enseñan salsa en parques, teatros y academias.', 'Annual event where hundreds of dancers compete and teach salsa in parks, theaters, and academies.', 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?q=80&w=2070&auto=format&fit=crop', 3.429, -76.536);
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Pre-Feria de la Salsa', '2026-06-15T10:00:00-05:00', 'Academias de salsa', 'Actividades previas a la Feria de Cali.', 'Pre-Cali Fair activities.', 'Actividades previas a la Feria de Cali; academias y bailarines muestran sus coreografías.', 'Activities leading up to the Cali Fair; academies and dancers showcase their choreographies.', 'https://images.unsplash.com/photo-1518834107812-cf790870a4a7?q=80&w=2070&auto=format&fit=crop', 3.44, -76.52);
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Fiestas de San Pedro', '2026-06-28T10:00:00-05:00', 'Distrito de Aguablanca', 'Celebración con música, danza y comida tradicional.', 'Celebration with music, dance, and traditional food.', 'Celebración en el Distrito de Aguablanca con música, danza y comida tradicional organizada por la comunidad afrodescendiente.', 'Celebration in the Aguablanca District with music, dance, and traditional food organized by the Afro-descendant community.', 'https://images.unsplash.com/photo-1533174072545-e8d4aa97d848?q=80&w=2070&auto=format&fit=crop', 3.42, -76.49);
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Media Maratón de Cali (New Balance)', 'Cali Half Marathon', '2026-06-28T06:00:00-05:00', 'Bulevar del Río, Plaza de Cayzedo', 'Competencia atlética de 21 km y 10 km.', '21 km and 10 km athletic competition.', 'Competencia atlética que ofrece distancias de 21 km y 10 km; miles de corredores recorren las principales avenidas.', 'Athletic competition offering 21 km and 10 km distances; thousands of runners traverse the main avenues.', 'https://images.unsplash.com/photo-1552674605-5d28c4e1902c?q=80&w=2070&auto=format&fit=crop', 's3');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Feria de Cali 2026', 'Cali Fair 2026', '2026-07-25T12:00:00-05:00', 'Estadio Pascual Guerrero, Autopista Sur', 'Principal fiesta de la ciudad con desfiles y conciertos.', 'Main city festival with parades and concerts.', 'Principal fiesta de la ciudad con desfiles (Salsódromo, Carnavalito), cabalgatas, conciertos y ferias gastronómicas.', 'Main festival of the city with parades (Salsódromo, Carnavalito), cavalcades, concerts, and gastronomic fairs.', 'https://images.unsplash.com/photo-1543026366-0775d8208429?q=80&w=2070&auto=format&fit=crop', 3.429, -76.536);
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Ricardo Montaner – El Último Regreso', '2026-08-06T20:00:00-05:00', 'Centro de Eventos CIDS', 'Gira de despedida del intérprete venezolano.', 'Farewell tour of the Venezuelan performer.', 'Gira de despedida del intérprete venezolano; puertas abren a las 18:00.', 'Farewell tour of the Venezuelan performer; doors open at 18:00.', 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2070&auto=format&fit=crop', 3.42, -76.51);
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Festival de Jazz de Cali', 'Cali Jazz Festival', '2026-08-10T19:00:00-05:00', 'Teatro Municipal, Teatro Jorge Isaacs', 'Festival internacional con presentaciones en teatros y bares.', 'International festival with performances in theaters and bars.', 'Festival internacional con presentaciones en teatros y bares, ofrece un contraste tranquilo después de la Feria.', 'International festival with performances in theaters and bars, offering a quiet contrast after the Fair.', 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=2070&auto=format&fit=crop', 's22');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Festival Petronio Álvarez 2026', '2026-08-12T10:00:00-05:00', 'Coliseo del Pueblo', 'Mayor celebración de la cultura afro-pacífica.', 'Largest celebration of Afro-Pacific culture.', 'Mayor celebración de la cultura afro-pacífica; incluye música, danzas, gastronomía y artesanía.', 'Largest celebration of Afro-Pacific culture; includes music, dance, gastronomy, and crafts.', 'https://images.unsplash.com/photo-1559530432-84950e38605c?q=80&w=2070&auto=format&fit=crop', 's87');
+INSERT INTO events (titulo, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, lat, lng) VALUES ('Cuarteto de Nos – Tour Puertas', '2026-08-19T20:00:00-05:00', 'Centro de Eventos CIDS', 'Banda uruguaya de rock alternativo.', 'Uruguayan alternative rock band.', 'Banda uruguaya de rock alternativo; el grupo presenta en Cali su aclamado Tour Puertas.', 'Uruguayan alternative rock band; the group presents their acclaimed Puertas Tour in Cali.', 'https://images.unsplash.com/photo-1459305272254-33a7d593a851?q=80&w=2070&auto=format&fit=crop', 3.42, -76.51);
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Festival de Música Andina', 'Andean Music Festival', '2026-09-20T10:00:00-05:00', 'El Queremal y Teatros de Cali', 'Homenaje a la música campesina y andina.', 'Tribute to peasant and Andean music.', 'Evento que rinde homenaje a la música campesina y andina.', 'Event paying tribute to peasant and Andean music.', 'https://images.unsplash.com/photo-1516972403217-463d12269df9?q=80&w=2070&auto=format&fit=crop', 's2');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Festival de Cine de Cali', 'Cali Film Festival', '2026-11-15T18:00:00-05:00', 'Cinemateca La Tertulia', 'Proyecciones de películas nacionales e internacionales.', 'Screenings of national and international films.', 'Proyecciones de películas nacionales e internacionales; actividades académicas y conferencias.', 'Screenings of national and international films; academic activities and conferences.', 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop', 's45');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Festival Internacional de Arte de Cali', 'Cali International Art Festival', '2026-11-20T10:00:00-05:00', 'Varios espacios (Teatro Municipal, Parque de los Poetas)', 'Evento bienal de arte.', 'Biennial art event.', 'Evento bienal que convierte las calles de Cali en escenarios para exposiciones, conciertos de música, teatro y poesía.', 'Biennial event that turns Cali''s streets into stages for exhibitions, music concerts, theater, and poetry.', 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=2070&auto=format&fit=crop', 's2');
+INSERT INTO events (titulo, titulo_en, fecha, lugar, resumen, resumen_en, descripcion, descripcion_en, img, site_id) VALUES ('Festival de Salsa al Parque', 'Salsa in the Park Festival', '2026-12-10T16:00:00-05:00', 'Parque El Ingenio', 'Bailatón y conciertos gratuitos.', 'Dance-a-thon and free concerts.', 'Bailatón y conciertos gratuitos en parques como El Ingenio; cierra el año en un ambiente festivo.', 'Dance-a-thon and free concerts in parks like El Ingenio; closes the year in a festive atmosphere.', 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=2070&auto=format&fit=crop', 's48');

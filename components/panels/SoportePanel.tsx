@@ -42,13 +42,11 @@ const SoportePanel: React.FC = () => {
         e.preventDefault();
         setIsSubmittingCallback(true);
         try {
-            await supportService.createTicket({
-                user_id: user?.id,
-                ticket_type: 'callback',
-                phone: callbackPhone,
-                subject: 'Call Request: ' + callbackReason,
-                message: `Name: ${callbackName}\nReason: ${callbackReason}`
-            });
+            await supportService.submitTicket(
+                user?.id || 'anonymous',
+                'callback',
+                `Phone: ${callbackPhone}\nName: ${callbackName}\nReason: ${callbackReason}`
+            );
             setCallbackSuccess(true);
         } catch (error) {
             console.error(error);
@@ -62,13 +60,11 @@ const SoportePanel: React.FC = () => {
         e.preventDefault();
         setIsSubmittingContact(true);
         try {
-            await supportService.createTicket({
-                user_id: user?.id,
-                ticket_type: 'contact',
-                email: contactEmail,
-                message: contactMessage,
-                subject: 'Support Message'
-            });
+            await supportService.submitTicket(
+                user?.id || 'anonymous',
+                'contact',
+                `Email: ${contactEmail}\nMessage: ${contactMessage}`
+            );
             setContactSuccess(true);
             setContactMessage('');
         } catch (error) {

@@ -3,10 +3,12 @@ import { Evento } from '../types';
 
 export const eventsService = {
     async getAll(): Promise<Evento[]> {
+        const today = new Date().toISOString();
         const { data, error } = await supabase
             .from('events')
             .select('*')
-            .eq('is_published', true);
+            .gte('fecha', today)
+            .order('fecha', { ascending: true });
 
         if (error) {
             console.error('Error fetching events:', error);
@@ -29,5 +31,8 @@ function mapEvent(dbEvent: any): Evento {
         img: dbEvent.img,
         descripcion: dbEvent.descripcion,
         descripcion_en: dbEvent.descripcion_en,
+        siteId: dbEvent.site_id,
+        lat: dbEvent.lat,
+        lng: dbEvent.lng
     };
 }

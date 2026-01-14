@@ -26,6 +26,11 @@ export const sitesService = {
             return null;
         }
         return mapSite(data);
+    },
+
+    async incrementVisit(id: string): Promise<void> {
+        const { error } = await supabase.rpc('increment_site_visit', { site_id_input: id });
+        if (error) console.error('Error incrementing visits:', error);
     }
 };
 

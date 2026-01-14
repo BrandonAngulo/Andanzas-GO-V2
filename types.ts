@@ -38,6 +38,9 @@ export interface Evento {
   img: string;
   descripcion: string;
   descripcion_en?: string;
+  siteId?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export type RecomendacionTipo = 'Música' | 'Sabores' | 'Experiencia' | 'Vestuario' | 'Bebida' | 'Mejor Hora' | 'Snack' | 'Seguridad' | 'Sabor' | 'Foto' | 'Transporte' | 'Salud' | 'Horario' | 'Planificación' | 'Ubicación';
