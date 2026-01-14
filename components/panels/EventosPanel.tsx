@@ -30,6 +30,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void 
         <LazyImage
           src={event.img}
           alt={getTranslated(event, 'titulo', language) as string}
+          textFallback={getTranslated(event, 'titulo', language) as string}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute top-2 right-2 bg-background/90 backdrop-blur-sm px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
