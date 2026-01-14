@@ -116,26 +116,36 @@ export default function App() {
   useEffect(() => {
     const loadStaticData = async () => {
       setIsLoading(true);
+
+      // 1. Load critical data
       try {
-        const [s, e, r, i, f] = await Promise.all([
+        const [s, r, i, f] = await Promise.all([
           sitesService.getAll(),
-          eventsService.getAll(),
           routesService.getAll(),
           gamificationService.getAllBadges(),
           newsService.getFeed()
         ]);
         setSites(s);
-        setEventos(e);
         setRutasTematicas(r);
         setAllInsignias(i);
         setFeed(f);
-        setQuery(""); // Force clear query on load
-        setSelectedCategories([]); // Force clear categories on load
       } catch (error) {
-        console.error("Failed to load static data", error);
-      } finally {
-        setIsLoading(false);
+        console.error("Failed to load critical static data", error);
       }
+
+      // 2. Load Events separately (tolerant failure)
+      try {
+        console.log("App: Requesting events...");
+        const e = await eventsService.getAll();
+        console.log("App: Events received:", e.length);
+        setEventos(e);
+      } catch (evError) {
+        console.error("App: Failed to load events safely", evError);
+      }
+
+      setIsLoading(false);
+      setQuery("");
+      setSelectedCategories([]);
     };
     loadStaticData();
 
