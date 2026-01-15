@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose }) => {
             </CardContent>
           </Card>
 
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <div className="pt-2 border-t">
               <Button
                 variant="ghost"
@@ -66,6 +66,16 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose }) => {
                 onClick={handleLogout}
               >
                 <LogOut className="h-4 w-4 mr-2" /> {t('logOutButton')}
+              </Button>
+            </div>
+          ) : (
+            <div className="pt-2 border-t">
+              <Button
+                variant="default"
+                className="w-full justify-start"
+                onClick={() => onNavigate('perfil')}
+              >
+                <User className="h-4 w-4 mr-2" /> {t('loginTitle') || "Iniciar Sesión"}
               </Button>
             </div>
           )}

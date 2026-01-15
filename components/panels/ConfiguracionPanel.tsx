@@ -4,8 +4,12 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Switch } from '../ui/switch';
 import { Button } from '../ui/button';
-import { Moon, Sun, Monitor, Bell, Globe, Database, Trash2 } from 'lucide-react';
+import { Moon, Sun, Monitor, Bell, Globe, Database, Trash2, Shield, ExternalLink, AlertTriangle, Loader2 } from 'lucide-react';
 import { useI18n } from '../../i18n';
+import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabaseClient';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Input } from '../ui/input';
 
 interface ConfiguracionPanelProps {
     theme: 'light' | 'dark' | 'system';
@@ -14,10 +18,51 @@ interface ConfiguracionPanelProps {
 
 const ConfiguracionPanel: React.FC<ConfiguracionPanelProps> = ({ theme, setTheme }) => {
     const { t, language, setLanguage } = useI18n();
+    const { user, logout } = useAuth();
+
+    // Delete Account State
+    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+    const [deletePassword, setDeletePassword] = React.useState('');
+    const [deleteError, setDeleteError] = React.useState('');
+    const [isDeleting, setIsDeleting] = React.useState(false);
 
     const handleClearCache = () => {
         localStorage.clear();
         window.location.reload();
+    };
+
+    const handleDeleteAccount = async () => {
+        if (!user || (!user.email && !user.user_metadata.email)) {
+            setDeleteError("No se pudo identificar el usuario.");
+            return;
+        }
+        setIsDeleting(true);
+        setDeleteError('');
+
+        try {
+            // 1. Verify password
+            const email = user.email || user.user_metadata.email;
+            const { error: authError } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: deletePassword
+            });
+            if (authError) throw new Error("Contraseña incorrecta. Inténtalo de nuevo.");
+
+            // 2. Delete Profile Data (Soft delete or depend on RLS)
+            // Note: Client cannot delete Auth User directly without Admin API. 
+            // We delete the profile data to effectively wipe the user's existence in the app.
+            const { error: dbError } = await supabase.from('profiles').delete().eq('id', user.id);
+            if (dbError) throw new Error("Error eliminando datos: " + dbError.message);
+
+            // 3. Logout
+            await logout();
+            window.location.reload();
+        } catch (err: any) {
+            console.error(err);
+            setDeleteError(err.message || "Error al eliminar la cuenta.");
+        } finally {
+            setIsDeleting(false);
+        }
     };
 
     return (
@@ -127,7 +172,102 @@ const ConfiguracionPanel: React.FC<ConfiguracionPanelProps> = ({ theme, setTheme
                     </CardContent>
                 </Card>
 
+                {/* Legal */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                            <Shield className="h-4 w-4" /> Legal
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <Button variant="outline" className="justify-start h-auto py-3" asChild>
+                                <a href="/terms" target="_blank" rel="noopener noreferrer">
+                                    <ExternalLink className="h-4 w-4 mr-2 text-muted-foreground" />
+                                    {t('termsOfService') || "Términos de Servicio"}
+                                </a>
+                            </Button>
+                            <Button variant="outline" className="justify-start h-auto py-3" asChild>
+                                <a href="/privacy" target="_blank" rel="noopener noreferrer">
+                                    <Shield className="h-4 w-4 mr-2 text-muted-foreground" />
+                                    {t('privacyPolicy') || "Política de Privacidad"}
+                                </a>
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Danger Zone */}
+                {user && (
+                    <Card className="border-destructive/20 bg-destructive/5">
+                        <CardHeader>
+                            <CardTitle className="text-base flex items-center gap-2 text-destructive">
+                                <AlertTriangle className="h-4 w-4" /> Zona de Peligro
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div className="text-sm text-muted-foreground">
+                                    <p className="font-medium text-foreground">Eliminar cuenta permanentemente</p>
+                                    <p>Esta acción no se puede deshacer. Perderás todo tu progreso.</p>
+                                </div>
+                                <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => setShowDeleteModal(true)}
+                                >
+                                    <Trash2 className="h-4 w-4 mr-2" /> Eliminar Cuenta
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
             </div>
+
+            {/* Delete Confirmation Modal */}
+            <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+                <DialogContent className="sm:max-w-md border-destructive/20">
+                    <DialogHeader>
+                        <DialogTitle className="text-destructive flex items-center gap-2">
+                            <AlertTriangle className="h-5 w-5" /> Eliminar Cuenta
+                        </DialogTitle>
+                        <DialogDescription>
+                            Para continuar, por favor ingresa tu contraseña. Esta acción eliminará permanentemente tu perfil, insignias y progreso.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="space-y-4 py-2">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Contraseña</label>
+                            <Input
+                                type="password"
+                                value={deletePassword}
+                                onChange={(e) => setDeletePassword(e.target.value)}
+                                placeholder="Confirma tu contraseña"
+                            />
+                        </div>
+
+                        {deleteError && (
+                            <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-md flex items-center gap-2">
+                                <AlertTriangle className="h-4 w-4" />
+                                {deleteError}
+                            </div>
+                        )}
+                    </div>
+
+                    <DialogFooter className="gap-2 sm:gap-0">
+                        <Button variant="ghost" onClick={() => setShowDeleteModal(false)}>Cancelar</Button>
+                        <Button
+                            variant="destructive"
+                            onClick={handleDeleteAccount}
+                            disabled={!deletePassword || isDeleting}
+                        >
+                            {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            Confirmar Eliminación
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </ScrollArea>
     );
 };
