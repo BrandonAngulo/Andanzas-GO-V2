@@ -102,6 +102,7 @@ function mapRoute(dbRoute: any): Ruta {
         justificaciones_en: dbRoute.justificaciones_en,
         recomendaciones: dbRoute.recomendaciones,
         gamificacion: dbRoute.gamificacion,
-        publico: dbRoute.is_published
+        publico: dbRoute.is_published,
+        reward_badge_id: dbRoute.reward_badge_id
     };
 }

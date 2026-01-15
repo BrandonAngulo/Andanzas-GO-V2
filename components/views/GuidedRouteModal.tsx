@@ -54,6 +54,25 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
   };
 
   const isLastStep = currentStep === route.puntos.length - 1;
+  const [newBadge, setNewBadge] = useState<string | null>(null);
+
+  const handleComplete = async () => {
+    // 1. Award Completion Points
+    if (user) {
+      await gamificationService.awardPoints(50, `Ruta Completada: ${route.nombre}`);
+    }
+
+    // 2. Unlock Badge if one is assigned
+    if (user && route.reward_badge_id) {
+      const unlocked = await gamificationService.unlockBadge(user.id, route.reward_badge_id);
+      if (unlocked) {
+        setNewBadge(route.reward_badge_id); // This could trigger a specific UI modal before closing
+        // For now, allow the parent closure but we might want a "Celebration" state
+      }
+    }
+
+    onComplete();
+  };
 
   if (!currentPoint || !gamificationData) {
     return (
@@ -178,7 +197,7 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
               {t('guidedRoute.previous')}
             </Button>
             {isLastStep ? (
-              <Button onClick={onComplete} disabled={!isCorrect} className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white shadow-lg transform active:scale-95 transition-all">
+              <Button onClick={handleComplete} disabled={!isCorrect} className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white shadow-lg transform active:scale-95 transition-all">
                 <Award className="mr-2 h-4 w-4" />
                 {t('fullView.completeRoute')}
               </Button>

@@ -84,6 +84,7 @@ export interface Ruta {
   publico?: boolean;
   recomendaciones?: RecomendacionRuta[];
   gamificacion?: GamificacionPunto[];
+  reward_badge_id?: string;
 }
 
 export interface Review {
