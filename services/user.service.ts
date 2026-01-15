@@ -10,6 +10,40 @@ export const userService = {
             .single();
 
         if (error) {
+            // Self-Healing: If profile is missing (PGRST116), attempt to create it on the fly.
+            // This handles legacy users or cases where the DB trigger might have been skipped.
+            if (error.code === 'PGRST116') {
+                console.warn("Profile missing for user, attempting to repair...", userId);
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (user && user.id === userId) {
+                        const newProfile = {
+                            id: user.id,
+                            email: user.email,
+                            full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Explorador',
+                            city: 'Cali',
+                            language: 'es',
+                            points: 0,
+                            level: 1
+                        };
+                        const { data: createdProfile, error: createError } = await supabase
+                            .from('profiles')
+                            .insert(newProfile)
+                            .select()
+                            .single();
+
+                        if (!createError) {
+                            console.log("Profile repaired successfully.");
+                            return createdProfile as UserProfile;
+                        } else {
+                            console.error("Failed to repair profile:", createError);
+                        }
+                    }
+                } catch (recoveryError) {
+                    console.error("Profile recovery exception:", recoveryError);
+                }
+            }
+
             console.error('Error fetching profile:', error);
             return null;
         }
