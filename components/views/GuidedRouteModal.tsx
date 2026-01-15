@@ -137,11 +137,17 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
                             <Button
                               key={opcion}
                               variant={variant}
-                              className="w-full justify-start text-left h-auto py-2"
+                              className={cn(
+                                "w-full justify-start text-left h-auto py-3 px-4 transition-all duration-200",
+                                isSelected && !isAnswered && "border-2 border-primary bg-primary/5 text-primary font-medium"
+                              )}
                               onClick={() => setUserAnswer(opcion)}
                               disabled={isAnswered}
                             >
-                              {opcion}
+                              <div className="flex items-center w-full">
+                                <span className="flex-1">{opcion}</span>
+                                {isSelected && !isAnswered && <div className="h-3 w-3 rounded-full bg-primary" />}
+                              </div>
                             </Button>
                           );
                         })}
