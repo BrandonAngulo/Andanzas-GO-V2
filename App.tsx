@@ -662,7 +662,7 @@ export default function App() {
               variant="ghost"
               size="icon"
               className={cn("rounded-full hover:bg-muted", isAuthenticated ? "text-primary" : "")}
-              onClick={() => setActivePanel('perfil')}
+              onClick={() => setActivePanel((prev) => prev === 'perfil' ? 'mapa' : 'perfil')}
               aria-label={isAuthenticated ? t('panelTitles.perfil') : (t('loginTitle') || "Iniciar Sesión")}
               title={isAuthenticated ? t('panelTitles.perfil') : (t('loginTitle') || "Iniciar Sesión")}
             >
