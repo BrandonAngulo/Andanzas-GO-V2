@@ -56,6 +56,7 @@ function mapSite(dbSite: any): Site {
         datosCuriosos_en: dbSite.datos_curiosos_en,
         reconocimientos: dbSite.reconocimientos,
         reconocimientos_en: dbSite.reconocimientos_en,
-        image_credit: dbSite.image_credit
+        image_credit: dbSite.image_credit,
+        accessibility_features: dbSite.accessibility_features
     };
 }
