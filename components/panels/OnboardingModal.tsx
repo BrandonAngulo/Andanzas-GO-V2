@@ -121,41 +121,67 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                         <div className="text-center space-y-4">
                             {/* Custom Animated Logo - Premium Horizontal Layout */}
                             <div className="flex flex-row items-center justify-center gap-6 select-none py-6">
-                                {/* Animated Marker */}
-                                <div style={{ perspective: '1000px' }}>
-                                    <svg
-                                        width="72"
-                                        height="86"
-                                        viewBox="0 0 32 38"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="drop-shadow-lg"
-                                        style={{ animation: 'spin-horizontal 7s linear infinite', transformStyle: 'preserve-3d' }}
-                                    >
-                                        <defs>
-                                            <linearGradient id="markerGradient" x1="0" y1="0" x2="32" y2="38" gradientUnits="userSpaceOnUse">
-                                                <stop offset="0%" stopColor="#2DD4BF" /> {/* Teal-400 */}
-                                                <stop offset="100%" stopColor="#0F766E" /> {/* Teal-700 */}
-                                            </linearGradient>
-                                        </defs>
+                                {/* Animated Marker 3D Stack */}
+                                <div style={{
+                                    perspective: '1000px',
+                                    width: '72px',
+                                    height: '86px',
+                                    position: 'relative',
+                                    transformStyle: 'preserve-3d'
+                                }}>
+                                    <div style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        position: 'relative',
+                                        transformStyle: 'preserve-3d',
+                                        animation: 'spin-horizontal 7s linear infinite'
+                                    }}>
+                                        {/* Helper function to generate SVG layers for thickness */}
+                                        {[...Array(6)].map((_, i) => (
+                                            <svg
+                                                key={i}
+                                                width="72"
+                                                height="86"
+                                                viewBox="0 0 32 38"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    transform: `translateZ(${-i}px)`,
+                                                    filter: i === 0 ? 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' : 'none' // Shadow only on front
+                                                }}
+                                            >
+                                                {i === 0 && ( /* Gradients only for front layer */
+                                                    <defs>
+                                                        <linearGradient id="markerGradientFront" x1="0" y1="0" x2="32" y2="38" gradientUnits="userSpaceOnUse">
+                                                            <stop offset="0%" stopColor="#5EEAD4" /> {/* Teal-300 Bright */}
+                                                            <stop offset="100%" stopColor="#0F766E" /> {/* Teal-700 */}
+                                                        </linearGradient>
+                                                    </defs>
+                                                )}
 
-                                        {/* Marker Body */}
-                                        <path
-                                            fillRule="evenodd"
-                                            clipRule="evenodd"
-                                            d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z"
-                                            fill="url(#markerGradient)"
-                                            stroke="rgba(255,255,255,0.15)"
-                                            strokeWidth="0.5"
-                                        />
+                                                <path
+                                                    fillRule="evenodd"
+                                                    clipRule="evenodd"
+                                                    d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z"
+                                                    fill={i === 0 ? "url(#markerGradientFront)" : "#115E59"} /* Front gradient, others dark solid teal */
+                                                    stroke={i === 0 ? "rgba(255,255,255,0.4)" : "none"}
+                                                    strokeWidth={i === 0 ? "0.5" : "0"}
+                                                />
 
-                                        {/* Subtle Highlight */}
-                                        <path
-                                            d="M16 0C7.16344 0 0 7.08832 0 15.8333C0 17 0.1 18.1 0.4 19.2C1.5 10 8 3 16 3C24 3 30.5 10 31.6 19.2C31.9 18.1 32 17 32 15.8333C32 7.08832 24.8366 0 16 0Z"
-                                            fill="white"
-                                            fillOpacity="0.15"
-                                        />
-                                    </svg>
+                                                {/* Gloss only on front */}
+                                                {i === 0 && (
+                                                    <path
+                                                        d="M16 0C7.16344 0 0 7.08832 0 15.8333C0 17 0.1 18.1 0.4 19.2C1.5 10 8 3 16 3C24 3 30.5 10 31.6 19.2C31.9 18.1 32 17 32 15.8333C32 7.08832 24.8366 0 16 0Z"
+                                                        fill="white"
+                                                        fillOpacity="0.2"
+                                                    />
+                                                )}
+                                            </svg>
+                                        ))}
+                                    </div>
                                 </div>
 
                                 {/* Static Text */}
