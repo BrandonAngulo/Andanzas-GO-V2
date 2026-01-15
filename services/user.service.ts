@@ -34,7 +34,13 @@ export const userService = {
 
                         if (!createError) {
                             console.log("Profile repaired successfully.");
-                            return createdProfile as UserProfile;
+                            console.log("Profile repaired successfully.");
+                            // Merge with metadata even for new profiles
+                            return {
+                                ...createdProfile,
+                                travel_style: user.user_metadata?.travel_style,
+                                accessibility_needs: user.user_metadata?.accessibility_needs
+                            } as UserProfile;
                         } else {
                             console.error("Failed to repair profile:", createError);
                         }
@@ -47,7 +53,14 @@ export const userService = {
             console.error('Error fetching profile:', error);
             return null;
         }
-        return data as UserProfile;
+        // Fetch auth metadata to overlay travel_style and accessibility_needs
+        const { data: { user } } = await supabase.auth.getUser();
+
+        return {
+            ...data,
+            travel_style: user?.user_metadata?.travel_style,
+            accessibility_needs: user?.user_metadata?.accessibility_needs
+        } as UserProfile;
     },
 
     async updateInterests(userId: string, interests: string[]) {

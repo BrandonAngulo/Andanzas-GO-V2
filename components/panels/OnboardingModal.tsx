@@ -14,6 +14,7 @@ import { Badge } from '../ui/badge';
 interface OnboardingModalProps {
     isOpen: boolean;
     onClose: () => void;
+    isEditing?: boolean;
 }
 
 const INTERESTS = [
@@ -39,7 +40,7 @@ const ACCESSIBILITY_NEEDS = [
     { id: 'none', label: 'Ninguna', label_en: 'None' },
 ];
 
-const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) => {
+const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEditing = false }) => {
     const { t, language } = useI18n();
     const { user } = useAuth();
     const [step, setStep] = useState(1);
@@ -50,6 +51,19 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
     const [accessibility, setAccessibility] = useState<string[]>([]);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Initial load of preferences
+    React.useEffect(() => {
+        if (isOpen && user) {
+            userService.getProfile(user.id).then(profile => {
+                if (profile) {
+                    if (profile.interests) setSelectedInterests(profile.interests);
+                    if (profile.travel_style) setTravelStyle(profile.travel_style);
+                    if (profile.accessibility_needs) setAccessibility(profile.accessibility_needs);
+                }
+            });
+        }
+    }, [isOpen, user]);
 
     const toggleInterest = (id: string) => {
         setSelectedInterests(prev =>
@@ -206,7 +220,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                         <Sparkles className="h-6 w-6 text-primary" />
                     </div>
                     <DialogTitle className="text-xl font-bold">
-                        {language === 'es' ? '¡Bienvenido a Andanzas GO!' : 'Welcome to Andanzas GO!'}
+                        {isEditing
+                            ? (language === 'es' ? 'Editar Preferencias' : 'Edit Preferences')
+                            : (language === 'es' ? '¡Bienvenido a Andanzas GO!' : 'Welcome to Andanzas GO!')}
                     </DialogTitle>
                     <div className="flex justify-center items-center gap-2 mt-4">
                         {[1, 2, 3].map((s) => (
@@ -222,7 +238,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                 <DialogFooter className="flex flex-col sm:flex-row gap-3 sm:justify-between items-center pt-4 border-t mt-auto">
                     <Button variant="ghost" onClick={step === 1 ? onClose : handleBack} disabled={isSubmitting}>
                         {step === 1
-                            ? (language === 'es' ? 'Saltar por ahora' : 'Skip for now')
+                            ? (isEditing
+                                ? (language === 'es' ? 'Cancelar' : 'Cancel')
+                                : (language === 'es' ? 'Saltar por ahora' : 'Skip for now'))
                             : (language === 'es' ? 'Atrás' : 'Back')
                         }
                     </Button>
@@ -234,7 +252,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose }) =>
                         {isSubmitting ? (
                             <span className="animate-pulse">Saving...</span>
                         ) : step === totalSteps ? (
-                            language === 'es' ? 'Finalizar' : 'Finish'
+                            isEditing ? (language === 'es' ? 'Guardar Cambios' : 'Save Changes') : (language === 'es' ? 'Finalizar' : 'Finish')
                         ) : (
                             <>
                                 {language === 'es' ? 'Siguiente' : 'Next'}

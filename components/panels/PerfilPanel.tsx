@@ -270,11 +270,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     <CardContent className="space-y-4">
                         <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
                             <div>
-                                <h4 className="text-sm font-medium">{t('profile.interests')}</h4>
+                                <h4 className="text-sm font-medium">{language === 'es' ? 'Preferencias y Accesibilidad' : 'Preferences & Accessibility'}</h4>
                                 <p className="text-xs text-muted-foreground">
                                     {userProfile?.interests && userProfile.interests.length > 0
-                                        ? `${userProfile.interests.length} seleccionado(s)`
-                                        : 'Sin seleccionar'}
+                                        ? `${userProfile.interests.length} intereses, ${userProfile.accessibility_needs?.length || 0} necesidades`
+                                        : (language === 'es' ? 'Configura tu perfil de viajero' : 'Setup your travel profile')}
                                 </p>
                             </div>
                             <Button variant="outline" size="sm" onClick={() => setShowInterestsModal(true)}>
@@ -295,7 +295,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 </Card>
 
             </div>
-            <OnboardingModal isOpen={showInterestsModal} onClose={() => setShowInterestsModal(false)} />
+            <OnboardingModal isOpen={showInterestsModal} onClose={() => setShowInterestsModal(false)} isEditing={true} />
         </ScrollArea>
     );
 };

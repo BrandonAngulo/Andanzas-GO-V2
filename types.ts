@@ -24,6 +24,7 @@ export interface Site {
   datosCuriosos?: string[];
   datosCuriosos_en?: string[];
   image_credit?: string;
+  accessibility_features?: string[]; // e.g. ['wheelchair', 'audio_guide']
 }
 
 export interface Evento {
@@ -157,5 +158,7 @@ export interface UserProfile {
   points: number;
   level?: number;
   interests: string[];
+  travel_style?: string;
+  accessibility_needs?: string[];
 }
 

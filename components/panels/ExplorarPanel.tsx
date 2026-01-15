@@ -6,6 +6,8 @@ import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
+import { Badge } from '../ui/badge';
+import { Accessibility, Ear, Eye } from 'lucide-react';
 
 // --- Reusable Card Components for the Feed ---
 
@@ -22,7 +24,16 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
       <CardHeader className="py-2">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(site, 'nombre', language)}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow -mt-2 text-xs text-muted-foreground">{getTranslated(site, 'tipo', language)} · ⭐ {site.rating}</CardContent>
+      <CardContent className="flex-grow -mt-2 text-xs text-muted-foreground space-y-2">
+        <div>{getTranslated(site, 'tipo', language)} · ⭐ {site.rating}</div>
+        {site.accessibility_features && site.accessibility_features.length > 0 && (
+          <div className="flex gap-1 flex-wrap">
+            {site.accessibility_features.includes('wheelchair') && <Badge variant="secondary" className="px-1 py-0"><Accessibility className="w-3 h-3 text-blue-600" /></Badge>}
+            {site.accessibility_features.includes('audio_guide') && <Badge variant="secondary" className="px-1 py-0"><Ear className="w-3 h-3 text-purple-600" /></Badge>}
+            {site.accessibility_features.includes('braille') && <Badge variant="secondary" className="px-1 py-0"><Eye className="w-3 h-3 text-green-600" /></Badge>}
+          </div>
+        )}
+      </CardContent>
       <CardFooter className="pt-2">
         <Button size="sm" variant="outline" onClick={() => onOpenSite(site)}>{t('seeMore')}</Button>
       </CardFooter>
