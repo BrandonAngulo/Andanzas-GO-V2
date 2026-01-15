@@ -336,6 +336,18 @@ const es = {
         minutesAgo: "hace {{count}} min",
         hoursAgo: "hace {{count}} h",
         daysAgo: "hace {{count}} d",
+    },
+
+    // Guided Route
+    guidedRoute: {
+        error: "No pudimos cargar la información de este punto.",
+        point: "Punto",
+        of: "de",
+        testYourKnowledge: "¡Pon a prueba tu conocimiento!",
+        checkAnswer: "Verificar Respuesta",
+        imHere: "Resolver Desafío",
+        activeRoute: "Ruta Activa",
+        cancel: "Cancelar ruta"
     }
 };
 

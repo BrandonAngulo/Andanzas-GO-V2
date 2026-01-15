@@ -336,6 +336,18 @@ const en = {
         minutesAgo: "{{count}}m ago",
         hoursAgo: "{{count}}h ago",
         daysAgo: "{{count}}d ago",
+    },
+
+    // Guided Route
+    guidedRoute: {
+        error: "We could not load information for this point.",
+        point: "Point",
+        of: "of",
+        testYourKnowledge: "Test your knowledge!",
+        checkAnswer: "Check Answer",
+        imHere: "Take Challenge",
+        activeRoute: "Active Route",
+        cancel: "Cancel Route"
     }
 };
 
