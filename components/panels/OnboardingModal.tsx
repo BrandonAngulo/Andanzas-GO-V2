@@ -112,17 +112,24 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
             case 0:
                 return (
                     <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500 py-4">
+                        <style>{`
+                            @keyframes spin-horizontal {
+                                0% { transform: rotateY(0deg); }
+                                100% { transform: rotateY(360deg); }
+                            }
+                        `}</style>
                         <div className="text-center space-y-4">
                             <div className="p-6 rounded-full w-32 h-32 mx-auto flex items-center justify-center mb-4">
                                 {/* Custom Animated Logo */}
-                                <div className="flex flex-col items-center gap-2 select-none">
+                                <div className="flex flex-col items-center gap-2 select-none" style={{ perspective: '1000px' }}>
                                     <svg
                                         width="80"
                                         height="95"
                                         viewBox="0 0 32 38"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="drop-shadow-md animate-[spin_10s_linear_infinite]"
+                                        className="drop-shadow-md"
+                                        style={{ animation: 'spin-horizontal 8s linear infinite' }}
                                     >
                                         <path
                                             fillRule="evenodd"
