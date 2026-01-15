@@ -224,6 +224,11 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                             ? (language === 'es' ? 'Editar Preferencias' : 'Edit Preferences')
                             : (language === 'es' ? '¡Bienvenido a Andanzas GO!' : 'Welcome to Andanzas GO!')}
                     </DialogTitle>
+                    <DialogDescription className="sr-only">
+                        {language === 'es'
+                            ? 'Personaliza tus intereses, estilo de viaje y necesidades de accesibilidad.'
+                            : 'Customize your interests, travel style, and accessibility needs.'}
+                    </DialogDescription>
                     <div className="flex justify-center items-center gap-2 mt-4">
                         {[1, 2, 3].map((s) => (
                             <div key={s} className={cn("h-1.5 rounded-full transition-all duration-300", s === step ? "w-8 bg-primary" : s < step ? "w-2 bg-primary/50" : "w-2 bg-muted")} />

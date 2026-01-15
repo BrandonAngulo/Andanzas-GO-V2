@@ -94,6 +94,19 @@ export default function App() {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [activePanel, setActivePanel] = useState<ActivePanelType>("mapa");
+  // Focus management
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // Move focus to main content when panel changes to aid screen readers
+    // Small timeout to ensure render
+    setTimeout(() => {
+      if (mainRef.current) {
+        mainRef.current.focus();
+      }
+    }, 100);
+  }, [activePanel]);
+
   const [query, setQuery] = useState("");
 
   // Estado de Datos
@@ -546,18 +559,23 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full bg-muted/20">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[2000] focus:px-4 focus:py-2 focus:bg-background focus:text-primary focus:border focus:rounded-md shadow-lg transition-transform">
+        {language === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+      </a>
       <header className="sticky top-0 z-[1000] backdrop-blur-xl bg-background/80 border-b shadow-sm support-[backdrop-filter]:bg-background/60">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="icon" className={!focusMode ? "md:hidden" : ""} aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="flex items-center gap-2 mr-2"><Logo /></div>
-          <div className="hidden md:flex items-center gap-1 bg-muted/50 p-1 rounded-full border border-black/5 dark:border-white/5">
-            <Button size="sm" className="rounded-full px-4" variant={activePanel === "mapa" ? "default" : "ghost"} onClick={() => setActivePanel("mapa")}>{t('nav.map')}</Button>
-            <Button size="sm" className="rounded-full px-4" variant={activePanel === "explorar" ? "default" : "ghost"} onClick={() => setActivePanel("explorar")}>{t('nav.explore')}</Button>
-            <Button size="sm" className="rounded-full px-4" variant={activePanel === "rutas" ? "default" : "ghost"} onClick={() => setActivePanel("rutas")}>{t('nav.routes')}</Button>
-            <Button size="sm" className="rounded-full px-4" variant={activePanel === "noticias" ? "default" : "ghost"} onClick={() => setActivePanel("noticias")}>{t('nav.news')}</Button>
-          </div>
+
+          <nav className="hidden md:flex items-center gap-1 bg-muted/50 p-1 rounded-full border border-black/5 dark:border-white/5" aria-label={language === 'es' ? 'Navegación principal' : 'Main navigation'}>
+            <Button size="sm" className="rounded-full px-4" variant={activePanel === "mapa" ? "default" : "ghost"} onClick={() => setActivePanel("mapa")} aria-current={activePanel === "mapa" ? "page" : undefined}>{t('nav.map')}</Button>
+            <Button size="sm" className="rounded-full px-4" variant={activePanel === "explorar" ? "default" : "ghost"} onClick={() => setActivePanel("explorar")} aria-current={activePanel === "explorar" ? "page" : undefined}>{t('nav.explore')}</Button>
+            <Button size="sm" className="rounded-full px-4" variant={activePanel === "rutas" ? "default" : "ghost"} onClick={() => setActivePanel("rutas")} aria-current={activePanel === "rutas" ? "page" : undefined}>{t('nav.routes')}</Button>
+            <Button size="sm" className="rounded-full px-4" variant={activePanel === "noticias" ? "default" : "ghost"} onClick={() => setActivePanel("noticias")} aria-current={activePanel === "noticias" ? "page" : undefined}>{t('nav.news')}</Button>
+          </nav>
+
           <div className="flex-1" />
-          <div className="hidden md:flex items-center gap-2 w-[300px] lg:w-[360px]">
+          <div className="hidden md:flex items-center gap-2 w-[300px] lg:w-[360px]" role="search">
             <div className="relative w-full group">
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <Input
@@ -646,7 +664,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className={cn("mx-auto max-w-7xl px-4 py-6", gridClass, "gap-6")}>
+      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto max-w-7xl px-4 py-6 focus:outline-none", gridClass, "gap-6")}>
         {!focusMode && <aside className="hidden md:block sticky top-[70px] h-[calc(100vh-100px)]"><Sidebar onNavigate={(k) => setActivePanel(k as ActivePanelType)} onClose={() => { }} /></aside>}
         <section className="relative min-h-[60vh] flex flex-col">
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
