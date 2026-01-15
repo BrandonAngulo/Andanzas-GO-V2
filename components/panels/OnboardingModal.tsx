@@ -43,7 +43,8 @@ const ACCESSIBILITY_NEEDS = [
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEditing = false }) => {
     const { t, language } = useI18n();
     const { user } = useAuth();
-    const [step, setStep] = useState(1);
+    // Start at 0 for new users (Welcome), 1 for editing
+    const [step, setStep] = useState(isEditing ? 1 : 0);
     const totalSteps = 3;
 
     const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
@@ -63,7 +64,11 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                 }
             });
         }
-    }, [isOpen, user]);
+        // Reset step when reopening if not editing
+        if (isOpen && !isEditing) {
+            setStep(0);
+        }
+    }, [isOpen, user, isEditing]);
 
     const toggleInterest = (id: string) => {
         setSelectedInterests(prev =>
@@ -83,7 +88,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
     };
 
     const handleNext = () => setStep(prev => Math.min(prev + 1, totalSteps));
-    const handleBack = () => setStep(prev => Math.max(prev - 1, 1));
+    const handleBack = () => setStep(prev => Math.max(prev - 1, 0));
 
     const handleSave = async () => {
         if (!user) return;
@@ -104,6 +109,36 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
 
     const renderStepContent = () => {
         switch (step) {
+            case 0:
+                return (
+                    <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500 py-4">
+                        <div className="text-center space-y-4">
+                            <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-6 rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-6 shadow-inner">
+                                <Sparkles className="h-12 w-12 text-primary animate-pulse" />
+                            </div>
+                            <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                                {language === 'es' ? '¡Bienvenido a Andanzas GO!' : 'Welcome to Andanzas GO!'}
+                            </h3>
+                            <div className="space-y-4 text-muted-foreground leading-relaxed px-4">
+                                <p>
+                                    {language === 'es'
+                                        ? '¡Qué alegría tenerte aquí! Gracias por sumarte a nuestras Andanzas.'
+                                        : 'So glad to have you here! Thanks for joining our Adventures.'}
+                                </p>
+                                <p>
+                                    {language === 'es'
+                                        ? 'Esta aplicación es tu compañera para redescubrir la ciudad, su arte, su cultura y conectarte con una comunidad vibrante. Prepárate para explorar rutas únicas y dejar tu huella.'
+                                        : 'This app is your companion to rediscover the city, its art, culture, and connect with a vibrant community. Get ready to explore unique routes and leave your mark.'}
+                                </p>
+                                <p className="font-medium text-foreground pt-2">
+                                    {language === 'es'
+                                        ? 'Para comenzar, queremos conocerte un poco mejor y recomendarte las mejores aventuras:'
+                                        : 'To start, we want to get to know you a little better to recommend the best adventures:'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                );
             case 1:
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
@@ -139,6 +174,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                     </div>
                 );
             case 2:
+                // ... (Existing Step 2 content remains same, just ensuring context)
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="text-center space-y-2 mb-6">
@@ -175,6 +211,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                     </div>
                 );
             case 3:
+                // ... (Existing Step 3 content remains same)
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="text-center space-y-2 mb-6">
@@ -216,24 +253,31 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="max-w-2xl sm:max-h-[85vh] overflow-hidden flex flex-col">
                 <DialogHeader className="text-center pb-2 border-b">
-                    <div className="mx-auto bg-primary/10 p-2.5 rounded-full mb-2 w-fit">
-                        <Sparkles className="h-6 w-6 text-primary" />
-                    </div>
+                    {step > 0 && (
+                        <div className="mx-auto bg-primary/10 p-2.5 rounded-full mb-2 w-fit">
+                            <Sparkles className="h-6 w-6 text-primary" />
+                        </div>
+                    )}
                     <DialogTitle className="text-xl font-bold">
-                        {isEditing
-                            ? (language === 'es' ? 'Editar Preferencias' : 'Edit Preferences')
-                            : (language === 'es' ? '¡Bienvenido a Andanzas GO!' : 'Welcome to Andanzas GO!')}
+                        {step === 0
+                            ? (language === 'es' ? '¡Hola!' : 'Hello!')
+                            : (isEditing
+                                ? (language === 'es' ? 'Editar Preferencias' : 'Edit Preferences')
+                                : (language === 'es' ? 'Personaliza tu experiencia' : 'Customize your experience'))
+                        }
                     </DialogTitle>
                     <DialogDescription className="sr-only">
                         {language === 'es'
                             ? 'Personaliza tus intereses, estilo de viaje y necesidades de accesibilidad.'
                             : 'Customize your interests, travel style, and accessibility needs.'}
                     </DialogDescription>
-                    <div className="flex justify-center items-center gap-2 mt-4">
-                        {[1, 2, 3].map((s) => (
-                            <div key={s} className={cn("h-1.5 rounded-full transition-all duration-300", s === step ? "w-8 bg-primary" : s < step ? "w-2 bg-primary/50" : "w-2 bg-muted")} />
-                        ))}
-                    </div>
+                    {step > 0 && (
+                        <div className="flex justify-center items-center gap-2 mt-4">
+                            {[1, 2, 3].map((s) => (
+                                <div key={s} className={cn("h-1.5 rounded-full transition-all duration-300", s === step ? "w-8 bg-primary" : s < step ? "w-2 bg-primary/50" : "w-2 bg-muted")} />
+                            ))}
+                        </div>
+                    )}
                 </DialogHeader>
 
                 <div className="flex-1 overflow-y-auto py-4 px-1 custom-scrollbar">
@@ -241,30 +285,43 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                 </div>
 
                 <DialogFooter className="flex flex-col sm:flex-row gap-3 sm:justify-between items-center pt-4 border-t mt-auto">
-                    <Button variant="ghost" onClick={step === 1 ? onClose : handleBack} disabled={isSubmitting}>
-                        {step === 1
-                            ? (isEditing
-                                ? (language === 'es' ? 'Cancelar' : 'Cancel')
-                                : (language === 'es' ? 'Saltar por ahora' : 'Skip for now'))
-                            : (language === 'es' ? 'Atrás' : 'Back')
-                        }
-                    </Button>
-                    <Button
-                        onClick={step === totalSteps ? handleSave : handleNext}
-                        disabled={isSubmitting || (step === 1 && selectedInterests.length === 0)}
-                        className="w-full sm:w-auto min-w-[140px]"
-                    >
-                        {isSubmitting ? (
-                            <span className="animate-pulse">Saving...</span>
-                        ) : step === totalSteps ? (
-                            isEditing ? (language === 'es' ? 'Guardar Cambios' : 'Save Changes') : (language === 'es' ? 'Finalizar' : 'Finish')
-                        ) : (
-                            <>
-                                {language === 'es' ? 'Siguiente' : 'Next'}
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                            </>
-                        )}
-                    </Button>
+                    {step === 0 ? (
+                        <>
+                            <Button variant="ghost" onClick={onClose}>
+                                {language === 'es' ? 'Omitir' : 'Skip'}
+                            </Button>
+                            <Button onClick={handleNext} className="w-full sm:w-auto min-w-[140px] text-lg py-6 shadow-md hover:shadow-lg transition-all animate-in zoom-in spin-in-1">
+                                {language === 'es' ? '¡Vamos!' : "Let's Go!"} <ArrowRight className="ml-2 h-5 w-5" />
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button variant="ghost" onClick={step === 1 ? (isEditing ? onClose : handleBack) : handleBack} disabled={isSubmitting}>
+                                {step === 1
+                                    ? (isEditing
+                                        ? (language === 'es' ? 'Cancelar' : 'Cancel')
+                                        : (language === 'es' ? 'Atrás' : 'Back'))
+                                    : (language === 'es' ? 'Atrás' : 'Back')
+                                }
+                            </Button>
+                            <Button
+                                onClick={step === totalSteps ? handleSave : handleNext}
+                                disabled={isSubmitting || (step === 1 && selectedInterests.length === 0)}
+                                className="w-full sm:w-auto min-w-[140px]"
+                            >
+                                {isSubmitting ? (
+                                    <span className="animate-pulse">Saving...</span>
+                                ) : step === totalSteps ? (
+                                    isEditing ? (language === 'es' ? 'Guardar Cambios' : 'Save Changes') : (language === 'es' ? 'Finalizar' : 'Finish')
+                                ) : (
+                                    <>
+                                        {language === 'es' ? 'Siguiente' : 'Next'}
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </>
+                                )}
+                            </Button>
+                        </>
+                    )}
                 </DialogFooter>
             </DialogContent>
         </Dialog>
