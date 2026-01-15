@@ -58,6 +58,36 @@ export const userService = {
         if (error) throw error;
     },
 
+    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[] }) {
+        // Prepare update object. We map frontend keys to DB keys if necessary.
+        // Assuming current schema only has 'interests', we might need to store new fields differently
+        // IF the columns don't exist yet, we can store them in a JSON column or add them.
+        // For now, let's try to update assuming columns exist or store in metadata if possible.
+        // Since we don't have migrations tool access right now, we will store them in 'raw_user_meta_data' via auth.updateUser 
+        // OR try to update 'profiles' if we can add columns.
+
+        // Strategy: Update 'interests' in profiles table (existing column).
+        // Update 'travel_style' and 'accessibility_needs' in auth.users metadata for flexibility without schema migration for now.
+
+        if (data.interests) {
+            const { error } = await supabase
+                .from('profiles')
+                .update({ interests: data.interests })
+                .eq('id', userId);
+            if (error) throw error;
+        }
+
+        if (data.travel_style || data.accessibility_needs) {
+            const { error } = await supabase.auth.updateUser({
+                data: {
+                    travel_style: data.travel_style,
+                    accessibility_needs: data.accessibility_needs
+                }
+            });
+            if (error) console.error("Error updating user metadata:", error);
+        }
+    },
+
     async getFavorites(userId: string): Promise<string[]> {
         const { data, error } = await supabase
             .from('favorites')
