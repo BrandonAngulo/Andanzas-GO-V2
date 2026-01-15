@@ -119,59 +119,60 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                             }
                         `}</style>
                         <div className="text-center space-y-4">
-                            <div className="p-6 rounded-full w-32 h-32 mx-auto flex items-center justify-center mb-4 text-center">
-                                {/* Custom Animated Logo - Premium Version */}
-                                <div className="flex flex-col items-center gap-3 select-none" style={{ perspective: '1000px' }}>
+                            {/* Custom Animated Logo - Premium Horizontal Layout */}
+                            <div className="flex flex-row items-center justify-center gap-6 select-none py-6">
+                                {/* Animated Marker */}
+                                <div style={{ perspective: '1000px' }}>
                                     <svg
-                                        width="100"
-                                        height="120"
+                                        width="72"
+                                        height="86"
                                         viewBox="0 0 32 38"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="drop-shadow-xl"
-                                        style={{ animation: 'spin-horizontal 8s linear infinite', transformStyle: 'preserve-3d' }}
+                                        className="drop-shadow-lg"
+                                        style={{ animation: 'spin-horizontal 7s linear infinite', transformStyle: 'preserve-3d' }}
                                     >
                                         <defs>
                                             <linearGradient id="markerGradient" x1="0" y1="0" x2="32" y2="38" gradientUnits="userSpaceOnUse">
-                                                <stop offset="0%" stopColor="#4FD1C5" /> {/* Lighter Teal */}
-                                                <stop offset="50%" stopColor="#2A9D8F" /> {/* Base Teal */}
-                                                <stop offset="100%" stopColor="#1D7874" /> {/* Darker Teal */}
-                                            </linearGradient>
-                                            <linearGradient id="innerHoleGradient" x1="10" y1="10" x2="22" y2="20" gradientUnits="userSpaceOnUse">
-                                                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
-                                                <stop offset="100%" stopColor="#F0FDF4" stopOpacity="0.4" />
+                                                <stop offset="0%" stopColor="#2DD4BF" /> {/* Teal-400 */}
+                                                <stop offset="100%" stopColor="#0F766E" /> {/* Teal-700 */}
                                             </linearGradient>
                                         </defs>
 
-                                        {/* Main Marker Body */}
+                                        {/* Marker Body */}
                                         <path
                                             fillRule="evenodd"
                                             clipRule="evenodd"
                                             d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z"
                                             fill="url(#markerGradient)"
-                                            stroke="rgba(255,255,255,0.2)"
+                                            stroke="rgba(255,255,255,0.15)"
                                             strokeWidth="0.5"
                                         />
 
-                                        {/* Gloss/Shine Highlight for 3D effect */}
-                                        <ellipse cx="16" cy="8" rx="8" ry="4" fill="white" fillOpacity="0.25" style={{ mixBlendMode: 'overlay' }} />
+                                        {/* Subtle Highlight */}
+                                        <path
+                                            d="M16 0C7.16344 0 0 7.08832 0 15.8333C0 17 0.1 18.1 0.4 19.2C1.5 10 8 3 16 3C24 3 30.5 10 31.6 19.2C31.9 18.1 32 17 32 15.8333C32 7.08832 24.8366 0 16 0Z"
+                                            fill="white"
+                                            fillOpacity="0.15"
+                                        />
                                     </svg>
-
-                                    <span
-                                        className="font-black text-6xl tracking-widest drop-shadow-sm"
-                                        style={{
-                                            background: 'linear-gradient(135deg, #F97316 0%, #EA580C 50%, #C2410C 100%)',
-                                            WebkitBackgroundClip: 'text',
-                                            WebkitTextFillColor: 'transparent',
-                                            backgroundClip: 'text',
-                                            fontFamily: "'Outfit', 'Inter', system-ui, sans-serif",
-                                            filter: 'drop-shadow(0px 2px 2px rgba(234, 88, 12, 0.2))'
-                                        }}
-                                    >
-                                        GO
-                                    </span>
                                 </div>
+
+                                {/* Static Text */}
+                                <span
+                                    className="font-black text-6xl tracking-tight drop-shadow-sm pb-1"
+                                    style={{
+                                        background: 'linear-gradient(135deg, #F97316 0%, #C2410C 100%)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        backgroundClip: 'text',
+                                        fontFamily: "'Outfit', 'Inter', system-ui, sans-serif"
+                                    }}
+                                >
+                                    GO
+                                </span>
                             </div>
+
                             <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                                 {language === 'es' ? '¡Bienvenido a Andanzas GO!' : 'Welcome to Andanzas GO!'}
                             </h3>
@@ -230,7 +231,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                     </div>
                 );
             case 2:
-                // ... (Existing Step 2 content remains same, just ensuring context)
+                // ... (Existing Step 2 content)
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="text-center space-y-2 mb-6">
@@ -267,7 +268,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                     </div>
                 );
             case 3:
-                // ... (Existing Step 3 content remains same)
+                // ... (Existing Step 3 content)
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="text-center space-y-2 mb-6">
