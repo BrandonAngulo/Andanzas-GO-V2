@@ -135,22 +135,34 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
                 ) : (
                   // --- Reward Phase ---
                   <div className="space-y-4 animate-in fade-in-50">
-                    <Card className="bg-green-50 border-green-200">
+                    <Card className="bg-green-50 border-green-200 shadow-lg transform transition-all duration-500 hover:scale-105">
                       <CardHeader>
-                        <CardTitle className="text-base text-green-800 flex items-center gap-2"><Check className="h-5 w-5" /> {t('guidedRoute.correct')}</CardTitle>
+                        <CardTitle className="text-lg text-green-800 flex items-center gap-2"><Check className="h-6 w-6" /> {t('guidedRoute.correct')}</CardTitle>
                       </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="bg-white/50 p-2 rounded-md flex items-center gap-2 text-green-700 mb-2">
-                          <Award className="h-5 w-5" />
-                          <span className="font-bold">+10 {language === 'es' ? 'Puntos' : 'Points'}</span>
+                      <CardContent className="space-y-6">
+                        <div className="bg-white/60 p-4 rounded-xl flex items-center gap-3 text-green-700 shadow-sm">
+                          <div className="bg-green-100 p-2 rounded-full">
+                            <Award className="h-6 w-6 text-green-600" />
+                          </div>
+                          <div>
+                            <span className="font-bold text-lg block">+10 {language === 'es' ? 'Puntos' : 'Points'}</span>
+                            <span className="text-xs text-green-600/80 uppercase tracking-wider">{language === 'es' ? '¡Sigue así!' : 'Keep it up!'}</span>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-semibold flex items-center gap-2 mb-1"><Lightbulb className="h-4 w-4 text-yellow-500" /> {t('guidedRoute.funFact')}</h4>
-                          <p className="text-sm text-muted-foreground">{getTranslated(gamificationData, 'datoCurioso', language)}</p>
+
+                        <div className="bg-amber-50/80 p-4 rounded-lg border border-amber-100">
+                          <h4 className="font-semibold flex items-center gap-2 mb-2 text-amber-900"><Lightbulb className="h-5 w-5 text-amber-500" /> {language === 'es' ? 'Sabías que...' : 'Did you know...'}</h4>
+                          <p className="text-sm text-amber-800/90 leading-relaxed italic">"{getTranslated(gamificationData, 'datoCurioso', language)}"</p>
                         </div>
-                        <div>
-                          <h4 className="font-semibold flex items-center gap-2 mb-1"><Swords className="h-4 w-4 text-blue-500" /> {t('guidedRoute.explorerChallenge')}</h4>
-                          <p className="text-sm text-muted-foreground">{getTranslated(gamificationData, 'reto', language)}</p>
+
+                        <div className="bg-blue-50/80 p-4 rounded-lg border border-blue-100">
+                          <h4 className="font-semibold flex items-center gap-2 mb-2 text-blue-900"><Swords className="h-5 w-5 text-blue-500" /> {t('guidedRoute.explorerChallenge')}</h4>
+                          <p className="text-sm text-blue-800/90 mb-3">{getTranslated(gamificationData, 'reto', language)}</p>
+                          <textarea
+                            className="w-full text-sm p-3 rounded-md border-blue-200 bg-white placeholder:text-blue-300/70 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all resize-none"
+                            placeholder={language === 'es' ? 'Escribe aquí tu experiencia o nota sobre el reto...' : 'Write your experience or note about the challenge here...'}
+                            rows={3}
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -166,7 +178,10 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
               {t('guidedRoute.previous')}
             </Button>
             {isLastStep ? (
-              <Button onClick={onComplete} disabled={!isCorrect}>{t('fullView.completeRoute')}</Button>
+              <Button onClick={onComplete} disabled={!isCorrect} className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white shadow-lg transform active:scale-95 transition-all">
+                <Award className="mr-2 h-4 w-4" />
+                {t('fullView.completeRoute')}
+              </Button>
             ) : (
               <Button onClick={onNext} disabled={!isCorrect}>
                 {t('guidedRoute.next')}
