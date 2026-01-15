@@ -119,28 +119,54 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                             }
                         `}</style>
                         <div className="text-center space-y-4">
-                            <div className="p-6 rounded-full w-32 h-32 mx-auto flex items-center justify-center mb-4">
-                                {/* Custom Animated Logo */}
-                                <div className="flex flex-col items-center gap-2 select-none" style={{ perspective: '1000px' }}>
+                            <div className="p-6 rounded-full w-32 h-32 mx-auto flex items-center justify-center mb-4 text-center">
+                                {/* Custom Animated Logo - Premium Version */}
+                                <div className="flex flex-col items-center gap-3 select-none" style={{ perspective: '1000px' }}>
                                     <svg
-                                        width="80"
-                                        height="95"
+                                        width="100"
+                                        height="120"
                                         viewBox="0 0 32 38"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="drop-shadow-md"
-                                        style={{ animation: 'spin-horizontal 8s linear infinite' }}
+                                        className="drop-shadow-xl"
+                                        style={{ animation: 'spin-horizontal 8s linear infinite', transformStyle: 'preserve-3d' }}
                                     >
+                                        <defs>
+                                            <linearGradient id="markerGradient" x1="0" y1="0" x2="32" y2="38" gradientUnits="userSpaceOnUse">
+                                                <stop offset="0%" stopColor="#4FD1C5" /> {/* Lighter Teal */}
+                                                <stop offset="50%" stopColor="#2A9D8F" /> {/* Base Teal */}
+                                                <stop offset="100%" stopColor="#1D7874" /> {/* Darker Teal */}
+                                            </linearGradient>
+                                            <linearGradient id="innerHoleGradient" x1="10" y1="10" x2="22" y2="20" gradientUnits="userSpaceOnUse">
+                                                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
+                                                <stop offset="100%" stopColor="#F0FDF4" stopOpacity="0.4" />
+                                            </linearGradient>
+                                        </defs>
+
+                                        {/* Main Marker Body */}
                                         <path
                                             fillRule="evenodd"
                                             clipRule="evenodd"
                                             d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z"
-                                            fill="#2A9D8F"
+                                            fill="url(#markerGradient)"
+                                            stroke="rgba(255,255,255,0.2)"
+                                            strokeWidth="0.5"
                                         />
+
+                                        {/* Gloss/Shine Highlight for 3D effect */}
+                                        <ellipse cx="16" cy="8" rx="8" ry="4" fill="white" fillOpacity="0.25" style={{ mixBlendMode: 'overlay' }} />
                                     </svg>
+
                                     <span
-                                        className="font-extrabold text-5xl tracking-wide mt-2"
-                                        style={{ color: '#EA580C', fontFamily: 'system-ui, -apple-system, sans-serif' }}
+                                        className="font-black text-6xl tracking-widest drop-shadow-sm"
+                                        style={{
+                                            background: 'linear-gradient(135deg, #F97316 0%, #EA580C 50%, #C2410C 100%)',
+                                            WebkitBackgroundClip: 'text',
+                                            WebkitTextFillColor: 'transparent',
+                                            backgroundClip: 'text',
+                                            fontFamily: "'Outfit', 'Inter', system-ui, sans-serif",
+                                            filter: 'drop-shadow(0px 2px 2px rgba(234, 88, 12, 0.2))'
+                                        }}
                                     >
                                         GO
                                     </span>
