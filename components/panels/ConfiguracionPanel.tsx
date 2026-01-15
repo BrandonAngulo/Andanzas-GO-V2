@@ -202,7 +202,7 @@ const ConfiguracionPanel: React.FC<ConfiguracionPanelProps> = ({ theme, setTheme
                     <Card className="border-destructive/20 bg-destructive/5">
                         <CardHeader>
                             <CardTitle className="text-base flex items-center gap-2 text-destructive">
-                                <AlertTriangle className="h-4 w-4" /> Zona de Peligro
+                                <AlertTriangle className="h-4 w-4" /> Eliminar Cuenta
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
