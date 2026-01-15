@@ -13,6 +13,9 @@ const es = {
     cancel: "Cancelar",
     shareText: "¡Descubre Cali con Andanzas GO! Una app para explorar la cultura de la ciudad.",
     shareNotSupported: "La función de compartir no es compatible con tu navegador.",
+    termsOfService: "Términos de Servicio",
+    privacyPolicy: "Política de Privacidad",
+    loginTitle: "Iniciar Sesión / Registrarse",
 
     // Header
     openMenu: "Abrir menú",
