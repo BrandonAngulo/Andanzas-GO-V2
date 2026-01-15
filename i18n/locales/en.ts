@@ -13,6 +13,9 @@ const en = {
     cancel: "Cancel",
     shareText: "Discover Cali with Andanzas GO! An app to explore the city's culture.",
     shareNotSupported: "The share feature is not supported by your browser.",
+    termsOfService: "Terms of Service",
+    privacyPolicy: "Privacy Policy",
+    loginTitle: "Login / Register",
 
     // Header
     openMenu: "Open menu",
