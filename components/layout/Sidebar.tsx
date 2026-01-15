@@ -57,30 +57,28 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose }) => {
               <Item id="soporte" icon={HelpCircle} label={t('panelTitles.soporte')} />
             </CardContent>
           </Card>
-
-          {isAuthenticated ? (
-            <div className="pt-2 border-t">
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
-                onClick={handleLogout}
-              >
-                <LogOut className="h-4 w-4 mr-2" /> {t('logOutButton')}
-              </Button>
-            </div>
-          ) : (
-            <div className="pt-2 border-t">
-              <Button
-                variant="default"
-                className="w-full justify-start"
-                onClick={() => onNavigate('perfil')}
-              >
-                <User className="h-4 w-4 mr-2" /> {t('loginTitle') || "Iniciar Sesión"}
-              </Button>
-            </div>
-          )}
         </div>
       </ScrollArea>
+
+      <div className="p-4 border-t bg-background/50 backdrop-blur-sm mt-auto">
+        {isAuthenticated ? (
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+            onClick={handleLogout}
+          >
+            <LogOut className="h-4 w-4 mr-2" /> {t('logOutButton')}
+          </Button>
+        ) : (
+          <Button
+            variant="default"
+            className="w-full justify-start shadow-md"
+            onClick={() => onNavigate('perfil')}
+          >
+            <User className="h-4 w-4 mr-2" /> {t('loginTitle') || "Iniciar Sesión"}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

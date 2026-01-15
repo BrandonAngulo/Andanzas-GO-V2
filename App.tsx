@@ -657,6 +657,18 @@ export default function App() {
               </Button>
               {showAccessibilityMenu && <AccessibilityMenu settings={accessibilitySettings} onSettingsChange={setAccessibilitySettings} onReset={() => setAccessibilitySettings(defaultAccessibilitySettings)} />}
             </div>
+            {/* User Profile / Login Quick Access */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn("rounded-full hover:bg-muted", isAuthenticated ? "text-primary" : "")}
+              onClick={() => setActivePanel('perfil')}
+              aria-label={isAuthenticated ? t('panelTitles.perfil') : (t('loginTitle') || "Iniciar Sesión")}
+              title={isAuthenticated ? t('panelTitles.perfil') : (t('loginTitle') || "Iniciar Sesión")}
+            >
+              <User className="h-5 w-5" />
+            </Button>
+
             <Button variant={focusMode ? "default" : "outline"} size="icon" className="ml-1 rounded-full shadow-sm" aria-label={focusMode ? t('focusModeOff') : t('focusModeOn')} onClick={() => setFocusMode((v) => !v)}>
               {focusMode ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
             </Button>
