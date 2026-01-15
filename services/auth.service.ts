@@ -15,17 +15,8 @@ export const authService = {
         });
         if (error) throw error;
 
-        // Create profile immediately if user is created
-        if (data.user) {
-            await profileRepo.createProfile({
-                id: data.user.id,
-                email: data.user.email || email,
-                full_name: fullName,
-                city: 'Cali', // Default
-                language: 'es',
-                avatar_url: null
-            });
-        }
+        // Profile creation is now handled by a Database Trigger (public.handle_new_user)
+        // This prevents RLS errors when the user is not yet fully authenticated (e.g. email confirmation pending).
 
         return data;
     },
