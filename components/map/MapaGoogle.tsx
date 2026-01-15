@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { APIProvider, Map, AdvancedMarker, useMap } from '@vis.gl/react-google-maps';
 import { Filter, Loader2, Navigation, MapPin, AlertTriangle, X } from 'lucide-react';
-import { Site } from '../../types';
+import { Site, Ruta } from '../../types';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
@@ -20,6 +20,7 @@ interface MapaGoogleProps {
     isFiltered: boolean;
     onResetFilter: () => void;
     isLoading?: boolean;
+    activeRoute?: Ruta | null;
 }
 
 const DEFAULT_CENTER = { lat: 3.4516, lng: -76.5320 };

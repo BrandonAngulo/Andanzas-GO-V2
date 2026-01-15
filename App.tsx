@@ -1,7 +1,8 @@
 
 import React, { useMemo, useState, useEffect, useRef } from "react";
-import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Accessibility, Map } from "lucide-react";
+import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Accessibility, Map, X, MapPin } from "lucide-react";
 import { Button } from "./components/ui/button";
+import { Badge } from "./components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./components/ui/dialog";
@@ -242,6 +243,7 @@ export default function App() {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
   const [activeGuidedRoute, setActiveGuidedRoute] = useState<Ruta | null>(null);
+  const [showRouteModal, setShowRouteModal] = useState(false);
   const [currentRouteStep, setCurrentRouteStep] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -473,6 +475,9 @@ export default function App() {
     setRoutesInProgress(prev => [...new Set([...prev, route.id])]);
     setActiveGuidedRoute(route);
     setCurrentRouteStep(0);
+    setShowRouteModal(false); // Do not open modal immediately
+    setActivePanel("mapa"); // Go to map to see the path
+    setFullView(null); // Close detail view
   };
 
   const completeRoute = (id: string) => {
@@ -498,11 +503,12 @@ export default function App() {
       leida: false,
       icono: Route as any,
     });
+    setShowRouteModal(false);
   };
 
   const handleNextStep = () => { if (activeGuidedRoute && currentRouteStep < activeGuidedRoute.puntos.length - 1) setCurrentRouteStep(prev => prev + 1); };
   const handlePrevStep = () => { if (currentRouteStep > 0) setCurrentRouteStep(prev => prev - 1); };
-  const handleCloseGuidedRoute = () => setActiveGuidedRoute(null);
+  const handleCloseGuidedRoute = () => setShowRouteModal(false);
 
   const panelTitle = t(`panelTitles.${activePanel}`);
 
@@ -685,7 +691,7 @@ export default function App() {
               {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {t('createRoute')}</Button>}
             </CardHeader>
             <CardContent className="p-0 flex-1 relative">
-              {activePanel === 'mapa' && <MapaGoogle sites={results} onSelect={openSite} allCategories={allCategories} selectedCategories={selectedCategories} onCategoryChange={handleCategoryChange} onClearCategories={clearCategories} isFiltered={isFiltered} onResetFilter={handleResetFilter} isLoading={isLoading} />}
+              {activePanel === 'mapa' && <MapaGoogle sites={results} onSelect={openSite} allCategories={allCategories} selectedCategories={selectedCategories} onCategoryChange={handleCategoryChange} onClearCategories={clearCategories} isFiltered={isFiltered} onResetFilter={handleResetFilter} isLoading={isLoading} activeRoute={activeGuidedRoute} />}
               {activePanel === 'explorar' && <ExplorarPanel sites={sites} events={eventos} query={query} onOpenSite={openSite} onOpenEvent={openEvent} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
@@ -762,6 +768,35 @@ export default function App() {
         </div>
       )}
 
+      {/* Active Route Floating Control */}
+      {
+        activeGuidedRoute && !showRouteModal && activePanel === 'mapa' && (
+          <div className="fixed bottom-24 left-4 right-4 z-[900] md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-md">
+            <Card className="bg-background/95 backdrop-blur shadow-2xl border-primary/20 ring-1 ring-primary/10">
+              <CardContent className="p-4 flex items-center justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 animate-pulse">Ruta Activa</Badge>
+                    <span className="text-xs text-muted-foreground">{currentRouteStep + 1} / {activeGuidedRoute.puntos.length}</span>
+                  </div>
+                  <h4 className="font-semibold text-sm truncate">{getTranslated(activeGuidedRoute, 'nombre', language)}</h4>
+                </div>
+                <div className="flex gap-2 shrink-0">
+                  <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive hover:bg-destructive/10" onClick={() => { setActiveGuidedRoute(null); setRoutesInProgress(prev => prev.filter(id => id !== activeGuidedRoute.id)); }}>
+                    <X className="h-5 w-5" />
+                    <span className="sr-only">Cancelar</span>
+                  </Button>
+                  <Button onClick={() => setShowRouteModal(true)} className="h-10 px-4 rounded-full shadow-lg shadow-primary/20">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    {t('guidedRoute.imHere') || "¡Estoy Aquí!"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+      }
+
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
         <SheetContent className="w-80 p-0" showCloseButton={false}>
           <Sidebar onNavigate={(k) => { setActivePanel(k as ActivePanelType); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} />
@@ -770,10 +805,12 @@ export default function App() {
 
       <InsigniasModal open={showInsigniasModal} onOpenChange={setShowInsigniasModal} earnedInsigniaIds={earnedInsignias} allInsignias={allInsignias} />
 
-      {activeGuidedRoute && (
-        <GuidedRouteModal route={activeGuidedRoute} currentStep={currentRouteStep} onClose={handleCloseGuidedRoute} onNext={handleNextStep} onPrev={handlePrevStep} onComplete={() => completeRoute(activeGuidedRoute.id)} sites={sites} />
-      )}
+      {
+        activeGuidedRoute && showRouteModal && (
+          <GuidedRouteModal route={activeGuidedRoute} currentStep={currentRouteStep} onClose={handleCloseGuidedRoute} onNext={handleNextStep} onPrev={handlePrevStep} onComplete={() => completeRoute(activeGuidedRoute.id)} sites={sites} />
+        )
+      }
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
-    </div>
+    </div >
   );
 }
