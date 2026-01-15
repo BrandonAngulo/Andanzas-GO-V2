@@ -16,7 +16,7 @@ export const notificationsService = {
             .from('notifications')
             .select('*')
             .eq('user_id', userId)
-            .order('created_at', { ascending: false });
+            .order('fecha', { ascending: false });
 
         if (error) {
             console.error('Error fetching notifications:', error);
@@ -28,7 +28,7 @@ export const notificationsService = {
     async markAsRead(id: string) {
         const { error } = await supabase
             .from('notifications')
-            .update({ read: true })
+            .update({ leida: true })
             .eq('id', id);
 
         if (error) console.error('Error marking notification as read:', error);
@@ -37,7 +37,7 @@ export const notificationsService = {
     async markAllAsRead(userId: string) {
         const { error } = await supabase
             .from('notifications')
-            .update({ read: true })
+            .update({ leida: true })
             .eq('user_id', userId);
 
         if (error) console.error('Error marking all notifications as read:', error);
@@ -45,17 +45,17 @@ export const notificationsService = {
 
     async addNotification(notif: Omit<Notificacion, 'id' | 'fecha'>, userId: string) {
         // Helper for client-side triggered notifications (e.g. badges)
-        // Ideally these happen server-side via triggers
         const { error } = await supabase
             .from('notifications')
             .insert({
                 user_id: userId,
-                title: notif.titulo,
-                title_en: notif.titulo_en,
-                description: notif.descripcion,
-                description_en: notif.descripcion_en,
-                icon_name: 'Star', // Default or map from notif.icono
-                read: notif.leida
+                titulo: notif.titulo,
+                titulo_en: notif.titulo_en,
+                descripcion: notif.descripcion,
+                descripcion_en: notif.descripcion_en,
+                icono_name: 'Star', // Default or map from notif.icono which matches frontend type
+                leida: notif.leida,
+                fecha: new Date().toISOString()
             });
         if (error) console.error('Error adding notification:', error);
     }
@@ -64,12 +64,12 @@ export const notificationsService = {
 function mapNotification(dbNotif: any): Notificacion {
     return {
         id: dbNotif.id,
-        titulo: dbNotif.title,
-        titulo_en: dbNotif.title_en,
-        descripcion: dbNotif.description,
-        descripcion_en: dbNotif.description_en,
-        fecha: dbNotif.created_at,
-        leida: dbNotif.read,
-        icono: iconMap[dbNotif.icon_name] || Compass
+        titulo: dbNotif.titulo,
+        titulo_en: dbNotif.titulo_en,
+        descripcion: dbNotif.descripcion,
+        descripcion_en: dbNotif.descripcion_en,
+        fecha: dbNotif.fecha,
+        leida: dbNotif.leida,
+        icono: iconMap[dbNotif.icono_name] || Compass
     };
 }
