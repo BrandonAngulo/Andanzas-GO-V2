@@ -28,9 +28,21 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
         <div>{getTranslated(site, 'tipo', language)} · ⭐ {site.rating}</div>
         {site.accessibility_features && site.accessibility_features.length > 0 && (
           <div className="flex gap-1 flex-wrap">
-            {site.accessibility_features.includes('wheelchair') && <Badge variant="secondary" className="px-1 py-0"><Accessibility className="w-3 h-3 text-blue-600" /></Badge>}
-            {site.accessibility_features.includes('audio_guide') && <Badge variant="secondary" className="px-1 py-0"><Ear className="w-3 h-3 text-purple-600" /></Badge>}
-            {site.accessibility_features.includes('braille') && <Badge variant="secondary" className="px-1 py-0"><Eye className="w-3 h-3 text-green-600" /></Badge>}
+            {site.accessibility_features.includes('wheelchair') && (
+              <Badge variant="secondary" className="px-1 py-0 cursor-help" title={language === 'es' ? "Acceso para silla de ruedas" : "Wheelchair access"}>
+                <Accessibility className="w-3 h-3 text-blue-600" />
+              </Badge>
+            )}
+            {site.accessibility_features.includes('audio_guide') && (
+              <Badge variant="secondary" className="px-1 py-0 cursor-help" title={language === 'es' ? "Audioguía disponible" : "Audio guide available"}>
+                <Ear className="w-3 h-3 text-purple-600" />
+              </Badge>
+            )}
+            {site.accessibility_features.includes('braille') && (
+              <Badge variant="secondary" className="px-1 py-0 cursor-help" title={language === 'es' ? "Señalización en Braille" : "Braille signage"}>
+                <Eye className="w-3 h-3 text-green-600" />
+              </Badge>
+            )}
           </div>
         )}
       </CardContent>
