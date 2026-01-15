@@ -45,7 +45,25 @@ export const userService = {
                             console.error("Failed to repair profile:", createError);
                         }
                     }
-                } catch (recoveryError) {
+                } catch (recoveryError: any) {
+                    // Check for unique constraint violation (race condition handled)
+                    if (recoveryError?.code === '23505') {
+                        console.log("Profile already exists (race condition detected), fetching...");
+                        const { data: existingProfile } = await supabase
+                            .from('profiles')
+                            .select('*')
+                            .eq('id', userId)
+                            .single();
+
+                        if (existingProfile) {
+                            const { data: { user } } = await supabase.auth.getUser();
+                            return {
+                                ...existingProfile,
+                                travel_style: user?.user_metadata?.travel_style,
+                                accessibility_needs: user?.user_metadata?.accessibility_needs
+                            } as UserProfile;
+                        }
+                    }
                     console.error("Profile recovery exception:", recoveryError);
                 }
             }
