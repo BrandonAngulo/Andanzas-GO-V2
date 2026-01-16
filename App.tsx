@@ -731,7 +731,7 @@ export default function App() {
       </header>
 
       <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto max-w-7xl px-4 py-6 focus:outline-none", gridClass, "gap-6")}>
-        {!focusMode && <aside className="hidden md:block sticky top-[70px] h-[calc(100vh-100px)]"><Sidebar onNavigate={(k) => setActivePanel(k as ActivePanelType)} onClose={() => { }} /></aside>}
+        {!focusMode && <aside className="hidden md:block sticky top-[70px] h-[calc(100vh-100px)]"><Sidebar onNavigate={(k) => setActivePanel(k as ActivePanelType)} onClose={() => { }} activePanel={activePanel as ActivePanelType} /></aside>}
         <section className="relative min-h-[60vh] flex flex-col">
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
@@ -851,7 +851,7 @@ export default function App() {
 
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
         <SheetContent className="w-80 p-0" showCloseButton={false}>
-          <Sidebar onNavigate={(k) => { setActivePanel(k as ActivePanelType); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} />
+          <Sidebar onNavigate={(k) => { setActivePanel(k as ActivePanelType); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel as ActivePanelType} />
         </SheetContent>
       </Sheet>
 
