@@ -522,12 +522,15 @@ export default function App() {
     setRoutesCompleted(prev => [...new Set([...prev, id])]);
     setActiveGuidedRoute(null);
 
+    const completedRoute = allRutas.find(r => r.id === id);
+    const closingMsg = getTranslated(completedRoute, 'mensajeCierre', language);
+    const defaultMsg = language === 'es' ? '¡Felicitaciones! Has completado una andanza.' : 'Congratulations! You have completed a journey.';
+
     if (isAuthenticated && user) {
       gamificationService.awardPoints(100, 'Ruta completada: ' + id);
       gamificationService.unlockBadge(user.id, 'insignia-route-complete').then(unlocked => {
         if (unlocked) {
           setEarnedInsignias(prev => [...prev, 'insignia-route-complete']);
-          // Notification handled below generic
         }
       });
     }
@@ -535,8 +538,9 @@ export default function App() {
     addNotification({
       titulo: '¡Ruta Completada!',
       titulo_en: 'Route Completed!',
-      descripcion: `¡Felicitaciones! Has completado una andanza.`,
-      descripcion_en: 'Congratulations! You have completed a journey.',
+      descripcion: closingMsg || defaultMsg,
+      descripcion_en: closingMsg || defaultMsg, // Simplification: we use translated content directly
+
       leida: false,
       icono: Route as any,
     });

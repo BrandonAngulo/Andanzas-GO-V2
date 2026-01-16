@@ -85,6 +85,8 @@ export interface Ruta {
   recomendaciones?: RecomendacionRuta[];
   gamificacion?: GamificacionPunto[];
   reward_badge_id?: string;
+  mensajeCierre?: string;
+  mensajeCierre_en?: string;
 }
 
 export interface Review {
