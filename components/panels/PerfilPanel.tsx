@@ -66,16 +66,23 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
             userService.getProfile(user.id).then(setUserProfile);
 
             // Load badges
+            // Load badges
             const loadBadges = async () => {
-                const all = await gamificationService.getAllBadges();
-                setAllBadges(all);
-                const earned = await gamificationService.getBadgesForUser(user.id);
-                console.log('DEBUG: Earned badges full objects:', earned.filter(b => b.obtenida));
-                const ids = earned.filter(b => b.obtenida).map(b => b.id);
-                console.log('DEBUG: Earned badge IDs:', ids);
-                setEarnedBadgeIds(ids);
-                const reviews = await reviewsService.getByUserId(user.id);
-                setMyReviews(reviews);
+                try {
+                    const all = await gamificationService.getAllBadges();
+                    setAllBadges(all);
+
+                    const earnedIds = await gamificationService.getUserBadgeIds(user.id);
+                    // Ensure extraction is clean and log for verification
+                    console.log('DEBUG: Badge IDs from DB:', earnedIds);
+
+                    setEarnedBadgeIds(earnedIds);
+
+                    const reviews = await reviewsService.getByUserId(user.id);
+                    setMyReviews(reviews);
+                } catch (err) {
+                    console.error("Error loading profile data", err);
+                }
             };
             loadBadges();
         }

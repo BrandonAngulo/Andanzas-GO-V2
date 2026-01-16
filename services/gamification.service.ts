@@ -23,33 +23,31 @@ export const gamificationService = {
         return data.map(mapBadge);
     },
 
-    async getBadgesForUser(userId: string): Promise<Insignia[]> {
-        if (!userId) return this.getAllBadges();
+    async getUserBadgeIds(userId: string): Promise<string[]> {
+        if (!userId) return [];
 
-        const { data: allBadges, error: badgesError } = await supabase
-            .from('badges')
-            .select('*');
-
-        if (badgesError) {
-            console.error('Error fetching badges:', badgesError);
-            return [];
-        }
-
-        const { data: userBadges, error: userError } = await supabase
+        const { data, error } = await supabase
             .from('user_badges')
             .select('badge_id')
             .eq('user_id', userId);
 
-        if (userError) {
-            console.error('Error fetching user badges:', userError);
-            // Fallback to returning all badges with obtenida=false
-            return allBadges.map(mapBadge);
+        if (error) {
+            console.error('Error fetching user badge IDs:', error);
+            return [];
         }
 
-        const earnedSet = new Set(userBadges.map((ub: any) => ub.badge_id));
+        // Return IDs as strings to ensure type consistency
+        return data.map((item: any) => String(item.badge_id));
+    },
 
-        return allBadges.map((b: any) => ({
-            ...mapBadge(b),
+    async getBadgesForUser(userId: string): Promise<Insignia[]> {
+        // This is redundant now but kept for compatibility during refactor
+        const all = await this.getAllBadges();
+        const earnedIds = await this.getUserBadgeIds(userId);
+        const earnedSet = new Set(earnedIds);
+
+        return all.map(b => ({
+            ...b,
             obtenida: earnedSet.has(b.id)
         }));
     },
@@ -68,15 +66,14 @@ export const gamificationService = {
     },
 
     async unlockBadge(userId: string, badgeId: string): Promise<boolean> {
-        // Check if already obtained to avoid errors (or rely on unique constraint db side)
-        const { data: existing, error: checkError } = await supabase
+        const { data: existing } = await supabase
             .from('user_badges')
             .select('id')
             .eq('user_id', userId)
             .eq('badge_id', badgeId)
             .single();
 
-        if (existing) return false; // Already has it
+        if (existing) return false;
 
         const { error } = await supabase
             .from('user_badges')
@@ -89,15 +86,16 @@ export const gamificationService = {
         return true;
     },
 
-    // Deprecated legacy method signature support if needed, or remove
     async addPoints(userId: string, amount: number) {
         return this.awardPoints(amount, 'Generic Action');
     }
 };
 
 function mapBadge(dbBadge: any): Insignia {
+    // Ensure ID is string
+    const idStr = String(dbBadge.id);
     return {
-        id: dbBadge.id,
+        id: idStr,
         nombre: dbBadge.nombre,
         nombre_en: dbBadge.nombre_en,
         descripcion: dbBadge.descripcion,
