@@ -13,7 +13,10 @@ import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
-import { UserProfile, Insignia } from '../../types';
+import { UserProfile, Insignia, Review, Site } from '../../types';
+import { reviewsService } from '../../services/reviews.service';
+import { Trash2, ExternalLink, Star } from 'lucide-react';
+import { getTranslated } from '../../lib/utils'; // Ensure getTranslated is imported if not already, checked file content, it is.
 
 interface PerfilPanelProps {
     favCount: number;
@@ -23,6 +26,10 @@ interface PerfilPanelProps {
     onOpenInsigniasModal: () => void;
     routesInProgressCount: number;
     routesCompletedCount: number;
+    // New props for management
+    favoriteSiteIds: string[];
+    sites: Site[];
+    toggleFav: (id: string) => void;
 }
 
 const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: number | string }) => (
@@ -35,7 +42,7 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
     </div>
 );
 
-const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount }) => {
+const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav }) => {
     const { t, language } = useI18n();
     const { user, signIn, signUp, logout, isAuthenticated, resetPassword, signInWithGoogle } = useAuth();
 
@@ -51,6 +58,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
+    const [myReviews, setMyReviews] = useState<Review[]>([]);
     const [activeTab, setActiveTab] = useState("overview");
 
     React.useEffect(() => {
@@ -63,10 +71,23 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 setAllBadges(all);
                 const earned = await gamificationService.getBadgesForUser(user.id);
                 setEarnedBadgeIds(earned.map(b => b.id));
+                const reviews = await reviewsService.getByUserId(user.id);
+                setMyReviews(reviews);
             };
             loadBadges();
         }
     }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
+
+    const handleDeleteReview = async (reviewId: string) => {
+        if (confirm(t('deleteConfirm') || "¿Estás seguro de eliminar esta reseña?")) {
+            const success = await reviewsService.deleteReview(reviewId);
+            if (success) {
+                setMyReviews(prev => prev.filter(r => r.id !== reviewId));
+            }
+        }
+    };
+
+    const myFavorites = sites.filter(s => favoriteSiteIds.includes(s.id));
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -278,10 +299,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
                 {/* Tabs Navigation */}
                 <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-3 h-12 rounded-xl bg-muted/50 p-1 mb-6">
-                        <TabsTrigger value="overview" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">General</TabsTrigger>
-                        <TabsTrigger value="badges" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">Insignias</TabsTrigger>
-                        <TabsTrigger value="settings" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">Perfil</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-4 h-12 rounded-xl bg-muted/50 p-1 mb-6">
+                        <TabsTrigger value="overview" className="rounded-lg text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm">General</TabsTrigger>
+                        <TabsTrigger value="badges" className="rounded-lg text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm">Insignias</TabsTrigger>
+                        <TabsTrigger value="activity" className="rounded-lg text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm">Actividad</TabsTrigger>
+                        <TabsTrigger value="settings" className="rounded-lg text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm">Perfil</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="overview" className="space-y-6 mt-0">
@@ -342,6 +364,90 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
                                     Cargando insignias...
                                 </div>
+                            )}
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="activity" className="mt-0 space-y-6">
+                        {/* Favorites Section */}
+                        <div className="space-y-3">
+                            <h3 className="font-semibold text-sm flex items-center gap-2">
+                                <Heart className="h-4 w-4 text-primary" /> {t('profile.favorites')} ({myFavorites.length})
+                            </h3>
+                            {myFavorites.length > 0 ? (
+                                <div className="grid gap-2">
+                                    {myFavorites.map(site => (
+                                        <Card key={site.id} className="group overflow-hidden border-none shadow-sm bg-muted/20 hover:bg-muted/40 transition-colors">
+                                            <div className="flex p-3 gap-3">
+                                                <div className="h-16 w-16 rounded-md bg-muted flex-shrink-0 overflow-hidden">
+                                                    <img src={site.logoUrl} alt={site.nombre} className="h-full w-full object-cover" />
+                                                </div>
+                                                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                                    <h4 className="font-semibold truncate">{getTranslated(site, 'nombre', language)}</h4>
+                                                    <p className="text-xs text-muted-foreground truncate">{getTranslated(site, 'tipo', language)}</p>
+                                                </div>
+                                                <div className="flex flex-col justify-center gap-2">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                                                        onClick={() => toggleFav(site.id)}
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-muted-foreground italic text-center py-4 bg-muted/10 rounded-lg">No tienes favoritos aún.</p>
+                            )}
+                        </div>
+
+                        {/* Reviews Section */}
+                        <div className="space-y-3">
+                            <h3 className="font-semibold text-sm flex items-center gap-2">
+                                <MessageSquare className="h-4 w-4 text-orange-500" /> {t('profile.reviews')} ({myReviews.length})
+                            </h3>
+                            {myReviews.length > 0 ? (
+                                <div className="grid gap-2">
+                                    {myReviews.map(review => {
+                                        const site = sites.find(s => s.id === review.siteId);
+                                        return (
+                                            <Card key={review.id} className="border-none shadow-sm bg-muted/20">
+                                                <div className="p-3 space-y-2">
+                                                    <div className="flex justify-between items-start">
+                                                        <div>
+                                                            <h4 className="font-semibold text-sm">
+                                                                {site ? getTranslated(site, 'nombre', language) : 'Sitio desconocido'}
+                                                            </h4>
+                                                            <div className="flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400 mt-1">
+                                                                <Star className="h-3 w-3 fill-current" />
+                                                                <span>{review.rating}/5</span>
+                                                                <span className="text-muted-foreground mx-1">•</span>
+                                                                <span className="text-muted-foreground">{new Date(review.createdAt).toLocaleDateString()}</span>
+                                                            </div>
+                                                        </div>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-6 w-6 text-destructive hover:bg-destructive/10 -mt-1 -mr-1"
+                                                            onClick={() => handleDeleteReview(review.id)}
+                                                        >
+                                                            <Trash2 className="h-3 w-3" />
+                                                        </Button>
+                                                    </div>
+                                                    {review.text && (
+                                                        <p className="text-xs text-muted-foreground line-clamp-2">"{review.text}"</p>
+                                                    )}
+                                                </div>
+                                            </Card>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-muted-foreground italic text-center py-4 bg-muted/10 rounded-lg">No has escrito reseñas aún.</p>
                             )}
                         </div>
                     </TabsContent>

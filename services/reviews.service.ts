@@ -90,6 +90,19 @@ export const reviewsService = {
             return null;
         }
         return mapReview(data);
+    },
+
+    async deleteReview(reviewId: string): Promise<boolean> {
+        const { error } = await supabase
+            .from('reviews')
+            .delete()
+            .eq('id', reviewId);
+
+        if (error) {
+            console.error('Error deleting review:', error);
+            return false;
+        }
+        return true;
     }
 };
 

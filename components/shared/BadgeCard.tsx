@@ -24,7 +24,7 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ insignia, obtenida, compac
                 "relative overflow-hidden transition-all duration-300 group cursor-pointer h-full flex flex-col items-center justify-center",
                 obtenida
                     ? "border-yellow-500/50 bg-gradient-to-br from-yellow-50/50 to-orange-50/50 dark:from-yellow-900/10 dark:to-orange-900/10 hover:scale-[1.02] hover:shadow-md"
-                    : "border-muted bg-muted/20 opacity-80 hover:opacity-100",
+                    : "border-dashed border-muted-foreground/20 bg-muted/10 opacity-70 grayscale hover:grayscale-0 hover:opacity-100",
                 compact ? "p-3" : "p-4"
             )}
             onClick={() => !obtenida && setShowHint(!showHint)}
@@ -36,13 +36,13 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ insignia, obtenida, compac
 
             <div className={cn(
                 "relative rounded-full transition-transform duration-500 group-hover:rotate-12 flex-shrink-0 flex items-center justify-center",
-                obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted text-muted-foreground",
+                obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted/30 text-muted-foreground/40",
                 compact ? "w-12 h-12 p-3" : "w-16 h-16 p-4 mb-3"
             )}>
-                <Icon className={cn("w-full h-full", !obtenida && "opacity-50")} />
+                <Icon className={cn("w-full h-full", !obtenida && "opacity-20")} />
                 {!obtenida && (
                     <div className="absolute inset-0 grid place-items-center">
-                        <Lock className="w-1/2 h-1/2 text-foreground/50" />
+                        <Lock className="w-6 h-6 text-muted-foreground/60" />
                     </div>
                 )}
             </div>
