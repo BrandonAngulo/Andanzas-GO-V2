@@ -89,18 +89,32 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
   return (
     <>
       <Dialog open={true} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0">
-          <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
-            <div className="flex items-center gap-2">
-              <div>
-                <h2 className="text-lg font-semibold">{getTranslated(route, 'nombre', language)}</h2>
-                <p className="text-sm text-muted-foreground">{t('guidedRoute.point')} {currentStep + 1} {t('guidedRoute.of')} {route.puntos.length}: {getTranslated(currentPoint, 'nombre', language)}</p>
+        <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0 border-none shadow-2xl bg-background/95 backdrop-blur-xl md:rounded-3xl overflow-hidden">
+          {/* Header with Glassmorphism */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/50 backdrop-blur-md z-10 sticky top-0">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-full text-primary">
+                {route.tipo === 'historica' ? <Info className="h-5 w-5" /> : <Swords className="h-5 w-5" />}
               </div>
-              <Button variant="ghost" size="icon" className="ml-2 text-yellow-600" onClick={() => setShowPointsInfo(true)}>
+              <div>
+                <h2 className="text-lg font-bold tracking-tight text-foreground/90">{getTranslated(route, 'nombre', language)}</h2>
+                <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                  <span className="bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                    {t('guidedRoute.point')} {currentStep + 1} / {route.puntos.length}
+                  </span>
+                  <span>{getTranslated(currentPoint, 'nombre', language)}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors" onClick={() => setShowPointsInfo(true)}>
                 <Info className="h-5 w-5" />
               </Button>
+              <Button variant="ghost" size="icon" className="hover:bg-destructive/10 hover:text-destructive transition-colors rounded-full" onClick={onClose}>
+                <X className="h-5 w-5" />
+              </Button>
             </div>
-            <Button variant="ghost" size="icon" onClick={onClose}><X className="h-5 w-5" /></Button>
+
           </div>
 
           <ScrollArea className="flex-1">
@@ -215,8 +229,8 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
               </Button>
             )}
           </div>
-        </DialogContent>
-      </Dialog>
+        </DialogContent >
+      </Dialog >
 
       <Dialog open={showPointsInfo} onOpenChange={setShowPointsInfo}>
         <DialogContent>
