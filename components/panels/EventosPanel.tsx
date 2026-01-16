@@ -244,7 +244,9 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
             <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{t('eventosFilters.category')}:</span>
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger className="h-7 max-w-[200px] text-xs">
-                <SelectValue placeholder="Todas" />
+                <span className="truncate">
+                  {categoryFilter === 'all' ? t('eventosFilters.allCategories') : categoryFilter}
+                </span>
               </SelectTrigger>
               <SelectContent>
                 {eventCategories.map(cat => (
