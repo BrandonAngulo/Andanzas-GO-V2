@@ -244,9 +244,13 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         <div className="relative mb-4">
                             <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-orange-400 p-[3px] shadow-xl shadow-primary/20">
                                 <div className="w-full h-full rounded-full bg-background border-4 border-background overflow-hidden grid place-items-center">
-                                    <span className="text-3xl font-bold text-primary">
-                                        {displayName.charAt(0).toUpperCase()}
-                                    </span>
+                                    {user?.user_metadata?.avatar_url ? (
+                                        <img src={user.user_metadata.avatar_url} alt={displayName} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <span className="text-3xl font-bold text-primary">
+                                            {displayName.charAt(0).toUpperCase()}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                             <div className="absolute -bottom-2 transform left-1/2 -translate-x-1/2 bg-foreground text-background text-[10px] font-bold px-2 py-0.5 rounded-full border border-background shadow-sm whitespace-nowrap">
