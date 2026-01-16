@@ -352,14 +352,33 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </TabsContent>
 
                     <TabsContent value="badges" className="mt-0">
+                        {/* DEBUG SECTION - TO BE REMOVED */}
+                        <div className="p-4 mb-4 bg-slate-950 text-green-400 text-xs font-mono rounded-lg border border-green-900 overflow-hidden">
+                            <p className="font-bold border-b border-green-900 mb-2 pb-1">DEBUG DIAGNOSTICS</p>
+                            <div className="grid gap-1">
+                                <p>User ID: {user?.id?.substring(0, 8)}...</p>
+                                <p>Earned IDs (in state): {JSON.stringify(earnedBadgeIds)}</p>
+                                <p>Total Badges: {allBadges.length}</p>
+                                <p>First Badge ID: {allBadges[0]?.id} (Type: {typeof allBadges[0]?.id})</p>
+                                <p>Comparison Test: {allBadges.length > 0 && earnedBadgeIds.length > 0
+                                    ? `"${allBadges[0].id}" === "${earnedBadgeIds[0]}" -> ${String(allBadges[0].id) === String(earnedBadgeIds[0])}`
+                                    : 'N/A'}
+                                </p>
+                            </div>
+                        </div>
+
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {allBadges.length > 0 ? (
                                 allBadges.map(badge => (
-                                    <BadgeCard
-                                        key={badge.id}
-                                        insignia={badge}
-                                        obtenida={earnedBadgeIds.includes(badge.id)}
-                                    />
+                                    <div key={badge.id} className="relative group/debug">
+                                        <BadgeCard
+                                            insignia={badge}
+                                            obtenida={earnedBadgeIds.includes(String(badge.id))}
+                                        />
+                                        <div className="absolute top-1 left-1 bg-black/70 text-white text-[10px] px-1 rounded opacity-50 hover:opacity-100 pointer-events-none">
+                                            ID: {badge.id}
+                                        </div>
+                                    </div>
                                 ))
                             ) : (
                                 <div className="col-span-full py-8 text-center text-muted-foreground">
