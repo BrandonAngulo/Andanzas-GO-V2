@@ -111,8 +111,8 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
 
     const RouteCard = ({ route, actions, isCustom = false }: { route: Ruta, actions?: React.ReactNode, isCustom?: boolean }) => (
         <Card className="group overflow-hidden border-border/50 bg-gradient-to-br from-background to-muted/30 dark:from-background dark:to-muted/10 hover:shadow-md hover:border-primary/20 transition-all duration-300">
-            <CardContent className="p-4">
-                <div className="flex flex-col sm:flex-row gap-4">
+            <CardContent className="p-6">
+                <div className="flex flex-col sm:flex-row gap-6 items-start">
                     {/* Icon / Avatar placeholder */}
                     <div className="hidden sm:flex shrink-0 w-12 h-12 rounded-full bg-primary/10 items-center justify-center text-primary">
                         {isCustom ? <Compass className="w-6 h-6" /> : <Map className="w-6 h-6" />}
@@ -150,7 +150,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                         <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 justify-between mt-auto">
                             {isCustom && (
                                 <div className="flex items-center gap-2 text-xs text-muted-foreground w-full sm:w-auto justify-start">
-                                    <Switch id={`privacy-${route.id}`} checked={route.publico} onCheckedChange={() => onTogglePrivacy(route.id)} className="scale-75 origin-left" />
+                                    <Switch id={`privacy-${route.id}`} checked={route.publico} onChange={() => onTogglePrivacy(route.id)} className="scale-75 origin-left" />
                                     <label htmlFor={`privacy-${route.id}`} className="cursor-pointer select-none">
                                         {route.publico ? t('routes.public') : t('routes.private')}
                                     </label>
