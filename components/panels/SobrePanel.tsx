@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Instagram, Facebook, Globe, Heart, Sun, Map, Users, Info } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import Logo from '../layout/Logo';
@@ -27,13 +27,13 @@ const SobrePanel: React.FC = () => {
                 <div className="grid gap-4">
                     {/* Mission */}
                     <Card className="group overflow-hidden border-border/50 bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/20 dark:to-background hover:shadow-md transition-all">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="p-2 rounded-full bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
-                                    <Sun className="h-5 w-5" />
-                                </div>
-                                <h3 className="font-bold text-lg text-foreground">{t('about.missionTitle')}</h3>
+                        <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6">
+                            <div className="p-2.5 rounded-full bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+                                <Sun className="h-6 w-6" />
                             </div>
+                            <CardTitle className="text-lg">{t('about.missionTitle')}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
                             <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors">
                                 {t('about.missionText')}
                             </p>
@@ -42,13 +42,13 @@ const SobrePanel: React.FC = () => {
 
                     {/* What Is */}
                     <Card className="group overflow-hidden border-border/50 bg-gradient-to-br from-teal-50 to-white dark:from-teal-950/20 dark:to-background hover:shadow-md transition-all">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="p-2 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">
-                                    <Map className="h-5 w-5" />
-                                </div>
-                                <h3 className="font-bold text-lg text-foreground">{t('about.whatIsTitle')}</h3>
+                        <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6">
+                            <div className="p-2.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">
+                                <Map className="h-6 w-6" />
                             </div>
+                            <CardTitle className="text-lg">{t('about.whatIsTitle')}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
                             <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors">
                                 {t('about.whatIsText')}
                             </p>
@@ -57,13 +57,13 @@ const SobrePanel: React.FC = () => {
 
                     {/* Who Is */}
                     <Card className="group overflow-hidden border-border/50 bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/20 dark:to-background hover:shadow-md transition-all">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="p-2 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                                    <Users className="h-5 w-5" />
-                                </div>
-                                <h3 className="font-bold text-lg text-foreground">{t('about.whoIsTitle')}</h3>
+                        <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6">
+                            <div className="p-2.5 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                                <Users className="h-6 w-6" />
                             </div>
+                            <CardTitle className="text-lg">{t('about.whoIsTitle')}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
                             <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors">
                                 {t('about.whoIsText')}
                             </p>
