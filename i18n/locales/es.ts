@@ -227,7 +227,10 @@ const es = {
         explorerChallenge: "Reto del Explorador:",
         previous: "Anterior",
         next: "Siguiente",
-        error: "Error: Contenido de la ruta no disponible."
+        error: "No pudimos cargar la información de este punto.",
+        imHere: "Resolver Desafío",
+        activeRoute: "Ruta Activa",
+        cancel: "Cancelar ruta"
     },
 
     // Insignias Modal
@@ -338,17 +341,7 @@ const es = {
         daysAgo: "hace {{count}} d",
     },
 
-    // Guided Route
-    guidedRoute: {
-        error: "No pudimos cargar la información de este punto.",
-        point: "Punto",
-        of: "de",
-        testYourKnowledge: "¡Pon a prueba tu conocimiento!",
-        checkAnswer: "Verificar Respuesta",
-        imHere: "Resolver Desafío",
-        activeRoute: "Ruta Activa",
-        cancel: "Cancelar ruta"
-    }
+
 };
 
 export type Translations = typeof es;
