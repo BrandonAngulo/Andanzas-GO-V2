@@ -32,7 +32,7 @@ const TendenciasPanel: React.FC<TendenciasPanelProps> = ({ items, query, onOpenS
       <div className="grid gap-3">
         {filteredItems.length === 0 && <p className="text-center text-muted-foreground p-4">No se encontraron resultados</p>}
         {filteredItems.map((s, idx) => (
-          <Card key={s.id} className="group overflow-hidden border-border/50 bg-gradient-to-br from-background to-muted/30 dark:from-background dark:to-muted/10 hover:shadow-md hover:border-primary/20 transition-all duration-300">
+          <Card key={s.id} className="group overflow-hidden border border-border/60 bg-gradient-to-br from-background via-muted/20 to-muted/40 dark:from-background dark:to-muted/10 hover:shadow-lg hover:border-primary/30 transition-all duration-300">
             <CardContent className="p-6 flex items-center gap-6">
               <Badge variant="secondary" className="rounded-full h-7 w-7 flex items-center justify-center flex-shrink-0">{idx + 1}</Badge>
               <LazyImage

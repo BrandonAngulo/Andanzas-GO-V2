@@ -53,7 +53,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
   return (
     <Card
       className={cn(
-        "overflow-hidden flex flex-col hover:shadow-md transition-all duration-300 group cursor-pointer border-l-4 border-t border-b border-r border-border/50 bg-gradient-to-br from-background to-muted/30 dark:from-background dark:to-muted/10",
+        "overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 group cursor-pointer border-l-4 border-t border-b border-r border-border/60 bg-gradient-to-br from-background via-muted/20 to-muted/40 dark:from-background dark:to-muted/10",
         colorClass.split(' ')[0]
       )}
       onClick={() => onOpenEvent(event)}
