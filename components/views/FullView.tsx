@@ -23,9 +23,12 @@ interface FullViewProps {
     routesInProgress: string[];
     routesCompleted: string[];
     sites: Site[];
+    activeRoute?: Ruta | null;
+    visitedPoints?: string[];
+    onVisitPoint?: () => void;
 }
 
-const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, addReview, addToRoute, goToPlaceInMap, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, sites }) => {
+const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, addReview, addToRoute, goToPlaceInMap, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, sites, activeRoute, visitedPoints, onVisitPoint }) => {
     const { t, language } = useI18n();
     const { user } = useAuth();
     const { type, data } = view;
@@ -76,7 +79,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
                         </div>
                     )}
 
-                    {type === 'site' && <SiteDetail data={data} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} />}
+                    {type === 'site' && <SiteDetail data={data} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} activeRoute={activeRoute} visitedPoints={visitedPoints} onVisitPoint={onVisitPoint} />}
                     {type === 'event' && <EventDetail data={data} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} sites={sites} />}
                     {type === 'route' && <RouteDetail data={data} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r: Ruta) => handleAuthAction(() => onStartRoute(r))} onCompleteRoute={onCompleteRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
 
@@ -156,10 +159,33 @@ const RecomendacionCard: React.FC<{ recomendacion: RecomendacionRuta }> = ({ rec
 
 
 // Site Detail Component
-const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPlaceInMap: any }> = ({ data, addReview, addToRoute, goToPlaceInMap }) => {
+const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPlaceInMap: any, activeRoute?: Ruta | null, visitedPoints?: string[], onVisitPoint?: () => void }> = ({ data, addReview, addToRoute, goToPlaceInMap, activeRoute, visitedPoints, onVisitPoint }) => {
     const { t, language } = useI18n();
+    const isInRoute = activeRoute?.puntos.includes(data.id);
+    const isVisited = visitedPoints?.includes(data.id);
+
     return (
         <div className="grid gap-4">
+            {isInRoute && (
+                <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between mb-2">
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-primary uppercase tracking-wide opacity-80">{t('guidedRoute.activeRoute') || "Ruta Activa"}</span>
+                        <span className="font-bold text-lg">{isVisited ? (t('visitCompleted') || "¡Sitio Visitado!") : (t('visitPending') || "¿Estás aquí?")}</span>
+                    </div>
+                    {!isVisited && onVisitPoint && (
+                        <Button onClick={onVisitPoint} size="lg" className="rounded-full font-bold shadow-lg shadow-primary/20 animate-pulse hover:animate-none">
+                            <CheckCircle className="h-5 w-5 mr-2" />
+                            {t('checkIn') || "Registrar Visita"}
+                        </Button>
+                    )}
+                    {isVisited && (
+                        <div className="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 p-2 rounded-full">
+                            <CheckCircle className="h-6 w-6" />
+                        </div>
+                    )}
+                </div>
+            )}
+
             <div className="flex items-start justify-between gap-3">
                 <div>
                     <h2 className="text-2xl font-semibold leading-tight">{getTranslated(data, 'nombre', language)}</h2>
