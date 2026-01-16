@@ -31,21 +31,18 @@ export const authService = {
     },
 
     async signInWithGoogle() {
-        // Only specify redirectTo if we are on localhost, to allow dev flow.
-        // In production, we trust the Supabase "Site URL" setting to replace dynamic checking.
-        // This solves "Invalid Path" errors caused by dynamic Vercel preview URLs or mismatching schemes.
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        // Always specify redirectTo to ensure the user returns to the current domain (e.g. Vercel)
+        // rather than the Supabase "Site URL" which might be set to localhost by mistake.
+        // NOTE: This requires 'window.location.origin' (e.g. https://yourapp.vercel.app) to be in Supabase "Redirect URLs".
+        const redirectUrl = window.location.origin;
 
-        const options: { redirectTo?: string } = {};
-        if (isLocal) {
-            options.redirectTo = window.location.origin;
-        }
-
-        console.log("Initiating Google Auth", { isLocal, options });
+        console.log("Initiating Google Auth with explicit redirect:", redirectUrl);
 
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
-            options
+            options: {
+                redirectTo: redirectUrl
+            }
         });
         if (error) {
             console.error("GOOGLE AUTH ERROR:", error);
