@@ -759,9 +759,9 @@ export default function App() {
 
       <BottomNav activePanel={activePanel} setActivePanel={setActivePanel} />
 
-      <div className="fixed bottom-24 md:bottom-8 right-6 flex flex-col-reverse items-end gap-3 z-[500]">
-        <Button variant="destructive" size="icon" className="rounded-full shadow-lg shadow-destructive/40 h-14 w-14 hover:scale-105 transition-transform" aria-label={t('sos.title')} onClick={() => handleShowSOS(true)}><AlertTriangle className="h-6 w-6" /></Button>
-        <Button variant="secondary" size="icon" className="rounded-full shadow-lg h-12 w-12 hover:scale-105 transition-transform" aria-label={t('share')} onClick={handleShare}><Share2 className="h-5 w-5" /></Button>
+      <div className="fixed bottom-24 md:bottom-8 right-4 flex flex-col-reverse items-end gap-2 z-[500]">
+        <Button variant="destructive" size="icon" className="rounded-full shadow-lg shadow-destructive/30 h-11 w-11 hover:scale-110 transition-transform" aria-label={t('sos.title')} onClick={() => handleShowSOS(true)}><AlertTriangle className="h-5 w-5" /></Button>
+        <Button variant="secondary" size="icon" className="rounded-full shadow-md h-9 w-9 opacity-80 hover:opacity-100 hover:scale-110 transition-all border border-border/50" aria-label={t('share')} onClick={handleShare}><Share2 className="h-4 w-4" /></Button>
       </div>
 
       <Sheet open={aiSheetOpen} onOpenChange={handleShowAiSheet} side="right">
