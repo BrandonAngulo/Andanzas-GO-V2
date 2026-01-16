@@ -5,12 +5,15 @@ import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2 } from 'lucide-react';
+import { BadgeCard } from '../shared/BadgeCard';
+import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
-import { UserProfile } from '../../types';
+import { UserProfile, Insignia } from '../../types';
 
 interface PerfilPanelProps {
     favCount: number;
@@ -46,10 +49,22 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [loading, setLoading] = useState(false);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
+    const [allBadges, setAllBadges] = useState<Insignia[]>([]);
+    const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
+    const [activeTab, setActiveTab] = useState("overview");
 
     React.useEffect(() => {
         if (user) {
             userService.getProfile(user.id).then(setUserProfile);
+
+            // Load badges
+            const loadBadges = async () => {
+                const all = await gamificationService.getAllBadges();
+                setAllBadges(all);
+                const earned = await gamificationService.getBadgesForUser(user.id);
+                setEarnedBadgeIds(earned.map(b => b.id));
+            };
+            loadBadges();
         }
     }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
 
@@ -221,78 +236,143 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         <ScrollArea className="h-[72vh]">
             <div className="p-3 space-y-6">
 
-                {/* Main Header Section */}
-                <div className="flex flex-col sm:flex-row gap-4 items-start justify-between bg-card p-4 rounded-xl border shadow-sm">
-                    <div className="space-y-1">
-                        <h2 className="text-2xl font-bold">{displayName}</h2>
-                        <p className="text-muted-foreground text-sm flex items-center gap-1.5">
-                            <Award className="h-4 w-4 text-orange-500" />
-                            {t('profile.level')}: <span className="font-semibold text-foreground">{getLevelTitle(userProfile?.level || 1)} (Lvl {userProfile?.level || 1})</span>
+                {/* Header Profile Section */}
+                <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50" />
+
+                    <div className="relative p-6 flex flex-col items-center text-center z-10">
+                        <div className="relative mb-4">
+                            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-orange-400 p-[3px] shadow-xl shadow-primary/20">
+                                <div className="w-full h-full rounded-full bg-background border-4 border-background overflow-hidden grid place-items-center">
+                                    <span className="text-3xl font-bold text-primary">
+                                        {displayName.charAt(0).toUpperCase()}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="absolute -bottom-2 transform left-1/2 -translate-x-1/2 bg-foreground text-background text-[10px] font-bold px-2 py-0.5 rounded-full border border-background shadow-sm whitespace-nowrap">
+                                Lvl {userProfile?.level || 1}
+                            </div>
+                        </div>
+
+                        <h2 className="text-2xl font-bold mb-1">{displayName}</h2>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1.5 mb-4">
+                            <MapPin className="h-3 w-3" /> Cali, Colombia
                         </p>
-                        <p className="text-xs text-muted-foreground bg-muted inline-block px-2 py-0.5 rounded-full">{user?.email}</p>
+
+                        <div className="flex gap-4 w-full max-w-sm justify-center">
+                            <div className="flex flex-col items-center p-3 bg-background/50 rounded-xl flex-1 backdrop-blur-sm border shadow-sm">
+                                <span className="text-xl font-bold text-primary">{userProfile?.points || 0}</span>
+                                <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">{t('profile.culturePoints')}</span>
+                            </div>
+                            <div className="flex flex-col items-center p-3 bg-background/50 rounded-xl flex-1 backdrop-blur-sm border shadow-sm">
+                                <span className="text-xl font-bold text-foreground">{insigniasCount}</span>
+                                <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">{t('profile.badges')}</span>
+                            </div>
+                        </div>
                     </div>
-                    <Card className="w-full sm:w-auto sm:min-w-[140px] shadow-none border-none bg-primary/5">
-                        <CardHeader className="p-3 pb-1">
-                            <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{t('profile.culturePoints')}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-3 pt-0">
-                            <p className="text-3xl font-black text-primary">{userProfile?.points || 0}</p>
-                        </CardContent>
-                    </Card>
                 </div>
 
-                {/* Statistics Card */}
-                <Card className="border-none shadow-none ring-1 ring-border">
-                    <CardHeader className="pb-3">
-                        <CardTitle className="text-base flex items-center gap-2"><Trophy className="h-4 w-4" /> {t('profile.myStats')}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                        <StatItem icon={Heart} label={t('profile.favorites')} value={favCount} />
-                        <StatItem icon={MessageSquare} label={t('profile.reviews')} value={reviewsCount} />
-                        <StatItem icon={RouteIcon} label={t('profile.routesCreated')} value={rutasCount} />
-                        <StatItem icon={Flag} label={t('profile.routesInProgress')} value={routesInProgressCount} />
-                        <StatItem icon={Trophy} label={t('profile.routesCompleted')} value={routesCompletedCount} />
-                        <StatItem icon={Award} label={t('profile.badges')} value={insigniasCount} />
-                    </CardContent>
-                    <CardFooter className="pt-2">
-                        <Button onClick={onOpenInsigniasModal} variant="outline" className="w-full border-primary/20 hover:bg-primary/5 group">
-                            <Award className="h-4 w-4 mr-2 group-hover:text-primary transition-colors" />
-                            {t('profile.viewBadgeCollection')}
-                        </Button>
-                    </CardFooter>
-                </Card>
+                {/* Tabs Navigation */}
+                <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
+                    <TabsList className="grid w-full grid-cols-3 h-12 rounded-xl bg-muted/50 p-1 mb-6">
+                        <TabsTrigger value="overview" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">General</TabsTrigger>
+                        <TabsTrigger value="badges" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">Insignias</TabsTrigger>
+                        <TabsTrigger value="settings" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">Perfil</TabsTrigger>
+                    </TabsList>
 
-                {/* Settings Card */}
-                <Card className="border-none shadow-none ring-1 ring-border">
-                    <CardHeader className="pb-3">
-                        <CardTitle className="text-base">{t('profile.accountSettings')}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                            <div>
-                                <h4 className="text-sm font-medium">{language === 'es' ? 'Preferencias y Accesibilidad' : 'Preferences & Accessibility'}</h4>
-                                <p className="text-xs text-muted-foreground">
-                                    {userProfile?.interests && userProfile.interests.length > 0
-                                        ? `${userProfile.interests.length} intereses, ${userProfile.accessibility_needs?.length || 0} necesidades`
-                                        : (language === 'es' ? 'Configura tu perfil de viajero' : 'Setup your travel profile')}
-                                </p>
-                            </div>
-                            <Button variant="outline" size="sm" onClick={() => setShowInterestsModal(true)}>
-                                {t('edit')}
-                            </Button>
+                    <TabsContent value="overview" className="space-y-6 mt-0">
+                        {/* Stats Grid */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-none shadow-sm">
+                                <CardContent className="p-4 flex flex-col gap-2">
+                                    <RouteIcon className="h-5 w-5 text-blue-500" />
+                                    <span className="text-2xl font-bold">{routesCompletedCount}</span>
+                                    <span className="text-xs opacity-70">Rutas Completadas</span>
+                                </CardContent>
+                            </Card>
+                            <Card className="bg-gradient-to-br from-orange-500/10 to-red-500/10 border-none shadow-sm">
+                                <CardContent className="p-4 flex flex-col gap-2">
+                                    <MessageSquare className="h-5 w-5 text-orange-500" />
+                                    <span className="text-2xl font-bold">{reviewsCount}</span>
+                                    <span className="text-xs opacity-70">Reseñas Publicadas</span>
+                                </CardContent>
+                            </Card>
+                            <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-none shadow-sm col-span-2">
+                                <CardContent className="p-4 flex items-center justify-between">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-xs opacity-70 uppercase tracking-widest">Favoritos</span>
+                                        <span className="text-2xl font-bold">{favCount}</span>
+                                    </div>
+                                    <Heart className="h-8 w-8 text-green-500 opacity-20" />
+                                </CardContent>
+                            </Card>
                         </div>
-                        <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                            <label htmlFor="notifications-switch" className="text-sm font-medium">{t('profile.enableNotifications')}</label>
-                            <Switch defaultChecked id="notifications-switch" />
+
+                        {/* Recent Activity Placeholder */}
+                        <div className="space-y-3">
+                            <h3 className="font-semibold text-sm flex items-center gap-2">
+                                <Share2 className="h-4 w-4" /> Actividad Reciente
+                            </h3>
+                            <Card className="border-dashed shadow-none bg-muted/30">
+                                <CardContent className="p-6 text-center text-sm text-muted-foreground">
+                                    Aún no hay actividad reciente para mostrar.
+                                    <br />
+                                    <span className="text-xs opacity-70">¡Empieza una ruta para llenar tu historial!</span>
+                                </CardContent>
+                            </Card>
                         </div>
-                    </CardContent>
-                    <CardFooter className="pt-2">
-                        <Button variant="ghost" onClick={() => logout()} className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive">
-                            <LogIn className="h-4 w-4 mr-2 rotate-180" />
-                            {t('logOutButton')}
-                        </Button>
-                    </CardFooter>
-                </Card>
+                    </TabsContent>
+
+                    <TabsContent value="badges" className="mt-0">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {allBadges.length > 0 ? (
+                                allBadges.map(badge => (
+                                    <BadgeCard
+                                        key={badge.id}
+                                        insignia={badge}
+                                        obtenida={earnedBadgeIds.includes(badge.id)}
+                                    />
+                                ))
+                            ) : (
+                                <div className="col-span-full py-8 text-center text-muted-foreground">
+                                    <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
+                                    Cargando insignias...
+                                </div>
+                            )}
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="settings" className="mt-0 space-y-4">
+                        <Card className="border border-border/50 shadow-sm">
+                            <CardContent className="p-4 space-y-4">
+                                <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                                    <div>
+                                        <h4 className="text-sm font-medium">{language === 'es' ? 'Preferencias y Accesibilidad' : 'Preferences & Accessibility'}</h4>
+                                        <p className="text-xs text-muted-foreground">
+                                            {userProfile?.interests && userProfile.interests.length > 0
+                                                ? `${userProfile.interests.length} intereses, ${userProfile.accessibility_needs?.length || 0} necesidades`
+                                                : (language === 'es' ? 'Configura tu perfil' : 'Setup your profile')}
+                                        </p>
+                                    </div>
+                                    <Button variant="outline" size="sm" onClick={() => setShowInterestsModal(true)}>
+                                        <Settings className="h-4 w-4 mr-2" />
+                                        {t('edit')}
+                                    </Button>
+                                </div>
+                                <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                                    <label htmlFor="notifications-switch" className="text-sm font-medium">{t('profile.enableNotifications')}</label>
+                                    <Switch defaultChecked id="notifications-switch" />
+                                </div>
+                            </CardContent>
+                            <CardFooter className="bg-muted/20 p-4 border-t">
+                                <Button variant="ghost" onClick={() => logout()} className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive">
+                                    <LogIn className="h-4 w-4 mr-2 rotate-180" />
+                                    {t('logOutButton')}
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
 
             </div>
             <OnboardingModal isOpen={showInterestsModal} onClose={() => setShowInterestsModal(false)} isEditing={true} />
