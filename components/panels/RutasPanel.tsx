@@ -111,10 +111,10 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
 
     const RouteCard = ({ route, actions, isCustom = false }: { route: Ruta, actions?: React.ReactNode, isCustom?: boolean }) => (
         <Card className="group overflow-hidden border-border/50 bg-gradient-to-br from-background to-muted/30 dark:from-background dark:to-muted/10 hover:shadow-md hover:border-primary/20 transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-6 pt-8">
                 <div className="flex flex-col sm:flex-row gap-6 items-start">
                     {/* Icon / Avatar placeholder */}
-                    <div className="hidden sm:flex shrink-0 w-12 h-12 rounded-full bg-primary/10 items-center justify-center text-primary">
+                    <div className="hidden sm:flex shrink-0 w-12 h-12 mt-1 rounded-full bg-primary/10 items-center justify-center text-primary">
                         {isCustom ? <Compass className="w-6 h-6" /> : <Map className="w-6 h-6" />}
                     </div>
 
