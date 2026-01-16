@@ -31,10 +31,12 @@ export const authService = {
     },
 
     async signInWithGoogle() {
+        const redirectUrl = window.location.origin;
+        console.log("Initiating Google Auth with redirect to:", redirectUrl);
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.origin
+                redirectTo: redirectUrl
             }
         });
         if (error) {
