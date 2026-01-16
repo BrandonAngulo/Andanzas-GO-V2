@@ -227,7 +227,10 @@ const en = {
         explorerChallenge: "Explorer's Challenge:",
         previous: "Previous",
         next: "Next",
-        error: "Error: Route content not available."
+        error: "We could not load information for this point.",
+        imHere: "Take Challenge",
+        activeRoute: "Active Route",
+        cancel: "Cancel Route"
     },
 
     // Insignias Modal
@@ -338,17 +341,7 @@ const en = {
         daysAgo: "{{count}}d ago",
     },
 
-    // Guided Route
-    guidedRoute: {
-        error: "We could not load information for this point.",
-        point: "Point",
-        of: "of",
-        testYourKnowledge: "Test your knowledge!",
-        checkAnswer: "Check Answer",
-        imHere: "Take Challenge",
-        activeRoute: "Active Route",
-        cancel: "Cancel Route"
-    }
+
 };
 
 export default en;
