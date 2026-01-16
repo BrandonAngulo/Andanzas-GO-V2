@@ -243,6 +243,7 @@ export default function App() {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
   const [activeGuidedRoute, setActiveGuidedRoute] = useState<Ruta | null>(null);
+  const [visitedRoutePoints, setVisitedRoutePoints] = useState<string[]>([]);
   const [showRouteModal, setShowRouteModal] = useState(false);
   const [currentRouteStep, setCurrentRouteStep] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -474,10 +475,37 @@ export default function App() {
     if (routesCompleted.includes(route.id)) return;
     setRoutesInProgress(prev => [...new Set([...prev, route.id])]);
     setActiveGuidedRoute(route);
+    setVisitedRoutePoints([]); // Reset visited points
     setCurrentRouteStep(0);
     setShowRouteModal(false); // Do not open modal immediately
     setActivePanel("mapa"); // Go to map to see the path
     setFullView(null); // Close detail view
+  };
+
+  const checkRouteCompletion = (currentVisited: string[]) => {
+    if (!activeGuidedRoute) return;
+    const allVisited = activeGuidedRoute.puntos.every(pId => currentVisited.includes(pId));
+
+    if (allVisited) {
+      // Ask user if they want to complete? Or just complete?
+      // For now, let's keep the manual "Complete" or auto-complete logic separate.
+      // User requirement: "Close route when all sites visited, not when clicked complete".
+      // So we should probably allow a "Finalize" action or auto-finalize.
+      // Let's rely on the final "Success" modal of the last point or a specific effect.
+    }
+  };
+
+  const handlePointVisited = (siteId: string) => {
+    setVisitedRoutePoints(prev => {
+      const newVisited = [...prev, siteId];
+      // Check completion
+      if (activeGuidedRoute && activeGuidedRoute.puntos.every(p => newVisited.includes(p))) {
+        // All visited!
+        // Trigger route completion flow
+        setTimeout(() => completeRoute(activeGuidedRoute.id), 1000);
+      }
+      return newVisited;
+    });
   };
 
   const completeRoute = (id: string) => {
@@ -504,6 +532,7 @@ export default function App() {
       icono: Route as any,
     });
     setShowRouteModal(false);
+    setVisitedRoutePoints([]);
   };
 
   const handleNextStep = () => { if (activeGuidedRoute && currentRouteStep < activeGuidedRoute.puntos.length - 1) setCurrentRouteStep(prev => prev + 1); };
@@ -538,12 +567,11 @@ export default function App() {
 
   const openSite = (s: Site) => {
     // If a route is active and the clicked site is part of the route, 
-    // we just update the current step pointer. We don't open the full detail view.
+    // we just update the current step pointer. 
     if (activeGuidedRoute && activeGuidedRoute.puntos.includes(s.id)) {
       const stepIndex = activeGuidedRoute.puntos.indexOf(s.id);
       setCurrentRouteStep(stepIndex);
-      // Optional: Give feedback that step was selected
-      return;
+      // We do NOT return here anymore; we want to open FullView so user can see details
     }
 
     pushHash({ type: "site", id: s.id });
@@ -820,7 +848,16 @@ export default function App() {
 
       {
         activeGuidedRoute && showRouteModal && (
-          <GuidedRouteModal route={activeGuidedRoute} currentStep={currentRouteStep} onClose={handleCloseGuidedRoute} onNext={handleNextStep} onPrev={handlePrevStep} onComplete={() => completeRoute(activeGuidedRoute.id)} sites={sites} />
+          <GuidedRouteModal
+            route={activeGuidedRoute}
+            currentStep={currentRouteStep}
+            onClose={handleCloseGuidedRoute}
+            onNext={handleNextStep}
+            onPrev={handlePrevStep}
+            onComplete={() => handlePointVisited(activeGuidedRoute.puntos[currentRouteStep])} // Just mark point as visited
+            sites={sites}
+            isVisited={visitedRoutePoints.includes(activeGuidedRoute.puntos[currentRouteStep])}
+          />
         )
       }
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
