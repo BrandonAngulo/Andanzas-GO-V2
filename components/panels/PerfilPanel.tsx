@@ -70,7 +70,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 const all = await gamificationService.getAllBadges();
                 setAllBadges(all);
                 const earned = await gamificationService.getBadgesForUser(user.id);
-                setEarnedBadgeIds(earned.filter(b => b.obtenida).map(b => b.id));
+                console.log('DEBUG: Earned badges full objects:', earned.filter(b => b.obtenida));
+                const ids = earned.filter(b => b.obtenida).map(b => b.id);
+                console.log('DEBUG: Earned badge IDs:', ids);
+                setEarnedBadgeIds(ids);
                 const reviews = await reviewsService.getByUserId(user.id);
                 setMyReviews(reviews);
             };
