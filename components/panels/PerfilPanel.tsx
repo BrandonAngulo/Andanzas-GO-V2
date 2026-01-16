@@ -6,7 +6,7 @@ import { Switch } from '../ui/switch';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2 } from 'lucide-react';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, ExternalLink } from 'lucide-react';
 import { BadgeCard } from '../shared/BadgeCard';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
@@ -15,7 +15,7 @@ import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
 import { UserProfile, Insignia, Review, Site } from '../../types';
 import { reviewsService } from '../../services/reviews.service';
-import { Trash2, ExternalLink, Star } from 'lucide-react';
+
 import { getTranslated } from '../../lib/utils'; // Ensure getTranslated is imported if not already, checked file content, it is.
 
 interface PerfilPanelProps {
@@ -308,28 +308,20 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
                     <TabsContent value="overview" className="space-y-6 mt-0">
                         {/* Stats Grid */}
+                        {/* Stats Grid */}
                         <div className="grid grid-cols-2 gap-3">
                             <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-none shadow-sm">
                                 <CardContent className="p-4 flex flex-col gap-2">
-                                    <RouteIcon className="h-5 w-5 text-blue-500" />
+                                    <Map className="h-5 w-5 text-blue-500" />
                                     <span className="text-2xl font-bold">{routesCompletedCount}</span>
                                     <span className="text-xs opacity-70">Rutas Completadas</span>
                                 </CardContent>
                             </Card>
-                            <Card className="bg-gradient-to-br from-orange-500/10 to-red-500/10 border-none shadow-sm">
+                            <Card className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-none shadow-sm cursor-pointer hover:bg-yellow-500/20 transition-colors" onClick={() => setActiveTab('badges')}>
                                 <CardContent className="p-4 flex flex-col gap-2">
-                                    <MessageSquare className="h-5 w-5 text-orange-500" />
-                                    <span className="text-2xl font-bold">{reviewsCount}</span>
-                                    <span className="text-xs opacity-70">Reseñas Publicadas</span>
-                                </CardContent>
-                            </Card>
-                            <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-none shadow-sm col-span-2">
-                                <CardContent className="p-4 flex items-center justify-between">
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-xs opacity-70 uppercase tracking-widest">Favoritos</span>
-                                        <span className="text-2xl font-bold">{favCount}</span>
-                                    </div>
-                                    <Heart className="h-8 w-8 text-green-500 opacity-20" />
+                                    <Award className="h-5 w-5 text-yellow-600" />
+                                    <span className="text-2xl font-bold">{insigniasCount}</span>
+                                    <span className="text-xs opacity-70">Insignias Ganadas</span>
                                 </CardContent>
                             </Card>
                         </div>
