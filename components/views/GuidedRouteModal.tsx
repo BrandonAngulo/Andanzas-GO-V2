@@ -94,7 +94,7 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
           <div className="flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/50 backdrop-blur-md z-10 sticky top-0">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-full text-primary">
-                {route.tipo === 'historica' ? <Info className="h-5 w-5" /> : <Swords className="h-5 w-5" />}
+                <Swords className="h-5 w-5" />
               </div>
               <div>
                 <h2 className="text-lg font-bold tracking-tight text-foreground/90">{getTranslated(route, 'nombre', language)}</h2>
