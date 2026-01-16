@@ -178,10 +178,8 @@ export default function App() {
       reviewsService.getByUserId(user.id).then(setReviews);
       routesService.getUserRoutes(user.id).then(setRutas);
       notificationsService.getUserNotifications(user.id).then(setNotifications);
-      gamificationService.getBadgesForUser(user.id).then(badges => {
-        setAllInsignias(badges);
-        setEarnedInsignias(badges.filter(b => b.obtenida).map(b => b.id));
-      });
+      gamificationService.getAllBadges().then(setAllInsignias);
+      gamificationService.getUserBadgeIds(user.id).then(setEarnedInsignias);
       // Check for onboarding
       userService.getProfile(user.id).then(profile => {
         if (profile && (!profile.interests || profile.interests.length === 0)) {
