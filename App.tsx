@@ -45,6 +45,7 @@ import { useI18n } from "./i18n";
 import NoticiasPanel from "./components/panels/NoticiasPanel";
 import ConfiguracionPanel from "./components/panels/ConfiguracionPanel";
 import OnboardingModal from "./components/panels/OnboardingModal";
+import ReviewModal from "./components/views/ReviewModal";
 import { storage } from './lib/storage';
 import { useAuth } from './contexts/AuthContext';
 
@@ -244,6 +245,7 @@ export default function App() {
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
   const [activeGuidedRoute, setActiveGuidedRoute] = useState<Ruta | null>(null);
   const [visitedRoutePoints, setVisitedRoutePoints] = useState<string[]>([]);
+  const [reviewSiteId, setReviewSiteId] = useState<string | null>(null);
   const [showRouteModal, setShowRouteModal] = useState(false);
   const [currentRouteStep, setCurrentRouteStep] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -496,16 +498,23 @@ export default function App() {
   };
 
   const handlePointVisited = (siteId: string) => {
+    // Add to visited
     setVisitedRoutePoints(prev => {
-      const newVisited = [...prev, siteId];
-      // Check completion
-      if (activeGuidedRoute && activeGuidedRoute.puntos.every(p => newVisited.includes(p))) {
-        // All visited!
-        // Trigger route completion flow
-        setTimeout(() => completeRoute(activeGuidedRoute.id), 1000);
-      }
-      return newVisited;
+      if (prev.includes(siteId)) return prev;
+      return [...prev, siteId];
     });
+    // Trigger Review Modal
+    setReviewSiteId(siteId);
+    setShowRouteModal(false);
+  };
+
+  const handleReviewClose = () => {
+    setReviewSiteId(null);
+    // Check for route completion AFTER review is closed/skipped
+    if (activeGuidedRoute && activeGuidedRoute.puntos.every(p => visitedRoutePoints.includes(p))) {
+      // All visited!
+      setTimeout(() => completeRoute(activeGuidedRoute.id), 500);
+    }
   };
 
   const completeRoute = (id: string) => {
@@ -860,6 +869,14 @@ export default function App() {
           />
         )
       }
+
+      <ReviewModal
+        isOpen={!!reviewSiteId}
+        onClose={handleReviewClose}
+        site={sites.find(s => s.id === reviewSiteId)}
+        onSubmit={addReview}
+      />
+
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
     </div >
   );

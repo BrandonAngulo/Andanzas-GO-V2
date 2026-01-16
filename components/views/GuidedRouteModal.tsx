@@ -20,9 +20,10 @@ interface GuidedRouteModalProps {
   onPrev: () => void;
   onComplete: () => void;
   sites: Site[];
+  isVisited?: boolean;
 }
 
-const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep, onClose, onNext, onPrev, onComplete, sites }) => {
+const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep, onClose, onNext, onPrev, onComplete, sites, isVisited }) => {
   const { t, language } = useI18n();
   const { user } = useAuth();
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
