@@ -537,6 +537,15 @@ export default function App() {
   }, [accessibilitySettings, language]);
 
   const openSite = (s: Site) => {
+    // If a route is active and the clicked site is part of the route, 
+    // we just update the current step pointer. We don't open the full detail view.
+    if (activeGuidedRoute && activeGuidedRoute.puntos.includes(s.id)) {
+      const stepIndex = activeGuidedRoute.puntos.indexOf(s.id);
+      setCurrentRouteStep(stepIndex);
+      // Optional: Give feedback that step was selected
+      return;
+    }
+
     pushHash({ type: "site", id: s.id });
     sitesService.incrementVisit(s.id);
     if (isAuthenticated && user) {
@@ -691,7 +700,7 @@ export default function App() {
               {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {t('createRoute')}</Button>}
             </CardHeader>
             <CardContent className="p-0 flex-1 relative">
-              {activePanel === 'mapa' && <MapaGoogle sites={results} onSelect={openSite} allCategories={allCategories} selectedCategories={selectedCategories} onCategoryChange={handleCategoryChange} onClearCategories={clearCategories} isFiltered={isFiltered} onResetFilter={handleResetFilter} isLoading={isLoading} activeRoute={activeGuidedRoute} />}
+              {activePanel === 'mapa' && <MapaGoogle sites={activeGuidedRoute ? sites.filter(s => activeGuidedRoute.puntos.includes(s.id)) : results} onSelect={openSite} allCategories={allCategories} selectedCategories={selectedCategories} onCategoryChange={handleCategoryChange} onClearCategories={clearCategories} isFiltered={isFiltered} onResetFilter={handleResetFilter} isLoading={isLoading} activeRoute={activeGuidedRoute} />}
               {activePanel === 'explorar' && <ExplorarPanel sites={sites} events={eventos} query={query} onOpenSite={openSite} onOpenEvent={openEvent} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
@@ -776,8 +785,12 @@ export default function App() {
               <CardContent className="p-4 flex items-center justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 animate-pulse">Ruta Activa</Badge>
-                    <span className="text-xs text-muted-foreground">{currentRouteStep + 1} / {activeGuidedRoute.puntos.length}</span>
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 animate-pulse">
+                      {t('guidedRoute.activeRoute') || "Ruta Activa"}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">
+                      {currentRouteStep + 1} / {activeGuidedRoute.puntos.length} • {getTranslated(sites.find(s => s.id === activeGuidedRoute.puntos[currentRouteStep]), 'nombre', language)}
+                    </span>
                   </div>
                   <h4 className="font-semibold text-sm truncate">{getTranslated(activeGuidedRoute, 'nombre', language)}</h4>
                 </div>
