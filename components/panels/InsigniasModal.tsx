@@ -7,12 +7,13 @@ import { cn, getTranslated } from '../../lib/utils';
 import { useI18n } from '../../i18n';
 import { Lock, Award } from 'lucide-react';
 import { Card } from '../ui/card';
+import { Button } from '../ui/button';
 
 interface InsigniasModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  earnedInsigniaIds: string[];
-  allInsignias: Insignia[];
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    earnedInsigniaIds: string[];
+    allInsignias: Insignia[];
 }
 
 const InsigniaCard: React.FC<{ insignia: Insignia, obtenida: boolean }> = ({ insignia, obtenida }) => {
@@ -21,11 +22,11 @@ const InsigniaCard: React.FC<{ insignia: Insignia, obtenida: boolean }> = ({ ins
     const Icon = insignia.icono;
 
     return (
-        <Card 
+        <Card
             className={cn(
                 "relative overflow-hidden transition-all duration-300 group cursor-pointer h-full flex flex-col",
-                obtenida 
-                    ? "border-yellow-500/50 bg-gradient-to-br from-yellow-50/50 to-orange-50/50 dark:from-yellow-900/10 dark:to-orange-900/10 hover:scale-[1.02] hover:shadow-md" 
+                obtenida
+                    ? "border-yellow-500/50 bg-gradient-to-br from-yellow-50/50 to-orange-50/50 dark:from-yellow-900/10 dark:to-orange-900/10 hover:scale-[1.02] hover:shadow-md"
                     : "border-muted bg-muted/20 opacity-80 hover:opacity-100"
             )}
             onClick={() => !obtenida && setShowHint(!showHint)}
@@ -47,7 +48,7 @@ const InsigniaCard: React.FC<{ insignia: Insignia, obtenida: boolean }> = ({ ins
                         </div>
                     )}
                 </div>
-                
+
                 <div className="w-full flex flex-col items-center">
                     <h4 className={cn(
                         "font-bold text-sm mb-2 leading-tight text-balance",
@@ -82,7 +83,7 @@ const InsigniaCard: React.FC<{ insignia: Insignia, obtenida: boolean }> = ({ ins
 };
 
 const InsigniasModal: React.FC<InsigniasModalProps> = ({ open, onOpenChange, earnedInsigniaIds, allInsignias }) => {
-    const { t } = useI18n();
+    const { t, language } = useI18n();
     const earnedCount = earnedInsigniaIds.length;
     const totalCount = allInsignias.length;
     const progress = Math.round((earnedCount / totalCount) * 100);
@@ -98,7 +99,7 @@ const InsigniasModal: React.FC<InsigniasModalProps> = ({ open, onOpenChange, ear
                     <DialogDescription>
                         {t('insignias.description')}
                     </DialogDescription>
-                    
+
                     {/* Progress Bar */}
                     <div className="mt-4 pt-2">
                         <div className="flex justify-between text-sm mb-1.5 font-medium text-muted-foreground">
@@ -106,8 +107,8 @@ const InsigniasModal: React.FC<InsigniasModalProps> = ({ open, onOpenChange, ear
                             <span className="text-foreground">{earnedCount} / {totalCount}</span>
                         </div>
                         <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
-                            <div 
-                                className="h-full bg-gradient-to-r from-primary to-teal-400 transition-all duration-1000 ease-out rounded-full" 
+                            <div
+                                className="h-full bg-gradient-to-r from-primary to-teal-400 transition-all duration-1000 ease-out rounded-full"
                                 style={{ width: `${progress}%` }}
                             />
                         </div>
@@ -117,14 +118,19 @@ const InsigniasModal: React.FC<InsigniasModalProps> = ({ open, onOpenChange, ear
                 <ScrollArea className="flex-1 w-full min-h-0 bg-muted/20">
                     <div className="p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {allInsignias.map(insignia => (
-                            <InsigniaCard 
-                                key={insignia.id} 
-                                insignia={insignia} 
-                                obtenida={earnedInsigniaIds.includes(insignia.id)} 
+                            <InsigniaCard
+                                key={insignia.id}
+                                insignia={insignia}
+                                obtenida={earnedInsigniaIds.includes(insignia.id)}
                             />
                         ))}
                     </div>
                 </ScrollArea>
+                <div className="pt-4 border-t mt-2">
+                    <Button onClick={() => onOpenChange(false)} className="w-full">
+                        {language === 'es' ? 'Cerrar' : 'Close'}
+                    </Button>
+                </div>
             </DialogContent>
         </Dialog>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar } from 'lucide-react';
+import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Site, Evento, Ruta, RecomendacionRuta, RecomendacionTipo } from '../../types';
@@ -50,7 +50,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
         <div className="fixed inset-0 z-[1100] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200" onClick={onClose}>
             <div className="min-h-full w-full" onClick={(e) => e.stopPropagation()}>
                 <div className="sticky top-0 border-b bg-background/90 px-3 py-2 flex items-center gap-2 z-10 backdrop-blur-md">
-                    <Button variant="ghost" size="icon" onClick={onClose} aria-label={t('close')}><X /></Button>
+                    <Button variant="ghost" size="icon" onClick={onClose} aria-label="Atrás"><ChevronLeft className="w-6 h-6" /></Button>
                     <div className="font-medium truncate flex-1">
                         {viewTitle}
                     </div>
