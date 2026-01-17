@@ -95,9 +95,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     }
                 }
             },
-            cancel: {
-                label: (t('cancel') || 'Cancelar'),
-            }
+
         });
     };
 
