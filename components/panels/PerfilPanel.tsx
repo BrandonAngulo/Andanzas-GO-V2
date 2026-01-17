@@ -32,6 +32,7 @@ interface PerfilPanelProps {
     favoriteSiteIds: string[];
     sites: Site[];
     toggleFav: (id: string) => void;
+    onOpenSite: (site: Site) => void;
 }
 
 const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: number | string }) => (
@@ -44,7 +45,7 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
     </div>
 );
 
-const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav }) => {
+const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite }) => {
     const { t, language } = useI18n();
     const { user, signIn, signUp, logout, isAuthenticated, resetPassword, signInWithGoogle } = useAuth();
 
@@ -434,7 +435,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             {myFavorites.length > 0 ? (
                                 <div className="grid gap-2">
                                     {myFavorites.map(site => (
-                                        <Card key={site.id} className="group overflow-hidden border-none shadow-sm bg-muted/20 hover:bg-muted/40 transition-colors">
+                                        <Card
+                                            key={site.id}
+                                            className="group overflow-hidden border-none shadow-sm bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer"
+                                            onClick={() => onOpenSite(site)}
+                                        >
                                             <div className="flex p-3 gap-3">
                                                 <div className="h-16 w-16 rounded-md bg-muted flex-shrink-0 overflow-hidden">
                                                     <img src={site.logoUrl} alt={site.nombre} className="h-full w-full object-cover" />
@@ -448,7 +453,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                         variant="ghost"
                                                         size="icon"
                                                         className="h-8 w-8 text-destructive hover:bg-destructive/10"
-                                                        onClick={() => toggleFav(site.id)}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            toggleFav(site.id);
+                                                        }}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
@@ -472,7 +480,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     {myReviews.map(review => {
                                         const site = sites.find(s => s.id === review.siteId);
                                         return (
-                                            <Card key={review.id} className="border-none shadow-sm bg-muted/20">
+                                            <Card
+                                                key={review.id}
+                                                className="border-none shadow-sm bg-muted/20 cursor-pointer hover:bg-muted/40 transition-colors"
+                                                onClick={() => site && onOpenSite(site)}
+                                            >
                                                 <div className="p-3 space-y-2">
                                                     <div className="flex justify-between items-start">
                                                         <div>
@@ -490,7 +502,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                             variant="ghost"
                                                             size="icon"
                                                             className="h-6 w-6 text-destructive hover:bg-destructive/10 -mt-1 -mr-1"
-                                                            onClick={() => handleDeleteReview(review.id)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteReview(review.id);
+                                                            }}
                                                         >
                                                             <Trash2 className="h-3 w-3" />
                                                         </Button>

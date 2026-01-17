@@ -12,7 +12,7 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 
 // Version Stamp for Debugging
-console.log('%c AndanzasGO v1.0.9 - Live ', 'background: #008080; color: #fff; border-radius: 4px; padding: 4px;');
+console.log('%c AndanzasGO v1.0.10 - Live ', 'background: #008080; color: #fff; border-radius: 4px; padding: 4px;');
 
 root.render(
   <React.StrictMode>
