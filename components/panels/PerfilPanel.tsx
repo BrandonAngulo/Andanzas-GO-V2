@@ -17,7 +17,8 @@ import OnboardingModal from '../panels/OnboardingModal';
 import { UserProfile, Insignia, Review, Site } from '../../types';
 import { reviewsService } from '../../services/reviews.service';
 
-import { getTranslated } from '../../lib/utils'; // Ensure getTranslated is imported if not already, checked file content, it is.
+import { getTranslated } from '../../lib/utils';
+import { COLOMBIAN_CITIES } from '../../lib/locations';
 
 interface PerfilPanelProps {
     favCount: number;
@@ -182,10 +183,16 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         <div className="space-y-2">
                                             <label className="text-sm font-medium">Ciudad / País</label>
                                             <Input
-                                                placeholder="Ej: Cali, Colombia"
+                                                placeholder="Ej: Cali, Valle del Cauca"
                                                 value={formCity}
                                                 onChange={(e) => setFormCity(e.target.value)}
+                                                list="city-options"
                                             />
+                                            <datalist id="city-options">
+                                                {COLOMBIAN_CITIES.map((city) => (
+                                                    <option key={city} value={city} />
+                                                ))}
+                                            </datalist>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-sm font-medium">Fecha de Nacimiento</label>
