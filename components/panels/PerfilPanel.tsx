@@ -51,7 +51,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [isResetting, setIsResetting] = useState(false);
     const [formName, setFormName] = useState('');
     const [formEmail, setFormEmail] = useState('');
+
     const [formPassword, setFormPassword] = useState('');
+    const [formCity, setFormCity] = useState('');
+    const [formTravelStyle, setFormTravelStyle] = useState('explorador');
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
     const [loading, setLoading] = useState(false);
@@ -112,7 +115,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 await resetPassword(formEmail);
                 setSuccessMsg("Si el correo existe, recibirás un enlace de recuperación.");
             } else if (isRegistering) {
-                await signUp(formEmail, formPassword, formName);
+                await signUp(formEmail, formPassword, formName, {
+                    city: formCity,
+                    travel_style: formTravelStyle
+                });
                 setSuccessMsg("Cuenta creada. Por favor verifica tu correo electrónico.");
             } else {
                 await signIn(formEmail, formPassword);
@@ -161,15 +167,39 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             )}
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 {isRegistering && !isResetting && (
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium">Nombre</label>
-                                        <Input
-                                            placeholder="Tu nombre"
-                                            value={formName}
-                                            onChange={(e) => setFormName(e.target.value)}
-                                            required
-                                        />
-                                    </div>
+                                    <>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium">Nombre</label>
+                                            <Input
+                                                placeholder="Tu nombre"
+                                                value={formName}
+                                                onChange={(e) => setFormName(e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium">Ciudad / País</label>
+                                            <Input
+                                                placeholder="Ej: Cali, Colombia"
+                                                value={formCity}
+                                                onChange={(e) => setFormCity(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium">Estilo de Viaje</label>
+                                            <select
+                                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                                value={formTravelStyle}
+                                                onChange={(e) => setFormTravelStyle(e.target.value)}
+                                            >
+                                                <option value="explorador">Explorador (Me gusta ver de todo)</option>
+                                                <option value="gastronomico">Gastronómico (Amante de la comida)</option>
+                                                <option value="cultural">Cultural (Museos e historia)</option>
+                                                <option value="aventura">Aventura (Naturaleza y caminatas)</option>
+                                                <option value="fiesta">Fiesta (Salsa y vida nocturna)</option>
+                                            </select>
+                                        </div>
+                                    </>
                                 )}
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Email</label>
@@ -251,7 +281,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </CardFooter>
                     </Card>
                 </div>
-            </ScrollArea>
+            </ScrollArea >
         );
     }
 

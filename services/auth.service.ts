@@ -3,13 +3,14 @@ import { supabase } from '../lib/supabaseClient';
 import { profileRepo } from './profile.repo';
 
 export const authService = {
-    async signUp(email: string, password: string, fullName: string) {
+    async signUp(email: string, password: string, fullName: string, extraData?: { city?: string; travel_style?: string }) {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 data: {
                     full_name: fullName,
+                    ...extraData
                 },
             },
         });
