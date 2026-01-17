@@ -9,7 +9,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signIn: (e: string, p: string) => Promise<any>;
-  signUp: (e: string, p: string, n: string, extra?: { city?: string; travel_style?: string }) => Promise<any>;
+  signUp: (e: string, p: string, n: string, extra?: { city?: string; travel_style?: string; birth_date?: string }) => Promise<any>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   signInWithGoogle: () => Promise<any>;
@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return authService.signIn(email, pass);
   };
 
-  const signUp = async (email: string, pass: string, name: string, extra?: { city?: string; travel_style?: string }) => {
+  const signUp = async (email: string, pass: string, name: string, extra?: { city?: string; travel_style?: string; birth_date?: string }) => {
     return authService.signUp(email, pass, name, extra);
   };
 

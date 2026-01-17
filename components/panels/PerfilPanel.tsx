@@ -55,6 +55,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [formPassword, setFormPassword] = useState('');
     const [formCity, setFormCity] = useState('');
     const [formTravelStyle, setFormTravelStyle] = useState('explorador');
+    const [formBirthDate, setFormBirthDate] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
     const [loading, setLoading] = useState(false);
@@ -117,7 +118,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
             } else if (isRegistering) {
                 await signUp(formEmail, formPassword, formName, {
                     city: formCity,
-                    travel_style: formTravelStyle
+                    travel_style: formTravelStyle,
+                    birth_date: formBirthDate
                 });
                 setSuccessMsg("Cuenta creada. Por favor verifica tu correo electrónico.");
             } else {
@@ -183,6 +185,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                 placeholder="Ej: Cali, Colombia"
                                                 value={formCity}
                                                 onChange={(e) => setFormCity(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-medium">Fecha de Nacimiento</label>
+                                            <Input
+                                                type="date"
+                                                value={formBirthDate}
+                                                onChange={(e) => setFormBirthDate(e.target.value)}
                                             />
                                         </div>
                                         <div className="space-y-2">
