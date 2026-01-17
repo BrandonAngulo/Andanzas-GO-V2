@@ -128,7 +128,13 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
             }
         } catch (err: any) {
             console.error(err);
-            setErrorMsg(err.message || "Error de autenticación");
+            if (err.message && (err.message.includes('already registered') || err.message.includes('User already registered'))) {
+                setErrorMsg('Este correo ya está registrado. Por favor intenta iniciar sesión.');
+            } else if (err.message && err.message.includes('Invalid login credentials')) {
+                setErrorMsg('Correo o contraseña incorrectos.');
+            } else {
+                setErrorMsg(err.message || "Error de autenticación");
+            }
         } finally {
             setLoading(false);
         }
