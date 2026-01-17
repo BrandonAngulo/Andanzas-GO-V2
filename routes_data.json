@@ -58,26 +58,105 @@
     ],
     "gamificacion": [
       {
-        "pregunta": "¿Cómo se llama el fundador del Museo de la Salsa?",
-        "pregunta_en": "What is the name of the founder of the Salsa Museum?",
-        "opciones": [
-          "Jairo Varela",
-          "Carlos Molina",
-          "Piper Pimienta",
-          "El Mulato"
-        ],
-        "opciones_en": [
-          "Jairo Varela",
-          "Carlos Molina",
-          "Piper Pimienta",
-          "El Mulato"
-        ],
-        "respuestaCorrecta": "Carlos Molina",
-        "respuestaCorrecta_en": "Carlos Molina",
-        "datoCurioso": "Carlos Molina tiene una de las colecciones de fotos de salsa más grandes del mundo.",
-        "datoCurioso_en": "Carlos Molina has one of the largest salsa photo collections in the world.",
-        "reto": "Tómate una foto imitando una pose de baile frente al museo.",
-        "reto_en": "Take a photo imitating a dance pose in front of the museum."
+        "id": "chal-ruta1-0",
+        "type": "TRIVIA",
+        "title": "Desafío de Conocimiento",
+        "title_en": "Knowledge Challenge",
+        "instruction": "Responde correctamente para ganar puntos.",
+        "instruction_en": "Answer correctly to earn points.",
+        "points_reward": 50,
+        "completed_message": "¡Excelente! Has demostrado que conoces Cali.",
+        "completed_message_en": "Excellent! You proved you know Cali.",
+        "quiz_data": {
+          "question": "¿Cómo se llama el fundador del Museo de la Salsa?",
+          "question_en": "What is the name of the founder of the Salsa Museum?",
+          "options": [
+            "Jairo Varela",
+            "Carlos Molina",
+            "Piper Pimienta",
+            "El Mulato"
+          ],
+          "options_en": [
+            "Jairo Varela",
+            "Carlos Molina",
+            "Piper Pimienta",
+            "El Mulato"
+          ],
+          "correct_answer": "Carlos Molina",
+          "correct_answer_en": "Carlos Molina",
+          "fun_fact": "Carlos Molina tiene una de las colecciones de fotos de salsa más grandes del mundo.",
+          "fun_fact_en": "Carlos Molina has one of the largest salsa photo collections in the world."
+        }
+      },
+      {
+        "id": "chal-ruta1-checkin-1",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta1-checkin-2",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta1-checkin-3",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta1-checkin-4",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta1-checkin-5",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
       }
     ]
   },
@@ -140,26 +219,105 @@
     ],
     "gamificacion": [
       {
-        "pregunta": "¿Qué árboles característicos rodean la Plaza de Cayzedo?",
-        "pregunta_en": "What characteristic trees surround Cayzedo Square?",
-        "opciones": [
-          "Robles",
-          "Palmas de Cera",
-          "Palmas Reales",
-          "Ceibas"
-        ],
-        "opciones_en": [
-          "Oaks",
-          "Wax Palms",
-          "Royal Palms",
-          "Ceibas"
-        ],
-        "respuestaCorrecta": "Palmas Reales",
-        "respuestaCorrecta_en": "Royal Palms",
-        "datoCurioso": "Estas palmas son tan altas que se ven desde varios puntos del centro.",
-        "datoCurioso_en": "These palms are so tall they can be seen from various points downtown.",
-        "reto": "Encuentra la placa con la fecha de fundación de la plaza.",
-        "reto_en": "Find the plaque with the square's founding date."
+        "id": "chal-ruta2-0",
+        "type": "TRIVIA",
+        "title": "Desafío de Conocimiento",
+        "title_en": "Knowledge Challenge",
+        "instruction": "Responde correctamente para ganar puntos.",
+        "instruction_en": "Answer correctly to earn points.",
+        "points_reward": 50,
+        "completed_message": "¡Excelente! Has demostrado que conoces Cali.",
+        "completed_message_en": "Excellent! You proved you know Cali.",
+        "quiz_data": {
+          "question": "¿Qué árboles característicos rodean la Plaza de Cayzedo?",
+          "question_en": "What characteristic trees surround Cayzedo Square?",
+          "options": [
+            "Robles",
+            "Palmas de Cera",
+            "Palmas Reales",
+            "Ceibas"
+          ],
+          "options_en": [
+            "Oaks",
+            "Wax Palms",
+            "Royal Palms",
+            "Ceibas"
+          ],
+          "correct_answer": "Palmas Reales",
+          "correct_answer_en": "Royal Palms",
+          "fun_fact": "Estas palmas son tan altas que se ven desde varios puntos del centro.",
+          "fun_fact_en": "These palms are so tall they can be seen from various points downtown."
+        }
+      },
+      {
+        "id": "chal-ruta2-checkin-1",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta2-checkin-2",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta2-checkin-3",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta2-checkin-4",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta2-checkin-5",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
       }
     ]
   },
@@ -219,6 +377,92 @@
         "descripcion": "Es una ruta 100% caminable y segura para disfrutar el paisaje.",
         "descripcion_en": "It is a 100% walkable and safe route to enjoy the scenery."
       }
+    ],
+    "gamificacion": [
+      {
+        "id": "chal-ruta3-checkin-0",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta3-checkin-1",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta3-checkin-2",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta3-checkin-3",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta3-checkin-4",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta3-checkin-5",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      }
     ]
   },
   {
@@ -271,6 +515,64 @@
         "descripcion": "Para las Tres Cruces, sube antes de las 7:00 AM.",
         "descripcion_en": "For Tres Cruces, climb before 7:00 AM."
       }
+    ],
+    "gamificacion": [
+      {
+        "id": "chal-ruta4-checkin-0",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta4-checkin-1",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta4-checkin-2",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta4-checkin-3",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      }
     ]
   },
   {
@@ -321,6 +623,92 @@
         "descripcion": "Aprovecha para cenar en San Antonio tras la función.",
         "descripcion_en": "Take the opportunity to dine in San Antonio after the show."
       }
+    ],
+    "gamificacion": [
+      {
+        "id": "chal-ruta5-checkin-0",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta5-checkin-1",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta5-checkin-2",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta5-checkin-3",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta5-checkin-4",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta5-checkin-5",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      }
     ]
   },
   {
@@ -370,6 +758,92 @@
         "titulo_en": "Vehicle",
         "descripcion": "Necesitarás transporte para subir a los miradores.",
         "descripcion_en": "You will need transport to go up to the viewpoints."
+      }
+    ],
+    "gamificacion": [
+      {
+        "id": "chal-ruta6-checkin-0",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta6-checkin-1",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta6-checkin-2",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta6-checkin-3",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta6-checkin-4",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
+      },
+      {
+        "id": "chal-ruta6-checkin-5",
+        "type": "CHECKIN",
+        "title": "Llegada al Sitio",
+        "title_en": "Site Arrival",
+        "instruction": "Acércate al punto para registrar tu visita.",
+        "instruction_en": "Get closer to the point to register your visit.",
+        "points_reward": 30,
+        "completed_message": "¡Has llegado! Visita registrada.",
+        "completed_message_en": "You arrived! Visit registered.",
+        "checkin_data": {
+          "radius_meters": 50
+        }
       }
     ]
   }

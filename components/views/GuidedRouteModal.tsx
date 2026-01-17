@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Ruta, Site } from '../../types';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
+import { Ruta, Site, Challenge } from '../../types';
+import { Dialog, DialogContent } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
-import { X, ArrowLeft, ArrowRight, Lightbulb, Swords, Check, XCircle, Info, Award } from 'lucide-react';
+import { X, ArrowRight, MapPin, Swords, Check, HelpCircle, Award, Target, Navigation, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { cn } from '../../lib/utils';
+import { cn, getTranslated } from '../../lib/utils';
 import { useI18n } from '../../i18n';
-import { getTranslated } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { useAuth } from '../../contexts/AuthContext';
 import { gamificationService } from '../../services/gamification.service';
@@ -17,255 +16,296 @@ interface GuidedRouteModalProps {
   currentStep: number;
   onClose: () => void;
   onNext: () => void;
-  onPrev: () => void;
   onComplete: () => void;
   sites: Site[];
-  isVisited?: boolean;
 }
 
-const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep, onClose, onNext, onPrev, onComplete, sites, isVisited }) => {
+type MissionState = 'BRIEFING' | 'NAVIGATING' | 'CHALLENGE' | 'SUCCESS';
+
+const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep, onClose, onNext, onComplete, sites }) => {
   const { t, language } = useI18n();
   const { user } = useAuth();
+
+  // State
+  const [missionState, setMissionState] = useState<MissionState>(currentStep === 0 ? 'BRIEFING' : 'NAVIGATING');
+  const [checkingLocation, setCheckingLocation] = useState(false);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
-  const [isAnswered, setIsAnswered] = useState(false);
+  const [wrongAnswers, setWrongAnswers] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [showPointsInfo, setShowPointsInfo] = useState(false);
 
   const currentPointId = route.puntos[currentStep];
   const currentPoint = sites.find(site => site.id === currentPointId);
-  const gamificationData = route.gamificacion ? route.gamificacion[currentStep] : null;
+  // Safe access to challenge
+  const challenge: Challenge | undefined = route.gamificacion ? route.gamificacion[currentStep] : undefined;
 
+  // Reset state when step changes
   useEffect(() => {
-    // Reset state when step changes
+    if (currentStep > 0) {
+      setMissionState('NAVIGATING');
+    }
     setUserAnswer(null);
-    setIsAnswered(false);
+    setWrongAnswers([]);
     setIsCorrect(false);
   }, [currentStep]);
 
-  const handleCheckAnswer = () => {
-    if (!userAnswer || !gamificationData || !currentPoint) return;
-    setIsAnswered(true);
-    if (userAnswer === getTranslated(gamificationData, 'respuestaCorrecta', language)) {
+  // Handlers
+  const startMission = () => setMissionState('NAVIGATING');
+
+  const verifyCheckIn = () => {
+    setCheckingLocation(true);
+    // Simulate GPS check delay
+    setTimeout(() => {
+      setCheckingLocation(false);
+      setMissionState('SUCCESS');
+      if (user && challenge) {
+        gamificationService.awardPoints(challenge.points_reward, `Check-in: ${currentPoint?.nombre}`);
+      }
+    }, 2000);
+  };
+
+  const verifyTrivia = async () => {
+    if (!userAnswer || !challenge?.quiz_data) return;
+
+    const correct = getTranslated(challenge.quiz_data, 'correct_answer', language);
+
+    if (userAnswer === correct) {
       setIsCorrect(true);
       if (user) {
-        // Add 10 points for correct answer/visit
-        gamificationService.awardPoints(10, `Respuesta correcta: ${currentPoint.nombre}`);
+        await gamificationService.awardPoints(challenge.points_reward, `Trivia: ${currentPoint?.nombre}`);
       }
+      setTimeout(() => setMissionState('SUCCESS'), 1000);
+    } else {
+      // Wrong answer
+      setWrongAnswers(prev => [...prev, userAnswer]);
+      setUserAnswer(null); // Reset selection to allow picking another
     }
   };
 
-  const isLastStep = currentStep === route.puntos.length - 1;
-  const [newBadge, setNewBadge] = useState<string | null>(null);
-
-  const handleComplete = async () => {
-    // 1. Award Completion Points
-    if (user) {
-      await gamificationService.awardPoints(50, `Ruta Completada: ${route.nombre}`);
-    }
-
-    // 2. Unlock Badge if one is assigned
-    if (user && route.reward_badge_id) {
-      const unlocked = await gamificationService.unlockBadge(user.id, route.reward_badge_id);
-      if (unlocked) {
-        setNewBadge(route.reward_badge_id); // This could trigger a specific UI modal before closing
-        // For now, allow the parent closure but we might want a "Celebration" state
+  const handleNextStep = () => {
+    if (currentStep === route.puntos.length - 1) {
+      // Complete Route
+      if (user) {
+        gamificationService.awardPoints(100, `Misión Cumplida: ${route.nombre}`);
+        if (route.reward_badge_id) {
+          gamificationService.unlockBadge(user.id, route.reward_badge_id);
+        }
       }
+      onComplete();
+    } else {
+      onNext();
     }
-
-    onComplete();
   };
 
-  if (!currentPoint || !gamificationData) {
-    return (
-      <Dialog open={true} onOpenChange={onClose}>
-        <DialogContent>{t('guidedRoute.error')}</DialogContent>
-      </Dialog>
-    );
-  }
+  if (!currentPoint) return null;
 
-  const opciones = getTranslated(gamificationData, 'opciones', language) as string[];
-  const respuestaCorrecta = getTranslated(gamificationData, 'respuestaCorrecta', language);
+  // --- RENDERERS ---
 
-  return (
-    <>
-      <Dialog open={true} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0 border-none shadow-2xl bg-background/95 backdrop-blur-xl md:rounded-3xl overflow-hidden">
-          {/* Header with Glassmorphism */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/50 backdrop-blur-md z-10 sticky top-0">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-full text-primary">
-                <Swords className="h-5 w-5" />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold tracking-tight text-foreground/90">{getTranslated(route, 'nombre', language)}</h2>
-                <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                  <span className="bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                    {t('guidedRoute.point')} {currentStep + 1} / {route.puntos.length}
-                  </span>
-                  <span>{getTranslated(currentPoint, 'nombre', language)}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" className="hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors" onClick={() => setShowPointsInfo(true)}>
-                <Info className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="hover:bg-destructive/10 hover:text-destructive transition-colors rounded-full" onClick={onClose}>
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
+  const renderBriefing = () => (
+    <div className="flex flex-col h-full bg-slate-900 text-white relative overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        {currentPoint.logoUrl && (
+          <LazyImage src={currentPoint.logoUrl} className="w-full h-full object-cover opacity-40 blur-sm" alt="Background" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/80 to-transparent" />
+      </div>
 
+      <div className="relative z-10 p-8 flex flex-col items-center justify-center h-full text-center space-y-6">
+        <div className="bg-primary/20 p-4 rounded-full ring-4 ring-primary/10 mb-4 animate-pulse">
+          <Target className="w-12 h-12 text-primary" />
+        </div>
+
+        <div className="space-y-2 max-w-lg">
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+            {getTranslated(route, 'nombre', language)}
+          </h2>
+          <p className="text-slate-300 font-light text-lg">
+            {getTranslated(route, 'descripcion', language)?.toString().slice(0, 150)}...
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 w-full max-w-sm mt-8">
+          <div className="bg-slate-800/50 backdrop-blur border border-slate-700 p-4 rounded-2xl flex flex-col items-center">
+            <Clock className="w-6 h-6 text-blue-400 mb-2" />
+            <span className="text-2xl font-bold">{route.duracionMin} m</span>
+            <span className="text-xs text-slate-400 uppercase tracking-widest">{t('mission.time')}</span>
+          </div>
+          <div className="bg-slate-800/50 backdrop-blur border border-slate-700 p-4 rounded-2xl flex flex-col items-center">
+            <Award className="w-6 h-6 text-yellow-400 mb-2" />
+            <span className="text-2xl font-bold">{route.gamificacion?.length || 0}</span>
+            <span className="text-xs text-slate-400 uppercase tracking-widest">{t('mission.challenges')}</span>
+          </div>
+        </div>
+
+        <Button onClick={startMission} size="lg" className="w-full max-w-sm text-lg font-bold h-14 rounded-full shadow-xl shadow-primary/25 mt-8 hover:scale-105 transition-transform bg-primary text-white">
+          {t('mission.start')}
+        </Button>
+      </div>
+    </div>
+  );
+
+  const renderNavigating = () => (
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
+      <div className="relative h-2/5 shrink-0">
+        <LazyImage src={currentPoint.logoUrl} className="w-full h-full object-cover" alt="Location" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent p-6 flex items-start justify-between">
+          <Button variant="secondary" size="icon" className="rounded-full bg-black/40 text-white hover:bg-black/60 border-none" onClick={onClose}>
+            <X className="w-5 h-5" />
+          </Button>
+          <div className="bg-black/60 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1.5 border border-white/10">
+            <Navigation className="w-3 h-3 text-primary" />
+            Punto {currentStep + 1} / {route.puntos.length}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 p-6 flex flex-col -mt-10 relative z-10 bg-background rounded-t-3xl shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.2)]">
+        <div className="w-16 h-1 bg-border/50 rounded-full mx-auto mb-6" />
+
+        <div className="text-center space-y-2 mb-8">
+          <h3 className="text-sm font-semibold text-primary uppercase tracking-widest">{t('mission.nextObjective')}</h3>
+          <h2 className="text-3xl font-bold text-foreground leading-tight">{getTranslated(currentPoint, 'nombre', language)}</h2>
+          <p className="text-muted-foreground">{getTranslated(currentPoint, 'descripcion', language)?.toString().slice(0, 100)}...</p>
+        </div>
+
+        <div className="mt-auto space-y-4">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/50 p-4 rounded-xl flex gap-3 text-sm text-blue-800 dark:text-blue-300">
+            <HelpCircle className="w-5 h-5 shrink-0" />
+            <p>{t('mission.goTo')}</p>
           </div>
 
-          <ScrollArea className="flex-1">
-            <div className="p-6 grid md:grid-cols-2 gap-8 items-start">
-              <div className="flex flex-col items-center">
-                <LazyImage
-                  src={currentPoint.logoUrl}
-                  alt={getTranslated(currentPoint, 'nombre', language) as string}
-                  className="w-full h-64 object-cover rounded-lg mb-4 bg-white"
-                />
+          <Button onClick={() => setMissionState('CHALLENGE')} className="w-full h-14 text-lg rounded-xl shadow-lg shadow-primary/20" size="lg">
+            <MapPin className="mr-2 w-5 h-5" />
+            {challenge?.type === 'CHECKIN' ? t('mission.verifyGps') : t('mission.imHere')}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderChallenge = () => (
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
+      <div className="p-6 border-b bg-background/50 backdrop-blur sticky top-0 z-10 flex items-center gap-3">
+        <Button variant="ghost" size="icon" onClick={() => setMissionState('NAVIGATING')}><ArrowRight className="w-5 h-5 rotate-180" /></Button>
+        <div>
+          <h4 className="font-bold text-lg leading-none">{t('mission.activeChallenge')}</h4>
+          <span className="text-xs text-muted-foreground">{t('mission.earn').replace('{{points}}', String(challenge?.points_reward))}</span>
+        </div>
+        <Award className="ml-auto w-8 h-8 text-yellow-500" />
+      </div>
+
+      <ScrollArea className="flex-1 p-6">
+        <div className="max-w-md mx-auto space-y-6">
+
+          {/* Instruction Card */}
+          <div className="bg-background border rounded-2xl p-6 shadow-sm text-center space-y-3">
+            <Swords className="w-10 h-10 text-primary mx-auto mb-2" />
+            <h2 className="text-xl font-bold">{getTranslated(challenge!, 'title', language)}</h2>
+            <p className="text-muted-foreground">{getTranslated(challenge!, 'instruction', language)}</p>
+          </div>
+
+          {/* Challenge Logic */}
+          {challenge?.type === 'CHECKIN' && (
+            <div className="flex flex-col items-center py-8">
+              <div className={cn("relative w-40 h-40 flex items-center justify-center rounded-full mb-6 transition-all", checkingLocation ? "bg-primary/5" : "bg-primary/10")}>
+                {checkingLocation && <div className="absolute inset-0 border-4 border-primary rounded-full animate-ping opacity-20" />}
+                <MapPin className={cn("w-16 h-16 text-primary transition-all", checkingLocation && "animate-bounce")} />
               </div>
+              <Button onClick={verifyCheckIn} disabled={checkingLocation} size="lg" className="w-full rounded-xl">
+                {checkingLocation ? t('mission.verifying') : t('mission.checkLocation')}
+              </Button>
+              <p className="text-xs text-muted-foreground mt-4 text-center">{t('mission.gpsHint')}</p>
+            </div>
+          )}
 
-              <div className="space-y-4">
-                {!isCorrect ? (
-                  // --- Question Phase ---
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">{t('guidedRoute.testYourKnowledge')}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="font-medium mb-4">{getTranslated(gamificationData, 'pregunta', language)}</p>
-                      <div className="space-y-2">
-                        {opciones.map(opcion => {
-                          const isSelected = userAnswer === opcion;
-                          let variant: 'outline' | 'default' | 'secondary' | 'destructive' = 'outline';
-                          if (isAnswered) {
-                            if (opcion === respuestaCorrecta) variant = 'default';
-                            else if (isSelected) variant = 'destructive';
-                            else variant = 'secondary';
-                          } else if (isSelected) {
-                            variant = 'secondary';
-                          }
+          {challenge?.type === 'TRIVIA' && challenge.quiz_data && (
+            <div className="space-y-3">
+              <p className="font-medium text-lg mb-4">{getTranslated(challenge.quiz_data, 'question', language)}</p>
+              {(getTranslated(challenge.quiz_data, 'options', language) as string[])?.map((option: string) => {
+                const isWrong = wrongAnswers.includes(option);
+                const isSelected = userAnswer === option;
 
-                          return (
-                            <Button
-                              key={opcion}
-                              variant={variant}
-                              className={cn(
-                                "w-full justify-start text-left h-auto py-3 px-4 transition-all duration-200",
-                                isSelected && !isAnswered && "border-2 border-primary bg-primary/5 text-primary font-medium"
-                              )}
-                              onClick={() => setUserAnswer(opcion)}
-                              disabled={isAnswered}
-                            >
-                              <div className="flex items-center w-full">
-                                <span className="flex-1">{opcion}</span>
-                                {isSelected && !isAnswered && <div className="h-3 w-3 rounded-full bg-primary" />}
-                              </div>
-                            </Button>
-                          );
-                        })}
-                      </div>
-                      <Button onClick={handleCheckAnswer} disabled={!userAnswer || isAnswered} className="mt-4 w-full">
-                        {t('guidedRoute.checkAnswer')}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  // --- Reward Phase ---
-                  <div className="space-y-4 animate-in fade-in-50">
-                    <Card className="bg-green-50 border-green-200 shadow-lg transform transition-all duration-500 hover:scale-105">
-                      <CardHeader>
-                        <CardTitle className="text-lg text-green-800 flex items-center gap-2"><Check className="h-6 w-6" /> {t('guidedRoute.correct')}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-6">
-                        <div className="bg-white/60 p-4 rounded-xl flex items-center gap-3 text-green-700 shadow-sm">
-                          <div className="bg-green-100 p-2 rounded-full">
-                            <Award className="h-6 w-6 text-green-600" />
-                          </div>
-                          <div>
-                            <span className="font-bold text-lg block">+10 {language === 'es' ? 'Puntos' : 'Points'}</span>
-                            <span className="text-xs text-green-600/80 uppercase tracking-wider">{language === 'es' ? '¡Sigue así!' : 'Keep it up!'}</span>
-                          </div>
-                        </div>
+                return (
+                  <Button
+                    key={option}
+                    variant={isSelected ? 'default' : (isWrong ? 'destructive' : 'outline')}
+                    className={cn(
+                      "w-full justify-start h-auto py-4 px-5 text-left text-base rounded-xl transition-all",
+                      isWrong && "opacity-50 cursor-not-allowed"
+                    )}
+                    onClick={() => !isWrong && setUserAnswer(option)}
+                    disabled={isWrong || isCorrect}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span>{option}</span>
+                      {isWrong && <X className="w-4 h-4" />}
+                      {isSelected && !isWrong && <div className="w-3 h-3 bg-white rounded-full" />}
+                    </div>
+                  </Button>
+                );
+              })}
 
-                        <div className="bg-amber-50/80 p-4 rounded-lg border border-amber-100">
-                          <h4 className="font-semibold flex items-center gap-2 mb-2 text-amber-900"><Lightbulb className="h-5 w-5 text-amber-500" /> {language === 'es' ? 'Sabías que...' : 'Did you know...'}</h4>
-                          <p className="text-sm text-amber-800/90 leading-relaxed italic">"{getTranslated(gamificationData, 'datoCurioso', language)}"</p>
-                        </div>
-
-                        <div className="bg-blue-50/80 p-4 rounded-lg border border-blue-100">
-                          <h4 className="font-semibold flex items-center gap-2 mb-2 text-blue-900"><Swords className="h-5 w-5 text-blue-500" /> {t('guidedRoute.explorerChallenge')}</h4>
-                          <p className="text-sm text-blue-800/90 mb-3">{getTranslated(gamificationData, 'reto', language)}</p>
-                          <textarea
-                            className="w-full text-sm p-3 rounded-md border-blue-200 bg-white placeholder:text-blue-300/70 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all resize-none"
-                            placeholder={language === 'es' ? 'Escribe aquí tu experiencia o nota sobre el reto...' : 'Write your experience or note about the challenge here...'}
-                            rows={3}
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+              <div className="min-h-[20px] text-center mt-2">
+                {wrongAnswers.length > 0 && !userAnswer && (
+                  <p className="text-red-500 text-sm animate-pulse">Respuesta incorrecta, intenta de nuevo.</p>
                 )}
               </div>
-            </div>
-          </ScrollArea>
 
-          <div className="flex items-center justify-between p-4 border-t bg-background flex-shrink-0">
-            <Button variant="outline" onClick={onPrev} disabled={currentStep === 0}>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              {t('guidedRoute.previous')}
-            </Button>
-            {isLastStep ? (
-              <Button onClick={handleComplete} disabled={!isCorrect} className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white shadow-lg transform active:scale-95 transition-all">
-                <Award className="mr-2 h-4 w-4" />
-                {t('fullView.completeRoute')}
+              <Button
+                onClick={verifyTrivia}
+                disabled={!userAnswer || isCorrect}
+                className="w-full mt-4 h-12"
+                size="lg"
+              >
+                {t('mission.confirmAnswer')}
               </Button>
-            ) : (
-              <Button onClick={onNext} disabled={!isCorrect}>
-                {t('guidedRoute.next')}
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            )}
-          </div>
-        </DialogContent >
-      </Dialog >
+            </div>
+          )}
 
-      <Dialog open={showPointsInfo} onOpenChange={setShowPointsInfo}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{language === 'es' ? 'Sistema de Puntos' : 'Points System'}</DialogTitle>
-            <DialogDescription>
-              {language === 'es'
-                ? '¡Gana recompensas explorando Cali!'
-                : 'Earn rewards by exploring Cali!'}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="flex items-center gap-4">
-              <div className="p-2 bg-yellow-100 rounded-full"><Award className="h-6 w-6 text-yellow-600" /></div>
-              <div>
-                <h4 className="font-bold">{language === 'es' ? '10 Puntos' : '10 Points'}</h4>
-                <p className="text-sm text-muted-foreground">{language === 'es' ? 'Por cada sitio visitado y pregunta respondida.' : 'For each site visited and question answered.'}</p>
-              </div>
+        </div>
+      </ScrollArea>
+    </div>
+  );
+
+  const renderSuccess = () => (
+    <div className="flex flex-col h-full bg-green-600 text-white items-center justify-center p-8 relative overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+
+      <div className="relative z-10 flex flex-col items-center text-center space-y-6">
+        <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-2xl mb-4 animate-in bounce-in duration-700">
+          <Check className="w-12 h-12 text-green-600" />
+        </div>
+        <div>
+          <h2 className="text-4xl font-black uppercase tracking-tight mb-2">{t('mission.completed')}</h2>
+          <p className="text-green-100 text-lg font-medium">+{challenge?.points_reward} {t('mission.pointsWon')}</p>
+        </div>
+
+        <div className="bg-white/10 backdrop-blur rounded-2xl p-6 max-w-sm border border-white/20">
+          <p className="italic">"{getTranslated(challenge!, 'completed_message', language)}"</p>
+          {challenge?.quiz_data?.fun_fact && (
+            <div className="mt-4 pt-4 border-t border-white/10 text-sm opacity-90">
+              <strong>{t('guidedRoute.funFact')}</strong> {getTranslated(challenge.quiz_data, 'fun_fact', language)}
             </div>
-            <div className="flex items-center gap-4">
-              <div className="p-2 bg-blue-100 rounded-full"><Award className="h-6 w-6 text-blue-600" /></div>
-              <div>
-                <h4 className="font-bold">{language === 'es' ? '50 Puntos' : '50 Points'}</h4>
-                <p className="text-sm text-muted-foreground">{language === 'es' ? 'Al completar toda la ruta.' : 'Upon completing the entire route.'}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-slate-50 p-4 rounded-lg text-sm text-slate-600">
-            {language === 'es'
-              ? 'Acumula puntos para desbloquear insignias especiales y subir de nivel en tu perfil de explorador.'
-              : 'Accumulate points to unlock special badges and level up your explorer profile.'}
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+          )}
+        </div>
+
+        <Button onClick={handleNextStep} size="lg" className="w-full max-w-xs h-14 bg-white text-green-700 hover:bg-green-50 font-bold rounded-full shadow-xl mt-8">
+          {currentStep === route.puntos.length - 1 ? t('mission.finishRoute') : t('mission.nextPoint')} <ArrowRight className="ml-2 w-5 h-5" />
+        </Button>
+      </div>
+    </div>
+  );
+
+  // Wrapper Dialog
+  return (
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="max-w-md h-[95vh] md:h-[85vh] p-0 border-none shadow-2xl overflow-hidden rounded-none md:rounded-3xl bg-background">
+        {missionState === 'BRIEFING' && renderBriefing()}
+        {missionState === 'NAVIGATING' && renderNavigating()}
+        {missionState === 'CHALLENGE' && renderChallenge()}
+        {missionState === 'SUCCESS' && renderSuccess()}
+      </DialogContent>
+    </Dialog>
   );
 };
 

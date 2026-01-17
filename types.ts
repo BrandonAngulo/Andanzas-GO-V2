@@ -57,17 +57,37 @@ export interface RecomendacionRuta {
   descripcion_en?: string;
 }
 
-export interface GamificacionPunto {
-  pregunta: string;
-  pregunta_en?: string;
-  opciones: string[];
-  opciones_en?: string[];
-  respuestaCorrecta: string;
-  respuestaCorrecta_en?: string;
-  datoCurioso: string;
-  datoCurioso_en?: string;
-  reto: string;
-  reto_en?: string;
+export type ChallengeType = 'TRIVIA' | 'CHECKIN';
+
+export interface Challenge {
+  id: string;
+  type: ChallengeType;
+  title: string;
+  title_en?: string;
+  instruction: string;
+  instruction_en?: string;
+  points_reward: number;
+  completed_message: string;
+  completed_message_en?: string;
+
+  // Data for TRIVIA
+  quiz_data?: {
+    question: string;
+    question_en?: string;
+    options: string[];
+    options_en?: string[];
+    correct_answer: string;
+    correct_answer_en?: string;
+    fun_fact?: string;
+    fun_fact_en?: string;
+  };
+
+  // Data for CHECKIN
+  checkin_data?: {
+    latitude?: number;
+    longitude?: number;
+    radius_meters?: number; // 50m default
+  };
 }
 
 export interface Ruta {
@@ -83,7 +103,7 @@ export interface Ruta {
   justificaciones_en?: string[];
   publico?: boolean;
   recomendaciones?: RecomendacionRuta[];
-  gamificacion?: GamificacionPunto[];
+  gamificacion?: Challenge[];
   reward_badge_id?: string;
   mensajeCierre?: string;
   mensajeCierre_en?: string;

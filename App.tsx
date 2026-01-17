@@ -39,6 +39,7 @@ import NotificationsPanel from "./components/layout/NotificationsPanel";
 import FullView from "./components/views/FullView";
 import InsigniasModal from "./components/panels/InsigniasModal";
 import GuidedRouteModal from "./components/views/GuidedRouteModal";
+import ActiveRouteBanner from './components/shared/ActiveRouteBanner';
 import Logo from "./components/layout/Logo";
 import AccessibilityMenu from "./components/layout/AccessibilityMenu";
 import PrivacyPolicy from './components/legal/PrivacyPolicy';
@@ -834,37 +835,38 @@ export default function App() {
       )}
 
       {/* Active Route Floating Control */}
-      {
-        activeGuidedRoute && !showRouteModal && activePanel === 'mapa' && (
-          <div className="fixed bottom-24 left-4 right-4 z-[900] md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-md">
-            <Card className="bg-background/95 backdrop-blur shadow-2xl border-primary/20 ring-1 ring-primary/10">
-              <CardContent className="p-4 flex items-center justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 animate-pulse">
-                      {t('guidedRoute.activeRoute') || "Ruta Activa"}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      {currentRouteStep + 1} / {activeGuidedRoute.puntos.length} • {getTranslated(sites.find(s => s.id === activeGuidedRoute.puntos[currentRouteStep]), 'nombre', language)}
-                    </span>
-                  </div>
-                  <h4 className="font-semibold text-sm truncate">{getTranslated(activeGuidedRoute, 'nombre', language)}</h4>
-                </div>
-                <div className="flex gap-2 shrink-0">
-                  <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive hover:bg-destructive/10" onClick={() => { setActiveGuidedRoute(null); setRoutesInProgress(prev => prev.filter(id => id !== activeGuidedRoute.id)); }}>
-                    <X className="h-5 w-5" />
-                    <span className="sr-only">Cancelar</span>
-                  </Button>
-                  <Button onClick={() => setShowRouteModal(true)} className="h-10 px-4 rounded-full shadow-lg shadow-primary/20">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    {t('guidedRoute.imHere') || "¡Estoy Aquí!"}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )
-      }
+      {activeGuidedRoute && !showRouteModal && (
+        <ActiveRouteBanner
+          route={activeGuidedRoute}
+          currentStep={currentRouteStep}
+          sites={sites}
+          onResume={() => setShowRouteModal(true)}
+          onCancel={() => {
+            if (window.confirm(t('guidedRoute.cancel') + '?')) {
+              setActiveGuidedRoute(null);
+              setCurrentRouteStep(0);
+            }
+          }}
+        />
+      )}
+
+      {/* Guided Route Modal */}
+      {showRouteModal && activeGuidedRoute && (
+        <GuidedRouteModal
+          route={activeGuidedRoute}
+          currentStep={currentRouteStep}
+          onClose={() => setShowRouteModal(false)}
+          onNext={() => {
+            const nextStep = currentRouteStep + 1;
+            setCurrentRouteStep(nextStep);
+
+            // Auto update visited points logic if needed via context/service
+            const nextPointId = activeGuidedRoute.puntos[nextStep];
+          }}
+          onComplete={() => completeRoute(activeGuidedRoute.id)}
+          sites={sites}
+        />
+      )}
 
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
         <SheetContent className="w-80 p-0" showCloseButton={false}>
@@ -874,20 +876,7 @@ export default function App() {
 
       <InsigniasModal open={showInsigniasModal} onOpenChange={setShowInsigniasModal} earnedInsigniaIds={earnedInsignias} allInsignias={allInsignias} />
 
-      {
-        activeGuidedRoute && showRouteModal && (
-          <GuidedRouteModal
-            route={activeGuidedRoute}
-            currentStep={currentRouteStep}
-            onClose={handleCloseGuidedRoute}
-            onNext={handleNextStep}
-            onPrev={handlePrevStep}
-            onComplete={() => handlePointVisited(activeGuidedRoute.puntos[currentRouteStep])} // Just mark point as visited
-            sites={sites}
-            isVisited={visitedRoutePoints.includes(activeGuidedRoute.puntos[currentRouteStep])}
-          />
-        )
-      }
+
 
       <ReviewModal
         isOpen={!!reviewSiteId}

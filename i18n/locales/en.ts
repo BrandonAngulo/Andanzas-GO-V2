@@ -343,6 +343,29 @@ const en = {
         daysAgo: "{{count}}d ago",
     },
 
+    // Mission Mode
+    mission: {
+        start: "START MISSION",
+        briefing: "Mission Briefing",
+        time: "TIME",
+        challenges: "CHALLENGES",
+        nextObjective: "NEXT OBJECTIVE",
+        goTo: "Proceed to this location. Once there, confirm your arrival to unlock the challenge.",
+        imHere: "I'm Here",
+        verifyGps: "Confirm Arrival (GPS)",
+        verifying: "Verifying GPS...",
+        checkLocation: "Check my Location",
+        gpsHint: "You must be within 50 meters of the point.",
+        activeChallenge: "Active Challenge",
+        earn: "Earn {{points}} points",
+        confirmAnswer: "Confirm Answer",
+        completed: "Completed!",
+        pointsWon: "Points earned",
+        nextPoint: "Next Point",
+        finishRoute: "Finish Route",
+        cancel: "Cancel Mission"
+    },
+
 
 };
 
