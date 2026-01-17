@@ -22,6 +22,7 @@ import { newsService } from './services/news.service';
 import { Site, Evento, Ruta, Review, ActivePanelType, Notificacion, FeedItem, Insignia } from './types';
 import { cn, getTranslated } from './lib/utils';
 import Sidebar from "./components/layout/Sidebar";
+import BottomNav from "./components/layout/BottomNav";
 
 import MapaGoogle from "./components/map/MapaGoogle";
 import ExplorarPanel from "./components/panels/ExplorarPanel";
