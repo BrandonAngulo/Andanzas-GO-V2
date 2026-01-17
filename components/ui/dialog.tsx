@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '../../lib/utils';
 import { X } from 'lucide-react';
 
@@ -46,9 +47,16 @@ const DialogTrigger: React.FC<React.PropsWithChildren<{ asChild?: boolean }>> = 
 
 const DialogContent: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => {
   const { open, onOpenChange } = useDialog();
-  if (!open) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!open || !mounted) return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-[1400] flex items-center justify-center">
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in-0 duration-200"
@@ -60,7 +68,8 @@ const DialogContent: React.FC<React.PropsWithChildren<{ className?: string }>> =
         </button>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
