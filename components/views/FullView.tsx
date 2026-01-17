@@ -255,10 +255,24 @@ const RouteDetail: React.FC<{ data: Ruta, goToPlaceInMap: (placeName: string) =>
 
     const ActionButton: React.FC = () => {
         if (isCompleted) {
-            return <Button size="lg" disabled><CheckCircle className="h-5 w-5 mr-2" /> {t('fullView.routeCompleted')}</Button>;
+            return <Button size="lg" disabled className="bg-green-600 text-white"><CheckCircle className="h-5 w-5 mr-2" /> {t('fullView.routeCompleted')}</Button>;
         }
         if (isInProgress) {
-            return <Button size="lg" variant="destructive" onClick={() => onCompleteRoute(data.id)}>{t('fullView.completeRoute')}</Button>;
+            return (
+                <div className="flex gap-2 w-full sm:w-auto">
+                    <Button size="lg" onClick={() => onStartRoute(data)} className="flex-1 sm:flex-none">
+                        <Route className="h-5 w-5 mr-2" />
+                        {t('mission.imHere') || "Continuar Misión"}
+                    </Button>
+                    <Button size="lg" variant="outline" className="text-destructive border-destructive hover:bg-destructive/10" onClick={() => {
+                        if (window.confirm("¿Seguro quieres abandonar la misión?")) {
+                            onCompleteRoute(data.id); // Reusing complete to just remove from active
+                        }
+                    }}>
+                        {t('mission.cancel')}
+                    </Button>
+                </div>
+            );
         }
         return <Button size="lg" onClick={() => onStartRoute(data)}>{t('fullView.startRoute')}</Button>;
     };
