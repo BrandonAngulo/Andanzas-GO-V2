@@ -26,9 +26,10 @@ interface FullViewProps {
     activeRoute?: Ruta | null;
     visitedPoints?: string[];
     onVisitPoint?: () => void;
+    onAuthRequired: () => void;
 }
 
-const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, addReview, addToRoute, goToPlaceInMap, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, sites, activeRoute, visitedPoints, onVisitPoint }) => {
+const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, addReview, addToRoute, goToPlaceInMap, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, sites, activeRoute, visitedPoints, onVisitPoint, onAuthRequired }) => {
     const { t, language } = useI18n();
     const { user } = useAuth();
     const { type, data } = view;
@@ -39,7 +40,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
 
     const handleAuthAction = (action: () => void) => {
         if (!user) {
-            alert(language === 'es' ? 'Debes iniciar sesión para realizar esta acción.' : 'You must be logged in to perform this action.');
+            onAuthRequired();
             return;
         }
         action();

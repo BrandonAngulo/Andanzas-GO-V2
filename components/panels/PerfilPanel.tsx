@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, ExternalLink } from 'lucide-react';
+import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
@@ -83,12 +84,21 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
 
     const handleDeleteReview = async (reviewId: string) => {
-        if (confirm(t('deleteConfirm') || "¿Estás seguro de eliminar esta reseña?")) {
-            const success = await reviewsService.deleteReview(reviewId);
-            if (success) {
-                setMyReviews(prev => prev.filter(r => r.id !== reviewId));
+        toast((t('deleteConfirm') || "¿Estás seguro de eliminar esta reseña?"), {
+            action: {
+                label: (t('delete') || 'Eliminar'),
+                onClick: async () => {
+                    const success = await reviewsService.deleteReview(reviewId);
+                    if (success) {
+                        setMyReviews(prev => prev.filter(r => r.id !== reviewId));
+                        toast.success("Reseña eliminada");
+                    }
+                }
+            },
+            cancel: {
+                label: (t('cancel') || 'Cancelar'),
             }
-        }
+        });
     };
 
     const myFavorites = sites.filter(s => favoriteSiteIds.includes(s.id));

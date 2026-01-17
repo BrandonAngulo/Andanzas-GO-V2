@@ -1,7 +1,7 @@
 {
   "name": "andanzas-go-v2",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,6 +16,7 @@
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {

@@ -1,5 +1,7 @@
 
 import React, { useMemo, useState, useEffect, useRef } from "react";
+import { Toaster, toast } from "sonner";
+import AuthRequiredDialog from "./components/shared/AuthRequiredDialog";
 import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Accessibility, Map, X, MapPin } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Badge } from "./components/ui/badge";
@@ -32,9 +34,8 @@ import PerfilPanel from "./components/panels/PerfilPanel";
 import SobrePanel from "./components/panels/SobrePanel";
 import SoportePanel from "./components/panels/SoportePanel";
 import RightRail from "./components/layout/RightRail";
-import FullView from "./components/views/FullView";
-import BottomNav from "./components/layout/BottomNav";
 import NotificationsPanel from "./components/layout/NotificationsPanel";
+import FullView from "./components/views/FullView";
 import InsigniasModal from "./components/panels/InsigniasModal";
 import GuidedRouteModal from "./components/views/GuidedRouteModal";
 import Logo from "./components/layout/Logo";
@@ -126,7 +127,9 @@ export default function App() {
   const [routesCompleted, setRoutesCompleted] = useState<string[]>([]);
   const [feed, setFeed] = useState<FeedItem[]>([]);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(storage.getTheme());
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(storage.getTheme());
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
 
   // Cargar datos estáticos al inicio
   useEffect(() => {
@@ -325,11 +328,15 @@ export default function App() {
   };
 
   const generateAiRecommendations = async () => {
-    alert("La función de IA estará disponible próximamente.");
+    toast.info("La función de IA estará disponible próximamente.", {
+      description: "Estamos trabajando en increíbles características para ti.",
+    });
   };
 
   const handleShowAiSheet = (open: boolean) => {
-    if (open) alert("Asistente IA: Próximamente");
+    // if (open) alert("Asistente IA: Próximamente");
+    // Temporarily disabled check to allow opening the sheet to show the "Coming Soon" UI
+    setAiSheetOpen(open);
   };
 
   const handleShowNotifications = (open: boolean) => {
@@ -346,7 +353,7 @@ export default function App() {
     if (navigator.share) {
       try { await navigator.share({ title: 'Andanzas GO', text: t('shareText'), url: window.location.origin }); }
       catch (error) { console.error('Error sharing:', error); }
-    } else { alert(t('shareNotSupported')); }
+    } else { toast.error(t('shareNotSupported')); }
   };
 
   const allRutas = useMemo(() => [...rutasTematicas, ...rutas], [rutasTematicas, rutas]);
@@ -422,7 +429,7 @@ export default function App() {
   };
 
   const startNewRoute = () => {
-    if (!isAuthenticated) { alert("Debes iniciar sesión para crear rutas."); setActivePanel("perfil"); return; }
+    if (!isAuthenticated) { setAuthDialogOpen(true); return; }
     setNewRoutePoints([]); setActivePanel("rutas");
   };
 
@@ -471,7 +478,7 @@ export default function App() {
   };
 
   const startRoute = (route: Ruta) => {
-    if (!isAuthenticated) { alert("Inicia sesión para comenzar esta ruta."); setActivePanel("perfil"); return; }
+    if (!isAuthenticated) { setAuthDialogOpen(true); return; }
     if (routesCompleted.includes(route.id)) return;
     setRoutesInProgress(prev => [...new Set([...prev, route.id])]);
     setActiveGuidedRoute(route);
@@ -613,6 +620,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full bg-muted/20">
+      <Toaster position="top-center" richColors />
+      <AuthRequiredDialog
+        open={authDialogOpen}
+        onOpenChange={setAuthDialogOpen}
+        onLogin={() => {
+          setAuthDialogOpen(false);
+          setActivePanel("perfil");
+        }}
+      />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[2000] focus:px-4 focus:py-2 focus:bg-background focus:text-primary focus:border focus:rounded-md shadow-lg transition-transform">
         {language === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
       </a>
@@ -800,7 +816,7 @@ export default function App() {
         </DialogContent>
       </Dialog>
 
-      {fullView && <FullView view={fullView} onClose={closeFull} isFav={isFav} toggleFav={toggleFav} addReview={addReview} addToRoute={(site) => setNewRoutePoints((prev) => (prev.find((p) => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
+      {fullView && <FullView view={fullView} onClose={closeFull} isFav={isFav} toggleFav={toggleFav} addReview={addReview} addToRoute={(site) => setNewRoutePoints((prev) => (prev.find((p) => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} />}
 
       {!focusMode && showPrivacyBanner && (
         <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t z-50 transition-transform duration-500 animate-in slide-in-from-bottom-full">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { APIProvider, Map, AdvancedMarker, useMap } from '@vis.gl/react-google-maps';
+import { toast } from 'sonner';
 import { Filter, Loader2, Navigation, MapPin, AlertTriangle, X } from 'lucide-react';
 import { Site, Ruta } from '../../types';
 import { Badge } from '../ui/badge';
@@ -192,7 +193,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
         }
 
         if (!navigator.geolocation) {
-            alert("Geolocation is not supported by this browser.");
+            toast.error("Geolocation is not supported by this browser.");
             return;
         }
 
@@ -229,7 +230,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
                 if (error.code === 1) msg = "Permiso de ubicación denegado. Actívalo en tu navegador.";
                 if (error.code === 2) msg = "Ubicación no disponible. Verifica tu GPS.";
                 if (error.code === 3) msg = "Tiempo de espera agotado.";
-                alert(msg);
+                toast.error(msg);
             },
             { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 }
         );

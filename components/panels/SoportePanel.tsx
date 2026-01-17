@@ -11,6 +11,7 @@ import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { supportService } from '../../services/support.service';
 import { Phone, Mail, MessageCircle, CheckCircle2, User, HelpCircle, Send, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const SoportePanel: React.FC = () => {
     const { t } = useI18n();
@@ -50,7 +51,7 @@ const SoportePanel: React.FC = () => {
             setCallbackSuccess(true);
         } catch (error) {
             console.error(error);
-            alert("Error enviando solicitud. Intente nuevamente.");
+            toast.error("Error enviando solicitud. Intente nuevamente.");
         } finally {
             setIsSubmittingCallback(false);
         }
@@ -69,7 +70,7 @@ const SoportePanel: React.FC = () => {
             setContactMessage('');
         } catch (error) {
             console.error(error);
-            alert("Error enviando mensaje. Intente nuevamente.");
+            toast.error("Error enviando mensaje. Intente nuevamente.");
         } finally {
             setIsSubmittingContact(false);
         }
