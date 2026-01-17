@@ -6,13 +6,13 @@ import { cn } from '../../lib/utils';
 interface StarRatingProps {
   value?: number;
   onChange?: (value: number) => void;
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ value = 0, onChange, size = 'sm' }) => {
   const [hover, setHover] = useState(0);
   const stars = [1, 2, 3, 4, 5];
-  const dim = size === 'sm' ? 18 : 24;
+  const dim = size === 'sm' ? 18 : (size === 'md' ? 24 : 32);
 
   return (
     <div className="flex items-center gap-1" role="radiogroup" aria-label="Calificación">
