@@ -127,7 +127,7 @@ export default function App() {
   const [routesCompleted, setRoutesCompleted] = useState<string[]>([]);
   const [feed, setFeed] = useState<FeedItem[]>([]);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(storage.getTheme());
-  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(storage.getTheme());
+
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
 
