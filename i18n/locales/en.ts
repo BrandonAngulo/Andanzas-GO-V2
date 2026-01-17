@@ -230,6 +230,7 @@ const en = {
         error: "We could not load information for this point.",
         imHere: "Take Challenge",
         activeRoute: "Active Route",
+        reviewPrompt: "What did you think of this place? Share your adventure.",
         cancel: "Cancel Route"
     },
 

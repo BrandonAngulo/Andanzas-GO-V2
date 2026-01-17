@@ -230,6 +230,7 @@ const es = {
         error: "No pudimos cargar la información de este punto.",
         imHere: "Resolver Desafío",
         activeRoute: "Ruta Activa",
+        reviewPrompt: "¿Qué te pareció este lugar? Comparte tu aventura.",
         cancel: "Cancelar ruta"
     },
 
