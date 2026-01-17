@@ -51,7 +51,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ site, isOpen, onClose, onSubm
                     <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-teal-500 bg-clip-text text-transparent">
                         {siteName}
                     </DialogTitle>
-                    <DialogDescription className="text-base font-medium text-muted-foreground mt-2 max-w-xs mx-auto">
+                    <DialogDescription className="text-base font-medium text-muted-foreground mt-2 max-w-sm mx-auto">
                         {t('guidedRoute.reviewPrompt') || "¿Qué te pareció este lugar? Comparte tu aventura."}
                     </DialogDescription>
                 </DialogHeader>

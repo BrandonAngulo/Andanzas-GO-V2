@@ -11,6 +11,7 @@ const es = {
     delete: "Eliminar",
     edit: "Editar",
     cancel: "Cancelar",
+    send: "Enviar",
     shareText: "¡Descubre Cali con Andanzas GO! Una app para explorar la cultura de la ciudad.",
     shareNotSupported: "La función de compartir no es compatible con tu navegador.",
     termsOfService: "Términos de Servicio",

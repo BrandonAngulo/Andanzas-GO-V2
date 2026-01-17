@@ -11,6 +11,7 @@ const en = {
     delete: "Delete",
     edit: "Edit",
     cancel: "Cancel",
+    send: "Send",
     shareText: "Discover Cali with Andanzas GO! An app to explore the city's culture.",
     shareNotSupported: "The share feature is not supported by your browser.",
     termsOfService: "Terms of Service",
