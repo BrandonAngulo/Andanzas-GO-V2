@@ -14,6 +14,8 @@
     "duracionMin": 240,
     "descripcion": "Esta ruta es una peregrinación al corazón sonoro de Cali, la Capital Mundial de la Salsa. Más que un género musical, aquí la salsa es una religión que se baila y se vive en cada esquina. 'La Ruta de la Salsa y el Sabor' te sumerge en la identidad de un pueblo que transformó un ritmo antillano en su propia bandera cultural. Es un viaje vibrante donde el cuerpo no puede evitar moverse y donde entenderás por qué en Cali, la vida tiene su propia clave.",
     "descripcion_en": "This route is a pilgrimage to the sonic heart of Cali, the Salsa Capital of the World. More than a musical genre, salsa here is a religion danced and lived on every corner. 'The Salsa and Flavor Route' immerses you in the identity of a people who transformed an Antillean rhythm into their own cultural flag. It is a vibrant journey where the body cannot help but move and where you will understand why in Cali, life has its own beat.",
+    "intro_story": "Agente, tu misión es infiltrarte en el ritmo de la ciudad. Se dice que el secreto de la felicidad caleña está oculto en una clave de 4/4. Debes visitar los templos sagrados de la salsa, descifrar los pasos prohibidos y encontrar el verdadero 'Golpe'. ¿Tienes lo que se necesita para mantener el ritmo?",
+    "intro_story_en": "Agent, your mission is to infiltrate the rhythm of the city. It is said that the secret of Caleño happiness is hidden in a 4/4 key. You must visit the sacred temples of salsa, decipher the forbidden steps, and find the true 'Beat'. Do you have what it takes to keep the rhythm?",
     "justificaciones": [
       "El origen histórico y fotográfico de la salsa.",
       "Homenaje al Grupo Niche y Jairo Varela.",
@@ -100,6 +102,23 @@
         "completed_message_en": "You arrived! Visit registered.",
         "checkin_data": {
           "radius_meters": 50
+        },
+        "allow_manual_trivia": true,
+        "manual_trivia_data": {
+          "question": "Mirando hacia la entrada principal, ¿De qué color es el letrero?",
+          "question_en": "Looking at the main entrance, what color is the sign?",
+          "options": [
+            "Rojo",
+            "Azul",
+            "Amarillo"
+          ],
+          "options_en": [
+            "Red",
+            "Blue",
+            "Yellow"
+          ],
+          "correct_answer": "Rojo",
+          "correct_answer_en": "Red"
         }
       },
       {
@@ -175,6 +194,8 @@
     "duracionMin": 180,
     "descripcion": "Esta ruta es un viaje en el tiempo hacia los cimientos mismos de Santiago de Cali. Caminar por el centro histórico es leer las páginas de la 'Sucursal del Cielo' escritas en piedra y cal. Descubrirás la hidalguía de una ciudad que supo ser colonial, republicana y moderna sin perder su esencia. Desde la fe de sus templos hasta el poder de sus plazas, este recorrido es esencial para conectar con la memoria colectiva y entender cómo el pasado ha moldeado la sociedad caleña actual.\n\nEl itinerario te guiará por el corazón cívico en la Plaza de Cayzedo, pasando por la joya mudéjar de la Torre Mudéjar y la majestuosidad del Teatro Municipal. Cada fachada narra historias de independencia, arte y desarrollo. Visitarás el complejo religioso de San Francisco y La Merced, donde literalmente nació la ciudad, para luego conectar con el Río Cali, testigo silencioso de siglos de evolución.\n\nAl finalizar, sentirás una profunda reverencia por el legado arquitectónico de Cali. Es una experiencia de contemplación y aprendizaje, ideal para ser combinada con un café tradicional en el Bulevar. Te llevarás no solo fotos de edificios hermosos, sino la comprensión de que Cali es una ciudad de capas, donde la historia sigue viva y dialogando con el presente.",
     "descripcion_en": "This route is a journey back in time to the very foundations of Santiago de Cali. Walking through the historic center is reading the pages of the 'Branch of Heaven' written in stone and lime. You will discover the nobility of a city that managed to be colonial, republican, and modern without losing its essence. From the faith of its temples to the power of its squares, this tour is essential to connect with collective memory and understand how the past has shaped current Caleño society.\n\nThe itinerary will guide you through the civic heart at Plaza de Cayzedo, passing by the Mudejar jewel of the Mudejar Tower and the majesty of the Municipal Theater. Every facade tells stories of independence, art, and development. You will visit the religious complex of San Francisco and La Merced, where the city was literally born, to then connect with the Cali River, a silent witness to centuries of evolution.\n\nBy the end, you will feel a deep reverence for Cali's architectural legacy. It is an experience of contemplation and learning, ideal to be combined with a traditional coffee on the Boulevard. You will take away not just photos of beautiful buildings, but the understanding that Cali is a city of layers, where history is still alive and dialoguing with the present.",
+    "intro_story": "Bienvenido, viajero del tiempo. El reloj ha retrocedido 300 años. Tu misión es reconstruir la memoria perdida de Santiago de Cali. Debes encontrar los vestigios coloniales que sobrevivieron a la modernidad y escuchar lo que sus piedras tienen para decirte. ¿Podrás escuchar los susurros de la historia?",
+    "intro_story_en": "Welcome, time traveler. The clock has turned back 300 years. Your mission is to reconstruct the lost memory of Santiago de Cali. You must find the colonial vestiges that survived modernity and listen to what their stones have to tell you. Can you hear the whispers of history?",
     "justificaciones": [
       "El corazón cívico de la ciudad.",
       "El edificio más antiguo de Cali (Siglo XVI).",
@@ -261,6 +282,23 @@
         "completed_message_en": "You arrived! Visit registered.",
         "checkin_data": {
           "radius_meters": 50
+        },
+        "allow_manual_trivia": true,
+        "manual_trivia_data": {
+          "question": "¿De qué color es la estatua de Joaquín de Cayzedo y Cuero?",
+          "question_en": "What color is the statue of Joaquín de Cayzedo y Cuero?",
+          "options": [
+            "Dorado",
+            "Bronce Oscuro",
+            "Blanco Mármol"
+          ],
+          "options_en": [
+            "Golden",
+            "Dark Bronze",
+            "Marble White"
+          ],
+          "correct_answer": "Bronce Oscuro",
+          "correct_answer_en": "Dark Bronze"
         }
       },
       {
@@ -391,6 +429,23 @@
         "completed_message_en": "You arrived! Visit registered.",
         "checkin_data": {
           "radius_meters": 50
+        },
+        "allow_manual_trivia": true,
+        "manual_trivia_data": {
+          "question": "¿Qué río pasa justo al lado del Museo La Tertulia?",
+          "question_en": "Which river flows right next to La Tertulia Museum?",
+          "options": [
+            "Río Cauca",
+            "Río Cali",
+            "Río Pance"
+          ],
+          "options_en": [
+            "Cauca River",
+            "Cali River",
+            "Pance River"
+          ],
+          "correct_answer": "Río Cali",
+          "correct_answer_en": "Cali River"
         }
       },
       {
@@ -529,6 +584,23 @@
         "completed_message_en": "You arrived! Visit registered.",
         "checkin_data": {
           "radius_meters": 50
+        },
+        "allow_manual_trivia": true,
+        "manual_trivia_data": {
+          "question": "En el río Pance, ¿qué actividad es más popular los domingos?",
+          "question_en": "What activity is most popular at Pance River on Sundays?",
+          "options": [
+            "Pesca Deportiva",
+            "Sancocho de Olla",
+            "Surf"
+          ],
+          "options_en": [
+            "Sport Fishing",
+            "Pot Stew (Sancocho)",
+            "Surfing"
+          ],
+          "correct_answer": "Sancocho de Olla",
+          "correct_answer_en": "Pot Stew (Sancocho)"
         }
       },
       {
@@ -637,6 +709,23 @@
         "completed_message_en": "You arrived! Visit registered.",
         "checkin_data": {
           "radius_meters": 50
+        },
+        "allow_manual_trivia": true,
+        "manual_trivia_data": {
+          "question": "¿De qué estilo arquitectónico es la fachada del Teatro Municipal?",
+          "question_en": "What architectural style is the Municipal Theater's facade?",
+          "options": [
+            "Gótico",
+            "Neoclásico Francés",
+            "Colonial"
+          ],
+          "options_en": [
+            "Gothic",
+            "French Neoclassical",
+            "Colonial"
+          ],
+          "correct_answer": "Neoclásico Francés",
+          "correct_answer_en": "French Neoclassical"
         }
       },
       {
@@ -773,6 +862,23 @@
         "completed_message_en": "You arrived! Visit registered.",
         "checkin_data": {
           "radius_meters": 50
+        },
+        "allow_manual_trivia": true,
+        "manual_trivia_data": {
+          "question": "¿Cuántos metros, aproximadamente, mide la estatua de Cristo Rey?",
+          "question_en": "Approximately how many meters tall is the Cristo Rey statue?",
+          "options": [
+            "15 metros",
+            "26 metros",
+            "40 metros"
+          ],
+          "options_en": [
+            "15 meters",
+            "26 meters",
+            "40 meters"
+          ],
+          "correct_answer": "26 metros",
+          "correct_answer_en": "26 meters"
         }
       },
       {

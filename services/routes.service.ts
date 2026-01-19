@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient';
 import { Ruta } from '../types';
+import { CULTURAL_ROUTES } from '../data/routes';
 
 export const routesService = {
     async getAll(): Promise<Ruta[]> {
@@ -8,11 +9,11 @@ export const routesService = {
             .select('*')
             .eq('is_published', true);
 
-        if (error) {
-            console.error('Error fetching routes:', error);
-            return [];
-        }
-        return data.map(mapRoute);
+        const dbRoutes = error ? [] : data?.map(mapRoute) || [];
+
+        // Return mostly our curated routes first, then DB routes if they are distinct
+        // (Just appending for now to ensure they show up)
+        return [...CULTURAL_ROUTES, ...dbRoutes];
     },
 
     async getUserRoutes(userId: string): Promise<Ruta[]> {
@@ -98,6 +99,8 @@ function mapRoute(dbRoute: any): Ruta {
         duracionMin: dbRoute.duracion_min,
         descripcion: dbRoute.descripcion,
         descripcion_en: dbRoute.descripcion_en,
+        intro_story: dbRoute.intro_story,
+        intro_story_en: dbRoute.intro_story_en,
         justificaciones: dbRoute.justificaciones,
         justificaciones_en: dbRoute.justificaciones_en,
         recomendaciones: dbRoute.recomendaciones,

@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient';
 import { Site } from '../types';
+import { CULTURAL_SITES } from '../data/sites';
 
 export const sitesService = {
     async getAll(): Promise<Site[]> {
@@ -7,11 +8,12 @@ export const sitesService = {
             .from('sites')
             .select('*');
 
-        if (error) {
-            console.error('Error fetching sites:', error);
-            return [];
-        }
-        return data.map(mapSite);
+        const dbSites = error ? [] : data?.map(mapSite) || [];
+        // Dedup by ID, prioritizing local CULTURAL_SITES for this overrides
+        const localIds = new Set(CULTURAL_SITES.map(s => s.id));
+        const filteredDbSites = dbSites.filter(s => !localIds.has(s.id));
+
+        return [...CULTURAL_SITES, ...filteredDbSites];
     },
 
     async getById(id: string): Promise<Site | null> {

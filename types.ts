@@ -25,6 +25,7 @@ export interface Site {
   datosCuriosos_en?: string[];
   image_credit?: string;
   accessibility_features?: string[]; // e.g. ['wheelchair', 'audio_guide']
+  fotos?: string[];
 }
 
 export interface Evento {
@@ -57,7 +58,7 @@ export interface RecomendacionRuta {
   descripcion_en?: string;
 }
 
-export type ChallengeType = 'TRIVIA' | 'CHECKIN';
+export type ChallengeType = 'TRIVIA' | 'CHECKIN' | 'PHOTO';
 
 export interface Challenge {
   id: string;
@@ -69,6 +70,17 @@ export interface Challenge {
   points_reward: number;
   completed_message: string;
   completed_message_en?: string;
+
+  // Hybrid Validation Options
+  allow_manual_trivia?: boolean; // If true, allows fallback to a specific trivia question if GPS fails
+  manual_trivia_data?: {
+    question: string;
+    question_en?: string;
+    options: string[];
+    options_en?: string[];
+    correct_answer: string;
+    correct_answer_en?: string;
+  };
 
   // Data for TRIVIA
   quiz_data?: {
@@ -99,6 +111,8 @@ export interface Ruta {
   // New rich content fields
   descripcion: string;
   descripcion_en?: string;
+  intro_story?: string;
+  intro_story_en?: string;
   justificaciones: string[];
   justificaciones_en?: string[];
   publico?: boolean;

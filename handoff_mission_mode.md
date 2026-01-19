@@ -4,13 +4,13 @@
 
 ## 🚀 Cambios Implementados
 
-### 1. Nuevo "Modo Misión" (`GuidedRouteModal.tsx`)
-Transformé el modal aburrido de antes en una experiencia inmersiva con 4 fases:
 - **Briefing (Informe):** Pantalla de inicio estilo videojuego con resumen, tiempo y desafíos.
+    - **NUEVO:** Narrativa inmersiva con efecto "máquina de escribir" para introducir la misión.
 - **Navegación:** Te guía al siguiente punto visualmente. Puedes "minimizar" esta pantalla.
 - **Desafío:**
     - **Trivia:** Preguntas de opción múltiple con feedback visual inmediato (rojo/verde).
     - **Check-in GPS:** Nuevo desafío que simula verificar tu ubicación (animación de radar).
+    - **Validación Híbrida:** Si el GPS falla, se ofrece una "Pregunta Secreta" del lugar para validar manualmente.
 - **Victoria:** Pantalla de recompensa al completar un punto.
 
 ### 2. Banner de Ruta Activa (`ActiveRouteBanner.tsx`)

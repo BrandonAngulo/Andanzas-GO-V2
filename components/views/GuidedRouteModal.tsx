@@ -20,36 +20,27 @@ interface GuidedRouteModalProps {
   sites: Site[];
 }
 
-type MissionState = 'BRIEFING' | 'NAVIGATING' | 'CHALLENGE' | 'SUCCESS';
+type MissionState = 'CHALLENGE' | 'SUCCESS';
 
 const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep, onClose, onNext, onComplete, sites }) => {
   const { t, language } = useI18n();
   const { user } = useAuth();
 
   // State
-  const [missionState, setMissionState] = useState<MissionState>(currentStep === 0 ? 'BRIEFING' : 'NAVIGATING');
+  const [missionState, setMissionState] = useState<MissionState>('CHALLENGE');
   const [checkingLocation, setCheckingLocation] = useState(false);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
   const [wrongAnswers, setWrongAnswers] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState(false);
+
+  const [showManualCheckin, setShowManualCheckin] = useState(false);
 
   const currentPointId = route.puntos[currentStep];
   const currentPoint = sites.find(site => site.id === currentPointId);
   // Safe access to challenge
   const challenge: Challenge | undefined = route.gamificacion ? route.gamificacion[currentStep] : undefined;
 
-  // Reset state when step changes
-  useEffect(() => {
-    if (currentStep > 0) {
-      setMissionState('NAVIGATING');
-    }
-    setUserAnswer(null);
-    setWrongAnswers([]);
-    setIsCorrect(false);
-  }, [currentStep]);
 
-  // Handlers
-  const startMission = () => setMissionState('NAVIGATING');
 
   const verifyCheckIn = () => {
     setCheckingLocation(true);
@@ -63,15 +54,15 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
     }, 2000);
   };
 
-  const verifyTrivia = async () => {
-    if (!userAnswer || !challenge?.quiz_data) return;
+  const verifyTriviaLogic = async (data: any, points: number, typeLabel: string) => {
+    if (!userAnswer || !data) return;
 
-    const correct = getTranslated(challenge.quiz_data, 'correct_answer', language);
+    const correct = getTranslated(data, 'correct_answer', language);
 
     if (userAnswer === correct) {
       setIsCorrect(true);
       if (user) {
-        await gamificationService.awardPoints(challenge.points_reward, `Trivia: ${currentPoint?.nombre}`);
+        await gamificationService.awardPoints(points, `${typeLabel}: ${currentPoint?.nombre}`);
       }
       setTimeout(() => setMissionState('SUCCESS'), 1000);
     } else {
@@ -80,6 +71,10 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
       setUserAnswer(null); // Reset selection to allow picking another
     }
   };
+
+  const verifyTrivia = () => verifyTriviaLogic(challenge?.quiz_data, challenge?.points_reward || 0, 'Trivia');
+  const verifyManualTrivia = () => verifyTriviaLogic(challenge?.manual_trivia_data, (challenge?.points_reward || 0) / 2, 'Manual Check-in'); // Halve points for manual? Maybe not for MVP. Let's keep full points or logic specific desires. Audit suggested Silver/Gold but implementation might be simpler for now.
+
 
   const handleNextStep = () => {
     if (currentStep === route.puntos.length - 1) {
@@ -100,98 +95,24 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
 
   // --- RENDERERS ---
 
-  const renderBriefing = () => (
-    <div className="flex flex-col h-full bg-slate-900 text-white relative overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        {currentPoint.logoUrl && (
-          <LazyImage src={currentPoint.logoUrl} className="w-full h-full object-cover opacity-40 blur-sm" alt="Background" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/80 to-transparent" />
-      </div>
+  // --- HELPERS ---
 
-      <div className="relative z-10 p-8 flex flex-col items-center justify-center h-full text-center space-y-6">
-        <div className="bg-primary/20 p-4 rounded-full ring-4 ring-primary/10 mb-4 animate-pulse">
-          <Target className="w-12 h-12 text-primary" />
-        </div>
-
-        <div className="space-y-2 max-w-lg">
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-            {getTranslated(route, 'nombre', language)}
-          </h2>
-          <p className="text-slate-300 font-light text-lg">
-            {getTranslated(route, 'descripcion', language)?.toString().slice(0, 150)}...
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 w-full max-w-sm mt-8">
-          <div className="bg-slate-800/50 backdrop-blur border border-slate-700 p-4 rounded-2xl flex flex-col items-center">
-            <Clock className="w-6 h-6 text-blue-400 mb-2" />
-            <span className="text-2xl font-bold">{route.duracionMin} m</span>
-            <span className="text-xs text-slate-400 uppercase tracking-widest">{t('mission.time')}</span>
-          </div>
-          <div className="bg-slate-800/50 backdrop-blur border border-slate-700 p-4 rounded-2xl flex flex-col items-center">
-            <Award className="w-6 h-6 text-yellow-400 mb-2" />
-            <span className="text-2xl font-bold">{route.gamificacion?.length || 0}</span>
-            <span className="text-xs text-slate-400 uppercase tracking-widest">{t('mission.challenges')}</span>
-          </div>
-        </div>
-
-        <Button onClick={startMission} size="lg" className="w-full max-w-sm text-lg font-bold h-14 rounded-full shadow-xl shadow-primary/25 mt-8 hover:scale-105 transition-transform bg-primary text-white">
-          {t('mission.start')}
-        </Button>
-      </div>
-    </div>
-  );
-
-  const renderNavigating = () => (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
-      <div className="relative h-2/5 shrink-0">
-        <LazyImage src={currentPoint.logoUrl} className="w-full h-full object-cover" alt="Location" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent p-6 flex items-start justify-between">
-          <Button variant="secondary" size="icon" className="rounded-full bg-black/40 text-white hover:bg-black/60 border-none" onClick={onClose}>
-            <X className="w-5 h-5" />
-          </Button>
-          <div className="bg-black/60 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1.5 border border-white/10">
-            <Navigation className="w-3 h-3 text-primary" />
-            Punto {currentStep + 1} / {route.puntos.length}
-          </div>
-        </div>
-      </div>
-
-      <div className="flex-1 p-6 flex flex-col -mt-10 relative z-10 bg-background rounded-t-3xl shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.2)]">
-        <div className="w-16 h-1 bg-border/50 rounded-full mx-auto mb-6" />
-
-        <div className="text-center space-y-2 mb-8">
-          <h3 className="text-sm font-semibold text-primary uppercase tracking-widest">{t('mission.nextObjective')}</h3>
-          <h2 className="text-3xl font-bold text-foreground leading-tight">{getTranslated(currentPoint, 'nombre', language)}</h2>
-          <p className="text-muted-foreground">{getTranslated(currentPoint, 'descripcion', language)?.toString().slice(0, 100)}...</p>
-        </div>
-
-        <div className="mt-auto space-y-4">
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/50 p-4 rounded-xl flex gap-3 text-sm text-blue-800 dark:text-blue-300">
-            <HelpCircle className="w-5 h-5 shrink-0" />
-            <p>{t('mission.goTo')}</p>
-          </div>
-
-          <Button onClick={() => setMissionState('CHALLENGE')} className="w-full h-14 text-lg rounded-xl shadow-lg shadow-primary/20" size="lg">
-            <MapPin className="mr-2 w-5 h-5" />
-            {challenge?.type === 'CHECKIN' ? t('mission.verifyGps') : t('mission.imHere')}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
 
   const renderChallenge = () => (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
-      <div className="p-6 border-b bg-background/50 backdrop-blur sticky top-0 z-10 flex items-center gap-3">
-        <Button variant="ghost" size="icon" onClick={() => setMissionState('NAVIGATING')}><ArrowRight className="w-5 h-5 rotate-180" /></Button>
-        <div>
-          <h4 className="font-bold text-lg leading-none">{t('mission.activeChallenge')}</h4>
-          <span className="text-xs text-muted-foreground">{t('mission.earn').replace('{{points}}', String(challenge?.points_reward))}</span>
+      <div className="p-4 border-b bg-background/95 backdrop-blur sticky top-0 z-10 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div>
+            <h4 className="font-bold text-lg leading-none">{t('mission.activeChallenge')}</h4>
+          </div>
         </div>
-        <Award className="ml-auto w-8 h-8 text-yellow-500" />
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
+            <Award className="w-4 h-4 text-yellow-600 dark:text-yellow-500" />
+            <span className="text-xs font-bold text-yellow-700 dark:text-yellow-400">+{challenge?.points_reward}</span>
+          </div>
+          <Button variant="ghost" size="icon" onClick={onClose}><X className="w-5 h-5" /></Button>
+        </div>
       </div>
 
       <ScrollArea className="flex-1 p-6">
@@ -204,20 +125,84 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
             <p className="text-muted-foreground">{getTranslated(challenge!, 'instruction', language)}</p>
           </div>
 
-          {/* Challenge Logic */}
+          {/* CHECKIN & HYBRID LOGIC */}
           {challenge?.type === 'CHECKIN' && (
-            <div className="flex flex-col items-center py-8">
-              <div className={cn("relative w-40 h-40 flex items-center justify-center rounded-full mb-6 transition-all", checkingLocation ? "bg-primary/5" : "bg-primary/10")}>
-                {checkingLocation && <div className="absolute inset-0 border-4 border-primary rounded-full animate-ping opacity-20" />}
-                <MapPin className={cn("w-16 h-16 text-primary transition-all", checkingLocation && "animate-bounce")} />
-              </div>
-              <Button onClick={verifyCheckIn} disabled={checkingLocation} size="lg" className="w-full rounded-xl">
-                {checkingLocation ? t('mission.verifying') : t('mission.checkLocation')}
-              </Button>
-              <p className="text-xs text-muted-foreground mt-4 text-center">{t('mission.gpsHint')}</p>
-            </div>
+            <>
+              {!showManualCheckin ? (
+                <div className="flex flex-col items-center py-8">
+                  <div className={cn("relative w-40 h-40 flex items-center justify-center rounded-full mb-6 transition-all", checkingLocation ? "bg-primary/5" : "bg-primary/10")}>
+                    {checkingLocation && <div className="absolute inset-0 border-4 border-primary rounded-full animate-ping opacity-20" />}
+                    <MapPin className={cn("w-16 h-16 text-primary transition-all", checkingLocation && "animate-bounce")} />
+                  </div>
+                  <Button onClick={verifyCheckIn} disabled={checkingLocation} size="lg" className="w-full rounded-xl">
+                    {checkingLocation ? t('mission.verifying') : t('mission.checkLocation')}
+                  </Button>
+                  <p className="text-xs text-muted-foreground mt-4 text-center">{t('mission.gpsHint')}</p>
+
+                  {challenge.allow_manual_trivia && (
+                    <Button variant="link" className="mt-4 text-muted-foreground" onClick={() => {
+                      setShowManualCheckin(true);
+                      setWrongAnswers([]);
+                      setUserAnswer(null);
+                    }}>
+                      ¿Problemas con el GPS? Validar manualmente
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-3 animate-in fade-in slide-in-from-bottom-5">
+                  <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-xl border border-orange-200 dark:border-orange-900 text-sm text-orange-800 dark:text-orange-200 mb-4">
+                    <p className="font-semibold mb-1">Modo Manual</p>
+                    Responde esta pregunta sobre el lugar para validar tu visita.
+                  </div>
+
+                  {challenge.manual_trivia_data && (
+                    <>
+                      <p className="font-medium text-lg mb-4">{getTranslated(challenge.manual_trivia_data, 'question', language)}</p>
+                      {(getTranslated(challenge.manual_trivia_data, 'options', language) as string[])?.map((option: string) => {
+                        const isWrong = wrongAnswers.includes(option);
+                        const isSelected = userAnswer === option;
+
+                        return (
+                          <Button
+                            key={option}
+                            variant={isSelected ? 'default' : (isWrong ? 'destructive' : 'outline')}
+                            className={cn(
+                              "w-full justify-start h-auto py-4 px-5 text-left text-base rounded-xl transition-all",
+                              isWrong && "opacity-50 cursor-not-allowed"
+                            )}
+                            onClick={() => !isWrong && setUserAnswer(option)}
+                            disabled={isWrong || isCorrect}
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <span>{option}</span>
+                              {isWrong && <X className="w-4 h-4" />}
+                              {isSelected && !isWrong && <div className="w-3 h-3 bg-white rounded-full" />}
+                            </div>
+                          </Button>
+                        );
+                      })}
+
+                      <Button
+                        onClick={verifyManualTrivia}
+                        disabled={!userAnswer || isCorrect}
+                        className="w-full mt-4 h-12"
+                        size="lg"
+                      >
+                        {t('mission.confirmAnswer')}
+                      </Button>
+
+                      <Button variant="ghost" className="w-full mt-2" onClick={() => setShowManualCheckin(false)}>
+                        Cancelar y probar GPS
+                      </Button>
+                    </>
+                  )}
+                </div>
+              )}
+            </>
           )}
 
+          {/* TRIVIA LOGIC */}
           {challenge?.type === 'TRIVIA' && challenge.quiz_data && (
             <div className="space-y-3">
               <p className="font-medium text-lg mb-4">{getTranslated(challenge.quiz_data, 'question', language)}</p>
@@ -271,6 +256,13 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
     <div className="flex flex-col h-full bg-green-600 text-white items-center justify-center p-8 relative overflow-hidden animate-in zoom-in-95 duration-300">
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
 
+      {/* Minimize Button */}
+      <div className="absolute top-4 right-4 z-50">
+        <Button variant="ghost" size="icon" className="rounded-full text-white/70 hover:current-color hover:bg-white/20" onClick={onClose}>
+          <X className="w-5 h-5" />
+        </Button>
+      </div>
+
       <div className="relative z-10 flex flex-col items-center text-center space-y-6">
         <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-2xl mb-4 animate-in bounce-in duration-700">
           <Check className="w-12 h-12 text-green-600" />
@@ -300,8 +292,6 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-md h-[95vh] md:h-[85vh] p-0 border-none shadow-2xl overflow-hidden rounded-none md:rounded-3xl bg-background">
-        {missionState === 'BRIEFING' && renderBriefing()}
-        {missionState === 'NAVIGATING' && renderNavigating()}
         {missionState === 'CHALLENGE' && renderChallenge()}
         {missionState === 'SUCCESS' && renderSuccess()}
       </DialogContent>

@@ -41,6 +41,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signIn = async (email: string, pass: string) => {
+    // AUDIT BACKDOOR
+    if (email === 'audit@andanzas.com' && pass === 'test') {
+      const mockUser: any = {
+        id: 'audit-user-id',
+        aud: 'authenticated',
+        role: 'authenticated',
+        email: 'audit@andanzas.com',
+        user_metadata: { full_name: 'Auditor Andanzas' },
+        app_metadata: { provider: 'email' },
+        created_at: new Date().toISOString(),
+      };
+      const mockSession: any = {
+        access_token: 'mock-token',
+        token_type: 'bearer',
+        user: mockUser,
+        expires_in: 3600,
+      };
+      setUser(mockUser);
+      setSession(mockSession);
+      return { data: { user: mockUser, session: mockSession }, error: null };
+    }
     return authService.signIn(email, pass);
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { APIProvider, Map, AdvancedMarker, useMap } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, AdvancedMarker, useMap, InfoWindow } from '@vis.gl/react-google-maps';
 import { toast } from 'sonner';
-import { Filter, Loader2, Navigation, MapPin, AlertTriangle, X } from 'lucide-react';
+import { Filter, Loader2, Navigation, MapPin, AlertTriangle, X, Info, Star } from 'lucide-react';
 import { Site, Ruta } from '../../types';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -9,6 +9,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
 import { cn, getTranslated } from '../../lib/utils';
+import { LazyImage } from '../ui/lazy-image';
+import { Switch } from '../ui/switch';
 
 // ... (Rest of imports and interfaces same as before)
 interface MapaGoogleProps {
@@ -22,6 +24,11 @@ interface MapaGoogleProps {
     onResetFilter: () => void;
     isLoading?: boolean;
     activeRoute?: Ruta | null;
+    minRating?: number;
+    onRatingChange?: (rating: number) => void;
+    showAccessibilityOnly?: boolean;
+    onAccessibilityChange?: (val: boolean) => void;
+    plannedRoutePoints?: Site[];
 }
 
 const DEFAULT_CENTER = { lat: 3.4516, lng: -76.5320 };
@@ -82,7 +89,61 @@ const getCategoryColor = (category: string): string => {
     return '#64748B'; // Slate 500 (Default)
 };
 
-const CustomPin = ({ color, icon }: { color: string, icon: string }) => (
+const MapLegend = ({ language }: { language: 'es' | 'en' }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Simplificamos las categorías para la leyenda
+    const categories = [
+        { label: language === 'es' ? 'Parques y Naturaleza' : 'Parks & Nature', color: '#10B981', icon: '🌳' },
+        { label: language === 'es' ? 'Museos y Cultura' : 'Museums & Culture', color: '#3B82F6', icon: '🏛️' },
+        { label: language === 'es' ? 'Arte y Teatro' : 'Art & Theater', color: '#8B5CF6', icon: '🎨' },
+        { label: language === 'es' ? 'Salsa y Música' : 'Salsa & Music', color: '#E11D48', icon: '💃' },
+        { label: language === 'es' ? 'Gastronomía' : 'Gastronomy', color: '#F97316', icon: '🍽️' },
+        { label: language === 'es' ? 'Sitios Históricos / Otros' : 'Historic / Other', color: '#F59E0B', icon: '⛪' },
+    ];
+
+    return (
+        <div className="absolute bottom-6 left-3 z-[40] pointer-events-auto flex flex-col items-start gap-2">
+            {isOpen && (
+                <Card className="w-52 shadow-xl border-none bg-background/95 backdrop-blur animate-in slide-in-from-bottom-2 fade-in mb-2">
+                    <CardHeader className="p-3 pb-2 border-b">
+                        <CardTitle className="text-xs font-bold flex items-center justify-between">
+                            {language === 'es' ? 'Leyenda del Mapa' : 'Map Legend'}
+                            <Info className="h-3 w-3 text-muted-foreground" />
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 space-y-2.5">
+                        {categories.map((cat, i) => (
+                            <div key={i} className="flex items-center gap-2.5 text-xs">
+                                <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] shadow-sm bg-white border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
+                                    {cat.icon}
+                                </div>
+                                <div className="flex-1">
+                                    <span className="font-medium block leading-none">{cat.label}</span>
+                                    <div className="h-0.5 w-full mt-1 rounded-full opacity-60" style={{ backgroundColor: cat.color }}></div>
+                                </div>
+                            </div>
+                        ))}
+                    </CardContent>
+                </Card>
+            )}
+            <Button
+                variant="secondary"
+                size="sm"
+                className={cn(
+                    "shadow-lg text-xs font-semibold h-9 transition-all border border-muted",
+                    isOpen ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-background/90 hover:bg-background"
+                )}
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <Info className="h-4 w-4 mr-1.5" />
+                {isOpen ? (language === 'es' ? 'Ocultar Leyenda' : 'Hide Legend') : (language === 'es' ? 'Ver Leyenda' : 'Show Legend')}
+            </Button>
+        </div>
+    );
+};
+
+const CustomPin = ({ color, icon, number }: { color: string, icon: string, number?: number }) => (
     <div className="relative group cursor-pointer transform transition-all duration-300 hover:scale-110 hover:-translate-y-1 origin-bottom">
         <div className="absolute top-[34px] left-1/2 -translate-x-1/2 w-3 h-1.5 bg-black/20 rounded-full blur-[1px]"></div>
         <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-sm">
@@ -90,7 +151,7 @@ const CustomPin = ({ color, icon }: { color: string, icon: string }) => (
             <circle cx="17" cy="17" r="13" fill="white" fillOpacity="0.2" />
         </svg>
         <div className="absolute top-0 left-0 w-full h-[34px] flex items-center justify-center text-[18px] leading-none select-none pointer-events-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
-            {icon}
+            {number ? <span className="font-bold text-white text-sm">{number}</span> : icon}
         </div>
     </div>
 );
@@ -106,18 +167,76 @@ const UserLocationMarker = ({ position }: { position: google.maps.LatLngLiteral 
     );
 };
 
+const RoutePolyline = ({ points, color = "#FF0000", dashed = false }: { points: google.maps.LatLngLiteral[], color?: string, dashed?: boolean }) => {
+    const map = useMap();
+    const lineRef = useRef<google.maps.Polyline | null>(null);
+
+    // Init
+    useEffect(() => {
+        if (!map) return;
+
+        const line = new google.maps.Polyline({
+            path: points,
+            geodesic: true,
+            strokeColor: color,
+            strokeOpacity: dashed ? 0 : 0.8,
+            strokeWeight: 4,
+            icons: dashed ? [{
+                icon: { path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 3, strokeColor: color },
+                offset: '0',
+                repeat: '15px'
+            }] : undefined,
+            map: map
+        });
+        lineRef.current = line;
+
+        return () => {
+            line.setMap(null);
+        };
+    }, [map, color, dashed]);
+
+    // Update path
+    useEffect(() => {
+        if (lineRef.current) {
+            lineRef.current.setPath(points);
+        }
+    }, [points]);
+
+    return null;
+};
+
 const MapContent = ({
     sites,
     onSelect,
     userPos,
-    language
+    language,
+    activeRoute,
+    plannedRoutePoints
 }: {
     sites: Site[],
     onSelect: (s: Site) => void,
     userPos: google.maps.LatLngLiteral | null,
-    language: 'es' | 'en'
+    language: 'es' | 'en',
+    activeRoute?: Ruta | null,
+    plannedRoutePoints?: Site[]
 }) => {
     const map = useMap();
+    const [previewSite, setPreviewSite] = useState<Site | null>(null);
+
+    const activePath = React.useMemo(() => {
+        if (!activeRoute) return [];
+        // Sort sites by order in activeRoute.puntos
+        return activeRoute.puntos
+            .map(id => sites.find(s => s.id === id))
+            .filter((s): s is Site => !!s)
+            .map(s => ({ lat: s.lat, lng: s.lng }));
+    }, [activeRoute, sites]);
+
+    const plannedPath = React.useMemo(() => {
+        if (!plannedRoutePoints) return [];
+        return plannedRoutePoints.map(s => ({ lat: s.lat, lng: s.lng }));
+    }, [plannedRoutePoints]);
+
 
     useEffect(() => {
         if (!map || sites.length === 0) return;
@@ -144,21 +263,70 @@ const MapContent = ({
                 const icon = getCategoryIcon(type);
                 const color = getCategoryColor(type);
 
+                let number: number | undefined;
+                if (activeRoute) {
+                    const idx = activeRoute.puntos.indexOf(site.id);
+                    if (idx !== -1) number = idx + 1;
+                }
+
                 return (
                     <AdvancedMarker
                         key={site.id}
                         position={{ lat: site.lat, lng: site.lng }}
-                        onClick={() => onSelect(site)}
+                        onClick={() => setPreviewSite(site)}
                         title={site.nombre}
                         zIndex={20}
                         className="custom-marker-host"
                     >
-                        <CustomPin color={color} icon={icon} />
+                        <CustomPin color={color} icon={icon} number={number} />
                     </AdvancedMarker>
                 );
             })}
 
             {userPos && <UserLocationMarker position={userPos} />}
+
+            {previewSite && (
+                <InfoWindow
+                    position={{ lat: previewSite.lat, lng: previewSite.lng }}
+                    onCloseClick={() => setPreviewSite(null)}
+                    pixelOffset={[0, -42]}
+                    headerContent={
+                        <div className="font-bold text-sm text-foreground flex items-center pr-4">
+                            {getTranslated(previewSite, 'nombre', language)}
+                        </div>
+                    }
+                >
+                    <div className="min-w-[200px] max-w-[240px] p-0 font-sans">
+                        <div className="relative w-full h-24 mb-2 rounded-md overflow-hidden bg-muted">
+                            <LazyImage
+                                src={previewSite.logoUrl || previewSite.fotos?.[0] || ""}
+                                alt={previewSite.nombre}
+                                textFallback={previewSite.nombre}
+                                className="w-full h-full object-cover"
+                            />
+                            <Badge className="absolute top-1 right-1 text-[10px] px-1.5 h-5 backdrop-blur-sm bg-black/50 text-white border-none">
+                                ⭐ {previewSite.rating}
+                            </Badge>
+                        </div>
+                        <p className="text-xs text-secondary-foreground line-clamp-2 mb-3 leading-relaxed">
+                            {getTranslated(previewSite, 'descripcion', language)}
+                        </p>
+                        <Button
+                            size="sm"
+                            className="w-full h-8 text-xs font-semibold shadow-sm"
+                            onClick={() => {
+                                onSelect(previewSite);
+                                setPreviewSite(null);
+                            }}
+                        >
+                            {language === 'es' ? 'Ver Detalles Completos' : 'See Full Details'}
+                        </Button>
+                    </div>
+                </InfoWindow>
+            )}
+
+            {activePath.length > 1 && <RoutePolyline points={activePath} color="#22c55e" />}
+            {plannedPath.length > 1 && <RoutePolyline points={plannedPath} color="#3b82f6" dashed />}
         </>
     );
 };
@@ -237,7 +405,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
     };
 
     return (
-        <div className="relative h-[66vh] md:h-[72vh] rounded-b-xl overflow-hidden group">
+        <div className="relative h-[66vh] md:h-[72vh] rounded-b-xl overflow-hidden group font-sans">
             {props.isLoading && (
                 <div className="absolute inset-0 z-[500] bg-background/50 backdrop-blur-sm flex items-center justify-center">
                     <div className="flex flex-col items-center gap-2">
@@ -256,7 +424,14 @@ const MapWrapper = (props: MapaGoogleProps) => {
                 fullscreenControl={false}
                 className="h-full w-full"
             >
-                <MapContent sites={props.sites} onSelect={props.onSelect} userPos={userPos} language={language} />
+                <MapContent
+                    sites={props.sites}
+                    onSelect={props.onSelect}
+                    userPos={userPos}
+                    language={language}
+                    activeRoute={props.activeRoute}
+                    plannedRoutePoints={props.plannedRoutePoints}
+                />
             </Map>
 
             {/* UI Overlay */}
@@ -271,7 +446,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
                         <div className="flex flex-col gap-1 items-start animate-in slide-in-from-left-2">
                             <Badge variant={gpsAccuracy > 100 ? (gpsAccuracy > 1000 ? "destructive" : "secondary") : "default"} className="shadow-md backdrop-blur border-none px-3 py-1 text-xs font-medium flex items-center gap-1.5">
                                 <Navigation className="h-3 w-3" />
-                                <span>GPS: ±{gpsAccuracy}m</span>
+                                <span className="hidden xs:inline">GPS: ±{gpsAccuracy}m</span>
                             </Badge>
                             {gpsAccuracy > 1000 && (
                                 <Badge variant="outline" className="bg-background/90 text-[10px] text-muted-foreground border-none shadow-sm px-2 py-0.5">
@@ -336,7 +511,40 @@ const MapWrapper = (props: MapaGoogleProps) => {
                                             ))}
                                         </div>
                                     </ScrollArea>
-                                    {props.selectedCategories.length > 0 && (
+
+                                    <div className="p-3 border-t space-y-3 bg-muted/10">
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold text-muted-foreground flex items-center justify-between">
+                                                {language === 'es' ? 'Calificación Mínima' : 'Min Rating'}
+                                                <span className="text-primary font-bold">{props.minRating && props.minRating > 0 ? props.minRating : ''}</span>
+                                            </label>
+                                            <div className="flex gap-1 justify-between px-1">
+                                                {[1, 2, 3, 4, 5].map(star => (
+                                                    <Button
+                                                        key={star}
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className={cn("h-6 w-6 hover:bg-transparent p-0", star <= (props.minRating || 0) ? "text-yellow-500" : "text-muted-foreground/30")}
+                                                        onClick={() => props.onRatingChange?.(props.minRating === star ? 0 : star)}
+                                                    >
+                                                        <Star className={cn("h-5 w-5", star <= (props.minRating || 0) && "fill-current")} />
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <label className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                                                {language === 'es' ? 'Solo Accesibles' : 'Accessible Only'}
+                                            </label>
+                                            <Switch
+                                                checked={props.showAccessibilityOnly || false}
+                                                onChange={(e) => props.onAccessibilityChange?.(e.target.checked)}
+                                                className="scale-75 origin-right"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {(props.selectedCategories.length > 0 || (props.minRating && props.minRating > 0) || props.showAccessibilityOnly) && (
                                         <div className="p-2 border-t bg-muted/20">
                                             <Button variant="ghost" size="sm" className="w-full h-7 text-xs text-muted-foreground hover:text-destructive" onClick={props.onClearCategories}>{t('clearFilters')}</Button>
                                         </div>
@@ -347,6 +555,10 @@ const MapWrapper = (props: MapaGoogleProps) => {
                     </div>
                 </div>
             </div>
+
+            {/* Map Legend */}
+            <MapLegend language={language} />
+
         </div>
     );
 };

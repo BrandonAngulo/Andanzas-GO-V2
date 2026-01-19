@@ -40,6 +40,7 @@ import FullView from "./components/views/FullView";
 import InsigniasModal from "./components/panels/InsigniasModal";
 import GuidedRouteModal from "./components/views/GuidedRouteModal";
 import ActiveRouteBanner from './components/shared/ActiveRouteBanner';
+import RouteIntroModal from "./components/views/RouteIntroModal";
 import Logo from "./components/layout/Logo";
 import AccessibilityMenu from "./components/layout/AccessibilityMenu";
 import PrivacyPolicy from './components/legal/PrivacyPolicy';
@@ -48,6 +49,7 @@ import { useI18n } from "./i18n";
 import NoticiasPanel from "./components/panels/NoticiasPanel";
 import ConfiguracionPanel from "./components/panels/ConfiguracionPanel";
 import OnboardingModal from "./components/panels/OnboardingModal";
+import { AppTutorialModal } from "./components/views/AppTutorialModal";
 import ReviewModal from "./components/views/ReviewModal";
 import { storage } from './lib/storage';
 import { useAuth } from './contexts/AuthContext';
@@ -247,11 +249,15 @@ export default function App() {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
   const [activeGuidedRoute, setActiveGuidedRoute] = useState<Ruta | null>(null);
+  const [previewRoute, setPreviewRoute] = useState<Ruta | null>(null);
   const [visitedRoutePoints, setVisitedRoutePoints] = useState<string[]>([]);
   const [reviewSiteId, setReviewSiteId] = useState<string | null>(null);
   const [showRouteModal, setShowRouteModal] = useState(false);
   const [currentRouteStep, setCurrentRouteStep] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [minRating, setMinRating] = useState(0);
+  const [showAccessibilityOnly, setShowAccessibilityOnly] = useState(false);
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
 
   const allCategories = useMemo(() => {
     const categories = new Set(sites.map(s => getTranslated(s, 'tipo', language) as string));
@@ -361,13 +367,27 @@ export default function App() {
   const allRutas = useMemo(() => [...rutasTematicas, ...rutas], [rutasTematicas, rutas]);
 
   const results = useMemo(() => {
-    const queryFiltered = !query
+    let filtered = !query
       ? sites
       : sites.filter((s) => `${getTranslated(s, 'nombre', language)} ${getTranslated(s, 'tipo', language)}`.toLowerCase().includes(query.trim().toLowerCase()));
 
-    if (selectedCategories.length === 0) return queryFiltered;
-    return queryFiltered.filter(s => selectedCategories.includes(getTranslated(s, 'tipo', language) as string));
-  }, [query, selectedCategories, language]);
+    // Filter by Categories
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(s => selectedCategories.includes(getTranslated(s, 'tipo', language) as string));
+    }
+
+    // Filter by Rating
+    if (minRating > 0) {
+      filtered = filtered.filter(s => s.rating >= minRating);
+    }
+
+    // Filter by Accessibility
+    if (showAccessibilityOnly) {
+      filtered = filtered.filter(s => s.accessibility_features && s.accessibility_features.length > 0);
+    }
+
+    return filtered;
+  }, [query, selectedCategories, language, minRating, showAccessibilityOnly, sites]);
 
   const tendencias = useMemo(() => [...sites].sort((a, b) => b.visitas + b.rating * 100 - (a.visitas + a.rating * 100)).slice(0, 10), [sites]);
 
@@ -461,9 +481,17 @@ export default function App() {
     }
   };
 
-  const updateRouteDetails = async (id: string, newName: string, newDescription: string) => {
-    setRutas(prevRutas => prevRutas.map(ruta => ruta.id === id ? { ...ruta, nombre: newName, descripcion: newDescription } : ruta));
-    if (isAuthenticated) routesService.updateRoute({ id, nombre: newName, descripcion: newDescription });
+  const updateRouteDetails = async (id: string, newName: string, newDescription: string, newPoints?: string[]) => {
+    setRutas(prevRutas => prevRutas.map(ruta =>
+      ruta.id === id
+        ? { ...ruta, nombre: newName, descripcion: newDescription, ...(newPoints ? { puntos: newPoints, duracionMin: newPoints.length * 20 } : {}) }
+        : ruta
+    ));
+    // If updating points, recalculate duration or just pass points
+    const updatePayload: any = { id, nombre: newName, descripcion: newDescription };
+    if (newPoints) updatePayload.puntos = newPoints;
+
+    if (isAuthenticated) routesService.updateRoute(updatePayload);
   };
 
   const toggleRutaPrivacy = async (id: string) => {
@@ -482,6 +510,15 @@ export default function App() {
   const startRoute = (route: Ruta) => {
     if (!isAuthenticated) { setAuthDialogOpen(true); return; }
     if (routesCompleted.includes(route.id)) return;
+
+    // Check if it's a curated route (Passport Mode)
+    const isCurated = rutasTematicas.some(r => r.id === route.id);
+    if (isCurated) {
+      setPreviewRoute(route);
+      return;
+    }
+
+    // Direct start for custom routes
     setRoutesInProgress(prev => [...new Set([...prev, route.id])]);
     setActiveGuidedRoute(route);
     setVisitedRoutePoints([]); // Reset visited points
@@ -489,6 +526,19 @@ export default function App() {
     setShowRouteModal(false); // Do not open modal immediately
     setActivePanel("mapa"); // Go to map to see the path
     setFullView(null); // Close detail view
+  };
+
+  const handleConfirmStartRoute = () => {
+    if (!previewRoute) return;
+    const route = previewRoute;
+    setRoutesInProgress(prev => [...new Set([...prev, route.id])]);
+    setActiveGuidedRoute(route);
+    setVisitedRoutePoints([]);
+    setCurrentRouteStep(0);
+    setShowRouteModal(false);
+    setActivePanel("mapa");
+    setFullView(null);
+    setPreviewRoute(null);
   };
 
   const checkRouteCompletion = (currentVisited: string[]) => {
@@ -634,7 +684,8 @@ export default function App() {
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[2000] focus:px-4 focus:py-2 focus:bg-background focus:text-primary focus:border focus:rounded-md shadow-lg transition-transform">
         {language === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
       </a>
-      <header className="sticky top-0 z-[1000] backdrop-blur-xl bg-background/80 border-b shadow-sm support-[backdrop-filter]:bg-background/60">
+      {/* Hide Header when in Active Mission Mode for Immersion */}
+      <header className={cn("sticky top-0 z-[1000] backdrop-blur-xl bg-background/80 border-b shadow-sm support-[backdrop-filter]:bg-background/60", activeGuidedRoute && "hidden")}>
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="icon" className={!focusMode ? "md:hidden" : ""} aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="flex items-center gap-2 mr-2"><Logo /></div>
@@ -757,13 +808,13 @@ export default function App() {
               {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {t('createRoute')}</Button>}
             </CardHeader>
             <CardContent className="p-0 flex-1 relative">
-              {activePanel === 'mapa' && <MapaGoogle sites={activeGuidedRoute ? sites.filter(s => activeGuidedRoute.puntos.includes(s.id)) : results} onSelect={openSite} allCategories={allCategories} selectedCategories={selectedCategories} onCategoryChange={handleCategoryChange} onClearCategories={clearCategories} isFiltered={isFiltered} onResetFilter={handleResetFilter} isLoading={isLoading} activeRoute={activeGuidedRoute} />}
+              {activePanel === 'mapa' && <MapaGoogle sites={activeGuidedRoute ? sites.filter(s => activeGuidedRoute.puntos.includes(s.id)) : results} onSelect={openSite} allCategories={allCategories} selectedCategories={selectedCategories} onCategoryChange={handleCategoryChange} onClearCategories={clearCategories} isFiltered={isFiltered || minRating > 0 || showAccessibilityOnly} onResetFilter={() => { handleResetFilter(); setMinRating(0); setShowAccessibilityOnly(false); }} isLoading={isLoading} activeRoute={activeGuidedRoute} minRating={minRating} onRatingChange={setMinRating} showAccessibilityOnly={showAccessibilityOnly} onAccessibilityChange={setShowAccessibilityOnly} plannedRoutePoints={newRoutePoints} />}
               {activePanel === 'explorar' && <ExplorarPanel sites={sites} events={eventos} query={query} onOpenSite={openSite} onOpenEvent={openEvent} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={toggleFav} sites={sites} />}
               {activePanel === 'reseñas' && <ResenasPanel reviews={reviews} sites={sites} />}
-              {activePanel === 'rutas' && <RutasPanel query={query} rutas={rutas} suggestedRoutes={rutasTematicas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints((prev) => (prev.find((x) => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints((prev) => prev.filter((x) => x.id !== id))} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
+              {activePanel === 'rutas' && <RutasPanel query={query} rutas={rutas} suggestedRoutes={rutasTematicas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints((prev) => (prev.find((x) => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints((prev) => prev.filter((x) => x.id !== id))} onReorderPoints={setNewRoutePoints} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={startRoute} onCompleteRoute={completeRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
               {activePanel === 'perfil' && <PerfilPanel favCount={favIds.length} reviewsCount={reviews.length} rutasCount={rutas.length} insigniasCount={earnedInsignias.length} onOpenInsigniasModal={() => setShowInsigniasModal(true)} routesInProgressCount={routesInProgress.length} routesCompletedCount={routesCompleted.length} favoriteSiteIds={favIds} sites={sites} toggleFav={toggleFav} onOpenSite={openSite} />}
               {activePanel === 'configuracion' && <ConfiguracionPanel theme={theme} setTheme={setTheme} />}
               {activePanel === 'sobre' && <SobrePanel />}
@@ -841,12 +892,9 @@ export default function App() {
           currentStep={currentRouteStep}
           sites={sites}
           onResume={() => setShowRouteModal(true)}
-          onCancel={() => {
-            if (window.confirm(t('guidedRoute.cancel') + '?')) {
-              setActiveGuidedRoute(null);
-              setCurrentRouteStep(0);
-            }
-          }}
+          onCancel={() => setShowCancelConfirmation(true)}
+          onNext={handleNextStep}
+          onPrev={handlePrevStep}
         />
       )}
 
@@ -885,7 +933,52 @@ export default function App() {
         onSubmit={addReview}
       />
 
+      <Dialog open={showCancelConfirmation} onOpenChange={setShowCancelConfirmation}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {language === 'es' ? '¿Cancelar Misión?' : 'Cancel Mission?'}
+            </DialogTitle>
+            <DialogDescription>
+              {language === 'es'
+                ? 'Si cancelas ahora, perderás el progreso actual de esta ruta. ¿Estás seguro?'
+                : 'If you cancel now, you will lose current progress on this route. Are you sure?'}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setShowCancelConfirmation(false)}>
+              {language === 'es' ? 'Continuar camino' : 'Keep walking'}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setActiveGuidedRoute(null);
+                setCurrentRouteStep(0);
+                setVisitedRoutePoints([]);
+                setShowCancelConfirmation(false);
+                setActivePanel("rutas"); // Return to Routes panel
+              }}
+            >
+              {language === 'es' ? 'Sí, salir' : 'Yes, exit'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Intro Modal for Routes */}
+      {previewRoute && (
+        <RouteIntroModal
+          route={previewRoute}
+          sites={sites} // To get background image
+          onStart={handleConfirmStartRoute}
+          onClose={() => setPreviewRoute(null)}
+        />
+      )}
+
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
+
+      {/* Tutorial for new users (on top of everything) */}
+      <AppTutorialModal />
     </div >
   );
 }

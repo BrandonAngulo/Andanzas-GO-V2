@@ -1,0 +1,86 @@
+
+import { Bell, Utensils, Palette, Feather, Music, Church, Cat, Footprints, Unlock, Trophy } from 'lucide-react';
+import { Insignia } from '../types';
+
+export const BADGES: Insignia[] = [
+    {
+        id: 'badge-salsa',
+        nombre: 'La Campana de Oro',
+        nombre_en: 'The Golden Bell',
+        descripcion: 'Has conectado con el origen sonoro del barrio.',
+        descripcion_en: 'You have connected with the sound origin of the neighborhood.',
+        icono: Bell,
+    },
+    {
+        id: 'badge-food',
+        nombre: 'El Chontaduro con Miel',
+        nombre_en: 'The Chontaduro with Honey',
+        descripcion: 'Probaste la herencia ancestral del Pacífico.',
+        descripcion_en: 'You tasted the ancestral heritage of the Pacific.',
+        icono: Utensils,
+    },
+    {
+        id: 'badge-art',
+        nombre: 'Aerosol de Cristal',
+        nombre_en: 'Crystal Spray Can',
+        descripcion: 'Decodificaste los mensajes de los muros de la ciudad.',
+        descripcion_en: 'You decoded the messages on the city walls.',
+        icono: Palette,
+    },
+    {
+        id: 'badge-lit',
+        nombre: 'La Máquina de Escribir',
+        nombre_en: 'The Typewriter',
+        descripcion: 'Caminaste la Cali de papel y cine.',
+        descripcion_en: 'You walked the Cali of paper and cinema.',
+        icono: Feather,
+    },
+    {
+        id: 'badge-afro',
+        nombre: 'La Marimba de Chonta',
+        nombre_en: 'The Chonta Marimba',
+        descripcion: 'Celebraste la raíz africana de la ciudad.',
+        descripcion_en: 'You celebrated the African root of the city.',
+        icono: Music,
+    },
+    {
+        id: 'badge-arch',
+        nombre: 'El Vitral Gótico',
+        nombre_en: 'The Gothic Stained Glass',
+        descripcion: 'Viajaste de la colonia a la modernidad.',
+        descripcion_en: 'You traveled from the colony to modernity.',
+        icono: Church,
+    },
+    {
+        id: 'badge-eco',
+        nombre: 'La Huella del Gato',
+        nombre_en: 'The Cat\'s Paw',
+        descripcion: 'Reconectaste con el eje ambiental del río.',
+        descripcion_en: 'You reconnected with the river\'s environmental axis.',
+        icono: Cat,
+    },
+    {
+        id: 'badge-theater',
+        nombre: 'Zapatos de Charol',
+        nombre_en: 'Patent Leather Shoes',
+        descripcion: 'Exploraste los escenarios del espectáculo.',
+        descripcion_en: 'You explored the stages of the spectacle.',
+        icono: Footprints,
+    },
+    {
+        id: 'badge-history',
+        nombre: 'El Candado Abierto',
+        nombre_en: 'The Open Padlock',
+        descripcion: 'Descubriste la historia que no está en los libros.',
+        descripcion_en: 'You discovered history not found in books.',
+        icono: Unlock,
+    },
+    {
+        id: 'badge-sport',
+        nombre: 'El Balón Ovalado',
+        nombre_en: 'The Oval Ball',
+        descripcion: 'Entendiste el deporte como tejido de paz.',
+        descripcion_en: 'You understood sport as a fabric of peace.',
+        icono: Trophy,
+    },
+];
