@@ -99,16 +99,17 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                         <div className="flex items-center gap-2 shrink-0">
                             <Button
                                 size="sm"
-                                variant="secondary"
+                                variant="outline"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     const url = `https://www.google.com/maps/dir/?api=1&destination=${currentPoint.lat},${currentPoint.lng}&travelmode=walking`;
                                     window.open(url, '_blank');
                                 }}
-                                className="h-8 w-8 p-0 rounded-lg bg-secondary/80 hover:bg-secondary border border-border/50 shadow-sm"
-                                title="Cómo llegar"
+                                className="h-8 px-3 rounded-lg border-primary/20 text-primary hover:bg-primary/10 bg-background/50 shadow-sm"
+                                title={language === 'es' ? "Cómo llegar" : "Directions"}
                             >
-                                <Navigation className="h-3.5 w-3.5 text-secondary-foreground" />
+                                <Navigation className="h-3.5 w-3.5 mr-1.5" />
+                                <span className="text-[10px] font-bold uppercase tracking-tight">{language === 'es' ? "Cómo llegar" : "Directions"}</span>
                             </Button>
                             <Button
                                 size="sm"
