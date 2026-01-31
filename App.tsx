@@ -475,7 +475,7 @@ export default function App() {
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}
               {activePanel === 'reseñas' && <ResenasPanel reviews={reviews} sites={sites} />}
-              {activePanel === 'rutas' && <RutasPanel query={query} rutas={userRoutes} suggestedRoutes={rutasTematicas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints(prev => (prev.find(x => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints(prev => prev.filter(x => x.id !== id))} onReorderPoints={setNewRoutePoints} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={(r) => { if (!startRoute(r)) setAuthDialogOpen(true); }} onCompleteRoute={completeRouteById} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
+              {activePanel === 'rutas' && <RutasPanel query={query} rutas={userRoutes} suggestedRoutes={rutasTematicas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints(prev => (prev.find(x => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints(prev => prev.filter(x => x.id !== id))} onReorderPoints={setNewRoutePoints} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={(r) => { if (!startRoute(r)) { setAuthDialogOpen(true); } else { setActivePanel('mapa'); } }} onCompleteRoute={completeRouteById} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
               {activePanel === 'perfil' && <PerfilPanel favCount={favIds.length} reviewsCount={reviews.length} rutasCount={userRoutes.length} insigniasCount={earnedInsignias.length} onOpenInsigniasModal={() => setShowInsigniasModal(true)} routesInProgressCount={routesInProgress.length} routesCompletedCount={routesCompleted.length} favoriteSiteIds={favIds} sites={sites} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} onOpenSite={openSite} />}
               {activePanel === 'configuracion' && <ConfiguracionPanel theme={theme} setTheme={setTheme} />}
               {activePanel === 'sobre' && <SobrePanel />}
@@ -511,7 +511,7 @@ export default function App() {
       </Dialog>
 
       {/* Full View */}
-      {fullView && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { if (!startRoute(r)) setAuthDialogOpen(true); }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} />}
+      {fullView && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { if (!startRoute(r)) { setAuthDialogOpen(true); } else { setActivePanel('mapa'); closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} />}
 
       {/* Privacy Banner */}
       {!focusMode && showPrivacyBanner && (
@@ -573,7 +573,7 @@ export default function App() {
         </DialogContent>
       </Dialog>
 
-      {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={confirmStartRoute} onClose={() => setPreviewRoute(null)} />}
+      {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} />}
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
     </div>
