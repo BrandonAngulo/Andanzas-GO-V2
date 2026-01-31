@@ -368,8 +368,13 @@ export default function App() {
           <div className="flex items-center gap-2 mr-2"><Logo /></div>
 
           <nav className="hidden md:flex items-center gap-1 bg-muted/50 p-1 rounded-full border border-black/5 dark:border-white/5" aria-label="Main Navigation">
-            {['mapa', 'explorar', 'rutas', 'noticias'].map(key => (
-              <Button key={key} size="sm" className="rounded-full px-4" variant={activePanel === key ? "default" : "ghost"} onClick={() => setActivePanel(key as any)}>{t(`nav.${key}`)}</Button>
+            {[
+              { id: 'mapa', label: 'nav.map' },
+              { id: 'explorar', label: 'nav.explore' },
+              { id: 'rutas', label: 'nav.routes' },
+              { id: 'noticias', label: 'nav.news' }
+            ].map(item => (
+              <Button key={item.id} size="sm" className="rounded-full px-4" variant={activePanel === item.id ? "default" : "ghost"} onClick={() => setActivePanel(item.id as any)}>{t(item.label)}</Button>
             ))}
           </nav>
 
