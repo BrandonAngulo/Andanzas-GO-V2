@@ -102,7 +102,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                                 variant="outline"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    const url = `https://www.google.com/maps/dir/?api=1&destination=${currentPoint.lat},${currentPoint.lng}&travelmode=walking`;
+                                    const url = `https://www.google.com/maps/search/?api=1&query=${currentPoint.lat},${currentPoint.lng}`;
                                     window.open(url, '_blank');
                                 }}
                                 className="h-8 px-3 rounded-lg border-primary/20 text-primary hover:bg-primary/10 bg-background/50 shadow-sm"
