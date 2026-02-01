@@ -101,8 +101,8 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                                 size="sm"
                                 variant="outline"
                                 onClick={(e) => {
-                                    e.stopPropagation();
-                                    const url = `https://www.google.com/maps/search/?api=1&query=${currentPoint.lat},${currentPoint.lng}`;
+                                    const queryName = currentPoint.nombre; // We use the Spanish name for better accuracy in local search
+                                    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(queryName + ", Cali")}`;
                                     window.open(url, '_blank');
                                 }}
                                 className="h-8 px-3 rounded-lg border-primary/20 text-primary hover:bg-primary/10 bg-background/50 shadow-sm"
