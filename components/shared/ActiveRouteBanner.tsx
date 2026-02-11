@@ -74,11 +74,11 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
 
                         <Button
                             variant="ghost"
-                            size="icon"
-                            className="h-6 w-6 text-muted-foreground/50 hover:text-destructive hover:bg-destructive/10 -mr-1"
+                            size="sm"
+                            className="h-6 px-2 text-[10px] font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/10 -mr-1"
                             onClick={(e) => { e.stopPropagation(); onCancel(); }}
                         >
-                            <X className="h-3.5 w-3.5" />
+                            {language === 'es' ? "SALIR" : "EXIT"}
                         </Button>
                     </div>
 
