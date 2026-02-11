@@ -26,21 +26,30 @@ export const AppDataProvider: React.FC<{ children: ReactNode }> = ({ children })
     const [feed, setFeed] = useState<FeedItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const loadStaticData = async () => {
+    const loadStaticData = async (retryCount = 0) => {
         setIsLoading(true);
 
-        // 1. Load critical data
         try {
+            // 1. Load critical data
             const [s, r, i, f] = await Promise.all([
                 sitesService.getAll(),
                 routesService.getAll(),
                 gamificationService.getAllBadges(),
                 newsService.getFeed()
             ]);
+
             setSites(s);
             setRutasTematicas(r);
             setAllInsignias(i);
             setFeed(f);
+
+            // Retry if we only got local sites (fallback mode) and we haven't retried yet
+            if (s.length <= 40 && retryCount < 2) {
+                console.warn(`AppData: Only ${s.length} sites loaded. Retrying fetch in 2s...`);
+                setTimeout(() => loadStaticData(retryCount + 1), 2000);
+                return; // Exit current execution, let the retry handle state update
+            }
+
         } catch (error) {
             console.error("Failed to load critical static data", error);
         }

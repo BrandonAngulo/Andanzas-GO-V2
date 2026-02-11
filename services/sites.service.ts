@@ -8,7 +8,14 @@ export const sitesService = {
             .from('sites')
             .select('*');
 
-        const dbSites = error ? [] : data?.map(mapSite) || [];
+        if (error) {
+            console.error('Error fetching ALL sites from Supabase:', error);
+            // Fallback to local sites only
+            return CULTURAL_SITES;
+        }
+
+        const dbSites = data?.map(mapSite) || [];
+
         // Dedup by ID, prioritizing local CULTURAL_SITES for this overrides
         const localIds = new Set(CULTURAL_SITES.map(s => s.id));
         const filteredDbSites = dbSites.filter(s => !localIds.has(s.id));
