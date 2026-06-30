@@ -82,7 +82,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
 
                     {type === 'site' && <SiteDetail data={data} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} activeRoute={activeRoute} visitedPoints={visitedPoints} onVisitPoint={onVisitPoint} />}
                     {type === 'event' && <EventDetail data={data} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} sites={sites} />}
-                    {type === 'route' && <RouteDetail data={data} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r: Ruta) => handleAuthAction(() => onStartRoute(r))} onCompleteRoute={onCompleteRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
+                    {type === 'route' && <RouteDetail data={data} goToPlaceInMap={goToPlaceInMap} onStartRoute={onStartRoute} onCompleteRoute={onCompleteRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
 
                     <div className="h-8" />
                 </div>

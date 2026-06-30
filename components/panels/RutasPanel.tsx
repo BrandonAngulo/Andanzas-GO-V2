@@ -46,6 +46,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     const [editedName, setEditedName] = useState('');
     const [editedDescription, setEditedDescription] = useState('');
     const [editedPoints, setEditedPoints] = useState<Site[]>([]);
+    const [activeTab, setActiveTab] = useState("sugeridas");
 
     const moveUp = (index: number) => {
         if (!onReorderPoints || index === 0) return;
@@ -243,23 +244,26 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     </div>
 
                     <div className="flex bg-muted p-1 rounded-lg shrink-0">
-                        <Button variant={query ? "secondary" : "ghost"} size="sm" className="h-8 rounded-md text-xs font-medium" onClick={() => document.getElementById('tab-sugeridas')?.click()}>
+                        <Button 
+                            variant={activeTab === "sugeridas" ? "secondary" : "ghost"} 
+                            size="sm" 
+                            className="h-8 rounded-md text-xs font-medium" 
+                            onClick={() => setActiveTab("sugeridas")}
+                        >
                             Descubrir
                         </Button>
-                        <Button variant="ghost" size="sm" className="h-8 rounded-md text-xs font-medium" onClick={() => document.getElementById('tab-mis-rutas')?.click()}>
+                        <Button 
+                            variant={activeTab === "mis-rutas" ? "secondary" : "ghost"} 
+                            size="sm" 
+                            className="h-8 rounded-md text-xs font-medium" 
+                            onClick={() => setActiveTab("mis-rutas")}
+                        >
                             Mis Rutas
                         </Button>
                     </div>
                 </div>
 
-                <Tabs defaultValue="sugeridas" className="w-full">
-                    {/* Hidden Tabs List for programmatic control if needed, using custom header buttons above */}
-                    <TabsList className="hidden">
-                        <TabsTrigger value="sugeridas" id="tab-sugeridas">Sugeridas</TabsTrigger>
-                        <TabsTrigger value="mis-rutas" id="tab-mis-rutas">Mis Rutas</TabsTrigger>
-                        <TabsTrigger value="crear" id="tab-crear">Crear</TabsTrigger>
-                    </TabsList>
-
+                <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="sugeridas" className="w-full">
                     <TabsContent value="sugeridas" className="mt-0 animate-in fade-in duration-300">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {rutasSugeridas.map((r) => (
@@ -277,7 +281,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     <TabsContent value="mis-rutas" className="mt-0 animate-in fade-in duration-300">
                         <div className="mb-4 flex justify-between items-center">
                             <h3 className="font-bold">Rutas Personalizadas</h3>
-                            <Button size="sm" onClick={() => document.getElementById('tab-crear')?.click()}>
+                            <Button size="sm" onClick={() => setActiveTab("crear")}>
                                 <Plus className="w-4 h-4 mr-2" /> Crear Nueva
                             </Button>
                         </div>
