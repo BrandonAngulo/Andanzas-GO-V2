@@ -32,9 +32,6 @@ export const useRouteNavigation = () => {
     const getSiteById = (id: string) => sites.find(s => s.id === id);
 
     const startRoute = (route: Ruta) => {
-        if (!isAuthenticated) return false; // Controller should handle auth dialog
-        if (routesCompleted.includes(route.id)) return false;
-
         // Check if it's a curated route (Passport Mode)
         const isCurated = rutasTematicas.some(r => r.id === route.id);
         if (isCurated) {
