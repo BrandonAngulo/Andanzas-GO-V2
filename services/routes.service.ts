@@ -1,6 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
 import { Ruta } from '../types';
-import { CULTURAL_ROUTES } from '../data/routes';
 
 export const routesService = {
     async getAll(): Promise<Ruta[]> {
@@ -9,11 +8,12 @@ export const routesService = {
             .select('*')
             .eq('is_published', true);
 
-        const dbRoutes = error ? [] : data?.map(mapRoute) || [];
+        if (error) {
+            console.error('Error fetching all routes from Supabase:', error);
+            return [];
+        }
 
-        // Return mostly our curated routes first, then DB routes if they are distinct
-        // (Just appending for now to ensure they show up)
-        return [...CULTURAL_ROUTES, ...dbRoutes];
+        return data?.map(mapRoute) || [];
     },
 
     async getUserRoutes(userId: string): Promise<Ruta[]> {

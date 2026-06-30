@@ -28,7 +28,6 @@ import RightRail from "./components/layout/RightRail";
 import NotificationsPanel from "./components/layout/NotificationsPanel";
 import FullView from "./components/views/FullView";
 import InsigniasModal from "./components/panels/InsigniasModal";
-import GuidedRouteModal from "./components/views/GuidedRouteModal";
 import ActiveRouteBanner from './components/shared/ActiveRouteBanner';
 import RouteIntroModal from "./components/views/RouteIntroModal";
 import Logo from "./components/layout/Logo";
@@ -522,28 +521,18 @@ export default function App() {
         </div>
       )}
 
-      {/* Active Route Banner */}
-      {activeGuidedRoute && !showRouteModal && (
+      {/* Active Route Banner (Route Companion Panel) */}
+      {activeGuidedRoute && (
         <ActiveRouteBanner
           route={activeGuidedRoute}
           currentStep={currentRouteStep}
           sites={sites}
-          onResume={() => setShowRouteModal(true)}
           onCancel={() => setShowCancelConfirmation(true)}
           onNext={nextStep}
           onPrev={prevStep}
-        />
-      )}
-
-      {/* Guided Route Modal */}
-      {showRouteModal && activeGuidedRoute && (
-        <GuidedRouteModal
-          route={activeGuidedRoute}
-          currentStep={currentRouteStep}
-          onClose={() => setShowRouteModal(false)}
-          onNext={nextStep}
-          onComplete={() => {/* Handled by hook on last step or explicit finish */ }}
-          sites={sites}
+          onComplete={() => completeRouteById(activeGuidedRoute.id)}
+          visitedPoints={visitedRoutePoints}
+          onPointVisited={handlePointVisited}
         />
       )}
 

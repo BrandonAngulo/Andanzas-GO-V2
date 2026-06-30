@@ -1,0 +1,205 @@
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+// Database credentials to run supabase query or use client if needed.
+// Since we have supabase-mcp-server with execute_sql tool, we can also generate a SQL file and execute it,
+// or use the server tool. Generating a SQL file and writing it is cleaner as it serves as a record!
+
+const JSON_PATH = path.join(__dirname, '..', 'routes_data.json');
+const SQL_PATH = path.join(__dirname, '..', 'scripts', 'update_routes_narrative.sql');
+
+if (!fs.existsSync(JSON_PATH)) {
+  console.error("routes_data.json not found!");
+  process.exit(1);
+}
+
+const routes = JSON.parse(fs.readFileSync(JSON_PATH, 'utf8'));
+
+// Define the connection stories for each route step.
+// Index corresponds to the index in the route's gamificacion / puntos array.
+const narratives = {
+  ruta1: {
+    0: {
+      es: "Bienvenido a la Ruta de la Salsa y el Sabor. Iniciamos en el Barrio Obrero, cuna de la salsa tradicional caleña. Camina por sus calles cuadriculadas y entra al Museo de la Salsa, un templo fotográfico fundado en 1968 por Carlos Molina.",
+      en: "Welcome to the Salsa and Flavor Route. We start in Barrio Obrero, the cradle of traditional salsa in Cali. Walk through its grid streets and enter the Salsa Museum, a photographic temple founded in 1968 by Carlos Molina."
+    },
+    1: {
+      es: "Al dejar el Obrero, avanza hacia el norte buscando el río Cali. Cruzarás la Calle Quinta, el eje histórico de la Cali vieja, y pasarás cerca de la antigua Estación del Ferrocarril, hito republicano por donde ingresaron los primeros vinilos y pianos mecánicos a la ciudad. En la plaza, frente al moderno edificio del CAM, busca las trompetas metálicas gigantes de Niche.",
+      en: "Leaving Obrero, head north towards the Cali River. You will cross Calle Quinta, the historic axis of old Cali, and pass near the old Railway Station, a Republican landmark through which the first vinyl records and player pianos entered the city. In the square, opposite the modern CAM building, look for Niche's giant metal trumpets."
+    },
+    2: {
+      es: "Cruza el Paseo de la Avenida Colombia, construido sobre un túnel subterráneo para recuperar el espacio peatonal junto al río. Pasarás al lado del Puente Ortiz (1845), primer puente de ladrillo y cal de la ciudad. Dirígete hacia el Centro Cultural de Cali, edificación de ladrillo limpio diseñada por Rogelio Salmona que emula las formas prehispánicas.",
+      en: "Cross the Avenida Colombia Boulevard, built over an underground tunnel to reclaim pedestrian space along the river. You will pass the Ortiz Bridge (1845), the city's first brick and lime bridge. Head towards the Cali Cultural Center, a clean brick building designed by Rogelio Salmona that emulates pre-Hispanic shapes."
+    },
+    3: {
+      es: "Adéntrate de nuevo al centro histórico por la carrera 5, pasando cerca de la Iglesia de la Ermita y el Teatro Jorge Isaacs. Te dirigirás al barrio San Nicolás, caracterizado por su pasado tipográfico y sus iglesias neogóticas. Aquí se encuentra La Matraca, un bailadero tradicional fundado en la época dorada del tango y el vinilo.",
+      en: "Venture back into the historic center via Carrera 5, passing near the Ermita Church and the Jorge Isaacs Theater. You will head to the San Nicolas neighborhood, characterized by its typographical past and Neo-Gothic churches. Here lies La Matraca, a traditional dance venue founded during the golden era of tango and vinyl."
+    },
+    4: {
+      es: "Nos desplazamos hacia el sur bordeando la emblemática Calle Quinta. Pasarás cerca del histórico Parque de los Estudiantes y del Hospital Universitario. La Calle Quinta conecta la Cali colonial con el ensanche moderno, convirtiéndose en el gran corredor de la rumba en los años 80 y 90. Busca la carrera 22 para llegar a Tin Tin Deo.",
+      en: "We move towards the south bordering the emblematic Calle Quinta. You will pass near the historic Students Park and the University Hospital. Calle Quinta connects colonial Cali with the modern expansion, becoming the main rumba corridor of the 80s and 90s. Look for Carrera 22 to reach Tin Tin Deo."
+    },
+    5: {
+      es: "Continúa hacia el tradicional Barrio San Fernando, pasando cerca del Parque del Perro y del Estadio Pascual Guerrero. San Fernando conserva hermosas mansiones de estilo californiano de mediados del siglo XX que hoy conviven con restaurantes. Avanza hacia Swing Latino, la escuela de los campeones mundiales de salsa.",
+      en: "Continue towards the traditional San Fernando neighborhood, passing near Parque del Perro and the Pascual Guerrero Stadium. San Fernando preserves beautiful mid-20th century California-style mansions that today coexist with restaurants. Head towards Swing Latino, the school of world salsa champions."
+    }
+  },
+  ruta2: {
+    0: {
+      es: "Bienvenido a la Ruta Histórica y Colonial. Iniciamos en el kilómetro cero de Cali: la Plaza de Cayzedo. Antigua Plaza Mayor, está rodeada por el Palacio Republicano de la Gobernación y el neoclásico Edificio Otero. Camina bajo sus imponentes palmas reales.",
+      en: "Welcome to the Historical and Colonial Route. We start at Cali's mile zero: Plaza de Cayzedo. Formerly Plaza Mayor, it is surrounded by the Republican Palace of the Governorate and the neoclassical Otero Building. Walk under its towering royal palms."
+    },
+    1: {
+      es: "Camina hacia el oeste por la calle 7, una de las vías coloniales más antiguas de la ciudad. A pocas cuadras, el concreto cede paso a las anchas paredes de adobe y arcos de piedra del Complejo Religioso de La Merced, el sitio exacto donde se celebró la primera misa de fundación de la ciudad el 25 de julio de 1536.",
+      en: "Walk west along Calle 7, one of the oldest colonial streets in the city. A few blocks away, concrete gives way to the thick adobe walls and stone arches of the La Merced Religious Complex, the exact site where the city's first founding mass was celebrated on July 25, 1536."
+    },
+    2: {
+      es: "Avanza hacia el sur por la Carrera 4, bordeando antiguas casonas coloniales con ventanas de reja de madera. Llegarás al Complejo Religioso de San Francisco, donde se alza la Torre Mudéjar. Esta estructura de ladrillo limpio del siglo XVIII, decorada con azulejos esmaltados y patrones geométricos de influencia morisca, es única en toda América.",
+      en: "Head south along Carrera 4, bordering old colonial houses with wooden grated windows. You will reach the San Francisco Religious Complex, where the Mudejar Tower stands. This 18th-century clean brick structure, decorated with glazed tiles and Moorish-influenced geometric patterns, is unique in the Americas."
+    },
+    3: {
+      es: "Sigue por la Carrera 5 hacia la Calle 7. Te encontrarás en el sector del Teatro Municipal Enrique Buenaventura. Inaugurado en 1927 en la transición de la Cali republicana a la moderna, destaca por su fachada neoclásica francesa y su sala de ópera decorada con pinturas del italiano Mauricio Ramelli.",
+      en: "Continue along Carrera 5 towards Calle 7. You will find yourself in the sector of the Enrique Buenaventura Municipal Theater. Opened in 1927 during Cali's transition from Republican to modern, it stands out for its French neoclassical facade and its opera hall decorated with paintings by Italian artist Mauricio Ramelli."
+    },
+    4: {
+      es: "Dirígete hacia el río cruzando la Calle Quinta. Llegarás al Bulevar del Río, un espacio peatonal construido sobre un túnel subterráneo para disfrutar el viento de la tarde. A tu paso verás la Iglesia de la Ermita y el Puente Ortiz (1845), declarado monumento nacional por su ingeniería de ladrillo y cal.",
+      en: "Head towards the river crossing Calle Quinta. You will reach the River Boulevard, a pedestrian space built over an underground tunnel to enjoy the afternoon breeze. Along your path, you will see the Ermita Church and the Ortiz Bridge (1845), declared a national monument for its brick and lime engineering."
+    },
+    5: {
+      es: "Cruza el río Cali hacia el oeste y adéntrate en las empinadas calles de piedra del barrio colonial de San Antonio. Sube la colina contemplando las casas de una sola planta con patios internos hasta llegar a la Capilla de San Antonio (1747), que corona la colina ofreciendo una panorámica inigualable de la ciudad.",
+      en: "Cross the Cali River to the west and venture into the steep stone streets of the colonial neighborhood of San Antonio. Climb the hill contemplating the single-story houses with internal courtyards until you reach the Chapel of San Antonio (1747), which crowns the hill offering an unparalleled panoramic view of the city."
+    }
+  },
+  ruta3: {
+    0: {
+      es: "Bienvenido a la Ruta del Arte y la Bohemia. Iniciamos en el Museo La Tertulia, el primer museo de arte moderno del país, rodeado de jardines y ubicado junto al charco donde los caleños se bañaban en el siglo XIX. Explora sus salas de exposición y su cinemateca.",
+      en: "Welcome to the Art and Bohemian Route. We start at La Tertulia Museum, the country's first modern art museum, surrounded by gardens and located next to the pool where Caleños bathed in the 19th century. Explore its exhibition halls and cinematheque."
+    },
+    1: {
+      es: "Sal del museo y toma el sendero peatonal que bordea el río Cali bajo la sombra de los árboles. Cruzarás el Puente del Gato para llegar a la galería de arte público al aire libre donde reposa El Gato del Río, obra monumental en bronce de Hernando Tejada, custodiado por sus 'novias', pintadas por diversos artistas nacionales.",
+      en: "Leave the museum and take the pedestrian path bordering the Cali River under the shade of trees. You will cross the Cat Bridge to reach the open-air public art gallery where El Gato del Rio rests, a monumental bronze work by Hernando Tejada, guarded by his 'girlfriends', painted by various national artists."
+    },
+    2: {
+      es: "Continúa bordeando el río por la Avenida Belalcázar hacia el oeste. Cruzarás el puente de la carrera 4 para llegar a la Casa Obeso Mejía. Esta joya de la arquitectura doméstica de mediados del siglo XX fue restaurada y donada para convertirse en un centro cultural que fusiona arte, diseño y talleres creativos.",
+      en: "Continue bordering the river along Avenida Belalcázar to the west. You will cross the Carrera 4 bridge to reach Casa Obeso Mejía. This jewel of domestic architecture from the mid-20th century was restored and donated to become a cultural center fusing art, design, and creative workshops."
+    },
+    3: {
+      es: "Adéntrate en el tradicional barrio El Peñón por la carrera 4A. Este sector, conocido hoy por sus boutiques y restaurantes, alberga Lugar a Dudas, un centro de pensamiento y residencias de arte contemporáneo fundado por el artista Oscar Muñoz que fomenta el debate y la investigación artística.",
+      en: "Venture into the traditional El Peñón neighborhood along Carrera 4A. This sector, known today for its boutiques and restaurants, houses Lugar a Dudas, a contemporary art residency and thinking center founded by artist Oscar Muñoz that encourages debate and artistic research."
+    },
+    4: {
+      es: "Camina hacia el norte cruzando el río Cali por el Puente de Granada. Llegarás al Centro Cultural Alianza Francesa, ubicado en una hermosa casona del tradicional Barrio Granada. Este espacio actúa como puente cultural ofreciendo exposiciones de fotografía, artes plásticas y ciclos de cine independiente.",
+      en: "Walk north crossing the Cali River via the Granada Bridge. You will reach the Alliance Française Cultural Center, located in a beautiful house in the traditional Granada neighborhood. This space acts as a cultural bridge offering photography exhibitions, visual arts, and independent cinema cycles."
+    },
+    5: {
+      es: "Recorre las avenidas del Barrio Granada (Avenida 9N y carrera 9). Granada fue el primer barrio residencial de élite fuera del centro histórico a principios del siglo XX, caracterizado por sus mansiones de estilo neoclásico y español. Hoy es el epicentro de la alta costura, el diseño y la zona gastronómica de la ciudad.",
+      en: "Walk along the avenues of the Granada neighborhood (Avenida 9N and Carrera 9). Granada was the first elite residential neighborhood outside the historic center in the early 20th century, characterized by its neoclassical and Spanish-style mansions. Today it is the epicenter of fashion, design, and the city's culinary zone."
+    }
+  },
+  ruta4: {
+    0: {
+      es: "Bienvenido a la Ruta de la Naturaleza Urbana. Iniciamos en el sur de Cali, en el Ecoparque Río Pance. Este es el balneario natural tradicional de los caleños, donde la vegetación de submontaña y las aguas frías que bajan directamente de los Farallones ofrecen un respiro natural.",
+      en: "Welcome to the Urban Nature Route. We start in southern Cali, at the Pance River Ecopark. This is the traditional natural spa of the Caleños, where sub-mountain vegetation and cold waters flowing directly from the Farallones offer a natural escape."
+    },
+    1: {
+      es: "Nos desplazamos hacia el oeste buscando la cuenca media del río Cali. Cruzarás la Avenida Circunvalar para llegar al Jardín Botánico de Cali. Ubicado en el cañón del río Cali, este espacio conserva 14 hectáreas de bosque seco tropical, un ecosistema altamente amenazado, y cuenta con un sendero de plantas y estaciones de conservación.",
+      en: "We move towards the west seeking the middle basin of the Cali River. You will cross Avenida Circunvalar to reach the Cali Botanical Garden. Located in the Cali River canyon, this space preserves 14 hectares of tropical dry forest, a highly threatened ecosystem, and features a plant trail and conservation stations."
+    },
+    2: {
+      es: "Siguiendo el cauce del río Cali hacia el oeste por la Avenida Fluvial, llegarás al Zoológico de Cali, uno de los mejores de América Latina. Se destaca por sus programas de conservación de especies andinas y del Pacífico colombiano, y sus senderos rodeados de árboles centenarios y aguas corrientes.",
+      en: "Following the path of the Cali River west along Avenida Fluvial, you will reach the Cali Zoo, one of the best in Latin America. It stands out for its conservation programs of Andean and Colombian Pacific species, and its trails surrounded by century-old trees and flowing waters."
+    },
+    3: {
+      es: "Prepárate para un ascenso físico de tradición local. Cruzarás hacia el norte de la ciudad buscando el pie de monte en el barrio Normandía. Ascenderás el Cerro de las Tres Cruces a través de un sendero empinado rodeado de vegetación xerófila. El esfuerzo de subir este hito religioso y deportivo te premiará con la mejor panorámica del Valle del Cauca.",
+      en: "Prepare for a physical climb of local tradition. You will cross to the north of the city seeking the foot of the hill in the Normandía neighborhood. You will ascend the Hill of the Three Crosses through a steep path surrounded by xerophytic vegetation. The effort of climbing this religious and sporting landmark will reward you with the best panoramic view of the Cauca Valley."
+    }
+  },
+  ruta5: {
+    0: {
+      es: "Bienvenido a la Ruta de los Teatros y la Escena Viva. Iniciamos en el Teatro Municipal Enrique Buenaventura, inaugurado en 1927. Admira su fachada neoclásica de estilo italiano y la majestuosidad de su sala principal.",
+      en: "Welcome to the Route of Theaters and Living Scene. We start at the Enrique Buenaventura Municipal Theater, opened in 1927. Admire its Italian-style neoclassical facade and the majesty of its main hall."
+    },
+    1: {
+      es: "Camina tres cuadras al norte por la carrera 3, cruzando la calle 10. Pasarás frente a la Plaza de Cayzedo y llegarás al Teatro Jorge Isaacs. Construido en 1931 en honor al escritor de la novela 'María', este monumento nacional destaca por su fachada neoclásica francesa y su imponente acústica diseñada para ópera y zarzuela.",
+      en: "Walk three blocks north along Carrera 3, crossing Calle 10. You will pass in front of Plaza de Cayzedo and reach the Jorge Isaacs Theater. Built in 1931 in honor of the writer of the novel 'María', this national monument stands out for its French neoclassical facade and its imposing acoustics designed for opera and zarzuela."
+    },
+    2: {
+      es: "Dirígete hacia la calle 7 con carrera 5 en el centro histórico. Aquí se encuentra la sede del Teatro Experimental de Cali (TEC), fundado en 1955 por el maestro Enrique Buenaventura. El TEC es la cuna del teatro moderno colombiano y de la 'creación colectiva', un método que transformó las artes escénicas en América Latina.",
+      en: "Head towards Calle 7 and Carrera 5 in the historic center. Here lies the headquarters of the Experimental Theater of Cali (TEC), founded in 1955 by maestro Enrique Buenaventura. The TEC is the cradle of modern Colombian theater and 'collective creation', a method that transformed the performing arts in Latin America."
+    },
+    3: {
+      es: "Cruza el río Cali hacia el oeste y adéntrate en el barrio San Antonio por la carrera 10. Llegarás al Teatro La Máscara. Fundado en 1972, es uno de los primeros teatros de corte feminista y de género del país. Ubicado en una casona de arquitectura tradicional, es un espacio dedicado a la dramaturgia contemporánea y la investigación escénica.",
+      en: "Cross the Cali River to the west and venture into the San Antonio neighborhood along Carrera 10. You will reach Teatro La Máscara. Founded in 1972, it is one of the country's first feminist and gender-focused theaters. Located in a traditional house, it is a space dedicated to contemporary playwriting and scenic research."
+    },
+    4: {
+      es: "Nos desplazamos unas cuadras al sur buscando el barrio San Fernando. Pasarás cerca de la Calle Quinta. Llegarás al Teatro Salamandra, gestionado por el Barco Ebrio. Este teatro es un foco de creación interdisciplinar que combina teatro, música y artes visuales en una sala íntima de gran calidez.",
+      en: "We move a few blocks south towards the San Fernando neighborhood. You will pass near Calle Quinta. You will reach Teatro Salamandra, managed by Barco Ebrio. This theater is a focus of interdisciplinary creation combining theater, music, and visual arts in an intimate and warm hall."
+    },
+    5: {
+      es: "Sube hacia la colina de San Antonio por la carrera 9, bordeando talleres de artesanos y cafeterías. Llegarás a la Casa de los Títeres. Fundada por el grupo Hilos Mágicos, esta hermosa casona colonial con su teatro interior es un universo de fantasía dedicado por completo al arte de la marioneta y el teatro infantil.",
+      en: "Climb towards the San Antonio hill along Carrera 9, bordering artisan workshops and coffee shops. You will reach the House of Puppets (Casa de los Títeres). Founded by the Hilos Mágicos group, this beautiful colonial house with its indoor theater is a fantasy universe completely dedicated to the art of puppetry and children's theater."
+    }
+  },
+  ruta6: {
+    0: {
+      es: "Bienvenido a la Ruta de Monumentos y Postales Caleñas. Iniciamos en la Colina de Belalcázar, al oeste de la ciudad. Aquí se alza la estatua en bronce de Sebastián de Belalcázar, fundador de la ciudad, erigida en 1936 para el cuarto centenario de Cali. Disfruta de la brisa y de una de las postales más famosas de la ciudad.",
+      en: "Welcome to the Route of Monuments and Caleño Postcards. We start at the Belalcázar Hill, west of the city. Here stands the bronze statue of Sebastián de Belalcázar, founder of the city, erected in 1936 for Cali's fourth centenary. Enjoy the breeze and one of the city's most famous postcards."
+    },
+    1: {
+      es: "Cruza hacia el norte buscando la colina de Normandía. Ascenderás al Cerro de las Tres Cruces, hito geográfico y deportivo que corona la ciudad. Las tres cruces gigantes, construidas en 1937 para proteger a la ciudad del supuesto demonio 'Buziraco', son hoy el punto de encuentro de deportistas y un mirador excepcional.",
+      en: "Cross to the north seeking the Normandía hill. You will ascend to the Hill of the Three Crosses, a geographical and sporting landmark crowning the city. The three giant crosses, built in 1937 to protect the city from the alleged demon 'Buziraco', are today a meeting point for athletes and an exceptional viewpoint."
+    },
+    2: {
+      es: "Nos desplazamos hacia el sur de la ciudad subiendo por la colina de Los Cristales. Llegarás al monumento de Cristo Rey, una imponente escultura de hierro y concreto de 26 metros de altura inaugurada en 1953 en conmemoración de los 50 años de paz en Colombia. Su imponente presencia abraza visualmente a toda la ciudad.",
+      en: "We move towards the south of the city climbing up the Los Cristales hill. You will reach the Cristo Rey monument, an imposing iron and concrete sculpture 26 meters high, opened in 1953 in commemoration of 50 years of peace in Colombia. Its imposing presence visually embraces the entire city."
+    },
+    3: {
+      es: "Cruza la ciudad hacia el norte por la autopista o la Avenida 3N. Llegarás al Monumento a la Solidaridad. Esta escultura cinética de bronce y acero, diseñada por el maestro Héctor Lombana, representa una familia caleña empujando una esfera metálica, simbolizando la unión y el apoyo colectivo de la sociedad tras desastres naturales.",
+      en: "Cross the city northwards via the highway or Avenida 3N. You will reach the Monument to Solidarity. This kinetic bronze and steel sculpture, designed by master Héctor Lombana, represents a Caleño family pushing a metal sphere, symbolizing unity and collective support of society after natural disasters."
+    },
+    4: {
+      es: "Regresa al centro histórico, en la Plaza de Cayzedo. Frente a la Catedral, ubica el Monumento a Joaquín de Cayzedo y Cuero, prócer de la independencia de la región. La estatua de bronce oscuro rinde homenaje al líder de las Ciudades Confederadas del Valle en la Plaza Mayor de la ciudad.",
+      en: "Return to the historic center at Plaza de Cayzedo. In front of the Cathedral, locate the Monument to Joaquín de Cayzedo y Cuero, an independence hero of the region. The dark bronze statue pays tribute to the leader of the Confederated Cities of the Valley in the city's Plaza Mayor."
+    },
+    5: {
+      es: "Camina dos cuadras al norte por la carrera 3, cruzando la calle 12, hasta llegar al Paseo Bolívar junto al río Cali. En el Parque de los Poetas descubrirás el grupo escultórico en bronce de los poetas Jorge Isaacs, Antonio Llanos, Ricardo Nieto, Octavio Gamboa y Mario Carvajal, testigos mudos de la tradición lírica caleña.",
+      en: "Walk two blocks north along Carrera 3, crossing Calle 12, until you reach Paseo Bolívar next to the Cali River. In the Poets Park, you will discover the bronze sculptural group of poets Jorge Isaacs, Antonio Llanos, Ricardo Nieto, Octavio Gamboa, and Mario Carvajal, silent witnesses of Cali's lyrical tradition."
+    }
+  }
+};
+
+// Loop through each route and inject connection stories
+for (const route of routes) {
+  const routeNarratives = narratives[route.id];
+  if (routeNarratives && route.gamificacion) {
+    console.log(`Enriching route ${route.id}: ${route.nombre}`);
+    for (let i = 0; i < route.gamificacion.length; i++) {
+      const stepNarrative = routeNarratives[i];
+      if (stepNarrative) {
+        route.gamificacion[i].connection_story = stepNarrative.es;
+        route.gamificacion[i].connection_story_en = stepNarrative.en;
+      }
+    }
+  }
+}
+
+// Write the updated JSON back to routes_data.json
+fs.writeFileSync(JSON_PATH, JSON.stringify(routes, null, 2), 'utf8');
+console.log('routes_data.json updated successfully.');
+
+// Generate SQL update queries
+let sqlContent = `-- SQL script to update routes narrative connection stories\n`;
+sqlContent += `ALTER TABLE public.routes DISABLE ROW LEVEL SECURITY;\n\n`;
+
+for (const route of routes) {
+  const gamificationJson = JSON.stringify(route.gamificacion);
+  // Double-escape single quotes for SQL string literal
+  const escapedJson = gamificationJson.replace(/'/g, "''");
+  sqlContent += `UPDATE public.routes SET gamificacion = '${escapedJson}'::jsonb WHERE id = '${route.id}';\n`;
+}
+
+sqlContent += `\nALTER TABLE public.routes ENABLE ROW LEVEL SECURITY;\n`;
+
+fs.writeFileSync(SQL_PATH, sqlContent, 'utf8');
+console.log('update_routes_narrative.sql generated successfully.');

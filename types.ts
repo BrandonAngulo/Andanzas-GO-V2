@@ -71,6 +71,10 @@ export interface Challenge {
   completed_message: string;
   completed_message_en?: string;
 
+  // Connection stories for the WALK to this point
+  connection_story?: string;
+  connection_story_en?: string;
+
   // Hybrid Validation Options
   allow_manual_trivia?: boolean; // If true, allows fallback to a specific trivia question if GPS fails
   manual_trivia_data?: {
