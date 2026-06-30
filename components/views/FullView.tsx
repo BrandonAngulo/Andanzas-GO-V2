@@ -205,52 +205,51 @@ const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPl
                 <Button variant="outline" size="sm" onClick={() => addToRoute(data)}><Route className="h-4 w-4 mr-1" /> {t('fullView.addToRoute')}</Button>
                 <AddReviewInline site={data} onSubmit={addReview} />
             </div>
-
             {/* Información Práctica */}
-            <div className="bg-muted/30 border rounded-xl p-4 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-sm">
-                <div className="flex items-start gap-3">
+            <div className="bg-card border border-border/60 rounded-2xl p-5 grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-sm shadow-sm">
+                <div className="flex items-start gap-3.5 bg-muted/20 p-3 rounded-xl border border-border/30">
                     <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                        <span className="font-semibold block">{language === 'es' ? 'Dirección' : 'Address'}</span>
+                        <span className="font-heading font-bold text-xs uppercase tracking-wider text-muted-foreground block mb-0.5">{language === 'es' ? 'Dirección' : 'Address'}</span>
                         <a
                             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.nombre + ', Cali')}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-primary hover:underline text-xs"
+                            className="text-primary hover:underline text-xs font-bold flex items-center gap-1 mt-1"
                         >
-                            {language === 'es' ? 'Ver en Google Maps' : 'View on Google Maps'}
+                            {language === 'es' ? 'Ver en Google Maps' : 'View on Google Maps'} ↗
                         </a>
                     </div>
                 </div>
 
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3.5 bg-muted/20 p-3 rounded-xl border border-border/30">
                     <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                        <span className="font-semibold block">{language === 'es' ? 'Horario' : 'Schedule'}</span>
-                        <span className="text-muted-foreground text-xs">
+                        <span className="font-heading font-bold text-xs uppercase tracking-wider text-muted-foreground block mb-0.5">{language === 'es' ? 'Horario' : 'Schedule'}</span>
+                        <span className="text-foreground font-semibold text-xs leading-relaxed">
                             {getTranslated(data, 'horario', language) || (language === 'es' ? 'No disponible' : 'Not available')}
                         </span>
                     </div>
                 </div>
 
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3.5 bg-muted/20 p-3 rounded-xl border border-border/30">
                     <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                        <span className="font-semibold block">{language === 'es' ? 'Tarifa' : 'Admission'}</span>
-                        <span className="text-muted-foreground text-xs">
+                        <span className="font-heading font-bold text-xs uppercase tracking-wider text-muted-foreground block mb-0.5">{language === 'es' ? 'Tarifa' : 'Admission'}</span>
+                        <span className="text-foreground font-semibold text-xs leading-relaxed">
                             {getTranslated(data, 'tarifa', language) || (language === 'es' ? 'No disponible' : 'Not available')}
                         </span>
                     </div>
                 </div>
 
                 {data.accessibility_features && data.accessibility_features.length > 0 && (
-                    <div className="flex items-start gap-3 sm:col-span-2 lg:col-span-3 border-t pt-3 mt-1">
+                    <div className="flex items-start gap-3.5 sm:col-span-2 lg:col-span-3 border-t border-dashed pt-4 mt-1">
                         <Activity className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                         <div>
-                            <span className="font-semibold block mb-1 text-xs">{language === 'es' ? 'Accesibilidad' : 'Accessibility'}</span>
-                            <div className="flex flex-wrap gap-1">
+                            <span className="font-heading font-bold text-xs uppercase tracking-wider text-muted-foreground block mb-2">{language === 'es' ? 'Accesibilidad' : 'Accessibility'}</span>
+                            <div className="flex flex-wrap gap-1.5">
                                 {data.accessibility_features.map((feature, idx) => (
-                                    <Badge key={idx} variant="outline" className="text-[10px] py-0 px-1.5">
+                                    <Badge key={idx} variant="outline" className="text-[10px] py-0.5 px-2 bg-primary/5 border-primary/20 text-primary font-bold rounded-md">
                                         {feature}
                                     </Badge>
                                 ))}

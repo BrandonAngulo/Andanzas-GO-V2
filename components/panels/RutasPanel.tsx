@@ -133,10 +133,10 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         return (
             <div
                 className={cn(
-                    "group relative overflow-hidden rounded-xl cursor-pointer transition-all duration-300 border",
+                    "group relative overflow-hidden rounded-2xl cursor-pointer card-hover border bg-card transition-all duration-300",
                     isCompleted
-                        ? "border-yellow-500/50 shadow-[0_0_15px_-3px_rgba(234,179,8,0.3)] bg-gradient-to-br from-yellow-500/10 to-transparent"
-                        : "border-border hover:border-primary/50 hover:shadow-lg bg-card"
+                        ? "border-yellow-500/50 shadow-[0_0_20px_-3px_rgba(234,179,8,0.25)] bg-gradient-to-br from-yellow-500/5 to-transparent"
+                        : "border-border/60"
                 )}
                 onClick={() => onStartRoute(route)}
             >
@@ -146,10 +146,10 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                         <div className="w-full h-full relative">
                             <LazyImage
                                 src={firstPoint.logoUrl}
-                                className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.5] group-hover:grayscale-0")}
+                                className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.3] group-hover:grayscale-0")}
                                 alt="Route cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-90" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent opacity-90" />
                         </div>
                     ) : (
                         <div className="w-full h-full flex items-center justify-center bg-muted/50">
@@ -158,43 +158,43 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     )}
 
                     {/* Badge Overlay */}
-                    <div className="absolute top-2 right-2 p-2 rounded-full bg-background/80 backdrop-blur-sm border border-border shadow-sm z-10">
+                    <div className="absolute top-2 right-2 p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-sm z-10">
                         <BadgeIcon className={cn("w-5 h-5", isCompleted ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground")} />
                     </div>
 
                     {/* Status Label */}
                     {isCompleted && (
-                        <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-yellow-500 text-white text-[10px] font-bold shadow-sm flex items-center gap-1 uppercase tracking-wide">
+                        <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-yellow-500 text-white text-[10px] font-extrabold shadow-sm flex items-center gap-1 uppercase tracking-wide">
                             <CheckCircle className="w-3 h-3" /> Conquistada
                         </div>
                     )}
                     {isInProgress && !isCompleted && (
-                        <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-blue-500 text-white text-[10px] font-bold shadow-sm flex items-center gap-1 uppercase tracking-wide">
-                            <Compass className="w-3 h-3 animate-spin duration-[3s]" /> En Progreso
+                        <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-primary text-white text-[10px] font-extrabold shadow-sm flex items-center gap-1 uppercase tracking-wide">
+                            <Compass className="w-3 h-3 animate-spin duration-[4s]" /> En Progreso
                         </div>
                     )}
                 </div>
 
                 {/* Content Area */}
                 <div className="p-4 relative">
-                    <h3 className="font-bold text-base leading-tight mb-1 line-clamp-1 group-hover:text-primary transition-colors">
+                    <h3 className="font-heading font-bold text-base leading-tight mb-1.5 line-clamp-1 group-hover:text-primary transition-colors">
                         {getTranslated(route, 'nombre', language)}
                     </h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
+                    <p className="text-xs text-muted-foreground line-clamp-2 mb-3 leading-relaxed">
                         {getTranslated(route, 'descripcion', language)}
                     </p>
 
-                    <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-3 border-dashed">
-                        <span className="flex items-center gap-1"><Map className="w-3 h-3" /> {route.puntos.length} puntos</span>
-                        <span className="font-mono text-primary/80">{route.duracionMin} min</span>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-3 border-dashed border-border/60">
+                        <span className="flex items-center gap-1.5"><Map className="w-3.5 h-3.5 text-primary" /> {route.puntos.length} paradas</span>
+                        <span className="font-mono text-primary/80 font-bold">{route.duracionMin} min</span>
                     </div>
                 </div>
 
                 {/* Hover Effect Reveal */}
                 {!isCompleted && !isInProgress && (
-                    <div className="absolute inset-0 bg-primary/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-white font-bold text-lg tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            <Compass className="w-6 h-6" /> Iniciar
+                    <div className="absolute inset-0 bg-primary/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <Compass className="w-5 h-5 animate-spin duration-[3s]" /> {language === 'es' ? 'Iniciar Recorrido' : 'Start Route'}
                         </span>
                     </div>
                 )}

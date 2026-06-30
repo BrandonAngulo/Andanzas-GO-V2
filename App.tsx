@@ -361,8 +361,8 @@ export default function App() {
       </a>
 
       {/* Header */}
-      <header className={cn("sticky top-0 z-[1000] backdrop-blur-xl bg-background/80 border-b shadow-sm support-[backdrop-filter]:bg-background/60", activeGuidedRoute && "hidden")}>
-        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-3">
+      <header className={cn("sticky top-0 md:top-3 z-[1000] mx-auto md:max-w-6xl md:rounded-2xl transition-all duration-300 glass-panel shadow-md border-b md:border md:mx-4", activeGuidedRoute && "hidden")}>
+        <div className="mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="icon" className={!focusMode ? "md:hidden" : ""} aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="flex items-center gap-2 mr-2"><Logo /></div>
 
