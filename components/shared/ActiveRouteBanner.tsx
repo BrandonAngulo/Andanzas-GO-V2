@@ -36,6 +36,8 @@ interface ActiveRouteBannerProps {
   onComplete: () => void;
   visitedPoints: string[];
   onPointVisited: (siteId: string) => void;
+  onSetStep?: (step: number) => void;
+  onOpenSiteDetails?: (site: Site) => void;
 }
 
 const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
@@ -47,7 +49,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   onPrev,
   onComplete,
   visitedPoints,
-  onPointVisited
+  onPointVisited,
+  onSetStep,
+  onOpenSiteDetails
 }) => {
   const { t, language } = useI18n();
   const { user } = useAuth();
@@ -234,19 +238,43 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
             <div className="flex items-center gap-2">
               <Badge
                 variant="outline"
-                className="h-5 px-1.5 text-[10px] bg-primary/15 text-primary border-primary/30 uppercase tracking-wider font-bold"
+                className="h-5 px-1.5 text-[10px] bg-primary/15 text-primary border-primary/30 uppercase tracking-wider font-bold cursor-pointer hover:bg-primary/25"
                 onClick={() => setIsExpanded(prev => !prev)}
               >
                 {t('guidedRoute.activeRoute') || "En Ruta"}
               </Badge>
-              <span className="text-[10px] font-mono font-bold text-muted-foreground">
-                {currentStep + 1} de {route.puntos.length} paradas
-              </span>
+              
+              <div className="flex items-center gap-1 bg-muted/80 rounded-md px-1 py-0.5 shadow-sm">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-5 w-5 hover:bg-background rounded p-0" 
+                  onClick={onPrev} 
+                  disabled={isFirst}
+                  title={language === 'es' ? "Anterior" : "Previous"}
+                >
+                  <ChevronLeft className="h-3.5 w-3.5 text-foreground/75" />
+                </Button>
+                <span className="text-[10px] font-mono font-bold text-muted-foreground px-1 select-none">
+                  {currentStep + 1} / {route.puntos.length}
+                </span>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-5 w-5 hover:bg-background rounded p-0" 
+                  onClick={onNext} 
+                  disabled={isLast}
+                  title={language === 'es' ? "Siguiente" : "Next"}
+                >
+                  <ChevronRight className="h-3.5 w-3.5 text-foreground/75" />
+                </Button>
+              </div>
             </div>
+            
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 px-2 text-[10px] font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+              className="h-6 px-2 text-[10px] font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md"
               onClick={onCancel}
             >
               {language === 'es' ? "SALIR DE RUTA" : "QUIT ROUTE"}
@@ -254,16 +282,31 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
           </div>
 
           <div className="flex items-end justify-between gap-3">
-            <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setIsExpanded(prev => !prev)}>
-              <div className="flex items-center gap-1 mb-0.5">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1 mb-0.5 cursor-pointer" onClick={() => setIsExpanded(prev => !prev)}>
                 <MapPin className="h-3.5 w-3.5 text-primary animate-pulse" />
                 <span className="text-[10px] font-black text-primary/80 uppercase tracking-widest leading-none">
-                  {isCurrentPointVisited ? (language === 'es' ? "¡CONQUISTADO!" : "CONQUERED!") : (language === 'es' ? "Siguiente Parada" : "Next Stop")}
+                  {isCurrentPointVisited ? (language === 'es' ? "¡CONQUISTADO!" : "CONQUERED!") : (language === 'es' ? "Parada sugerida" : "Suggested Stop")}
                 </span>
               </div>
-              <h4 className="font-extrabold text-base md:text-lg leading-tight truncate text-foreground">
-                {getTranslated(currentPoint, 'nombre', language)}
-              </h4>
+              <div className="flex items-center gap-1.5 group select-none">
+                <h4 
+                  className="font-extrabold text-base md:text-lg leading-tight truncate text-foreground hover:text-primary hover:underline cursor-pointer flex-1"
+                  onClick={() => onOpenSiteDetails && onOpenSiteDetails(currentPoint)}
+                  title={language === 'es' ? "Ver detalles de la parada" : "View stop details"}
+                >
+                  {getTranslated(currentPoint, 'nombre', language)}
+                </h4>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-5 w-5 p-0 opacity-50 group-hover:opacity-100 transition-opacity hover:bg-muted"
+                  onClick={() => onOpenSiteDetails && onOpenSiteDetails(currentPoint)}
+                  title={language === 'es' ? "Ver detalles" : "View details"}
+                >
+                  <HelpCircle className="h-3.5 w-3.5" />
+                </Button>
+              </div>
             </div>
 
             <div className="flex items-center gap-1.5 shrink-0">
@@ -327,10 +370,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                             : "bg-background border-border text-muted-foreground opacity-60"
                         )}
                         onClick={() => {
-                          // Allow reviewing previous or completed steps
-                          if (idx <= visitedPoints.length) {
-                            onPrev(); // or just step to it
-                          }
+                          onSetStep && onSetStep(idx);
                         }}
                       >
                         <span className="w-4 h-4 rounded-full bg-black/5 flex items-center justify-center text-[10px]">

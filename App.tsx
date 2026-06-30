@@ -533,6 +533,8 @@ export default function App() {
           onComplete={() => completeRouteById(activeGuidedRoute.id)}
           visitedPoints={visitedRoutePoints}
           onPointVisited={handlePointVisited}
+          onSetStep={setCurrentRouteStep}
+          onOpenSiteDetails={openSite}
         />
       )}
 
