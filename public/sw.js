@@ -6,16 +6,21 @@ const PRECACHE_ASSETS = [
   '/index.tsx',
   '/manifest.json',
   '/pwa-icon-192.png',
-  '/pwa-icon-512.png',
-  'https://cdn.tailwindcss.com'
+  '/pwa-icon-512.png'
 ];
 
-// Install Event: Pre-cache core assets
+// Install Event: Pre-cache core assets resiliently
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Pre-caching app shell assets');
-      return cache.addAll(PRECACHE_ASSETS);
+      console.log('[SW] Pre-caching app shell assets resiliently');
+      return Promise.all(
+        PRECACHE_ASSETS.map((asset) => {
+          return cache.add(asset).catch((err) => {
+            console.warn(`[SW] Failed to precache asset: ${asset}`, err);
+          });
+        })
+      );
     }).then(() => self.skipWaiting())
   );
 });
