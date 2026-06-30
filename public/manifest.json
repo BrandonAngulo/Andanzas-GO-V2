@@ -1,0 +1,22 @@
+{
+  "name": "Andanzas GO",
+  "short_name": "AndanzasGO",
+  "description": "Explora la agenda cultural y los sitios históricos de Cali.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#268c80",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/pwa-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/pwa-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

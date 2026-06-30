@@ -206,6 +206,56 @@ const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPl
                 <AddReviewInline site={data} onSubmit={addReview} />
             </div>
 
+            {/* Información Práctica */}
+            <div className="bg-muted/30 border rounded-xl p-4 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+                <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <div>
+                        <span className="font-semibold block">{language === 'es' ? 'Dirección' : 'Address'}</span>
+                        <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.nombre + ', Cali')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline text-xs"
+                        >
+                            {language === 'es' ? 'Ver en Google Maps' : 'View on Google Maps'}
+                        </a>
+                    </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <div>
+                        <span className="font-semibold block">{language === 'es' ? 'Horario' : 'Schedule'}</span>
+                        <span className="text-muted-foreground text-xs">{language === 'es' ? 'No disponible' : 'Not available'}</span>
+                    </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <div>
+                        <span className="font-semibold block">{language === 'es' ? 'Tarifa' : 'Admission'}</span>
+                        <span className="text-muted-foreground text-xs">{language === 'es' ? 'No disponible' : 'Not available'}</span>
+                    </div>
+                </div>
+
+                {data.accessibility_features && data.accessibility_features.length > 0 && (
+                    <div className="flex items-start gap-3 sm:col-span-2 lg:col-span-3 border-t pt-3 mt-1">
+                        <Activity className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <div>
+                            <span className="font-semibold block mb-1 text-xs">{language === 'es' ? 'Accesibilidad' : 'Accessibility'}</span>
+                            <div className="flex flex-wrap gap-1">
+                                {data.accessibility_features.map((feature, idx) => (
+                                    <Badge key={idx} variant="outline" className="text-[10px] py-0 px-1.5">
+                                        {feature}
+                                    </Badge>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
             <div className="grid gap-6 pt-2">
                 <InfoSection icon={Landmark} title={t('fullView.culturalImportance')} content={getTranslated(data, 'importancia', language) as string} />
                 <ListInfoSection icon={Award} title={t('fullView.recognitions')} items={getTranslated(data, 'reconocimientos', language) as string[]} />

@@ -32,26 +32,95 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
   const [wrongAnswers, setWrongAnswers] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState(false);
-
   const [showManualCheckin, setShowManualCheckin] = useState(false);
+  const [gpsError, setGpsError] = useState<string | null>(null);
 
   const currentPointId = route.puntos[currentStep];
   const currentPoint = sites.find(site => site.id === currentPointId);
-  // Safe access to challenge
   const challenge: Challenge | undefined = route.gamificacion ? route.gamificacion[currentStep] : undefined;
 
+  const getDistanceInMeters = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 6371e3; // Earth's radius in meters
+    const phi1 = (lat1 * Math.PI) / 180;
+    const phi2 = (lat2 * Math.PI) / 180;
+    const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+    const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
 
+    const a =
+      Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+      Math.cos(phi1) *
+        Math.cos(phi2) *
+        Math.sin(deltaLambda / 2) *
+        Math.sin(deltaLambda / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
+  };
 
   const verifyCheckIn = () => {
+    if (!currentPoint) return;
     setCheckingLocation(true);
-    // Simulate GPS check delay
-    setTimeout(() => {
+    setGpsError(null);
+
+    if (!navigator.geolocation) {
       setCheckingLocation(false);
-      setMissionState('SUCCESS');
-      if (user && challenge) {
-        gamificationService.awardPoints(challenge.points_reward, `Check-in: ${currentPoint?.nombre}`);
-      }
-    }, 2000);
+      setGpsError(
+        language === 'es'
+          ? 'La geolocalización no está soportada por tu navegador.'
+          : 'Geolocation is not supported by your browser.'
+      );
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        const targetLat = currentPoint.lat;
+        const targetLng = currentPoint.lng;
+
+        const distance = getDistanceInMeters(userLat, userLng, targetLat, targetLng);
+        const requiredRadius = challenge?.checkin_data?.radius_meters || 100; // 100m radius as agreed
+
+        if (distance <= requiredRadius) {
+          setCheckingLocation(false);
+          setMissionState('SUCCESS');
+          if (user && challenge) {
+            await gamificationService.awardPoints(challenge.points_reward, `Check-in: ${currentPoint?.nombre}`);
+          }
+        } else {
+          setCheckingLocation(false);
+          const distanceStr =
+            distance >= 1000
+              ? `${(distance / 1000).toFixed(1)} km`
+              : `${Math.round(distance)} m`;
+
+          const errorMsg =
+            language === 'es'
+              ? `Estás a ${distanceStr} de distancia de ${currentPoint.nombre}. Debes estar a menos de ${requiredRadius} metros para registrar tu visita.`
+              : `You are ${distanceStr} away from ${currentPoint.nombre}. You must be within ${requiredRadius} meters to check in.`;
+
+          setGpsError(errorMsg);
+          // Habilitar la trivia manual si está configurada
+          if (challenge?.allow_manual_trivia) {
+            setShowManualCheckin(true);
+          }
+        }
+      },
+      (error) => {
+        console.error('GPS error:', error);
+        setCheckingLocation(false);
+        const errorMsg =
+          language === 'es'
+            ? 'No pudimos obtener tu ubicación GPS. Por favor, asegúrate de dar permisos de ubicación o usa la validación manual.'
+            : 'Could not retrieve your GPS location. Please make sure location permissions are enabled or use manual validation.';
+        setGpsError(errorMsg);
+        if (challenge?.allow_manual_trivia) {
+          setShowManualCheckin(true);
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   };
 
   const verifyTriviaLogic = async (data: any, points: number, typeLabel: string) => {
@@ -138,6 +207,12 @@ const GuidedRouteModal: React.FC<GuidedRouteModalProps> = ({ route, currentStep,
                     {checkingLocation ? t('mission.verifying') : t('mission.checkLocation')}
                   </Button>
                   <p className="text-xs text-muted-foreground mt-4 text-center">{t('mission.gpsHint')}</p>
+
+                  {gpsError && (
+                    <div className="mt-4 p-3 bg-red-100 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-xs rounded-xl text-center font-medium animate-in fade-in slide-in-from-top-2">
+                      {gpsError}
+                    </div>
+                  )}
 
                   {challenge.allow_manual_trivia && (
                     <Button variant="link" className="mt-4 text-muted-foreground" onClick={() => {

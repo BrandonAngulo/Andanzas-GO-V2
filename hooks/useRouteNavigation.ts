@@ -91,10 +91,10 @@ export const useRouteNavigation = () => {
 
         if (isAuthenticated && user) {
             gamificationService.awardPoints(100, 'Ruta completada: ' + route.id);
-            gamificationService.unlockBadge(user.id, 'insignia-route-complete').then(unlocked => {
-                // Determine if we need to show badge notification here or if UserData detects it
-                // For simplicity, we can trust the UserContext to refresh badges or we handle it here
-            });
+            gamificationService.unlockBadge(user.id, 'insignia-route-complete');
+            if (route.reward_badge_id) {
+                gamificationService.unlockBadge(user.id, route.reward_badge_id);
+            }
         }
 
         addNotification({

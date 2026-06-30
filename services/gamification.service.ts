@@ -1,13 +1,23 @@
 import { supabase } from '../lib/supabaseClient';
 import { Insignia } from '../types';
-import { Heart, PenTool, Map as MapIcon, Flag, Award } from 'lucide-react';
+import { Heart, PenTool, Map as MapIcon, Flag, Award, Bell, Utensils, Palette, Feather, Music, Church, Cat, Footprints, Unlock, Trophy } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
     'Heart': Heart,
     'PenTool': PenTool,
     'MapIcon': MapIcon,
     'Flag': Flag,
-    'Award': Award
+    'Award': Award,
+    'Bell': Bell,
+    'Utensils': Utensils,
+    'Palette': Palette,
+    'Feather': Feather,
+    'Music': Music,
+    'Church': Church,
+    'Cat': Cat,
+    'Footprints': Footprints,
+    'Unlock': Unlock,
+    'Trophy': Trophy
 };
 
 export const gamificationService = {

@@ -16,6 +16,15 @@ const root = ReactDOM.createRoot(rootElement);
 // Version Stamp for Debugging
 console.log('%c AndanzasGO v1.0.16 - Live ', 'background: #008080; color: #fff; border-radius: 4px; padding: 4px;');
 
+// Register Service Worker for PWA Offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('[PWA] Service Worker registered successfully:', reg.scope))
+      .catch(err => console.error('[PWA] Service Worker registration failed:', err));
+  });
+}
+
 root.render(
   <React.StrictMode>
     <I18nProvider>
