@@ -14,6 +14,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=1000',
         descripcion: 'El santuario fotográfico más antiguo de la salsa en el mundo, ubicado en el legendario Barrio Obrero.',
         descripcion_en: 'The oldest photographic sanctuary of salsa in the world, located in the legendary Barrio Obrero.',
+        horario: 'Lunes a Sábado: 14:00 - 20:00. Domingos cerrado.',
+        horario_en: 'Monday to Saturday: 2:00 PM - 8:00 PM. Closed Sundays.',
+        tarifa: 'Aporte voluntario sugerido: $10,000 COP.',
+        tarifa_en: 'Suggested voluntary donation: $10,000 COP.',
     },
     {
         id: 'plazoleta-jairo-varela',
@@ -26,6 +30,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=1000',
         descripcion: 'Espacio dedicado al fundador del Grupo Niche, con el monumento sonoro "Niche".',
         descripcion_en: 'Space dedicated to the founder of Grupo Niche, featuring the "Niche" sound monument.',
+        horario: 'Acceso público 24 horas.',
+        horario_en: 'Public access 24/7.',
+        tarifa: 'Sin costo.',
+        tarifa_en: 'Free.',
     },
     {
         id: 'audiosca-municipal',
@@ -52,6 +60,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=1000',
         descripcion: 'Epicentro de biodiversidad y cocina del Pacífico en Cali.',
         descripcion_en: 'Epicenter of biodiversity and Pacific cuisine in Cali.',
+        horario: 'Lunes a Domingo: 6:00 - 18:00.',
+        horario_en: 'Monday to Sunday: 6:00 AM - 6:00 PM.',
+        tarifa: 'Entrada libre.',
+        tarifa_en: 'Free entry.',
     },
     {
         id: 'bebidas-san-antonio',
@@ -205,6 +217,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1548625361-9876f45cd866?q=80&w=1000',
         descripcion: 'Ícono gótico de la ciudad frente al río.',
         descripcion_en: 'Gothic icon of the city facing the river.',
+        horario: 'Diario: 7:00 - 12:00 y 15:00 - 19:30.',
+        horario_en: 'Daily: 7:00 AM - 12:00 PM and 3:00 PM - 7:30 PM.',
+        tarifa: 'Entrada libre.',
+        tarifa_en: 'Free entry.',
     },
     {
         id: 'capilla-san-antonio',
@@ -217,6 +233,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1533552083506-69a6850d99d3?q=80&w=1000',
         descripcion: 'Hito colonial en la colina de San Antonio.',
         descripcion_en: 'Colonial landmark on San Antonio hill.',
+        horario: 'Lunes a Viernes: 16:00 - 19:00 | Sábado y Domingo: 8:00 - 12:00 y 16:00 - 19:00.',
+        horario_en: 'Mon-Fri: 4:00 PM - 7:00 PM | Sat & Sun: 8:00 AM - 12:00 PM and 4:00 PM - 7:00 PM.',
+        tarifa: 'Entrada libre.',
+        tarifa_en: 'Free entry.',
     },
     {
         id: 'edificio-gobernacion',
@@ -243,6 +263,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=1000',
         descripcion: 'Obra emblemática de Hernando Tejada y sus gatas novias.',
         descripcion_en: 'Emblematic work by Hernando Tejada and his cat girlfriends.',
+        horario: 'Acceso público 24 horas.',
+        horario_en: 'Public access 24/7.',
+        tarifa: 'Entrada libre.',
+        tarifa_en: 'Free entry.',
     },
     {
         id: 'museo-tertulia',
@@ -255,6 +279,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1565551982737-f8382346985d?q=80&w=1000',
         descripcion: 'Museo de arte moderno en un entorno natural privilegiado.',
         descripcion_en: 'Modern art museum in a privileged natural setting.',
+        horario: 'Martes a Sábado: 10:00 - 18:00 | Domingo: 14:00 - 18:00. Lunes cerrado.',
+        horario_en: 'Tuesday to Saturday: 10:00 AM - 6:00 PM | Sunday: 2:00 PM - 6:00 PM. Closed Mondays.',
+        tarifa: '$15,000 COP (Estudiantes/Adulto mayor $10,000 COP).',
+        tarifa_en: '$15,000 COP (Students/Seniors $10,000 COP).',
     },
     {
         id: 'zoologico-cali',
@@ -267,6 +295,10 @@ export const CULTURAL_SITES: Site[] = [
         logoUrl: 'https://images.unsplash.com/photo-1535402803947-a950d5f7847b?q=80&w=1000',
         descripcion: 'Uno de los mejores zoológicos de América Latina.',
         descripcion_en: 'One of the best zoos in Latin America.',
+        horario: 'Todos los días: 9:00 - 16:30.',
+        horario_en: 'Daily: 9:00 AM - 4:30 PM.',
+        tarifa: 'Adultos: $28,000 COP | Niños: $19,000 COP.',
+        tarifa_en: 'Adults: $28,000 COP | Children: $19,000 COP.',
     },
 
     // 8. Ruta: "Tablados y Máscaras"

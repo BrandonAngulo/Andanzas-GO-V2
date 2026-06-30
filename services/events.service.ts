@@ -21,7 +21,7 @@ export const eventsService = {
 
 function mapEvent(dbEvent: any): Evento {
     return {
-        id: dbEvent.id,
+        id: String(dbEvent.id),
         titulo: dbEvent.titulo,
         titulo_en: dbEvent.titulo_en,
         fecha: dbEvent.fecha,

@@ -66,6 +66,10 @@ function mapSite(dbSite: any): Site {
         reconocimientos: dbSite.reconocimientos,
         reconocimientos_en: dbSite.reconocimientos_en,
         image_credit: dbSite.image_credit,
-        accessibility_features: dbSite.accessibility_features
+        accessibility_features: dbSite.accessibility_features,
+        horario: dbSite.horario,
+        horario_en: dbSite.horario_en,
+        tarifa: dbSite.tarifa,
+        tarifa_en: dbSite.tarifa_en
     };
 }

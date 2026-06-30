@@ -25,6 +25,10 @@ export interface Site {
   datosCuriosos_en?: string[];
   image_credit?: string;
   accessibility_features?: string[]; // e.g. ['wheelchair', 'audio_guide']
+  horario?: string;
+  horario_en?: string;
+  tarifa?: string;
+  tarifa_en?: string;
   fotos?: string[];
 }
 

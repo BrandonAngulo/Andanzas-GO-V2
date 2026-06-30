@@ -217,7 +217,7 @@ export default function App() {
       if (r.id === currentViewId && r.type === fullView?.type) return;
 
       const getSiteById = (id: string) => sites.find(s => s.id === id);
-      const getEventById = (id: string) => eventos.find(e => e.id === id);
+      const getEventById = (id: string) => eventos.find(e => String(e.id) === id);
 
       if (!r.type || !r.id) { if (fullView !== null) setFullView(null); return; }
       if (r.type === "site") setFullView({ type: "site", data: getSiteById(r.id) });

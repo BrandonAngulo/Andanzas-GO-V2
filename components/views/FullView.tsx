@@ -227,7 +227,9 @@ const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPl
                     <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
                         <span className="font-semibold block">{language === 'es' ? 'Horario' : 'Schedule'}</span>
-                        <span className="text-muted-foreground text-xs">{language === 'es' ? 'No disponible' : 'Not available'}</span>
+                        <span className="text-muted-foreground text-xs">
+                            {getTranslated(data, 'horario', language) || (language === 'es' ? 'No disponible' : 'Not available')}
+                        </span>
                     </div>
                 </div>
 
@@ -235,7 +237,9 @@ const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPl
                     <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
                         <span className="font-semibold block">{language === 'es' ? 'Tarifa' : 'Admission'}</span>
-                        <span className="text-muted-foreground text-xs">{language === 'es' ? 'No disponible' : 'Not available'}</span>
+                        <span className="text-muted-foreground text-xs">
+                            {getTranslated(data, 'tarifa', language) || (language === 'es' ? 'No disponible' : 'Not available')}
+                        </span>
                     </div>
                 </div>
 
