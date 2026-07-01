@@ -658,26 +658,30 @@ Today it houses around 2,500 animals of 233 species — four in five of them nat
         rating: 4.7,
         visitas: 4000,
         logoUrl: 'https://images.unsplash.com/photo-1503095392213-2e210778c800?q=80&w=1000',
-        descripcion: `El Teatro Jorge Isaacs, inaugurado en 1936 en el corazón del centro histórico de Cali, es uno de los teatros de cine y espectáculo más elegantes y mejor conservados de Colombia. Diseñado en estilo art déco por el arquitecto Herrera Carrizosa, su fachada presenta motivos geométricos en relieve, franjas de azulejos de colores y una marquesina de hierro forjado. El interior conserva su butaquería original de madera, palcos laterales con balcones de hierro y un escenario de proporciones clásicas. Rebautizado en honor al novelista Jorge Isaacs, autor de "María" y uno de los hijos más ilustres del Valle del Cauca, el teatro fue durante décadas el principal cine de estreno de Cali y el escenario de las galas sociales de la élite vallecaucana. Hoy, restaurado y reconvertido en sala de artes escénicas, acoge conciertos, teatro contemporáneo y el Festival Internacional de Arte de Cali.`,
-        descripcion_en: `The Teatro Jorge Isaacs, inaugurated in 1936 in the heart of Cali's historic center, is one of the most elegant and best-preserved cinema and entertainment theaters in Colombia. Designed in art deco style by architect Herrera Carrizosa, its facade features geometric relief motifs, colored tile strips, and a wrought iron marquee. The interior preserves its original wooden seating, side boxes with iron balconies, and a classically proportioned stage.`,
-        importancia: `El Teatro Jorge Isaacs es el último teatro art déco de Cali en pie y uno de los pocos de toda Colombia. Su restauración y reconversión en sala de artes escénicas fue un hito en la preservación del patrimonio cultural urbano del centro histórico de la ciudad.`,
-        importancia_en: `The Teatro Jorge Isaacs is the last standing art deco theater in Cali and one of the few in all of Colombia. Its restoration and conversion into a performing arts hall was a milestone in the preservation of the cultural urban heritage of the city's historic center.`,
-        datosHistoricos: `El teatro fue construido en 1936 por la empresa Bavaria Cinema como sala de estreno exclusivo de películas de Hollywood. Durante los años 40 y 50 fue el único lugar en Cali donde se proyectaban filmes en formato de 35mm con sonido sincronizado. Jorge Isaacs fue el autor de "María" (1867), la novela más importante del romanticismo latinoamericano, ambientada en las haciendas del Valle del Cauca.`,
-        datosHistoricos_en: `The theater was built in 1936 by Bavaria Cinema as an exclusive premiere hall for Hollywood films. During the 1940s and 50s it was the only place in Cali where films were projected in 35mm format with synchronized sound. Jorge Isaacs was the author of "María" (1867), the most important novel of Latin American Romanticism, set in the Valle del Cauca haciendas.`,
+        descripcion: `Frente al Puente Ortiz, contiguo a La Ermita y al Parque de los Poetas, el Teatro Jorge Isaacs le pone al centro histórico una elegancia de otra época. Nació de una desgracia y una ambición: donde antes estuvo el Teatro Salón Moderno —consumido por un incendio en 1928—, el empresario Hermann S. Bohmer levantó un teatro nuevo y lo bautizó en honor a Jorge Isaacs, el autor de María. Se inauguró el 26 de diciembre de 1931.
+
+De estilo neoclásico francés con guiños al romanticismo italiano, decorado con capiteles jónicos, un vitral del escudo de la ciudad y la efigie del poeta, presume de una de las mejores acústicas del país. Tras décadas de abandono en los años setenta y ochenta, fue declarado Monumento Nacional y restaurado, y hoy vuelve a ser casa de conciertos, ópera y grandes espectáculos: prueba de que el centro de Cali todavía late.`,
+        descripcion_en: `Facing the Puente Ortiz, adjacent to La Ermita and the Parque de los Poetas, the Teatro Jorge Isaacs brings an elegance of another era to the historic center. It was born of a misfortune and an ambition: where the Teatro Salón Moderno once stood —consumed by a fire in 1928— businessman Hermann S. Bohmer built a new theater and named it in honor of Jorge Isaacs, the author of María. It was inaugurated on December 26, 1931.
+
+Of French neoclassical style with nods to Italian romanticism, decorated with Ionic capitals, a stained glass window of the city's coat of arms, and the poet's effigy, it boasts one of the best acoustics in the country. After decades of abandonment in the seventies and eighties, it was declared a National Monument and restored, and today it is once again a home for concerts, opera, and major spectacles: proof that the heart of Cali still beats.`,
+        importancia: `Joya arquitectónica y Monumento Nacional; una de las salas de mayor valor patrimonial y mejor acústica del suroccidente colombiano.`,
+        importancia_en: `Architectural jewel and National Monument; one of the halls with the greatest heritage value and best acoustics in southwestern Colombia.`,
+        datosHistoricos: `Construido entre 1930 y 1931 por iniciativa de Hermann S. Bohmer, sobre el terreno del antiguo Teatro Salón Moderno. Inaugurado el 26 de diciembre de 1931. Declarado Monumento Nacional el 26 de noviembre de 1984 y adquirido por el Estado en 1986, cuando comenzó su restauración.`,
+        datosHistoricos_en: `Built between 1930 and 1931 on the initiative of Hermann S. Bohmer, on the site of the old Teatro Salón Moderno. Inaugurated on December 26, 1931. Declared a National Monument on November 26, 1984, and acquired by the State in 1986, when its restoration began.`,
         datosCuriosos: [
-            'El teatro tiene butacas de madera original de 1936, algunas de las cuales aún conservan los mecanismos de rebatimiento originales.',
-            'Jorge Isaacs nació en Cali en 1837 y pasó su infancia entre las haciendas del Valle del Cauca, paisaje que inmortalizó en "María".',
-            'La cúpula interior del teatro tiene una pintura de estrellas que se ilumina con luz ultravioleta durante los espectáculos nocturnos.'
+            'Un incendio en sus primeros años motivó la creación del cuerpo de bomberos voluntarios de Cali.',
+            'Su nombre honra al autor de María, la novela romántica más célebre de Colombia.',
+            'Su caja acústica es una de las de mayor tamaño de Latinoamérica.'
         ],
         datosCuriosos_en: [
-            'The theater has original 1936 wooden seats, some of which still retain the original folding mechanisms.',
-            'Jorge Isaacs was born in Cali in 1837 and spent his childhood among the Valle del Cauca haciendas, a landscape he immortalized in "María".',
-            'The theater\'s interior dome has a star painting that lights up with ultraviolet light during evening performances.'
+            'A fire in its early years motivated the creation of Cali\'s volunteer fire department.',
+            'Its name honors the author of María, Colombia\'s most famous romantic novel.',
+            'Its acoustic shell is one of the largest in Latin America.'
         ],
-        horario: 'Funciones según cartelera. Boletería: Martes a Domingo: 14:00 - 20:00.',
-        horario_en: 'Performances according to schedule. Box office: Tuesday to Sunday: 2:00 PM - 8:00 PM.',
-        tarifa: 'Precios desde $20,000 COP según la obra.',
-        tarifa_en: 'Prices from $20,000 COP depending on the show.',
+        horario: 'Según programación.',
+        horario_en: 'According to programming.',
+        tarifa: 'Boletería según evento.',
+        tarifa_en: 'Tickets according to event.',
     },
     {
         id: 'casa-comedia',
