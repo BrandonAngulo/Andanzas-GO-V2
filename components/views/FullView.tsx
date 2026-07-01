@@ -80,8 +80,8 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
                         </div>
                     )}
 
-                    {type === 'site' && <SiteDetail data={data} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} activeRoute={activeRoute} visitedPoints={visitedPoints} onVisitPoint={onVisitPoint} />}
-                    {type === 'event' && <EventDetail data={data} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} sites={sites} />}
+                    {type === 'site' && <SiteDetail data={data} sites={sites} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} activeRoute={activeRoute} visitedPoints={visitedPoints} onVisitPoint={onVisitPoint ? () => handleAuthAction(onVisitPoint) : undefined} />}
+                    {type === 'event' && <EventDetail data={data} sites={sites} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} />}
                     {type === 'route' && <RouteDetail data={data} goToPlaceInMap={goToPlaceInMap} onStartRoute={onStartRoute} onCompleteRoute={onCompleteRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
 
                     <div className="h-8" />
@@ -160,7 +160,7 @@ const RecomendacionCard: React.FC<{ recomendacion: RecomendacionRuta }> = ({ rec
 
 
 // Site Detail Component
-const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPlaceInMap: any, activeRoute?: Ruta | null, visitedPoints?: string[], onVisitPoint?: () => void }> = ({ data, addReview, addToRoute, goToPlaceInMap, activeRoute, visitedPoints, onVisitPoint }) => {
+const SiteDetail: React.FC<{ data: Site, sites: Site[], addReview: any, addToRoute: any, goToPlaceInMap: any, activeRoute?: Ruta | null, visitedPoints?: string[], onVisitPoint?: () => void }> = ({ data, sites, addReview, addToRoute, goToPlaceInMap, activeRoute, visitedPoints, onVisitPoint }) => {
     const { t, language } = useI18n();
     const isInRoute = activeRoute?.puntos.includes(data.id);
     const isVisited = visitedPoints?.includes(data.id);
@@ -198,7 +198,7 @@ const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPl
                 </div>
             </div>
 
-            <ExpandableText text={getTranslated(data, 'descripcion', language) as string} />
+            <ExpandableText text={getTranslated(data, 'descripcion', language) as string} sites={sites} />
 
             <div className="flex flex-wrap items-center gap-2 border-b pb-4">
                 <Button size="sm" onClick={() => goToPlaceInMap(data.nombre)}>{t('fullView.viewOnMap')}</Button>
@@ -281,7 +281,7 @@ const EventDetail: React.FC<{ data: Evento, addToRoute: (site: Site) => void, go
                 </div>
                 <Badge variant="secondary"><MapPin className="h-3 w-3 mr-1" /> {getTranslated(data, 'lugar', language)}</Badge>
             </div>
-            <ExpandableText text={getTranslated(data, 'descripcion', language) as string} />
+            <ExpandableText text={getTranslated(data, 'descripcion', language) as string} sites={sites} />
 
             <div className="grid gap-4 pt-2 pb-2">
                 <InfoSection icon={Users} title={language === 'es' ? 'Quiénes lo lideran' : 'Led by'} content={getTranslated(data, 'quienes_lideran', language) as string} />

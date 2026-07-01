@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useI18n } from '../../i18n';
+import { Site } from '../../types';
+import { TextWithLinks } from './TextWithLinks';
 
 interface ExpandableTextProps {
   text?: string;
   max?: number;
+  sites?: Site[];
 }
 
-const ExpandableText: React.FC<ExpandableTextProps> = ({ text = "", max = 200 }) => {
+const ExpandableText: React.FC<ExpandableTextProps> = ({ text = "", max = 200, sites }) => {
   const { t } = useI18n();
   const [expanded, setExpanded] = useState(false);
   if (!text) return null;
@@ -14,7 +17,17 @@ const ExpandableText: React.FC<ExpandableTextProps> = ({ text = "", max = 200 })
   const shown = expanded || !isLong ? text : text.slice(0, max) + "…";
   return (
     <div className="leading-relaxed text-sm md:text-[15px]">
-      <span>{shown}</span>
+      <span>
+        {sites && sites.length > 0 ? (
+          <TextWithLinks 
+            text={shown} 
+            sites={sites} 
+            onNavigate={(id) => { window.location.hash = `?view=site&id=${id}`; }} 
+          />
+        ) : (
+          shown
+        )}
+      </span>
       {isLong && (
         <button
           className="ml-2 underline text-primary hover:opacity-80"

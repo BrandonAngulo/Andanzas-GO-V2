@@ -72,9 +72,13 @@ const pushHash = (route: { type: string; id: string } | null) => {
 
 const clearHash = () => {
   if (window.location.hash) {
+    const previousHash = window.location.hash;
     history.back();
     setTimeout(() => {
-      if (window.location.hash) window.location.hash = "";
+      // If the hash didn't change (e.g. user landed directly on the site via bookmark), force clear it
+      if (window.location.hash === previousHash) {
+        window.location.hash = "";
+      }
     }, 50);
   }
 };
