@@ -341,7 +341,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-muted/20">
+    <div className="h-[100dvh] flex flex-col w-full bg-muted/20 overflow-hidden">
       <Toaster position="top-center" richColors />
       <AuthRequiredDialog
         open={authDialogOpen}
@@ -354,8 +354,8 @@ export default function App() {
       </a>
 
       {/* Header */}
-      <header className={cn("sticky top-0 md:top-3 z-[1000] mx-auto md:max-w-7xl md:px-4 transition-all duration-300", activeGuidedRoute && "hidden")}>
-        <div className="glass-panel shadow-md border-b md:border md:rounded-2xl mx-auto px-4 py-3 flex items-center gap-3">
+      <header className={cn("flex-shrink-0 pt-2 md:pt-3 z-[1000] w-full mx-auto md:max-w-7xl md:px-4 transition-all duration-300", activeGuidedRoute && "hidden")}>
+        <div className="glass-panel shadow-md border-b md:border md:rounded-2xl w-full px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="icon" className="md:hidden" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="flex items-center gap-2 mr-2"><Logo /></div>
 
@@ -429,10 +429,10 @@ export default function App() {
         </div>
       </header>
 
-      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto max-w-7xl px-4 pt-4 md:pt-8 pb-8 focus:outline-none", gridClass, "gap-6")}>
-        <aside className="hidden md:block sticky top-[90px] h-[calc(100vh-120px)]"><Sidebar onNavigate={(k) => setActivePanel(k as any)} onClose={() => { }} activePanel={activePanel} /></aside>
+      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("flex-1 min-h-0 w-full mx-auto max-w-7xl px-4 pt-4 md:pt-6 pb-4 focus:outline-none", gridClass, "gap-4 md:gap-6")}>
+        <aside className="hidden md:flex flex-col h-full overflow-y-auto pr-2 pb-2"><Sidebar onNavigate={(k) => setActivePanel(k as any)} onClose={() => { }} activePanel={activePanel} /></aside>
 
-        <section className="relative min-h-[60vh] flex flex-col">
+        <section className="relative h-full flex flex-col min-h-0">
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
               <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">{panelTitle}</CardTitle>
