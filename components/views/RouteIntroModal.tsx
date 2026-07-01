@@ -38,14 +38,20 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
     const BadgeIcon = badge?.icono || Award;
 
     return (
-        <div className={cn(
-            "fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity duration-300",
-            isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}>
-            <div className={cn(
-                "w-full h-full md:w-[90vw] md:h-[80vh] md:max-h-[800px] md:max-w-5xl md:rounded-2xl relative overflow-hidden bg-black text-white shadow-2xl transition-transform duration-300 transform",
-                isVisible ? "scale-100" : "scale-95"
-            )}>
+        <div 
+            className={cn(
+                "fixed inset-0 z-[1100] flex items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity duration-300",
+                isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}
+            onClick={handleClose}
+        >
+            <div 
+                className={cn(
+                    "w-full h-full md:w-[90vw] md:h-[80vh] md:max-h-[800px] md:max-w-5xl md:rounded-2xl relative overflow-hidden bg-black text-white shadow-2xl transition-transform duration-300 transform",
+                    isVisible ? "scale-100" : "scale-95"
+                )}
+                onClick={(e) => e.stopPropagation()}
+            >
                 {/* Background Image Layer */}
                 <div className="absolute inset-0 z-0">
                     {firstPoint?.logoUrl ? (

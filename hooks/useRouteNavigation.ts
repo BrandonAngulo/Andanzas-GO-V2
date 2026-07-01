@@ -36,12 +36,12 @@ export const useRouteNavigation = () => {
         const isCurated = rutasTematicas.some(r => r.id === route.id);
         if (isCurated) {
             setPreviewRoute(route);
-            return true;
+            return 'preview';
         }
 
         // Direct start
         launchRouteSession(route);
-        return true;
+        return 'started';
     };
 
     const launchRouteSession = (route: Ruta) => {
