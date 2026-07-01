@@ -71,6 +71,7 @@ export interface RecomendacionRuta {
   titulo_en?: string;
   descripcion: string;
   descripcion_en?: string;
+  siteId?: string;
 }
 
 export type ChallengeType = 'TRIVIA' | 'CHECKIN' | 'PHOTO';

@@ -403,28 +403,33 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
               </div>
 
               {/* Recommendations Section */}
-              {route.recomendaciones && route.recomendaciones.length > 0 && (
-                <div className="space-y-2.5 pt-2 border-t border-border/40">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-                    Consejos de Exploración
-                  </h4>
-                  <div className="grid grid-cols-1 gap-2">
-                    {route.recomendaciones.map((rec, i) => (
-                      <div key={i} className="flex items-start gap-2.5 bg-primary/5 p-3 rounded-lg border border-primary/10">
-                        <span className="text-lg leading-none mt-0.5">💡</span>
-                        <div>
-                          <strong className="text-xs font-bold text-primary block leading-none mb-1">
-                            {getTranslated(rec, 'titulo', language)}
-                          </strong>
-                          <p className="text-xs text-muted-foreground leading-normal">
-                            {getTranslated(rec, 'descripcion', language)}
-                          </p>
+              {(() => {
+                const stepRecs = route.recomendaciones?.filter(rec => !rec.siteId || rec.siteId === currentPoint?.id) || [];
+                if (stepRecs.length === 0) return null;
+                
+                return (
+                  <div className="space-y-2.5 pt-2 border-t border-border/40">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                      Consejos de Exploración
+                    </h4>
+                    <div className="grid grid-cols-1 gap-2">
+                      {stepRecs.map((rec, i) => (
+                        <div key={i} className="flex items-start gap-2.5 bg-primary/5 p-3 rounded-lg border border-primary/10">
+                          <span className="text-lg leading-none mt-0.5">💡</span>
+                          <div>
+                            <strong className="text-xs font-bold text-primary block leading-none mb-1">
+                              {getTranslated(rec, 'titulo', language)}
+                            </strong>
+                            <p className="text-xs text-muted-foreground leading-normal">
+                              {getTranslated(rec, 'descripcion', language)}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Active Challenge (Verification) */}
               <div className="pt-4 border-t border-border/40 space-y-4">
