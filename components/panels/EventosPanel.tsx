@@ -15,6 +15,14 @@ interface EventosPanelProps {
   onOpenEvent: (event: Evento) => void;
 }
 
+const getEventCategory = (event: Evento, sites: Site[], language: 'es' | 'en'): string => {
+  let site = sites.find(s => s.id === event.siteId);
+  if (!site && event.lugar) {
+    site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
+  }
+  return site ? getMacroCategory(getTranslated(site, 'tipo', language) as string, language) : (language === 'es' ? 'Evento' : 'Event');
+};
+
 const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void; sites: Site[] }> = ({ event, onOpenEvent, sites }) => {
   const { t, language } = useI18n();
   const dateObj = new Date(event.fecha);
@@ -25,12 +33,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
   const weekdayStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { weekday: 'long' });
   const timeStr = dateObj.toLocaleTimeString(language === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' });
 
-  // Find linked site for category
-  let site = sites.find(s => s.id === event.siteId);
-  if (!site && event.lugar) {
-    site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
-  }
-  const category = site ? getMacroCategory(getTranslated(site, 'tipo', language) as string, language) : (language === 'es' ? 'Evento' : 'Event');
+  const category = getEventCategory(event, sites, language);
   const isPast = dateObj.getTime() < new Date().getTime();
 
   // Generate color based on category
@@ -129,20 +132,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
   const eventCategories = useMemo(() => {
     const categories = new Set<string>();
     eventos.forEach(event => {
-      // Try to find the linked site to get its category
-      let site = null;
-      if (event.siteId) {
-        site = sites.find(s => s.id === event.siteId);
-      }
-      // Fallback: Try match by name (legacy support)
-      if (!site && event.lugar) {
-        site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
-      }
-
-      if (site) {
-        const cat = getMacroCategory(getTranslated(site, 'tipo', language) as string, language);
-        if (cat) categories.add(cat);
-      }
+      categories.add(getEventCategory(event, sites, language));
     });
     return ['all', ...Array.from(categories).sort()];
   }, [eventos, sites, language]);
@@ -201,12 +191,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
     // D. Apply Category Filter
     if (categoryFilter !== 'all') {
       result = result.filter(e => {
-        let site = sites.find(s => s.id === e.siteId);
-        if (!site) site = sites.find(s => s.nombre === e.lugar || s.nombre_en === e.lugar_en);
-
-        if (!site) return false;
-        const cat = getMacroCategory(getTranslated(site, 'tipo', language) as string, language);
-        return cat === categoryFilter;
+        return getEventCategory(e, sites, language) === categoryFilter;
       });
     }
 
