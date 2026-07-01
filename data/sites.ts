@@ -3,33 +3,26 @@ import { Site } from '../types';
 export const CULTURAL_SITES: Site[] = [
     {
         id: 'museo-salsa-obrero',
-        nombre: 'Museo de la Salsa (Barrio Obrero)',
+        nombre: 'Museo de la Salsa',
         tipo: 'Museo',
-        lat: 3.4516,
-        lng: -76.532,
+        lat: 3.4447,
+        lng: -76.5165,
         rating: 4.8,
-        visitas: 1200,
-        logoUrl: 'https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=1000',
-        descripcion: `El Museo de la Salsa, fundado por Carlos Molina en 1968, es considerado el rincón fotográfico y documental de la salsa más antiguo del mundo. Ubicado en el corazón del Barrio Obrero —cuna del baile popular y del movimiento obrero en Cali—, este espacio es un templo vivo de la memoria sonora latinoamericana. Su fachada pintoresca, decorada con murales de leyendas como Celia Cruz, Tito Puente y Héctor Lavoe, introduce al visitante en un interior cuyas paredes están tapizadas con más de 40,000 fotografías analógicas originales, instrumentos musicales donados y recortes de prensa históricos. Más que una exhibición estática, el museo es un espacio de encuentro comunitario donde se escuchan vinilos exclusivos de salsa clásica y se reviven anécdotas de las visitas de las grandes orquestas neoyorquinas y caribeñas a Cali. Al explorar sus alrededores, en la intersección de la Carrera 11B y la Calle 22, te adentras en las dinámicas de un barrio tradicional: talleres de mecánica, zapaterías históricas y la brisa caleña que trae ecos de clave y timbal desde las casas vecinas.`,
-        descripcion_en: `The Salsa Museum, founded by Carlos Molina in 1968, is considered the oldest photographic and documentary corner of salsa in the world. Located in the heart of Barrio Obrero—the cradle of popular dance and the labor movement in Cali—this space is a living temple of Latin American sound memory. Its picturesque facade, decorated with murals of legends like Celia Cruz, Tito Puente, and Héctor Lavoe, introduces visitors into an interior lined with over 40,000 original analog photographs, donated musical instruments, and historical press clippings. More than a static exhibition, the museum is a space for community gathering where exclusive classic salsa vinyls are played and anecdotes of great New York and Caribbean orchestras visiting Cali are relived.`,
-        importancia: `Primer museo de la salsa en el mundo y guardián irrepetible de la memoria salsera de Cali. Sin este espacio, miles de fotografías, grabaciones y testimonios del nacimiento del estilo caleño de baile habrían desaparecido para siempre.`,
-        importancia_en: `The world's first salsa museum and irreplaceable guardian of Cali's salsa memory. Without this space, thousands of photographs, recordings, and testimonies of the birth of the Cali dancing style would have been lost forever.`,
-        datosHistoricos: `Carlos Molina comenzó la colección en su propia casa en 1968, cuando empezó a guardar fotos y recortes de las actuaciones de las grandes orquestas que llegaban a Juanchito y a las bailadoras del Barrio Obrero. El museo fue reconocido por la Alcaldía de Cali en 1992 como patrimonio cultural inmaterial de la ciudad.`,
-        datosHistoricos_en: `Carlos Molina began the collection in his own home in 1968, when he started saving photos and clippings of the performances of great orchestras coming to Juanchito and the dancers of Barrio Obrero. The museum was recognized by the Mayor's Office of Cali in 1992 as an intangible cultural heritage of the city.`,
+        visitas: 3200,
+        logoUrl: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000',
+        descripcion: `En una cuadra del tradicional barrio Obrero —la cuna de la salsa caleña— hay una casa que guarda la memoria sonora de toda una ciudad. Todo empezó en 1968, cuando el fotógrafo Carlos Alfredo Molina, cámara en mano, comenzó a retratar las noches de feria y a los grandes artistas que pasaban por Cali. De ese lente curioso nació un archivo de más de 40.000 fotografías que hoy es, según se reconoce, el museo de salsa más antiguo del mundo.
+
+Acá no hay vitrinas frías: hay pista enchapada en blanco y negro, paredes tapizadas de rostros —Marvin Santiago, Gilberto Santa Rosa, la Sonora Ponceña— y tres generaciones de una misma familia que heredaron el oficio como quien hereda un apellido. Más que una colección, es un testimonio vivo de que en Cali la cultura no solo se escucha: se hereda. Hoy es pieza central del recorrido patrimonial que la ciudad teje en el Obrero.`,
+        importancia: `Museo de salsa más antiguo del mundo y guardián de la memoria fotográfica del género; corazón del barrio reconocido como cuna de la salsa caleña.`,
+        datosHistoricos: `Nació en 1968 del trabajo del fotógrafo Carlos Alfredo Molina, quien empezó a documentar la escena salsera de Cali. Su legado lo mantienen vivo hijo y nieto, tres generaciones de la familia Molina.`,
         datosCuriosos: [
-            'Alberga más de 40,000 fotografías analógicas en blanco y negro de orquestas y bailadores caleños.',
-            'Carlos Molina, el fundador, aprendió el oficio de preservador de memoria de manera autodidacta.',
-            'En la colección hay vinilos firmados por Celia Cruz, Willie Colón y Rubén Blades, donados por los propios artistas en visitas a Cali.'
+            'Custodia más de 40.000 fotografías de músicos, orquestas y bailadores.',
+            'En el mundo existen apenas un puñado de museos así: los otros están en Nueva York y Puerto Rico, y este es el más longevo.',
+            'Ofrece además clases de baile y apoya, con la fundación del barrio, a niños y jóvenes del Obrero.'
         ],
-        datosCuriosos_en: [
-            'It houses over 40,000 black-and-white analog photographs of orchestras and Cali dancers.',
-            'Carlos Molina, the founder, learned the craft of memory preservation through self-teaching.',
-            'The collection includes vinyls signed by Celia Cruz, Willie Colón, and Rubén Blades, donated by the artists themselves on visits to Cali.'
-        ],
-        horario: 'Lunes a Sábado: 14:00 - 20:00. Domingos cerrado.',
-        horario_en: 'Monday to Saturday: 2:00 PM - 8:00 PM. Closed Sundays.',
-        tarifa: 'Aporte voluntario sugerido: $10,000 COP.',
-        tarifa_en: 'Suggested voluntary donation: $10,000 COP.',
+        horario: 'Lunes a sábado, tarde (aprox. 2:00–7:00 p.m.). [verificar franja vigente]',
+        tarifa: 'Entrada con aporte para su sostenimiento. [verificar valor]',
+        direccion: 'Carrera 11B # 24-44, barrio Obrero, Cali. [confirmar]',
     },
     {
         id: 'plazoleta-jairo-varela',

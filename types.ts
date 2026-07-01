@@ -29,6 +29,8 @@ export interface Site {
   horario_en?: string;
   tarifa?: string;
   tarifa_en?: string;
+  direccion?: string;
+  direccion_en?: string;
   fotos?: string[];
 }
 
