@@ -480,6 +480,23 @@ export default function App() {
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
             </CardContent>
           </Card>
+
+          {/* Active Route Banner (Route Companion Panel) */}
+          {activeGuidedRoute && (
+            <ActiveRouteBanner
+              route={activeGuidedRoute}
+              currentStep={currentRouteStep}
+              sites={sites}
+              onCancel={() => setShowCancelConfirmation(true)}
+              onNext={nextStep}
+              onPrev={prevStep}
+              onComplete={() => completeRouteById(activeGuidedRoute.id)}
+              visitedPoints={visitedRoutePoints}
+              onPointVisited={handlePointVisited}
+              onSetStep={setCurrentRouteStep}
+              onOpenSiteDetails={openSite}
+            />
+          )}
         </section>
       </main>
 
@@ -512,26 +529,9 @@ export default function App() {
       {showPrivacyBanner && (
         <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t z-[2000] p-3 flex items-center gap-3 text-sm">
           <Shield className="h-4 w-4 text-primary" />
-          <span className="flex-1">Tus datos están protegidos.</span>
+          <span className="flex-1">Tus datos estǭn protegidos.</span>
           <Button size="sm" onClick={() => setShowPrivacyBanner(false)} className="rounded-full">Aceptar</Button>
         </div>
-      )}
-
-      {/* Active Route Banner (Route Companion Panel) */}
-      {activeGuidedRoute && (
-        <ActiveRouteBanner
-          route={activeGuidedRoute}
-          currentStep={currentRouteStep}
-          sites={sites}
-          onCancel={() => setShowCancelConfirmation(true)}
-          onNext={nextStep}
-          onPrev={prevStep}
-          onComplete={() => completeRouteById(activeGuidedRoute.id)}
-          visitedPoints={visitedRoutePoints}
-          onPointVisited={handlePointVisited}
-          onSetStep={setCurrentRouteStep}
-          onOpenSiteDetails={openSite}
-        />
       )}
 
       {/* Menus / Modals */}

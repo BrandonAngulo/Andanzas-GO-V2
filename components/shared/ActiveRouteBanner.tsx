@@ -214,8 +214,8 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   return (
     <div
       className={cn(
-        "fixed bottom-24 left-4 right-4 z-[900] md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-xl transition-all duration-300 ease-in-out transform",
-        isExpanded ? "bottom-4 h-[75vh] md:h-[65vh]" : "h-auto"
+        "absolute bottom-24 left-4 right-4 z-[90] md:bottom-6 md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-xl transition-all duration-300 ease-in-out transform",
+        isExpanded ? "bottom-24 h-[75vh] md:bottom-6 md:h-[65vh]" : "h-auto"
       )}
     >
       <Card className="h-full bg-background/95 backdrop-blur-md shadow-2xl border-primary/20 ring-1 ring-primary/5 flex flex-col overflow-hidden">
