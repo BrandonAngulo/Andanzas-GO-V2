@@ -322,10 +322,10 @@ const RouteDetail: React.FC<{ data: Ruta, goToPlaceInMap: (placeName: string) =>
                 <div className="flex gap-2 w-full sm:w-auto">
                     <Button size="lg" onClick={() => onStartRoute(data)} className="flex-1 sm:flex-none">
                         <Route className="h-5 w-5 mr-2" />
-                        {t('mission.imHere') || "Continuar Misión"}
+                        {t('route.continue') || (language === 'es' ? "Continuar Ruta" : "Continue Route")}
                     </Button>
                     <Button size="lg" variant="outline" className="text-destructive border-destructive hover:bg-destructive/10" onClick={() => {
-                        if (window.confirm("¿Seguro quieres abandonar la misión?")) {
+                        if (window.confirm(language === 'es' ? "¿Seguro quieres salir de la ruta?" : "Are you sure you want to exit the route?")) {
                             onCompleteRoute(data.id); // Reusing complete to just remove from active
                         }
                     }}>

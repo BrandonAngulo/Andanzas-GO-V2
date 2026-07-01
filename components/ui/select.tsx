@@ -9,6 +9,7 @@ interface SelectContextProps {
   value?: string;
   onValueChange?: (value: string) => void;
   triggerRef: React.RefObject<HTMLButtonElement>;
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 const SelectContext = createContext<SelectContextProps | undefined>(undefined);
 const useSelect = () => {
@@ -31,10 +32,11 @@ const useSelectItem = () => {
 const Select: React.FC<React.PropsWithChildren<{ value?: string; onValueChange?: (value: string) => void }>> = ({ children, value, onValueChange }) => {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (triggerRef.current && !triggerRef.current.contains(event.target as Node)) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setOpen(false);
       }
     };
@@ -47,8 +49,8 @@ const Select: React.FC<React.PropsWithChildren<{ value?: string; onValueChange?:
   }, [open]);
 
   return (
-    <SelectContext.Provider value={{ open, onOpenChange: setOpen, value, onValueChange, triggerRef }}>
-      <div className="relative">{children}</div>
+    <SelectContext.Provider value={{ open, onOpenChange: setOpen, value, onValueChange, triggerRef, containerRef }}>
+      <div ref={containerRef} className="relative">{children}</div>
     </SelectContext.Provider>
   );
 };

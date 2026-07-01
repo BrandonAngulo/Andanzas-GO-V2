@@ -42,7 +42,7 @@ const STEPS: OnboardingStep[] = [
         icon: <Filter className="w-12 h-12 text-orange-500" />,
     },
     {
-        title: { es: "Completa Misiones", en: "Complete Missions" },
+        title: { es: "Explora Rutas", en: "Explore Routes" },
         description: {
             es: "¡No solo visites, juega! Inicia rutas guiadas, haz check-in en los sitios y gana puntos subiendo de nivel.",
             en: "Don't just visit, play! Start guided routes, check-in at sites, and earn points to level up."

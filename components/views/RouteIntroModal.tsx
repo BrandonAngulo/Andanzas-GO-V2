@@ -79,7 +79,7 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                             {/* Header Badge */}
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 text-xs font-bold uppercase tracking-widest backdrop-blur-md">
                                 <BadgeIcon className="w-3 h-3" />
-                                {badge?.nombre.toUpperCase() || "MISIÓN ESPECIAL"}
+                                {badge?.nombre.toUpperCase() || (language === 'es' ? "RUTA RECOMENDADA" : "RECOMMENDED ROUTE")}
                             </div>
 
                             {/* Title */}
@@ -169,10 +169,10 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                 onClick={handleStart}
                             >
                                 <PlayCircle className="w-6 h-6 mr-2" />
-                                {language === 'es' ? 'Aceptar Misión' : 'Accept Mission'}
+                                {language === 'es' ? 'Iniciar Ruta' : 'Start Route'}
                             </Button>
                             <p className="text-center text-xs text-gray-500 mt-3">
-                                Al aceptar, inicias el rastreo de GPS y la búsqueda de insignias.
+                                {language === 'es' ? 'Esta función utiliza tu ubicación en el mapa para guiarte durante el recorrido.' : 'This feature uses your location on the map to guide you during the route.'}
                             </p>
                         </div>
                     </div>

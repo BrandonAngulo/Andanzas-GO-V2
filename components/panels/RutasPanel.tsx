@@ -130,6 +130,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         const badge = BADGES.find(b => b.id === route.reward_badge_id);
         const firstPoint = allSites.find(s => s.id === route.puntos[0]);
         const BadgeIcon = badge?.icono || Trophy;
+        const routeImage = firstPoint?.fotos?.[0] || firstPoint?.logoUrl;
 
         return (
             <div
@@ -143,20 +144,15 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
             >
                 {/* Background Image Area */}
                 <div className="h-32 w-full relative overflow-hidden bg-muted">
-                    {firstPoint?.logoUrl ? (
-                        <div className="w-full h-full relative">
-                            <LazyImage
-                                src={firstPoint.logoUrl}
-                                className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.3] group-hover:grayscale-0")}
-                                alt="Route cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent opacity-90" />
-                        </div>
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-muted/50">
-                            <Compass className="w-8 h-8 text-muted-foreground/30" />
-                        </div>
-                    )}
+                    <div className="w-full h-full relative">
+                        <LazyImage
+                            src={routeImage || ""}
+                            className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.3] group-hover:grayscale-0")}
+                            alt="Route cover"
+                            textFallback={getTranslated(route, 'nombre', language) as string}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent opacity-90" />
+                    </div>
 
                     {/* Badge Overlay */}
                     <div className="absolute top-2 right-2 p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-sm z-10">
