@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useAppData } from '../contexts/AppDataContext';
 import { useI18n } from '../i18n';
-import { getTranslated } from '../lib/utils';
+import { getTranslated, getMacroCategory } from '../lib/utils';
 import { Site, Evento } from '../types';
 
 export const useSearchFilter = () => {
@@ -15,7 +15,7 @@ export const useSearchFilter = () => {
 
     // Derived: All available categories
     const allCategories = useMemo(() => {
-        const categories = new Set(sites.map(s => getTranslated(s, 'tipo', language) as string));
+        const categories = new Set(sites.map(s => getMacroCategory(getTranslated(s, 'tipo', language) as string, language)));
         return Array.from(categories).sort();
     }, [language, sites]);
 
@@ -27,7 +27,7 @@ export const useSearchFilter = () => {
 
         // Filter by Categories
         if (selectedCategories.length > 0) {
-            filtered = filtered.filter(s => selectedCategories.includes(getTranslated(s, 'tipo', language) as string));
+            filtered = filtered.filter(s => selectedCategories.includes(getMacroCategory(getTranslated(s, 'tipo', language) as string, language)));
         }
 
         // Filter by Rating

@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
-import { getTranslated } from '../../lib/utils';
+import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 
 interface FavoritosPanelProps {
@@ -25,7 +25,7 @@ const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onT
       const lowerQuery = query.toLowerCase();
       filtered = filtered.filter(s =>
         (getTranslated(s, 'nombre', language) as string).toLowerCase().includes(lowerQuery) ||
-        (getTranslated(s, 'tipo', language) as string).toLowerCase().includes(lowerQuery)
+        getMacroCategory(getTranslated(s, 'tipo', language) as string, language).toLowerCase().includes(lowerQuery)
       );
     }
     return filtered;
@@ -61,7 +61,7 @@ const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onT
               className="w-full h-36 object-cover bg-white"
             />
             <CardHeader className="pb-1"><CardTitle className="text-base truncate" title={getTranslated(s, 'nombre', language) as string}>{getTranslated(s, 'nombre', language)}</CardTitle></CardHeader>
-            <CardContent className="text-sm -mt-2 text-muted-foreground">{getTranslated(s, 'tipo', language)}</CardContent>
+            <CardContent className="text-sm -mt-2 text-muted-foreground">{getMacroCategory(getTranslated(s, 'tipo', language) as string, language)}</CardContent>
             <CardFooter className="flex items-center justify-between">
               <Button size="sm" onClick={() => onOpen(s.id)}>{t('seeMore')}</Button>
               <div className="flex items-center">

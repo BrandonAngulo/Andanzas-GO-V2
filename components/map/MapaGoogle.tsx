@@ -46,6 +46,8 @@ const MapLegend = ({ language }: { language: 'es' | 'en' }) => {
         { label: language === 'es' ? 'Arte y Teatro' : 'Art & Theater', color: '#8B5CF6', icon: '🎨' },
         { label: language === 'es' ? 'Salsa y Música' : 'Salsa & Music', color: '#E11D48', icon: '💃' },
         { label: language === 'es' ? 'Gastronomía' : 'Gastronomy', color: '#F97316', icon: '🍽️' },
+        { label: language === 'es' ? 'Deportes y Recreación' : 'Sports & Recreation', color: '#06B6D4', icon: '🏟️' },
+        { label: language === 'es' ? 'Institucional' : 'Institutional', color: '#64748B', icon: '🏫' },
         { label: language === 'es' ? 'Sitios Históricos / Otros' : 'Historic / Other', color: '#F59E0B', icon: '⛪' },
     ];
 

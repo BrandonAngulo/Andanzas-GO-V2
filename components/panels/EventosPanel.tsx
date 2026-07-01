@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { ScrollArea } from '../ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useI18n } from '../../i18n';
-import { getTranslated, cn, getCategoryIcon } from '../../lib/utils';
+import { getTranslated, cn, getCategoryIcon, getMacroCategory } from '../../lib/utils';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 
 interface EventosPanelProps {
@@ -30,7 +30,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
   if (!site && event.lugar) {
     site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
   }
-  const category = site ? (getTranslated(site, 'tipo', language) as string) : (language === 'es' ? 'Evento' : 'Event');
+  const category = site ? getMacroCategory(getTranslated(site, 'tipo', language) as string, language) : (language === 'es' ? 'Evento' : 'Event');
   const isPast = dateObj.getTime() < new Date().getTime();
 
   // Generate color based on category
@@ -140,7 +140,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
       }
 
       if (site) {
-        const cat = getTranslated(site, 'tipo', language) as string;
+        const cat = getMacroCategory(getTranslated(site, 'tipo', language) as string, language);
         if (cat) categories.add(cat);
       }
     });
@@ -205,7 +205,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
         if (!site) site = sites.find(s => s.nombre === e.lugar || s.nombre_en === e.lugar_en);
 
         if (!site) return false;
-        const cat = getTranslated(site, 'tipo', language) as string;
+        const cat = getMacroCategory(getTranslated(site, 'tipo', language) as string, language);
         return cat === categoryFilter;
       });
     }

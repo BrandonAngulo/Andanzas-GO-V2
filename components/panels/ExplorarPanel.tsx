@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
-import { getTranslated } from '../../lib/utils';
+import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { Badge } from '../ui/badge';
 import { Accessibility, Ear, Eye } from 'lucide-react';
@@ -25,7 +25,7 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(site, 'nombre', language)}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow -mt-2 text-xs text-muted-foreground space-y-2">
-        <div>{getTranslated(site, 'tipo', language)} · ⭐ {site.rating}</div>
+        <div>{getMacroCategory(getTranslated(site, 'tipo', language) as string, language)} · ⭐ {site.rating}</div>
         {site.accessibility_features && site.accessibility_features.length > 0 && (
           <div className="flex gap-1 flex-wrap">
             {site.accessibility_features.includes('wheelchair') && (
@@ -98,7 +98,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, events, query, onO
     if (normalizedQuery) {
       filteredSites = sites.filter(s => {
         const name = (getTranslated(s, 'nombre', language) as string).toLowerCase();
-        const type = (getTranslated(s, 'tipo', language) as string).toLowerCase();
+        const type = getMacroCategory(getTranslated(s, 'tipo', language) as string, language).toLowerCase();
         const desc = (getTranslated(s, 'descripcion', language) as string).toLowerCase();
         return name.includes(normalizedQuery) || type.includes(normalizedQuery) || desc.includes(normalizedQuery);
       });

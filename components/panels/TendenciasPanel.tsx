@@ -6,7 +6,7 @@ import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
-import { getTranslated } from '../../lib/utils';
+import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 
 interface TendenciasPanelProps {
@@ -23,7 +23,7 @@ const TendenciasPanel: React.FC<TendenciasPanelProps> = ({ items, query, onOpenS
     const lowerQuery = query.toLowerCase();
     return items.filter(s =>
       (getTranslated(s, 'nombre', language) as string).toLowerCase().includes(lowerQuery) ||
-      (getTranslated(s, 'tipo', language) as string).toLowerCase().includes(lowerQuery)
+      getMacroCategory(getTranslated(s, 'tipo', language) as string, language).toLowerCase().includes(lowerQuery)
     );
   }, [items, query, language]);
 
@@ -42,7 +42,7 @@ const TendenciasPanel: React.FC<TendenciasPanelProps> = ({ items, query, onOpenS
               />
               <div className="flex-1">
                 <div className="font-semibold leading-tight">{getTranslated(s, 'nombre', language)}</div>
-                <div className="text-sm text-muted-foreground">{getTranslated(s, 'tipo', language)} · {s.visitas} {t('rightRail.visits')}</div>
+                <div className="text-sm text-muted-foreground">{getMacroCategory(getTranslated(s, 'tipo', language) as string, language)} • {s.visitas} {t('rightRail.visits')}</div>
               </div>
               <div className="flex flex-col items-end gap-1 ml-auto flex-shrink-0">
                 <div className="flex items-center gap-1 text-sm font-medium">

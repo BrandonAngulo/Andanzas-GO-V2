@@ -5,7 +5,7 @@ import { Badge } from '../ui/badge';
 import { Site, Evento, Ruta, RecomendacionRuta, RecomendacionTipo } from '../../types';
 import ExpandableText from '../shared/ExpandableText';
 import AddReviewInline from '../shared/AddReviewInline';
-import { cn, getTranslated } from '../../lib/utils';
+import { cn, getTranslated, getMacroCategory } from '../../lib/utils';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { LazyImage } from '../ui/lazy-image';
@@ -190,7 +190,7 @@ const SiteDetail: React.FC<{ data: Site, addReview: any, addToRoute: any, goToPl
             <div className="flex items-start justify-between gap-3">
                 <div>
                     <h2 className="text-2xl font-semibold leading-tight">{getTranslated(data, 'nombre', language)}</h2>
-                    <div className="text-sm text-muted-foreground -mt-1">{getTranslated(data, 'tipo', language)}</div>
+                    <div className="text-sm text-muted-foreground -mt-1">{getMacroCategory(getTranslated(data, 'tipo', language) as string, language)}</div>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                     <Badge variant="secondary"><MapPin className="h-3 w-3 mr-1" /> Cali</Badge>
@@ -359,7 +359,7 @@ const RouteDetail: React.FC<{ data: Ruta, goToPlaceInMap: (placeName: string) =>
                             <div className="flex-shrink-0 bg-primary text-primary-foreground h-8 w-8 rounded-full flex items-center justify-center font-bold text-base mt-1">{index + 1}</div>
                             <div className="flex-1">
                                 <div className="font-semibold text-lg">{getTranslated(p, 'nombre', language)}</div>
-                                <div className="text-sm text-muted-foreground mb-2">{getTranslated(p, 'tipo', language)}</div>
+                                <div className="text-sm text-muted-foreground mb-2">{getMacroCategory(getTranslated(p, 'tipo', language) as string, language)}</div>
                                 <p className="text-sm text-foreground/80 leading-relaxed">{justificaciones[index]}</p>
                             </div>
                             <Button className="self-center flex-shrink-0" size="sm" variant="outline" onClick={() => goToPlaceInMap(getTranslated(p, 'nombre', language) as string)}>{t('fullView.viewOnMap')}</Button>

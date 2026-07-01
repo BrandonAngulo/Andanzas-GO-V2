@@ -19,57 +19,60 @@ export function getTranslated<T extends object, K extends keyof T>(
   return item[key] as T[K];
 }
 
+export const getMacroCategory = (category: string | undefined | null, lang: 'es' | 'en'): string => {
+  if (!category) return lang === 'es' ? 'Sitios Históricos / Otros' : 'Historic / Other';
+  const cat = category.toLowerCase();
+
+  if (cat.includes('parque') || cat.includes('jardín') || cat.includes('natural') || cat.includes('botánico') || cat.includes('ecoparque') || cat.includes('mirador') || cat.includes('público')) 
+      return lang === 'es' ? 'Parques y Naturaleza' : 'Parks & Nature';
+  
+  if (cat.includes('museo') || cat.includes('biblioteca') || cat.includes('centro cultural') || cat.includes('archivo') || cat.includes('casa') || cat.includes('monumento')) 
+      return lang === 'es' ? 'Museos y Cultura' : 'Museums & Culture';
+  
+  if (cat.includes('teatro') || cat.includes('arte') || cat.includes('muralismo') || cat.includes('escultura') || cat.includes('artesanías')) 
+      return lang === 'es' ? 'Arte y Teatro' : 'Art & Theater';
+  
+  if (cat.includes('salsa') || cat.includes('baile') || cat.includes('danza') || cat.includes('música') || cat.includes('vivo') || cat.includes('discoteca') || cat.includes('bar')) 
+      return lang === 'es' ? 'Salsa y Música' : 'Salsa & Music';
+  
+  if (cat.includes('gastronomía') || cat.includes('café') || cat.includes('restaurante') || cat.includes('zona')) 
+      return lang === 'es' ? 'Gastronomía' : 'Gastronomy';
+  
+  if (cat.includes('estadio') || cat.includes('deporte') || cat.includes('recreación') || cat.includes('cancha')) 
+      return lang === 'es' ? 'Deportes y Recreación' : 'Sports & Recreation';
+
+  if (cat.includes('universidad') || cat.includes('educación') || cat.includes('escuela') || cat.includes('instituc') || cat.includes('gubernamental'))
+      return lang === 'es' ? 'Institucional' : 'Institutional';
+
+  return lang === 'es' ? 'Sitios Históricos / Otros' : 'Historic / Other';
+};
+
 export const getCategoryIcon = (category: string) => {
-  const emojiMap: { [key: string]: string } = {
-      "Museo": "🏛️", "Museum": "🏛️",
-      "Teatro": "🎭", "Theater": "🎭",
-      "Espacio público": "🌳", "Public Space": "🌳",
-      "Espacio de Arte": "🎨", "Art Space": "🎨",
-      "Monumento": "🗿", "Monument": "🗿",
-      "Centro Cultural": "🏛️", "Cultural Center": "🏛️",
-      "Centro Cultural Comunitario": "🏘️", "Community Cultural Center": "🏘️",
-      "Música en Vivo": "🎵", "Live Music": "🎵",
-      "Escultura": "🗿", "Sculpture": "🗿",
-      "Gastronomía": "🍽️", "Gastronomy": "🍽️",
-      "Biblioteca": "📚", "Library": "📚",
-      "Artesanías": "🏺", "Crafts": "🏺",
-      "Taller Artesanal": "🛠️", "Artisanal Workshop": "🛠️",
-      "Muralismo": "🖌️", "Muralism": "🖌️",
-      "Parque Natural": "🏞️", "Natural Park": "🏞️",
-      "Parque Natural/Cultural": "🏞️", "Natural/Cultural Park": "🏞️",
-      "Librería": "📖", "Bookstore": "📖",
-      "Teatro Experimental": "🎭", "Experimental Theater": "🎭",
-      "Teatro Comunitario": "🎭", "Community Theater": "🎭",
-      "Parque Temático": "🎡", "Theme Park": "🎡",
-      "Zona Gastronómica": "🍴", "Gastronomic Zone": "🍴",
-      "Universidad": "🎓", "University": "🎓",
-      "Estadio": "🏟️", "Stadium": "🏟️",
-      "Iglesia": "⛪", "Church": "⛪",
-      "Escuela de Salsa": "💃", "Salsa School": "💃",
-      "Espectáculo de Salsa": "💃", "Salsa Show": "💃",
-      "Danza": "🩰", "Dance": "🩰",
-      "Casa Museo": "🏡", "House Museum": "🏡",
-      "Jardín Botánico": "🌸", "Botanical Garden": "🌸",
-      "Música": "🎶", "Music": "🎶",
-      "Hacienda Histórica": "🏰", "Historic Estate": "🏰",
-      "Museo de Arte": "🖼️", "Art Museum": "🖼️",
-      "Museo de Ciencias": "🔬", "Science Museum": "🔬",
-      "Café Cultural": "☕", "Cultural Café": "☕",
-      "Archivo Cultural": "🎞️", "Cultural Archive": "🎞️",
-      "Mirador": "🔭", "Viewpoint": "🔭",
-  };
-  return emojiMap[category] || "📍";
+  const cat = category.toLowerCase();
+  
+  if (cat.includes('parque') || cat.includes('naturaleza') || cat.includes('park') || cat.includes('nature')) return "🌳";
+  if (cat.includes('museo') || cat.includes('cultura') || cat.includes('museum')) return "🏛️";
+  if (cat.includes('arte') || cat.includes('teatro') || cat.includes('art') || cat.includes('theater')) return "🎨";
+  if (cat.includes('salsa') || cat.includes('música') || cat.includes('music')) return "💃";
+  if (cat.includes('gastronomía') || cat.includes('gastronomy')) return "🍽️";
+  if (cat.includes('deporte') || cat.includes('sport')) return "🏟️";
+  if (cat.includes('institucional') || cat.includes('institutional')) return "🏫";
+  if (cat.includes('histórico') || cat.includes('historic')) return "⛪";
+  
+  return "📍";
 };
 
 export const getCategoryColor = (category: string): string => {
   const cat = category.toLowerCase();
 
-  if (cat.includes('parque') || cat.includes('jardín') || cat.includes('natural') || cat.includes('botánico') || cat.includes('ecoparque')) return '#10B981'; // Emerald 500
-  if (cat.includes('museo') || cat.includes('biblioteca') || cat.includes('centro cultural') || cat.includes('archivo') || cat.includes('casa')) return '#3B82F6'; // Blue 500
-  if (cat.includes('teatro') || cat.includes('arte') || cat.includes('cultura')) return '#8B5CF6'; // Violet 500
-  if (cat.includes('salsa') || cat.includes('baile') || cat.includes('danza') || cat.includes('música') || cat.includes('vivo') || cat.includes('discoteca') || cat.includes('bar')) return '#E11D48'; // Rose 600
-  if (cat.includes('iglesia') || cat.includes('estadio') || cat.includes('monumento') || cat.includes('plaza')) return '#F59E0B'; // Amber 500
-  if (cat.includes('gastronomía') || cat.includes('café') || cat.includes('restaurante')) return '#F97316'; // Orange 500
+  if (cat.includes('parque') || cat.includes('naturaleza') || cat.includes('park') || cat.includes('nature')) return '#10B981'; // Emerald 500
+  if (cat.includes('museo') || cat.includes('cultura') || cat.includes('museum')) return '#3B82F6'; // Blue 500
+  if (cat.includes('arte') || cat.includes('teatro') || cat.includes('art') || cat.includes('theater')) return '#8B5CF6'; // Violet 500
+  if (cat.includes('salsa') || cat.includes('música') || cat.includes('music')) return '#E11D48'; // Rose 600
+  if (cat.includes('gastronomía') || cat.includes('gastronomy')) return '#F97316'; // Orange 500
+  if (cat.includes('deporte') || cat.includes('sport')) return '#06B6D4'; // Cyan 500
+  if (cat.includes('institucional') || cat.includes('institutional')) return '#64748B'; // Slate 500
+  if (cat.includes('histórico') || cat.includes('historic')) return '#F59E0B'; // Amber 500
 
   return '#64748B'; // Slate 500 (Default)
 };

@@ -17,7 +17,7 @@ import OnboardingModal from '../panels/OnboardingModal';
 import { UserProfile, Insignia, Review, Site } from '../../types';
 import { reviewsService } from '../../services/reviews.service';
 
-import { getTranslated } from '../../lib/utils';
+import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { COLOMBIAN_CITIES } from '../../lib/locations';
 
 interface PerfilPanelProps {
@@ -446,7 +446,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                 </div>
                                                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                                                     <h4 className="font-semibold truncate">{getTranslated(site, 'nombre', language)}</h4>
-                                                    <p className="text-xs text-muted-foreground truncate">{getTranslated(site, 'tipo', language)}</p>
+                                                    <p className="text-xs text-muted-foreground truncate">{getMacroCategory(getTranslated(site, 'tipo', language) as string, language)}</p>
                                                 </div>
                                                 <div className="flex flex-col justify-center gap-2">
                                                     <Button
