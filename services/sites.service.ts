@@ -8,16 +8,35 @@ export const sitesService = {
             .from('sites')
             .select('*');
 
+        const CACHE_KEY = 'andanzas_go_sites_cache';
+
         if (error) {
             console.error('Error fetching ALL sites from Supabase:', error);
-            // Fallback to local sites only
+            // Fallback to local storage cache if offline
+            const cachedStr = localStorage.getItem(CACHE_KEY);
+            if (cachedStr) {
+                try {
+                    const cachedSites = JSON.parse(cachedStr);
+                    console.log(`Loaded ${cachedSites.length} sites from offline cache`);
+                    return cachedSites;
+                } catch (e) {
+                    console.error('Failed to parse sites from cache', e);
+                }
+            }
             return CULTURAL_SITES;
         }
 
         const dbSites = data?.map(mapSite) || [];
 
         // Combine DB sites and purely local sites
-        return [...dbSites, ...CULTURAL_SITES];
+        const allSites = [...dbSites, ...CULTURAL_SITES];
+
+        // Save successfully fetched sites to cache for offline support
+        if (allSites.length > 0) {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(allSites));
+        }
+
+        return allSites;
     },
 
     async getById(id: string): Promise<Site | null> {
@@ -27,8 +46,22 @@ export const sitesService = {
             .eq('id', id)
             .single();
 
+        const CACHE_KEY = 'andanzas_go_sites_cache';
+
         if (error) {
             console.error(`Error fetching site ${id}:`, error);
+            const cachedStr = localStorage.getItem(CACHE_KEY);
+            if (cachedStr) {
+                try {
+                    const cachedSites: Site[] = JSON.parse(cachedStr);
+                    const found = cachedSites.find(s => s.id === id);
+                    if (found) {
+                        return found;
+                    }
+                } catch (e) {
+                    console.error('Failed to parse sites from cache', e);
+                }
+            }
             return null;
         }
         return mapSite(data);

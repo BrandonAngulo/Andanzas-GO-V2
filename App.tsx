@@ -165,7 +165,6 @@ export default function App() {
   const [aiSheetOpen, setAiSheetOpen] = useState(false);
   const [aiTips, setAiTips] = useState<string | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const [focusMode, setFocusMode] = useState(true);
   const [showPrivacyBanner, setShowPrivacyBanner] = useState(true);
 
   // New Routes State (User created - kept local for now/service call wrapper)
@@ -178,7 +177,7 @@ export default function App() {
   const unreadCount = notifications.filter(n => !n.leida).length;
   const panelTitle = t(`panelTitles.${activePanel}`);
   const tendencias = useMemo(() => [...sites].sort((a, b) => b.visitas + b.rating * 100 - (a.visitas + a.rating * 100)).slice(0, 10), [sites]);
-  const gridClass = focusMode ? "grid grid-cols-1" : "grid grid-cols-1 md:grid-cols-[260px_1fr_320px]";
+  const gridClass = "grid grid-cols-1 md:grid-cols-[260px_1fr]";
   const isFiltered = query.trim() !== '' || selectedCategories.length > 0;
 
   // --- Effects ---
@@ -341,12 +340,6 @@ export default function App() {
     toast.info("La función de IA estará disponible próximamente.");
   };
 
-  const RightRailWrapper = () => (
-    <div className="sticky top-[70px] space-y-4">
-      <RightRail aiTips={false} onOpenSite={openSite} sites={sites} />
-    </div>
-  );
-
   return (
     <div className="min-h-screen w-full bg-muted/20">
       <Toaster position="top-center" richColors />
@@ -363,7 +356,7 @@ export default function App() {
       {/* Header */}
       <header className={cn("sticky top-0 md:top-3 z-[1000] mx-auto md:max-w-6xl md:rounded-2xl transition-all duration-300 glass-panel shadow-md border-b md:border md:mx-4", activeGuidedRoute && "hidden")}>
         <div className="mx-auto px-4 py-3 flex items-center gap-3">
-          <Button variant="ghost" size="icon" className={!focusMode ? "md:hidden" : ""} aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
+          <Button variant="ghost" size="icon" className="md:hidden" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="flex items-center gap-2 mr-2"><Logo /></div>
 
           <nav className="hidden md:flex items-center gap-1 bg-muted/50 p-1 rounded-full border border-black/5 dark:border-white/5" aria-label="Main Navigation">
@@ -371,6 +364,7 @@ export default function App() {
               { id: 'mapa', label: 'nav.map' },
               { id: 'explorar', label: 'nav.explore' },
               { id: 'rutas', label: 'nav.routes' },
+              { id: 'eventos', label: 'nav.events' },
               { id: 'noticias', label: 'nav.news' }
             ].map(item => (
               <Button key={item.id} size="sm" className="rounded-full px-4" variant={activePanel === item.id ? "default" : "ghost"} onClick={() => setActivePanel(item.id as any)}>{t(item.label)}</Button>
@@ -431,16 +425,12 @@ export default function App() {
             <Button variant="ghost" size="icon" className={cn("rounded-full hover:bg-muted", isAuthenticated ? "text-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? 'mapa' : 'perfil')}>
               <User className="h-5 w-5" />
             </Button>
-
-            <Button variant={focusMode ? "default" : "outline"} size="icon" className="ml-1 rounded-full shadow-sm" onClick={() => setFocusMode(v => !v)}>
-              {focusMode ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-            </Button>
           </div>
         </div>
       </header>
 
       <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto max-w-7xl px-4 py-6 focus:outline-none", gridClass, "gap-6")}>
-        {!focusMode && <aside className="hidden md:block sticky top-[70px] h-[calc(100vh-100px)]"><Sidebar onNavigate={(k) => setActivePanel(k as any)} onClose={() => { }} activePanel={activePanel} /></aside>}
+        <aside className="hidden md:block sticky top-[70px] h-[calc(100vh-100px)]"><Sidebar onNavigate={(k) => setActivePanel(k as any)} onClose={() => { }} activePanel={activePanel} /></aside>
 
         <section className="relative min-h-[60vh] flex flex-col">
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
@@ -483,8 +473,6 @@ export default function App() {
             </CardContent>
           </Card>
         </section>
-
-        {!focusMode && <aside className="hidden md:block"><RightRailWrapper /></aside>}
       </main>
 
       <BottomNav activePanel={activePanel} setActivePanel={setActivePanel} />
@@ -513,7 +501,7 @@ export default function App() {
       {fullView && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { if (!startRoute(r)) { setAuthDialogOpen(true); } else { setActivePanel('mapa'); closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} />}
 
       {/* Privacy Banner */}
-      {!focusMode && showPrivacyBanner && (
+      {showPrivacyBanner && (
         <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t z-50 p-3 flex gap-3 text-sm">
           <Shield className="h-4 w-4 text-primary" />
           <span className="flex-1">Tus datos están protegidos.</span>

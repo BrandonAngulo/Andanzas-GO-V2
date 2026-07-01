@@ -31,6 +31,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
     site = sites.find(s => s.nombre === event.lugar || s.nombre_en === event.lugar_en);
   }
   const category = site ? (getTranslated(site, 'tipo', language) as string) : (language === 'es' ? 'Evento' : 'Event');
+  const isPast = dateObj.getTime() < new Date().getTime();
 
   // Generate color based on category
   const getCategoryColor = (cat: string) => {
@@ -53,7 +54,8 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
   return (
     <Card
       className={cn(
-        "overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 group cursor-pointer border-l-4 border-t border-b border-r border-border/60 bg-gradient-to-br from-background via-muted/20 to-muted/40 dark:from-background dark:to-muted/10",
+        "overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 group cursor-pointer border-l-4 border-t border-b border-r border-border/60 bg-gradient-to-br",
+        isPast ? "from-muted/40 via-muted/30 to-muted/20 opacity-75 grayscale-[0.3]" : "from-background via-muted/20 to-muted/40 dark:from-background dark:to-muted/10",
         colorClass.split(' ')[0]
       )}
       onClick={() => onOpenEvent(event)}
@@ -70,10 +72,15 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
 
         <div className="relative z-10 flex-1 min-w-0">
           {/* Category Badge */}
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-1 mb-1 flex-wrap">
             <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-background/50 border shadow-sm text-foreground/80")}>
               {category}
             </span>
+            {isPast && (
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-destructive/10 border-destructive/20 text-destructive border shadow-sm">
+                Evento Pasado
+              </span>
+            )}
           </div>
 
           <CardTitle className="text-base leading-tight line-clamp-2 mb-1">
@@ -116,6 +123,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
   const { t, language } = useI18n();
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'week'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [specificDate, setSpecificDate] = useState<string>('');
 
   // --- 1. Extract Categories Safely ---
   const eventCategories = useMemo(() => {
@@ -166,15 +174,19 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
       );
     }
 
-    // B. Filter Past Events (Always applied: Hide events from yesterday or older)
-    // We keep events from "today" regardless of time, to be safe.
-    result = result.filter(e => {
-      const eDate = new Date(e.fecha);
-      return eDate >= todayStart;
-    });
+    // B. (Removed) We no longer hide past events. We keep them and sort them to the end.
 
     // C. Apply Time Filters
-    if (dateFilter === 'today') {
+    if (specificDate) {
+      const specDateParts = specificDate.split('-');
+      if (specDateParts.length === 3) {
+        const specD = new Date(parseInt(specDateParts[0]), parseInt(specDateParts[1]) - 1, parseInt(specDateParts[2]));
+        result = result.filter(e => {
+          const eDate = new Date(e.fecha);
+          return getStartOfDay(eDate).getTime() === specD.getTime();
+        });
+      }
+    } else if (dateFilter === 'today') {
       result = result.filter(e => {
         const eDate = new Date(e.fecha);
         return getStartOfDay(eDate).getTime() === todayStart.getTime();
@@ -192,20 +204,35 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
         let site = sites.find(s => s.id === e.siteId);
         if (!site) site = sites.find(s => s.nombre === e.lugar || s.nombre_en === e.lugar_en);
 
-        // If no site found, we can't categorize it to a specific category, 
-        // unless maybe we implement a 'Sin Categoría' bucket, for now we filter it out.
         if (!site) return false;
-
         const cat = getTranslated(site, 'tipo', language) as string;
         return cat === categoryFilter;
       });
     }
 
-    // E. Sort by Date Ascending
-    result.sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
+    // E. Sort by Date: Upcoming first, then Past at the end.
+    result.sort((a, b) => {
+      const dateA = new Date(a.fecha).getTime();
+      const dateB = new Date(b.fecha).getTime();
+      const nowTime = now.getTime();
+
+      const isAPast = dateA < nowTime;
+      const isBPast = dateB < nowTime;
+
+      if (isAPast && !isBPast) return 1; // A past, B future -> B first
+      if (!isAPast && isBPast) return -1; // A future, B past -> A first
+      
+      // Both future: closest to now first
+      if (!isAPast && !isBPast) {
+        return dateA - dateB;
+      }
+      
+      // Both past: most recently past first
+      return dateB - dateA;
+    });
 
     return result;
-  }, [eventos, query, dateFilter, categoryFilter, language, sites]);
+  }, [eventos, query, dateFilter, categoryFilter, specificDate, language, sites]);
 
   return (
     <ScrollArea className="h-[72vh]">
@@ -213,31 +240,41 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
 
         {/* Filters Header - reduced padding */}
         <div className="flex flex-col gap-2 bg-muted/40 p-2 rounded-xl border">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             <Button
-              variant={dateFilter === 'all' ? 'default' : 'outline'}
+              variant={dateFilter === 'all' && !specificDate ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setDateFilter('all')}
+              onClick={() => { setDateFilter('all'); setSpecificDate(''); }}
               className="rounded-full h-7 text-xs"
             >
               {t('eventosFilters.all')}
             </Button>
             <Button
-              variant={dateFilter === 'today' ? 'default' : 'outline'}
+              variant={dateFilter === 'today' && !specificDate ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setDateFilter('today')}
+              onClick={() => { setDateFilter('today'); setSpecificDate(''); }}
               className="rounded-full h-7 text-xs"
             >
               {t('eventosFilters.today')}
             </Button>
             <Button
-              variant={dateFilter === 'week' ? 'default' : 'outline'}
+              variant={dateFilter === 'week' && !specificDate ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setDateFilter('week')}
+              onClick={() => { setDateFilter('week'); setSpecificDate(''); }}
               className="rounded-full h-7 text-xs"
             >
               {t('eventosFilters.week')}
             </Button>
+            
+            <div className="flex items-center gap-1 ml-auto">
+              <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">Fecha:</span>
+              <input 
+                type="date" 
+                value={specificDate}
+                onChange={(e) => { setSpecificDate(e.target.value); setDateFilter('all'); }}
+                className="h-7 text-xs rounded-md border border-input bg-background px-2 py-1"
+              />
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
@@ -284,8 +321,8 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
               <p className="font-medium">No se encontraron eventos</p>
               <p className="text-sm opacity-80">Prueba ajustando los filtros o tu búsqueda.</p>
             </div>
-            {(dateFilter !== 'all' || categoryFilter !== 'all' || query) && (
-              <Button variant="outline" size="sm" onClick={() => { setDateFilter('all'); setCategoryFilter('all'); }}>
+            {(dateFilter !== 'all' || categoryFilter !== 'all' || query || specificDate) && (
+              <Button variant="outline" size="sm" onClick={() => { setDateFilter('all'); setCategoryFilter('all'); setSpecificDate(''); }}>
                 Limpiar filtros
               </Button>
             )}
