@@ -36,13 +36,13 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ insignia, obtenida, compac
 
             <div className={cn(
                 "relative rounded-full transition-transform duration-500 group-hover:rotate-12 flex-shrink-0 flex items-center justify-center",
-                obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted/30 text-muted-foreground/40",
-                compact ? "w-12 h-12 p-3" : "w-16 h-16 p-4 mb-3"
+                obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted text-muted-foreground/60 shadow-inner",
+                compact ? "w-12 h-12 p-2" : "w-16 h-16 p-3 mb-3"
             )}>
-                <Icon className={cn("w-full h-full", !obtenida && "opacity-20")} />
+                <Icon className="w-full h-full" strokeWidth={obtenida ? 2 : 1.5} />
                 {!obtenida && (
-                    <div className="absolute inset-0 grid place-items-center">
-                        <Lock className="w-6 h-6 text-muted-foreground/60" />
+                    <div className="absolute -bottom-1 -right-1 bg-background rounded-full p-1 shadow-sm border border-border">
+                        <Lock className="w-3 h-3 text-muted-foreground" />
                     </div>
                 )}
             </div>
