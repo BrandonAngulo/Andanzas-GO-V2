@@ -1,59 +1,8 @@
 import { Site } from '../types';
 
 export const CULTURAL_SITES: Site[] = [
-    {
-        id: 'museo-salsa-obrero',
-        nombre: 'Museo de la Salsa',
-        tipo: 'Museo',
-        lat: 3.4447,
-        lng: -76.5165,
-        rating: 4.8,
-        visitas: 3200,
-        logoUrl: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000',
-        descripcion: `En una cuadra del tradicional barrio Obrero —la cuna de la salsa caleña— hay una casa que guarda la memoria sonora de toda una ciudad. Todo empezó en 1968, cuando el fotógrafo Carlos Alfredo Molina, cámara en mano, comenzó a retratar las noches de feria y a los grandes artistas que pasaban por Cali. De ese lente curioso nació un archivo de más de 40.000 fotografías que hoy es, según se reconoce, el museo de salsa más antiguo del mundo.
-
-Acá no hay vitrinas frías: hay pista enchapada en blanco y negro, paredes tapizadas de rostros —Marvin Santiago, Gilberto Santa Rosa, la Sonora Ponceña— y tres generaciones de una misma familia que heredaron el oficio como quien hereda un apellido. Más que una colección, es un testimonio vivo de que en Cali la cultura no solo se escucha: se hereda. Hoy es pieza central del recorrido patrimonial que la ciudad teje en el Obrero.`,
-        importancia: `Museo de salsa más antiguo del mundo y guardián de la memoria fotográfica del género; corazón del barrio reconocido como cuna de la salsa caleña.`,
-        datosHistoricos: `Nació en 1968 del trabajo del fotógrafo Carlos Alfredo Molina, quien empezó a documentar la escena salsera de Cali. Su legado lo mantienen vivo hijo y nieto, tres generaciones de la familia Molina.`,
-        datosCuriosos: [
-            'Custodia más de 40.000 fotografías de músicos, orquestas y bailadores.',
-            'En el mundo existen apenas un puñado de museos así: los otros están en Nueva York y Puerto Rico, y este es el más longevo.',
-            'Ofrece además clases de baile y apoya, con la fundación del barrio, a niños y jóvenes del Obrero.'
-        ],
-        horario: 'Lunes a sábado, tarde (aprox. 2:00–7:00 p.m.). [verificar franja vigente]',
-        tarifa: 'Entrada con aporte para su sostenimiento. [verificar valor]',
-        direccion: 'Carrera 11B # 24-44, barrio Obrero, Cali. [confirmar]',
-    },
-    {
-        id: 'plazoleta-jairo-varela',
-        nombre: 'Plazoleta Jairo Varela',
-        tipo: 'Monumento',
-        lat: 3.4545,
-        lng: -76.5345,
-        rating: 4.7,
-        visitas: 5000,
-        logoUrl: 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=1000',
-        descripcion: `La Plazoleta Jairo Varela, inaugurada en 2013 frente al Centro Administrativo Municipal (CAM), rinde tributo al legendario fundador del Grupo Niche y compositor del himno popular "Cali Pachanguero". El gran atractivo visual y sonoro de la plaza es el monumento "Niche": una monumental escultura de bronce de 8 metros diseñada por el artista Freddy Pantoja que deletrea la palabra N-I-C-H-E. Cada letra está concebida como un instrumento de viento gigante: las personas pueden caminar dentro de las campanas y escuchar la brisa caleña soplando de manera natural. Debajo se ubica el Museo Jairo Varela, que resguarda partituras originales, trajes de concierto y objetos personales del maestro. La plazoleta conecta el centro histórico con el Bulevar del Río y la zona gastronómica de Granada, siendo punto de encuentro para conciertos espontáneos de salsa en vivo.`,
-        descripcion_en: `The Plazoleta Jairo Varela, inaugurated in 2013 in front of the Municipal Administrative Center (CAM), pays tribute to the legendary founder of Grupo Niche and composer of Cali's popular anthem "Cali Pachanguero". The great visual and sound attraction is the "Niche" monument: an 8-meter bronze sculpture by artist Freddy Pantoja spelling out N-I-C-H-E. Each letter is conceived as a giant wind instrument that visitors can walk inside, hearing the Cali breeze blow naturally through them. Below lies the Jairo Varela Museum, housing original sheet music, concert outfits, and personal items of the maestro.`,
-        importancia: `La plazoleta es el principal espacio de homenaje cívico a la salsa caleña en el centro de la ciudad, convirtiendo un sitio administrativo en un lugar de celebración cultural identitaria de Cali frente al mundo.`,
-        importancia_en: `The plaza is the main civic tribute space for Cali salsa in the city center, transforming an administrative area into a place of cultural identity celebration for Cali before the world.`,
-        datosHistoricos: `Jairo Varela fundó el Grupo Niche en 1979 en Cali. La agrupación publicó más de 25 álbumes de oro y platino, siendo "Cali Pachanguero" (1988) su obra cumbre. Varela falleció en 2012 y la plazoleta fue inaugurada un año después como homenaje póstumo de la ciudad.`,
-        datosHistoricos_en: `Jairo Varela founded Grupo Niche in 1979 in Cali. The group released over 25 gold and platinum albums, with "Cali Pachanguero" (1988) being their masterpiece. Varela passed away in 2012, and the plaza was inaugurated a year later as a posthumous tribute from the city.`,
-        datosCuriosos: [
-            'La escultura "Niche" pesa más de 5 toneladas y tardó 3 años en construirse.',
-            'Las letras de la escultura generan diferentes tonos musicales según la dirección del viento caleño.',
-            '"Cali Pachanguero" fue seleccionada por la FIFA como una de las canciones oficiales del Mundial de Fútbol de Brasil 2014.'
-        ],
-        datosCuriosos_en: [
-            'The "Niche" sculpture weighs over 5 tons and took 3 years to build.',
-            'The letters of the sculpture produce different musical tones depending on the direction of the Cali wind.',
-            '"Cali Pachanguero" was selected by FIFA as one of the official songs for the 2014 Brazil World Cup.'
-        ],
-        horario: 'Acceso público 24 horas.',
-        horario_en: 'Public access 24/7.',
-        tarifa: 'Sin costo.',
-        tarifa_en: 'Free.',
-    },
+    
+    
     {
         id: 'audiosca-municipal',
         nombre: 'Audioteca Municipal',
@@ -84,36 +33,7 @@ Acá no hay vitrinas frías: hay pista enchapada en blanco y negro, paredes tapi
         tarifa: 'Entrada libre.',
         tarifa_en: 'Free entry.',
     },
-    {
-        id: 'galeria-alameda',
-        nombre: 'Galería Alameda',
-        tipo: 'Mercado',
-        lat: 3.441,
-        lng: -76.535,
-        rating: 4.9,
-        visitas: 8000,
-        logoUrl: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=1000',
-        descripcion: `La Plaza de Mercado Alameda es el mercado de alimentos más antiguo y popular de Cali, fundado en 1926 en el barrio homónimo. A diferencia de los supermercados modernos, aquí la lógica del intercambio es oral, directa y social: cientos de comerciantes ofrecen frutas tropicales exóticas —lulo, guanábana, mamoncillo, borojo—, verduras de los valles del Cauca y el Patía, carnes, quesos artesanales del campo y una sección completa de productos del Pacífico como el atún fresco de Buenaventura, el guarapo de caña, el masato y los tamales de choclo. En su interior funciona una zona de restaurantes campesinos donde se sirven platos completos como sancocho de gallina criolla, hogao, carne asada y sudado de bagre desde las 6:00 am. Las calles que rodean la galería están cargadas de casas de baratijas, talleres de artesanos, tiendas de insumos agrícolas y el aroma permanente de café recién molido, componiendo un cuadro vivo de la vida cotidiana del Valle del Cauca.`,
-        descripcion_en: `The Alameda Market is Cali's oldest and most popular food market, founded in 1926 in the neighborhood of the same name. Unlike modern supermarkets, the logic of exchange here is oral, direct, and social: hundreds of merchants offer exotic tropical fruits—lulo, soursop, mamoncillo, borojo—vegetables from the Cauca and Patía valleys, meats, artisanal cheeses from the countryside, and a complete section of Pacific products such as fresh tuna from Buenaventura, sugarcane juice, masato, and choclo tamales. Inside, a zone of rustic restaurants serves full dishes such as hen stew, hogao, grilled meat, and bagre fish stew from 6:00 AM. The streets around the market are laden with bric-a-brac shops, artisan workshops, agricultural supply stores, and the permanent aroma of freshly ground coffee.`,
-        importancia: `El Mercado Alameda es el corazón agrícola y gastronómico de Cali. Su preservación es vital para la economía de las familias campesinas del Valle del Cauca y como escenario de intercambio de saberes culinarios tradicionales que no se documentan en ningún libro.`,
-        importancia_en: `The Alameda Market is the agricultural and gastronomic heart of Cali. Its preservation is vital for the rural family economies of Valle del Cauca and as a stage for the exchange of traditional culinary knowledge not documented in any book.`,
-        datosHistoricos: `La galería fue construida en 1926 bajo el gobierno del alcalde Eduardo Santos, quien impulsó la modernización del comercio popular caleño. En los años 50 fue remodelada para acoger a los comerciantes del desaparecido mercado de La Alameda, que ocupaba el lugar donde hoy está el Centro Administrativo Municipal (CAM).`,
-        datosHistoricos_en: `The market was built in 1926 under Mayor Eduardo Santos, who promoted the modernization of Cali's popular commerce. In the 1950s, it was remodeled to house merchants from the now-gone La Alameda market, which occupied the site where today's Municipal Administrative Center (CAM) stands.`,
-        datosCuriosos: [
-            'Algunos puestos de frutas de la galería llevan más de 60 años atendidos por la misma familia.',
-            'Aquí se consiguen frutas del Pacífico colombiano que no se encuentran en ningún otro punto de la ciudad.',
-            'Es el principal proveedor de insumos para los restaurantes de cocina vallecaucana y pacífica de Cali.'
-        ],
-        datosCuriosos_en: [
-            'Some fruit stalls in the market have been run by the same family for over 60 years.',
-            'Here you can find fruits from the Colombian Pacific that are not available anywhere else in the city.',
-            'It is the main supplier of ingredients for Cali\'s Valle del Cauca and Pacific cuisine restaurants.'
-        ],
-        horario: 'Lunes a Domingo: 6:00 - 18:00.',
-        horario_en: 'Monday to Sunday: 6:00 AM - 6:00 PM.',
-        tarifa: 'Entrada libre.',
-        tarifa_en: 'Free entry.',
-    },
+    
     {
         id: 'bebidas-san-antonio',
         nombre: 'Puestos de Bebidas de San Antonio',
@@ -264,42 +184,7 @@ Acá no hay vitrinas frías: hay pista enchapada en blanco y negro, paredes tapi
         tarifa: 'Aporte voluntario sugerido: $10,000 - $20,000 COP por persona.',
         tarifa_en: 'Suggested voluntary tip: $10,000 - $20,000 COP per person.',
     },
-    {
-        id: 'teatro-municipal',
-        nombre: 'Teatro Municipal Enrique Buenaventura',
-        tipo: 'Teatro',
-        lat: 3.4495,
-        lng: -76.536,
-        rating: 4.8,
-        visitas: 3000,
-        logoUrl: 'https://images.unsplash.com/photo-1514306191717-452ec28c7f31?q=80&w=1000',
-        descripcion: `Detrás del Teatro Municipal hay una obsesión con nombre propio: la de Manuel María Buenaventura —"el Chato"—, que tras el incendio del viejo Teatro Borrero se empeñó en dotar a Cali de una sala digna de las grandes compañías. El Concejo se negó por el costo, así que la ciudad inventó una lotería para pagarlo. La primera piedra se puso el 9 de abril de 1918 y, casi una década después, el 30 de noviembre de 1927, el telón se abrió por primera vez con "El Trovador" de Verdi a cargo de la compañía de ópera Bracale. Esa noche Cali estrenó su primer escenario apto para el gran formato.
-
-De estilo clásico italiano, con el plafón pintado por el muralista Mauricio Ramelli con escenas de la Divina Comedia, una sala principal para más de mil espectadores en cinco niveles de palcos y silletería austriaca original, el Municipal es hoy Monumento Nacional y la sala madre de las artes escénicas de la ciudad. Lleva el nombre de Enrique Buenaventura —dramaturgo caleño, fundador del TEC y referente del teatro latinoamericano—, de modo que en su fachada conviven la tradición operística y la vanguardia teatral que Cali le dio al país. Camino a su centenario en 2027, atraviesa una restauración integral que lo entregará renovado.`,
-        descripcion_en: `Behind the Municipal Theater lies a single-minded obsession: that of Manuel María Buenaventura — "el Chato" — who, after the old Teatro Borrero burned down, resolved to give Cali a venue worthy of the great companies. The City Council refused on cost grounds, so the city invented a lottery to pay for it. The first stone was laid on April 9, 1918 and, nearly a decade later, on November 30, 1927, the curtain rose for the first time with Verdi's "Il Trovatore" performed by the Bracale opera company. That night Cali premiered its first stage capable of grand-format productions.
-
-Built in the Italian classical style, with the ceiling painted by muralist Mauricio Ramelli with scenes from the Divine Comedy, a main hall for over a thousand spectators across five tiers of boxes and original Austrian seating, the Municipal is today a National Monument and the mother stage of the city's performing arts. It bears the name of Enrique Buenaventura — Cali playwright, TEC founder, and reference of Latin American theater — so that its facade unites the operatic tradition and the theatrical vanguard Cali gave the country. Approaching its centenary in 2027, it is undergoing a full restoration.`,
-        importancia: `Sala histórica y Monumento Nacional; primer escenario de gran formato de Cali y casa de la ópera, el ballet y la música sinfónica de la ciudad durante casi un siglo. Símbolo del esfuerzo ciudadano que construyó cultura con una lotería municipal.`,
-        importancia_en: `Historic hall and National Monument; Cali's first grand-format stage and home of the city's opera, ballet, and symphonic music for nearly a century. Symbol of the civic effort that built culture through a municipal lottery.`,
-        datosHistoricos: `Primera piedra el 9 de abril de 1918, impulsado por Manuel María Buenaventura y financiado con una lotería municipal. Inaugurado el 30 de noviembre de 1927 con "El Trovador" de Giuseppe Verdi. Declarado Monumento Nacional en 1982. En 2025 cumplió 98 años; su centenario será en 2027, para el cual se adelanta una restauración integral.`,
-        datosHistoricos_en: `First stone laid April 9, 1918, driven by Manuel María Buenaventura and financed by a municipal lottery. Inaugurated November 30, 1927 with Giuseppe Verdi's "Il Trovatore". Declared National Monument in 1982. In 2025 it turned 98; its centenary will be in 2027, for which a full restoration is underway.`,
-        datosCuriosos: [
-            'El plafón que corona la sala es obra del muralista italiano Mauricio Ramelli, con escenas de la Divina Comedia de Dante.',
-            'Conserva detalles originales como su silletería austriaca y la trampa del escenario de 6 metros de profundidad, usada para efectos de ópera.',
-            'Nació de la desgracia: se construyó tras el incendio que consumió el antiguo Teatro Borrero.',
-            'Ofrece visitas guiadas para recorrer sus entrañas y conocer sus anécdotas (verificar disponibilidad durante la restauración).'
-        ],
-        datosCuriosos_en: [
-            'The ceiling is the work of Italian muralist Mauricio Ramelli, with scenes from Dante\'s Divine Comedy.',
-            'It preserves original details such as its Austrian seating and a 6-meter-deep stage trap used for opera special effects.',
-            'It was born from disaster: built after the fire that consumed the old Teatro Borrero.',
-            'It offers guided tours through its interior (verify availability during restoration).'
-        ],
-        horario: 'Según programación. Visitas guiadas: martes 11:00 a.m. y jueves 3:00 p.m. (~40 min). Verificar disponibilidad durante restauración.',
-        horario_en: 'According to programming. Guided tours: Tuesday 11:00 AM and Thursday 3:00 PM (~40 min). Verify availability during restoration.',
-        tarifa: 'Entradas desde $25,000 COP. Visitas guiadas: $10,000 COP.',
-        tarifa_en: 'Tickets from $25,000 COP. Guided tours: $10,000 COP.',
-    },
+    
     {
         id: 'edificio-otero',
         nombre: 'Edificio Otero',
@@ -330,36 +215,7 @@ Built in the Italian classical style, with the ceiling painted by muralist Mauri
         tarifa: 'Sin costo.',
         tarifa_en: 'Free.',
     },
-    {
-        id: 'biblioteca-centenario',
-        nombre: 'Biblioteca Centenario',
-        tipo: 'Biblioteca',
-        lat: 3.4505,
-        lng: -76.538,
-        rating: 4.7,
-        visitas: 900,
-        logoUrl: 'https://images.unsplash.com/photo-1507842217121-ad959dc29701?q=80&w=1000',
-        descripcion: `La Biblioteca Centenario, inaugurada en 1910 para conmemorar el primer siglo de la Independencia de Colombia, es la biblioteca pública más antigua de Cali y una de las más antiguas del país. Ubicada en el corazón del centro histórico, en el parque homónimo, el edificio de estilo republicano conserva su estructura original de mampostería con pilastras de cal y arcadas. Custodia más de 60,000 volúmenes, entre los que se destacan ediciones del siglo XIX de autores colombianos y europeos, colecciones de fotografía histórica de Cali y el Valle del Cauca y un archivo de prensa local que comienza en 1875. También alberga el archivo de los principales intelectuales y escritores caleños del siglo XX, incluyendo manuscritos de Jorge Isaacs, autor de la novela "María", obra cumbre de la literatura romántica latinoamericana.`,
-        descripcion_en: `The Centenario Library, inaugurated in 1910 to commemorate the first century of Colombia's Independence, is Cali's oldest public library and one of the oldest in the country. Located in the heart of the historic center, in its namesake park, the republican-style building preserves its original masonry structure with lime pilasters and arcades. It safeguards over 60,000 volumes, including 19th-century editions of Colombian and European authors, historical photography collections of Cali and Valle del Cauca, and a local press archive beginning in 1875.`,
-        importancia: `Es la memoria documental impresa más antigua de Cali y el Valle del Cauca. Sus colecciones son fuente primaria indispensable para la investigación histórica, literaria y periodística de la región. Sus archivos custodian documentos que no existen en ningún otro repositorio del mundo.`,
-        importancia_en: `It is the oldest printed documentary memory of Cali and Valle del Cauca. Its collections are an indispensable primary source for historical, literary, and journalistic research of the region. Its archives hold documents that exist in no other repository in the world.`,
-        datosHistoricos: `La Biblioteca Centenario fue fundada en 1910 por el Club Colombia, una de las asociaciones cívicas más influyentes de la élite caleña. En 1928 fue cedida al Estado y convertida en biblioteca pública. Entre sus fondos históricos se encuentran los primeros mapas topográficos del Valle del Cauca elaborados por ingenieros españoles en el siglo XVIII.`,
-        datosHistoricos_en: `The Centenario Library was founded in 1910 by Club Colombia, one of the most influential civic associations of Cali's elite. In 1928 it was transferred to the State and converted into a public library. Among its historical collections are the first topographic maps of Valle del Cauca made by Spanish engineers in the 18th century.`,
-        datosCuriosos: [
-            'Conserva manuscritos originales de Jorge Isaacs, el autor vallecaucano de "María", escritos durante su estadía en las haciendas del Valle.',
-            'En su archivo de prensa reposa la primera edición del diario El País de Cali, de 1950.',
-            'El parque que la rodea fue el primer jardín botánico público de Cali, y aún conserva árboles centenarios de caucho, samán y ceiba.'
-        ],
-        datosCuriosos_en: [
-            'It preserves original manuscripts of Jorge Isaacs, the Valle del Cauca author of "María", written during his stay in the Valle haciendas.',
-            'Its press archive holds the first edition of the Cali newspaper El País, from 1950.',
-            'The park surrounding it was Cali\'s first public botanical garden, and still preserves century-old rubber, samán, and ceiba trees.'
-        ],
-        horario: 'Lunes a Viernes: 8:00 - 18:00 | Sábado: 9:00 - 13:00.',
-        horario_en: 'Monday to Friday: 8:00 AM - 6:00 PM | Saturday: 9:00 AM - 1:00 PM.',
-        tarifa: 'Entrada libre.',
-        tarifa_en: 'Free entry.',
-    },
+    
     {
         id: 'monumento-piper',
         nombre: 'Monumento a Piper Pimienta',
@@ -420,96 +276,9 @@ Built in the Italian classical style, with the ceiling painted by muralist Mauri
         tarifa: 'Sin costo.',
         tarifa_en: 'Free.',
     },
-    {
-        id: 'bulevar-petronio',
-        nombre: 'Bulevar del Río (Sector Petronio)',
-        tipo: 'Espacio Público',
-        lat: 3.453,
-        lng: -76.532,
-        rating: 4.9,
-        visitas: 10000,
-        logoUrl: 'https://images.unsplash.com/photo-1568632234157-ce7aecd03d0d?q=80&w=1000',
-        descripcion: `El Bulevar del Río Cali es el corredor peatonal más importante y dinámico de la ciudad, diseñado en 2009 por el arquitecto Giancarlo Mazzanti sobre la margen occidental del río Cali. El tramo conocido como "Sector Petronio" toma su nombre por ser el escenario principal del Festival Petronio Álvarez —el festival de música del Pacífico más grande del mundo—, que transforma el Bulevar cada agosto en un inmenso parque de música en vivo, gastronomía del Pacífico y cultura afrodiaspórica. Durante el resto del año, el Bulevar es un espacio de convivencia ciudadana excepcional: ciclistas, peatones, artistas callejeros, estudiantes universitarios y familias comparten los amplios andenes sombreados por árboles nativos, mientras los murales de los muros del río y la vista sobre el perfil urbano componen uno de los recorridos peatonales más hermosos de Colombia.`,
-        descripcion_en: `The Bulevar del Río Cali is the most important and dynamic pedestrian corridor in the city, designed in 2009 by architect Giancarlo Mazzanti on the western bank of the Cali River. The stretch known as the "Petronio Sector" takes its name from being the main stage of the Petronio Álvarez Festival—the world's largest Pacific music festival—which transforms the Bulevar each August into an immense park of live music, Pacific gastronomy, and Afro-diasporic culture.`,
-        importancia: `El Bulevar del Río redefinió la relación de Cali con su río, devolviendo un espacio históricamente degradado a la ciudadanía y convirtiéndolo en el eje de la vida cultural y cívica del centro histórico. Es el proyecto de renovación urbana más exitoso de la historia reciente de la ciudad.`,
-        importancia_en: `The Bulevar del Río redefined Cali's relationship with its river, returning a historically degraded space to citizens and turning it into the cultural and civic axis of the historic center. It is the most successful urban renewal project in the city's recent history.`,
-        datosHistoricos: `Antes de la construcción del Bulevar, el sector entre La Ermita y el Puente de la Cervecería era una zona de alto riesgo con ocupaciones informales sobre la ronda del río. El proyecto fue diseñado por Giancarlo Mazzanti y ganó el Premio Nacional de Arquitectura en 2011. El Festival Petronio Álvarez, creado en 1997, se trasladó al Bulevar en 2014.`,
-        datosHistoricos_en: `Before the Bulevar was built, the sector between La Ermita and Puente de la Cervecería was a high-risk area with informal settlements on the river's edge. The project was designed by Giancarlo Mazzanti and won the National Architecture Award in 2011. The Petronio Álvarez Festival, created in 1997, moved to the Bulevar in 2014.`,
-        datosCuriosos: [
-            'El Festival Petronio Álvarez recibe más de 150,000 visitantes cada agosto, convirtiéndose en el mayor festival de música del Pacífico en el mundo.',
-            'El arquitecto Giancarlo Mazzanti también diseñó los Parques Biblioteca de Medellín, ganadores del Premio Vélez Vitancourt.',
-            'El Bulevar tiene 2.4 km de extensión entre el Puente Ortiz y el sector de Ciudad Solar.'
-        ],
-        datosCuriosos_en: [
-            'The Petronio Álvarez Festival receives over 150,000 visitors each August, making it the world\'s largest Pacific music festival.',
-            'Architect Giancarlo Mazzanti also designed the Medellín Biblioteca Parks, winners of the Vélez Vitancourt Prize.',
-            'The Bulevar extends 2.4 km between Puente Ortiz and the Ciudad Solar sector.'
-        ],
-        horario: 'Acceso público 24 horas.',
-        horario_en: 'Public access 24/7.',
-        tarifa: 'Sin costo.',
-        tarifa_en: 'Free.',
-    },
-    {
-        id: 'iglesia-ermita',
-        nombre: 'Iglesia La Ermita',
-        tipo: 'Religioso',
-        lat: 3.4526,
-        lng: -76.5322,
-        rating: 4.8,
-        visitas: 15000,
-        logoUrl: 'https://images.unsplash.com/photo-1548625361-9876f45cd866?q=80&w=1000',
-        descripcion: `La Iglesia de La Ermita es la postal arquitectónica por excelencia de Cali y uno de los templos más fotografiados de Colombia. Construida entre 1942 y 1948 para reemplazar la estructura colonial del siglo XVII destruida por el terremoto de 1925, este templo de estilo neogótico destaca por su imponente aguja central de 58 metros, pináculos y detalles ornamentales en piedra labrada traídos directamente de Europa. Su estructura interior alberga vitrales de Ámsterdam, mármol italiano, campanas francesas fundidas en 1898 y un altar central de madera finamente tallada que resguarda la venerada imagen del "Señor de la Caña", único sobreviviente material del terremoto de 1925. Ubicada en el cruce de la Avenida Colombia (Bulevar del Río) con la Calle 13, La Ermita es el guardián simbólico del paso de la Cali colonial a la metrópoli moderna. Su perfil gótico —especialmente al atardecer, cuando las luces anaranjadas del sol recortan su silueta— es una de las imágenes más evocadoras y bellas del paisaje urbano colombiano.`,
-        descripcion_en: `La Ermita Church is Cali's quintessential architectural postcard and one of the most photographed temples in Colombia. Built between 1942 and 1948 to replace the 17th-century colonial structure destroyed by the 1925 earthquake, this neo-Gothic temple stands out for its imposing 58-meter central spire, pinnacles, and ornamental carved stone details brought directly from Europe. Its interior houses stained glass from Amsterdam, Italian marble, French bells cast in 1898, and a finely carved wooden central altar housing the revered image of the "Lord of the Cane", the sole material survivor of the 1925 earthquake.`,
-        importancia: `La Ermita es el símbolo arquitectónico más reconocible de Cali en el mundo. Su imagen representa a la ciudad en portadas de guías turísticas, postales y publicaciones internacionales. La devoción al "Señor de la Caña" es la expresión religiosa popular más profunda y transversal de la identidad caleña.`,
-        importancia_en: `La Ermita is Cali's most recognizable architectural symbol in the world. Its image represents the city on covers of travel guides, postcards, and international publications. Devotion to the "Lord of the Cane" is the deepest and most cross-sectional popular religious expression of Caleño identity.`,
-        datosHistoricos: `La primera ermita en este lugar data del siglo XVII (1602), cuando fue construida como capilla de los frailes de La Merced. El terremoto de junio de 1925, de magnitud 6.4, destruyó la estructura colonial. La imagen del Señor de la Caña fue rescatada entre los escombros y se convirtió desde entonces en el objeto de mayor veneración popular de Cali.`,
-        datosHistoricos_en: `The first ermita on this site dates from the 17th century (1602), when it was built as a chapel for the La Merced friars. The earthquake of June 1925, magnitude 6.4, destroyed the colonial structure. The image of the Lord of the Cane was rescued from the rubble and has since become Cali's most popularly venerated religious object.`,
-        datosCuriosos: [
-            'La aguja central de La Ermita tiene 58 metros de altura, siendo uno de los campanarios más altos del suroccidente colombiano.',
-            'Las campanas del templo fueron fundidas en Francia en 1898, antes de que se construyera el edificio actual.',
-            'El "Señor de la Caña" se llama así porque fue encontrado entre los escombros del terremoto de 1925 sostenido por una caña de azúcar que no cedió.'
-        ],
-        datosCuriosos_en: [
-            'The central spire of La Ermita is 58 meters tall, making it one of the tallest bell towers in southwestern Colombia.',
-            'The temple\'s bells were cast in France in 1898, before the current building was constructed.',
-            'The "Lord of the Cane" is so named because he was found among the rubble of the 1925 earthquake supported by a sugarcane stalk that did not bend.'
-        ],
-        horario: 'Diario: 7:00 - 12:00 y 15:00 - 19:30.',
-        horario_en: 'Daily: 7:00 AM - 12:00 PM and 3:00 PM - 7:30 PM.',
-        tarifa: 'Entrada libre.',
-        tarifa_en: 'Free entry.',
-    },
-    {
-        id: 'capilla-san-antonio',
-        nombre: 'Capilla de San Antonio',
-        tipo: 'Religioso',
-        lat: 3.446,
-        lng: -76.541,
-        rating: 4.9,
-        visitas: 12000,
-        logoUrl: 'https://images.unsplash.com/photo-1533552083506-69a6850d99d3?q=80&w=1000',
-        descripcion: `La Capilla de San Antonio, erigida en 1747 sobre la colina homónima, es el máximo emblema del pasado colonial de Cali y uno de los miradores naturales más espectaculares de la ciudad. Su sencilla fachada de cal blanca, coronada por una espadaña de tres arcos y un portal de piedra labrada, contrasta con el interior barroco que resguarda imágenes de madera policromada de la escuela quiteña del siglo XVIII. Desde su atrio empedrado se obtiene una panorámica de 180 grados sobre el casco urbano, el río Cali y la cordillera Occidental. El barrio que rodea la capilla es el corazón bohemio de Cali: calles en empedrado, casas de fachadas coloridas con zaguanes y balcones de madera, teatros independientes, galerías de arte, talleres de artesanos, restaurantes de cocina fusión y los puestos tradicionales de lulada y champús. Sentarse en los prados de la colina al final de la tarde, cuando la brisa del Pacífico baja por la montaña y el sol tiñe de naranja y violeta el horizonte, es uno de los rituales más caleños que existen.`,
-        descripcion_en: `The San Antonio Chapel, erected in 1747 on the hill of the same name, is the ultimate emblem of Cali's colonial past and one of the city's most spectacular natural viewpoints. Its simple white lime facade, crowned by a three-arched belfry and a carved stone portal, contrasts with the Baroque interior housing 18th-century polychrome wooden images from the Quito school. From its stone atrium, a 180-degree panorama is obtained over the urban core, the Cali River, and the Western Cordillera.`,
-        importancia: `La Capilla de San Antonio es el edificio colonial más antiguo y mejor conservado de Cali. Su colina es el único espacio natural elevado dentro de la trama urbana del centro que ofrece una perspectiva completa de la ciudad. El barrio de San Antonio es el principal polo cultural alternativo de Cali.`,
-        importancia_en: `The San Antonio Chapel is Cali's oldest and best-preserved colonial building. Its hill is the only elevated natural space within the urban downtown fabric that offers a complete perspective of the city. The San Antonio neighborhood is Cali's main alternative cultural hub.`,
-        datosHistoricos: `La capilla fue construida en 1747 por los frailes franciscanos como oratorio para los campesinos y mineros que habitaban las laderas occidentales de la ciudad. La colina fue escenario de los primeros tianguis y mercados coloniales de Cali. El barrio de San Antonio se consolidó como zona bohemia a partir de los años 70, cuando artistas y escritores comenzaron a ocupar sus casas republicanas.`,
-        datosHistoricos_en: `The chapel was built in 1747 by Franciscan friars as an oratory for the farmers and miners who inhabited the western slopes of the city. The hill was the site of Cali's first colonial markets and tianguis. The San Antonio neighborhood became a bohemian zone starting in the 1970s, when artists and writers began occupying its republican-era houses.`,
-        datosCuriosos: [
-            'Las imágenes de madera del interior de la capilla fueron talladas en Quito (Ecuador) y transportadas a Cali a lomo de mula por las rutas coloniales del Pacífico.',
-            'El árbol de ceiba gigante que crece junto a la capilla tiene más de 200 años de edad y es declarado árbol patrimonial de Cali.',
-            'Desde la colina de San Antonio se ve claramente el Cristo Rey en el cerro del Occidente, constituyendo una línea sagrada que atraviesa visualmente toda la ciudad.'
-        ],
-        datosCuriosos_en: [
-            'The wooden images inside the chapel were carved in Quito (Ecuador) and transported to Cali by mule along colonial Pacific routes.',
-            'The giant ceiba tree growing next to the chapel is over 200 years old and is declared a heritage tree of Cali.',
-            'From San Antonio Hill, Cristo Rey on the western hill is clearly visible, forming a sacred line that visually crosses the entire city.'
-        ],
-        horario: 'Lunes a Viernes: 16:00 - 19:00 | Sábado y Domingo: 8:00 - 12:00 y 16:00 - 19:00.',
-        horario_en: 'Mon-Fri: 4:00 PM - 7:00 PM | Sat & Sun: 8:00 AM - 12:00 PM and 4:00 PM - 7:00 PM.',
-        tarifa: 'Entrada libre.',
-        tarifa_en: 'Free entry.',
-    },
+    
+    
+    
     {
         id: 'edificio-gobernacion',
         nombre: 'Palacio de la Gobernación del Valle',
@@ -540,142 +309,10 @@ Built in the Italian classical style, with the ceiling painted by muralist Mauri
         tarifa: 'Sin costo.',
         tarifa_en: 'Free.',
     },
-    {
-        id: 'gato-tejada',
-        nombre: 'El Gato de Tejada',
-        tipo: 'Arte Público',
-        lat: 3.454,
-        lng: -76.538,
-        rating: 4.8,
-        visitas: 11000,
-        logoUrl: 'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=1000',
-        descripcion: `El Gato del Río es una de las esculturas de arte público más queridas y emblemáticas de Cali. Donada a la ciudad en 1996 por el célebre pintor y escultor caleño Hernando Tejada, esta monumental pieza de bronce de tres toneladas y tres metros de altura representa a un gato de mirada pícara y cola erguida, sentado sobre un pedestal a orillas del río Cali. En 2006, la Cámara de Comercio de Cali lideró una iniciativa para acompañar al gato con una serie de "gatas novias" a lo largo del sendero peatonal: esculturas idénticas en forma, pero pintadas e intervenidas por reconocidos artistas nacionales (Lucy Tejada, Maripaz Jaramillo, Omar Rayo y otros), cada una representando una personalidad y narrativa diferente de la identidad caleña. El paseo del gato se ha consolidado como el circuito de arte al aire libre más popular de la ciudad, enmarcado por bambúes, ceibas, el murmullo del río y la vista sobre La Tertulia al fondo.`,
-        descripcion_en: `The Gato del Río (River Cat) is one of Cali's most beloved and iconic public art sculptures. Donated to the city in 1996 by the famous Caleño painter and sculptor Hernando Tejada, this monumental three-ton, three-meter bronze piece represents a cat with a mischievous gaze and upright tail, sitting on a pedestal on the banks of the Cali River. In 2006, the Cali Chamber of Commerce led an initiative to accompany the cat with a series of "girlfriend cats" along the pedestrian path: sculptures identical in shape but painted and customized by renowned national artists.`,
-        importancia: `El Gato de Tejada es el símbolo cívico-artístico más querido de Cali y la obra de Hernando Tejada más reproducida en el mundo. La iniciativa de las "gatas novias" convirtió el paseo fluvial en la primera galería de arte público de la ciudad, modelo para iniciativas similares en otras capitales de Colombia.`,
-        importancia_en: `The Gato de Tejada is Cali's most beloved civic-artistic symbol and Hernando Tejada's most reproduced work in the world. The "girlfriend cats" initiative transformed the riverside promenade into the city's first public art gallery, a model for similar initiatives in other Colombian capitals.`,
-        datosHistoricos: `Hernando Tejada (1925-2009) fue uno de los artistas colombianos más destacados del siglo XX. El molde del gato fue creado en su taller de El Peñón y fundido en bronce en Colombia. La escultura original fue donada a la ciudad como gesto de amor de Tejada hacia Cali en 1996, dos años antes de cumplir 70 años.`,
-        datosHistoricos_en: `Hernando Tejada (1925-2009) was one of the most prominent Colombian artists of the 20th century. The cat's mold was created in his El Peñón workshop and cast in bronze in Colombia. The original sculpture was donated to the city as a gesture of Tejada's love for Cali in 1996, two years before his 70th birthday.`,
-        datosCuriosos: [
-            'Hay 19 "gatas novias" a lo largo del paseo del río, cada una única en su pintura e intervención artística.',
-            'La escultura original pesa 3 toneladas y tardó más de 6 meses en fundirse en bronce.',
-            'Hernando Tejada se inspiró en los gatos callejeros del Barrio El Peñón, donde vivió durante más de 30 años.'
-        ],
-        datosCuriosos_en: [
-            'There are 19 "girlfriend cats" along the river walk, each unique in its painting and artistic intervention.',
-            'The original sculpture weighs 3 tons and took over 6 months to be cast in bronze.',
-            'Hernando Tejada was inspired by the stray cats of El Peñón neighborhood, where he lived for over 30 years.'
-        ],
-        horario: 'Acceso público 24 horas.',
-        horario_en: 'Public access 24/7.',
-        tarifa: 'Entrada libre.',
-        tarifa_en: 'Free entry.',
-    },
-    {
-        id: 'museo-tertulia',
-        nombre: 'Museo La Tertulia',
-        tipo: 'Museo',
-        lat: 3.455,
-        lng: -76.54,
-        rating: 4.8,
-        visitas: 6000,
-        logoUrl: 'https://images.unsplash.com/photo-1565551982737-f8382346985d?q=80&w=1000',
-        descripcion: `La Tertulia nació de una escasez. A mediados de los años cincuenta, bajo la dictadura de Rojas Pinilla, Cali había perdido buena parte de sus espacios culturales —el Teatro Municipal reducido a sala de cine, Bellas Artes usado como aparato de propaganda—, y ante ese vacío un grupo de intelectuales encabezado por Maritza Uribe de Urdinola improvisó un centro cultural en una casona del barrio San Antonio. Al comienzo fue casi un acto de resistencia doméstica: escuela mixta y gratuita para cincuenta niños de bajos recursos de día, y de noche café-bar con charlas, exposiciones y cine, bajo un lema que lo dice todo: "primero alfabetizar y luego culturizar". Por esa casa pasaron Marta Traba, Pablo Neruda, Alejandro Obregón y un jovencísimo Andrés Caicedo.
-
-En 1968 el sueño encontró cuerpo definitivo a la orilla del río Cali, en el antiguo Charco del Burro —un balneario natural de los caleños—, con un edificio de columnas inconfundibles inspirado en el complejo romano del EUR. Fue el primer inmueble construido en Colombia específicamente para albergar un museo de arte moderno. Hoy, con una colección cercana a las 2.000 obras y más de cien mil visitantes al año, La Tertulia es a la vez fortaleza de concreto, terraza sobre el río y latido cultural de la ciudad: el lugar donde Cali aprendió a mirarse como territorio de arte.`,
-        descripcion_en: `La Tertulia was born of a scarcity. In the mid-1950s, under the Rojas Pinilla dictatorship, Cali had lost much of its cultural space — the Municipal Theater reduced to a movie hall, Bellas Artes used as a propaganda apparatus — and faced with that void, a group of intellectuals led by Maritza Uribe de Urdinola improvised a cultural center in a house in San Antonio. At first it was almost an act of domestic resistance: a free mixed school for fifty low-income children by day, and at night a café-bar with talks, exhibitions, and film, under a motto that says it all: "first literacy, then culture." Through that house passed Marta Traba, Pablo Neruda, Alejandro Obregón, and a very young Andrés Caicedo.
-
-In 1968 the dream found its definitive form on the banks of the Cali River, on the old Charco del Burro — a natural swimming hole for Caleños — with a building of unmistakable columns inspired by Rome's EUR complex. It was the first building constructed in Colombia specifically to house a modern art museum. Today, with a collection of nearly 2,000 works and over a hundred thousand visitors a year, La Tertulia is simultaneously a concrete fortress, a terrace over the river, and the cultural heartbeat of the city.`,
-        importancia: `Primer museo de arte moderno de Colombia y epicentro de la vida artística del suroccidente durante más de medio siglo. Referente nacional del arte gráfico y del cine independiente. En 2026 cumple 70 años de existencia ininterrumpida.`,
-        importancia_en: `Colombia's first modern art museum and epicenter of artistic life in the southwest for over half a century. National reference for graphic art and independent cinema. In 2026 it celebrates 70 years of uninterrupted existence.`,
-        datosHistoricos: `Fundado en 1956 por Maritza Uribe de Urdinola y un grupo de gestores caleños, primero como casa cultural en San Antonio. En 1968 se traslada a su sede actual junto al río Cali como Museo de Arte Moderno. La Cinemateca, inaugurada el 6 de mayo de 1975, es la segunda más antigua del país. Maritza Uribe dirigió la institución hasta su muerte en 2004.`,
-        datosHistoricos_en: `Founded in 1956 by Maritza Uribe de Urdinola and a group of Cali cultural managers, first as a cultural house in San Antonio. In 1968 it moved to its current location beside the Cali River as the Museum of Modern Art. The Cinemateca, inaugurated on May 6, 1975, is the second oldest in the country. Maritza Uribe directed the institution until her death in 2004.`,
-        datosCuriosos: [
-            'Sus Bienales de Artes Gráficas la convirtieron en referente del grabado y el arte impreso en el continente.',
-            'En la pared curva de su auditorio está empotrada la escultura "La Escalera", del maestro Édgar Negret.',
-            'En julio de 1984 una crecida del río Cali inundó la Sala Subterránea y destruyó parte de la colección, mucha de ella obra en papel.',
-            'Un puente peatonal (2020) la conecta con el Paseo de los Gatos y la Casa Obeso al otro lado del río.'
-        ],
-        datosCuriosos_en: [
-            'Its Graphic Arts Biennials made it a continental reference for printmaking and printed art.',
-            'Embedded in the curved wall of its auditorium is the sculpture "La Escalera" by master Édgar Negret.',
-            'In July 1984 a Cali River flood inundated the Underground Hall and destroyed part of the collection, much of it works on paper.',
-            'A pedestrian bridge (2020) connects it with the Paseo de los Gatos and Casa Obeso on the other side of the river.'
-        ],
-        horario: 'Martes a domingo (cerrado los lunes). Confirmar franja horaria exacta en taquilla.',
-        horario_en: 'Tuesday to Sunday (closed Mondays). Confirm exact times at the box office.',
-        tarifa: '$15,000 COP (Estudiantes/Adulto mayor $10,000 COP).',
-        tarifa_en: '$15,000 COP (Students/Seniors $10,000 COP).',
-    },
-    {
-        id: 'zoologico-cali',
-        nombre: 'Zoológico de Cali',
-        tipo: 'Naturaleza',
-        lat: 3.4475,
-        lng: -76.551,
-        rating: 4.8,
-        visitas: 9000,
-        logoUrl: 'https://images.unsplash.com/photo-1535402803947-a950d5f7847b?q=80&w=1000',
-        descripcion: `Tendido dentro del bosque municipal y a la orilla del río que le da nombre a la ciudad, el Zoológico de Cali es paseo de infancia de varias generaciones de caleños y, a la vez, uno de los proyectos de conservación más serios de América Latina. No siempre fue así: abrió en 1969 bajo administración municipal y estuvo a punto de cerrar por malos manejos, hasta que en 1981 la Fundación Zoológica de Cali —sin ánimo de lucro— tomó las riendas y lo reinventó desde el bienestar animal y la fauna nativa.
-
-Hoy alberga cerca de 2.500 animales de 233 especies —cuatro de cada cinco, nativas de Colombia— en un recorrido de kilómetro y medio entre jardines. Su compromiso ambiental va más allá de las jaulas: cría y libera especies amenazadas, sostiene programas de ranas venenosas colombianas, produce parte de su energía con paneles solares y administra el corredor ecológico del río Cali. Recorrerlo es entender que un zoológico puede ser también un aula de biodiversidad y una declaración de amor al patrimonio natural del país.`,
-        descripcion_en: `Laid out within the municipal forest and on the banks of the river that gives the city its name, the Cali Zoo is a childhood memory for several generations of Caleños and, at the same time, one of the most serious conservation projects in Latin America. It was not always so: it opened in 1969 under municipal administration and came close to closing due to mismanagement, until in 1981 the Zoological Foundation of Cali — a non-profit — took over and reinvented it around animal welfare and native fauna.
-
-Today it houses around 2,500 animals of 233 species — four in five of them native to Colombia — across a one-and-a-half kilometer walk through gardens. Its environmental commitment goes beyond cages: it breeds and releases threatened species, runs programs for Colombian poison dart frogs, generates part of its energy from solar panels, and manages the Cali River ecological corridor. To walk through it is to understand that a zoo can also be a biodiversity classroom and a declaration of love for the country's natural heritage.`,
-        importancia: `Uno de los mejores zoológicos de América Latina y referente de conservación de fauna nativa colombiana. Espacio de educación ambiental y encuentro ciudadano que ha transformado el concepto de zoológico clásico hacia uno de inmersión, respeto animal y conservación activa.`,
-        importancia_en: `One of the best zoos in Latin America and a reference for native Colombian fauna conservation. An environmental education and civic meeting space that has transformed the classic zoo concept toward one of immersion, animal respect, and active conservation.`,
-        datosHistoricos: `Abrió sus puertas en 1969 bajo administración municipal. En abril de 1980 se creó la Fundación Zoológica de Cali, con participación pública y privada, que asumió su administración el 1 de octubre de 1981 y lo transformó en la institución de conservación que es hoy. En marzo de 2016 recibió la acreditación de la Asociación de Zoológicos y Acuarios (AZA). En 1999 crió y liberó dos cóndores de los Andes en el Parque Nacional de los Nevados.`,
-        datosHistoricos_en: `It opened its doors in 1969 under municipal administration. In April 1980 the Zoological Foundation of Cali was created, with public and private participation, which took over administration on October 1, 1981 and transformed it into the conservation institution it is today. In March 2016 it received accreditation from the Association of Zoos and Aquariums (AZA). In 1999 it bred and released two Andean condors at the Nevados National Park.`,
-        datosCuriosos: [
-            'En marzo de 2016 recibió la acreditación de la AZA por sus altos estándares de cuidado, siendo el único zoológico de Colombia con esa distinción.',
-            'Toma agua del río Cali y la devuelve tratada; produce parte de su energía con paneles solares.',
-            'Cerca del 80% de sus animales son especies nativas de Colombia, incluyendo el único manatí antillano en cautiverio del país.',
-            'En 1999 crió y liberó dos cóndores de los Andes en el Parque Nacional de los Nevados — uno de los primeros programas de este tipo en Colombia.'
-        ],
-        datosCuriosos_en: [
-            'In March 2016 it received AZA accreditation for its high care standards, being the only zoo in Colombia with that distinction.',
-            'It draws water from the Cali River and returns it treated; it generates part of its energy from solar panels.',
-            'Around 80% of its animals are species native to Colombia, including the country\'s only captive Antillean manatee.',
-            'In 1999 it bred and released two Andean condors at the Nevados National Park — one of the first programs of its kind in Colombia.'
-        ],
-        horario: 'Abierto todos los días. Confirmar franja horaria vigente en taquilla.',
-        horario_en: 'Open every day. Confirm current hours at the ticket office.',
-        tarifa: 'Adultos: $28,000 COP | Niños: $19,000 COP.',
-        tarifa_en: 'Adults: $28,000 COP | Children: $19,000 COP.',
-    },
-    {
-        id: 'teatro-jorge-isaacs',
-        nombre: 'Teatro Jorge Isaacs',
-        tipo: 'Teatro',
-        lat: 3.4512,
-        lng: -76.5328,
-        rating: 4.7,
-        visitas: 4000,
-        logoUrl: 'https://images.unsplash.com/photo-1503095392213-2e210778c800?q=80&w=1000',
-        descripcion: `Frente al Puente Ortiz, contiguo a La Ermita y al Parque de los Poetas, el Teatro Jorge Isaacs le pone al centro histórico una elegancia de otra época. Nació de una desgracia y una ambición: donde antes estuvo el Teatro Salón Moderno —consumido por un incendio en 1928—, el empresario Hermann S. Bohmer levantó un teatro nuevo y lo bautizó en honor a Jorge Isaacs, el autor de María. Se inauguró el 26 de diciembre de 1931.
-
-De estilo neoclásico francés con guiños al romanticismo italiano, decorado con capiteles jónicos, un vitral del escudo de la ciudad y la efigie del poeta, presume de una de las mejores acústicas del país. Tras décadas de abandono en los años setenta y ochenta, fue declarado Monumento Nacional y restaurado, y hoy vuelve a ser casa de conciertos, ópera y grandes espectáculos: prueba de que el centro de Cali todavía late.`,
-        descripcion_en: `Facing the Puente Ortiz, adjacent to La Ermita and the Parque de los Poetas, the Teatro Jorge Isaacs brings an elegance of another era to the historic center. It was born of a misfortune and an ambition: where the Teatro Salón Moderno once stood —consumed by a fire in 1928— businessman Hermann S. Bohmer built a new theater and named it in honor of Jorge Isaacs, the author of María. It was inaugurated on December 26, 1931.
-
-Of French neoclassical style with nods to Italian romanticism, decorated with Ionic capitals, a stained glass window of the city's coat of arms, and the poet's effigy, it boasts one of the best acoustics in the country. After decades of abandonment in the seventies and eighties, it was declared a National Monument and restored, and today it is once again a home for concerts, opera, and major spectacles: proof that the heart of Cali still beats.`,
-        importancia: `Joya arquitectónica y Monumento Nacional; una de las salas de mayor valor patrimonial y mejor acústica del suroccidente colombiano.`,
-        importancia_en: `Architectural jewel and National Monument; one of the halls with the greatest heritage value and best acoustics in southwestern Colombia.`,
-        datosHistoricos: `Construido entre 1930 y 1931 por iniciativa de Hermann S. Bohmer, sobre el terreno del antiguo Teatro Salón Moderno. Inaugurado el 26 de diciembre de 1931. Declarado Monumento Nacional el 26 de noviembre de 1984 y adquirido por el Estado en 1986, cuando comenzó su restauración.`,
-        datosHistoricos_en: `Built between 1930 and 1931 on the initiative of Hermann S. Bohmer, on the site of the old Teatro Salón Moderno. Inaugurated on December 26, 1931. Declared a National Monument on November 26, 1984, and acquired by the State in 1986, when its restoration began.`,
-        datosCuriosos: [
-            'Un incendio en sus primeros años motivó la creación del cuerpo de bomberos voluntarios de Cali.',
-            'Su nombre honra al autor de María, la novela romántica más célebre de Colombia.',
-            'Su caja acústica es una de las de mayor tamaño de Latinoamérica.'
-        ],
-        datosCuriosos_en: [
-            'A fire in its early years motivated the creation of Cali\'s volunteer fire department.',
-            'Its name honors the author of María, Colombia\'s most famous romantic novel.',
-            'Its acoustic shell is one of the largest in Latin America.'
-        ],
-        horario: 'Según programación.',
-        horario_en: 'According to programming.',
-        tarifa: 'Boletería según evento.',
-        tarifa_en: 'Tickets according to event.',
-    },
+    
+    
+    
+    
     {
         id: 'casa-comedia',
         nombre: 'Casa Comedia',
@@ -706,36 +343,7 @@ Of French neoclassical style with nods to Italian romanticism, decorated with Io
         tarifa: 'Precios desde $25,000 COP según la obra.',
         tarifa_en: 'Prices starting at $25,000 COP depending on the show.',
     },
-    {
-        id: 'tec-teatro-experimental',
-        nombre: 'TEC - Teatro Experimental de Cali',
-        tipo: 'Teatro',
-        lat: 3.4517,
-        lng: -76.5322,
-        rating: 4.4,
-        visitas: 600,
-        logoUrl: 'https://images.unsplash.com/photo-1471478331149-c72f16e3c7d9?q=80&w=1000',
-        descripcion: `El Teatro Experimental de Cali (TEC), fundado en 1955 por el legendario dramaturgo Enrique Buenaventura, es la institución teatral más importante de la historia del teatro colombiano y una de las más influyentes de América Latina en el siglo XX. Bajo la dirección de Buenaventura, el TEC desarrolló el método de la "Creación Colectiva", una técnica de investigación y dramaturgia en la que los actores son co-autores de los textos que interpretan. Este método revolucionario influyó en la formación de grupos de teatro político y social en toda América Latina y fue reconocido internacionalmente en festivales de Europa y América. Hoy, el TEC continúa su labor formativa en su sede del centro de Cali, ofreciendo temporadas de teatro, talleres de actuación y el Festival Nacional e Internacional de Teatro, herederos del legado de Buenaventura.`,
-        descripcion_en: `The Teatro Experimental de Cali (TEC), founded in 1955 by legendary playwright Enrique Buenaventura, is the most important theatrical institution in Colombian theater history and one of the most influential in Latin America in the 20th century. Under Buenaventura's direction, TEC developed the method of "Collective Creation", a research and dramaturgy technique where actors are co-authors of the texts they perform.`,
-        importancia: `El TEC es la institución que inventó el teatro colombiano moderno. El método de Creación Colectiva de Enrique Buenaventura fue adoptado por grupos teatrales en toda América Latina y es enseñado en universidades de teatro de Europa y Estados Unidos como uno de los métodos teatrales más importantes del siglo XX.`,
-        importancia_en: `TEC is the institution that invented modern Colombian theater. Enrique Buenaventura's Collective Creation method was adopted by theater groups throughout Latin America and is taught in European and American theater universities as one of the most important theatrical methods of the 20th century.`,
-        datosHistoricos: `Enrique Buenaventura fundó el TEC en 1955 dentro de la Escuela Departamental de Teatro. Su obra más famosa, "Los Papeles del Infierno" (1967), fue censurada por el gobierno colombiano y se convirtió en un símbolo de la resistencia cultural. El TEC representó a Colombia en festivales internacionales de teatro en Francia, Alemania, Polonia y México durante los años 70 y 80.`,
-        datosHistoricos_en: `Enrique Buenaventura founded TEC in 1955 within the Departmental Theater School. His most famous work, "Los Papeles del Infierno" (1967), was censored by the Colombian government and became a symbol of cultural resistance. TEC represented Colombia at international theater festivals in France, Germany, Poland, and Mexico during the 1970s and 80s.`,
-        datosCuriosos: [
-            'Enrique Buenaventura fue también pintor y poeta, y su obra plástica está expuesta en museos de Colombia y Europa.',
-            'El método de Creación Colectiva del TEC influyó directamente en el surgimiento de grupos de teatro político en Chile, Argentina y Venezuela en los años 70.',
-            'El TEC es la única compañía de teatro estable más antigua de Colombia: lleva más de 70 años de actividad ininterrumpida.'
-        ],
-        datosCuriosos_en: [
-            'Enrique Buenaventura was also a painter and poet, and his visual work is exhibited in museums in Colombia and Europe.',
-            'TEC\'s Collective Creation method directly influenced the emergence of political theater groups in Chile, Argentina, and Venezuela in the 1970s.',
-            'TEC is Colombia\'s oldest stable theater company: it has over 70 years of uninterrupted activity.'
-        ],
-        horario: 'Funciones según cartelera. Talleres: Lunes a Viernes: 9:00 - 18:00.',
-        horario_en: 'Performances according to schedule. Workshops: Monday to Friday: 9:00 AM - 6:00 PM.',
-        tarifa: 'Entradas desde $15,000 COP. Talleres según programa.',
-        tarifa_en: 'Tickets from $15,000 COP. Workshops according to program.',
-    },
+    
     {
         id: 'archivo-historico',
         nombre: 'Archivo Histórico de Cali',
