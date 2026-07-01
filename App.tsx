@@ -429,8 +429,8 @@ export default function App() {
         </div>
       </header>
 
-      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto max-w-7xl px-4 py-6 focus:outline-none", gridClass, "gap-6")}>
-        <aside className="hidden md:block sticky top-[70px] h-[calc(100vh-100px)]"><Sidebar onNavigate={(k) => setActivePanel(k as any)} onClose={() => { }} activePanel={activePanel} /></aside>
+      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto max-w-7xl px-4 pt-4 md:pt-8 pb-8 focus:outline-none", gridClass, "gap-6")}>
+        <aside className="hidden md:block sticky top-[90px] h-[calc(100vh-120px)]"><Sidebar onNavigate={(k) => setActivePanel(k as any)} onClose={() => { }} activePanel={activePanel} /></aside>
 
         <section className="relative min-h-[60vh] flex flex-col">
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
