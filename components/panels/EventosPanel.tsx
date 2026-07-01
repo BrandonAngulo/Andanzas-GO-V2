@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { ScrollArea } from '../ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useI18n } from '../../i18n';
-import { getTranslated, cn } from '../../lib/utils';
+import { getTranslated, cn, getCategoryIcon } from '../../lib/utils';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 
 interface EventosPanelProps {
@@ -281,14 +281,24 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
             <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{t('eventosFilters.category')}:</span>
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger className="h-7 max-w-[200px] text-xs">
-                <span className="truncate">
-                  {categoryFilter === 'all' ? t('eventosFilters.allCategories') : categoryFilter}
+                <span className="truncate flex items-center gap-1.5">
+                  {categoryFilter === 'all' ? t('eventosFilters.allCategories') : (
+                    <>
+                      <span>{getCategoryIcon(categoryFilter)}</span>
+                      <span>{categoryFilter}</span>
+                    </>
+                  )}
                 </span>
               </SelectTrigger>
               <SelectContent>
                 {eventCategories.map(cat => (
                   <SelectItem key={cat} value={cat} className="text-xs">
-                    {cat === 'all' ? t('eventosFilters.allCategories') : cat}
+                    {cat === 'all' ? t('eventosFilters.allCategories') : (
+                      <div className="flex items-center gap-1.5">
+                        <span>{getCategoryIcon(cat)}</span>
+                        <span>{cat}</span>
+                      </div>
+                    )}
                   </SelectItem>
                 ))}
               </SelectContent>

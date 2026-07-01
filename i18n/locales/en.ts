@@ -25,6 +25,7 @@ const en = {
         explore: "Explore",
         routes: "Routes",
         news: "News",
+        events: "Events",
     },
     searchPlaceholder: "Search museums, theaters, murals…",
     ai: "AI",

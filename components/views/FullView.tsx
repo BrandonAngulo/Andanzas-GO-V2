@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft } from 'lucide-react';
+import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Site, Evento, Ruta, RecomendacionRuta, RecomendacionTipo } from '../../types';
@@ -282,6 +282,13 @@ const EventDetail: React.FC<{ data: Evento, addToRoute: (site: Site) => void, go
                 <Badge variant="secondary"><MapPin className="h-3 w-3 mr-1" /> {getTranslated(data, 'lugar', language)}</Badge>
             </div>
             <ExpandableText text={getTranslated(data, 'descripcion', language) as string} />
+
+            <div className="grid gap-4 pt-2 pb-2">
+                <InfoSection icon={Users} title={language === 'es' ? 'Quiénes lo lideran' : 'Led by'} content={getTranslated(data, 'quienes_lideran', language) as string} />
+                <InfoSection icon={CheckCircle} title={language === 'es' ? 'Qué permiten' : 'What is allowed'} content={getTranslated(data, 'que_permiten', language) as string} />
+                <InfoSection icon={HelpCircle} title={language === 'es' ? 'Cómo participar' : 'How to participate'} content={getTranslated(data, 'como_participar', language) as string} />
+                <InfoSection icon={Lightbulb} title={language === 'es' ? 'Curiosidades' : 'Fun facts'} content={getTranslated(data, 'curiosidades', language) as string} />
+            </div>
 
             <div className="bg-muted/30 p-3 rounded-lg border border-border/50 text-xs text-muted-foreground">
                 <span className="font-semibold block mb-1">{language === 'es' ? 'Aviso Legal' : 'Legal Notice'}:</span>

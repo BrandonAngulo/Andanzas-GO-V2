@@ -55,7 +55,7 @@ const Logo: React.FC<LogoProps> = ({ animated = false }) => (
         )}
       </div>
     </div>
-    <span className="font-heading font-black text-2xl tracking-tighter bg-gradient-to-r from-orange-500 to-primary bg-clip-text text-transparent select-none ml-1">
+    <span className="font-heading font-black text-2xl tracking-tighter bg-gradient-to-r from-orange-500 to-primary bg-clip-text text-transparent select-none ml-1 pr-1">
       GO
     </span>
   </div>

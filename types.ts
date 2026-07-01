@@ -49,6 +49,15 @@ export interface Evento {
   siteId?: string;
   lat?: number;
   lng?: number;
+  // Rich event fields
+  quienes_lideran?: string;
+  quienes_lideran_en?: string;
+  que_permiten?: string;
+  que_permiten_en?: string;
+  curiosidades?: string;
+  curiosidades_en?: string;
+  como_participar?: string;
+  como_participar_en?: string;
 }
 
 export type RecomendacionTipo = 'Música' | 'Sabores' | 'Experiencia' | 'Vestuario' | 'Bebida' | 'Mejor Hora' | 'Snack' | 'Seguridad' | 'Sabor' | 'Foto' | 'Transporte' | 'Salud' | 'Horario' | 'Planificación' | 'Ubicación';
