@@ -2,7 +2,7 @@ import { Site } from '../types';
 
 export const CULTURAL_SITES: Site[] = [
     {
-        id: 's25',
+        id: 'museo-salsa-obrero',
         nombre: 'Museo de la Salsa (Barrio Obrero)',
         tipo: 'Museo',
         lat: 3.4516,
@@ -32,7 +32,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Suggested voluntary donation: $10,000 COP.',
     },
     {
-        id: 's21',
+        id: 'plazoleta-jairo-varela',
         nombre: 'Plazoleta Jairo Varela',
         tipo: 'Monumento',
         lat: 3.4545,
@@ -92,7 +92,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Free entry.',
     },
     {
-        id: 's9',
+        id: 'galeria-alameda',
         nombre: 'Galería Alameda',
         tipo: 'Mercado',
         lat: 3.441,
@@ -272,7 +272,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Suggested voluntary tip: $10,000 - $20,000 COP per person.',
     },
     {
-        id: 's2',
+        id: 'teatro-municipal',
         nombre: 'Teatro Municipal Enrique Buenaventura',
         tipo: 'Teatro',
         lat: 3.4495,
@@ -332,7 +332,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Free.',
     },
     {
-        id: 's53',
+        id: 'biblioteca-centenario',
         nombre: 'Biblioteca Centenario',
         tipo: 'Biblioteca',
         lat: 3.4505,
@@ -422,7 +422,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Free.',
     },
     {
-        id: 's3',
+        id: 'bulevar-petronio',
         nombre: 'Bulevar del Río (Sector Petronio)',
         tipo: 'Espacio Público',
         lat: 3.453,
@@ -452,7 +452,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Free.',
     },
     {
-        id: 's16',
+        id: 'iglesia-ermita',
         nombre: 'Iglesia La Ermita',
         tipo: 'Religioso',
         lat: 3.4526,
@@ -482,7 +482,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Free entry.',
     },
     {
-        id: 's63',
+        id: 'capilla-san-antonio',
         nombre: 'Capilla de San Antonio',
         tipo: 'Religioso',
         lat: 3.446,
@@ -542,7 +542,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Free.',
     },
     {
-        id: 's8',
+        id: 'gato-tejada',
         nombre: 'El Gato de Tejada',
         tipo: 'Arte Público',
         lat: 3.454,
@@ -572,7 +572,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Free entry.',
     },
     {
-        id: 's1',
+        id: 'museo-tertulia',
         nombre: 'Museo La Tertulia',
         tipo: 'Museo',
         lat: 3.455,
@@ -602,7 +602,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: '$15,000 COP (Students/Seniors $10,000 COP).',
     },
     {
-        id: 's13',
+        id: 'zoologico-cali',
         nombre: 'Zoológico de Cali',
         tipo: 'Naturaleza',
         lat: 3.4475,
@@ -632,7 +632,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Adults: $28,000 COP | Children: $19,000 COP.',
     },
     {
-        id: 's22',
+        id: 'teatro-jorge-isaacs',
         nombre: 'Teatro Jorge Isaacs',
         tipo: 'Teatro',
         lat: 3.4512,
@@ -692,7 +692,7 @@ export const CULTURAL_SITES: Site[] = [
         tarifa_en: 'Prices starting at $25,000 COP depending on the show.',
     },
     {
-        id: 's96',
+        id: 'tec-teatro-experimental',
         nombre: 'TEC - Teatro Experimental de Cali',
         tipo: 'Teatro',
         lat: 3.4517,
