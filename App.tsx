@@ -502,7 +502,7 @@ export default function App() {
 
       {/* Privacy Banner */}
       {showPrivacyBanner && (
-        <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t z-50 p-3 flex gap-3 text-sm">
+        <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t z-[2000] p-3 flex items-center gap-3 text-sm">
           <Shield className="h-4 w-4 text-primary" />
           <span className="flex-1">Tus datos están protegidos.</span>
           <Button size="sm" onClick={() => setShowPrivacyBanner(false)} className="rounded-full">Aceptar</Button>
