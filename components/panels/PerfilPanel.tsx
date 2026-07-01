@@ -271,6 +271,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         <Chrome className="mr-2 h-4 w-4" />
                                         Google
                                     </Button>
+                                    <Button variant="secondary" type="button" className="w-full mt-3 bg-primary/10 text-primary hover:bg-primary/20 font-semibold border-primary/20" onClick={() => signIn('audit@andanzas.com', 'test')}>
+                                        <UserCircle className="mr-2 h-5 w-5" />
+                                        Ingreso Rápido (Modo Prueba)
+                                    </Button>
                                 </>
                             )}
                         </CardContent>
