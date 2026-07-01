@@ -93,7 +93,7 @@ export default function App() {
   if (path === '/terms') return <TermsOfService />;
 
   const { t, language } = useI18n();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, signIn } = useAuth();
 
   // --- Global State via Contexts ---
   const { sites, eventos, rutasTematicas, feed, allInsignias, isLoading } = useAppData();
@@ -346,7 +346,11 @@ export default function App() {
       <AuthRequiredDialog
         open={authDialogOpen}
         onOpenChange={setAuthDialogOpen}
-        onLogin={() => { setAuthDialogOpen(false); setActivePanel("perfil"); }}
+        onLogin={async () => {
+          await signIn('audit@andanzas.com', 'test');
+          setAuthDialogOpen(false);
+          setActivePanel("perfil");
+        }}
       />
 
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[2000] focus:px-4 focus:py-2 focus:bg-background focus:text-primary focus:border focus:rounded-md shadow-lg transition-transform">
