@@ -75,7 +75,7 @@ export const userService = {
         if (error) throw error;
     },
 
-    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[] }) {
+    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[], avatar_url?: string }) {
         // Prepare update object. We map frontend keys to DB keys if necessary.
         // Assuming current schema only has 'interests', we might need to store new fields differently
         // IF the columns don't exist yet, we can store them in a JSON column or add them.
@@ -94,12 +94,14 @@ export const userService = {
             if (error) throw error;
         }
 
-        if (data.travel_style || data.accessibility_needs) {
+        if (data.travel_style !== undefined || data.accessibility_needs !== undefined || data.avatar_url !== undefined) {
+            const metadataToUpdate: any = {};
+            if (data.travel_style !== undefined) metadataToUpdate.travel_style = data.travel_style;
+            if (data.accessibility_needs !== undefined) metadataToUpdate.accessibility_needs = data.accessibility_needs;
+            if (data.avatar_url !== undefined) metadataToUpdate.avatar_url = data.avatar_url;
+
             const { error } = await supabase.auth.updateUser({
-                data: {
-                    travel_style: data.travel_style,
-                    accessibility_needs: data.accessibility_needs
-                }
+                data: metadataToUpdate
             });
             if (error) console.error("Error updating user metadata:", error);
         }
