@@ -75,31 +75,32 @@ export const userService = {
         if (error) throw error;
     },
 
-    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[], avatar_url?: string }) {
-        // Prepare update object. We map frontend keys to DB keys if necessary.
-        // Assuming current schema only has 'interests', we might need to store new fields differently
-        // IF the columns don't exist yet, we can store them in a JSON column or add them.
-        // For now, let's try to update assuming columns exist or store in metadata if possible.
-        // Since we don't have migrations tool access right now, we will store them in 'raw_user_meta_data' via auth.updateUser 
-        // OR try to update 'profiles' if we can add columns.
+    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[], avatar_url?: string, full_name?: string, city?: string, birth_date?: string }) {
+        // Strategy: Update 'interests', 'full_name', 'city' in profiles table.
+        // Update 'travel_style', 'accessibility_needs', 'avatar_url', 'full_name', 'city', 'birth_date' in auth.users metadata.
 
-        // Strategy: Update 'interests' in profiles table (existing column).
-        // Update 'travel_style' and 'accessibility_needs' in auth.users metadata for flexibility without schema migration for now.
+        const profileUpdates: any = {};
+        if (data.interests) profileUpdates.interests = data.interests;
+        if (data.full_name !== undefined) profileUpdates.full_name = data.full_name;
+        if (data.city !== undefined) profileUpdates.city = data.city;
 
-        if (data.interests) {
+        if (Object.keys(profileUpdates).length > 0) {
             const { error } = await supabase
                 .from('profiles')
-                .update({ interests: data.interests })
+                .update(profileUpdates)
                 .eq('id', userId);
             if (error) throw error;
         }
 
-        if (data.travel_style !== undefined || data.accessibility_needs !== undefined || data.avatar_url !== undefined) {
-            const metadataToUpdate: any = {};
-            if (data.travel_style !== undefined) metadataToUpdate.travel_style = data.travel_style;
-            if (data.accessibility_needs !== undefined) metadataToUpdate.accessibility_needs = data.accessibility_needs;
-            if (data.avatar_url !== undefined) metadataToUpdate.avatar_url = data.avatar_url;
+        const metadataToUpdate: any = {};
+        if (data.travel_style !== undefined) metadataToUpdate.travel_style = data.travel_style;
+        if (data.accessibility_needs !== undefined) metadataToUpdate.accessibility_needs = data.accessibility_needs;
+        if (data.avatar_url !== undefined) metadataToUpdate.avatar_url = data.avatar_url;
+        if (data.full_name !== undefined) metadataToUpdate.full_name = data.full_name;
+        if (data.city !== undefined) metadataToUpdate.city = data.city;
+        if (data.birth_date !== undefined) metadataToUpdate.birth_date = data.birth_date;
 
+        if (Object.keys(metadataToUpdate).length > 0) {
             const { error } = await supabase.auth.updateUser({
                 data: metadataToUpdate
             });

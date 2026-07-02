@@ -70,6 +70,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [activeTab, setActiveTab] = useState("overview");
     const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
+    
+    // Profile Edit State
+    const [isEditingProfile, setIsEditingProfile] = useState(false);
+    const [editName, setEditName] = useState("");
+    const [editCity, setEditCity] = useState("");
+    const [editBirthDate, setEditBirthDate] = useState("");
 
     const CUSTOM_AVATARS = [
         { id: 'gato', url: '/avatars/gato.png', name: 'Gato del Río' },
@@ -79,7 +85,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
     React.useEffect(() => {
         if (user) {
-            userService.getProfile(user.id).then(setUserProfile);
+            userService.getProfile(user.id).then((profile) => {
+                setUserProfile(profile);
+                if (profile) {
+                    setEditName(profile.full_name || user.user_metadata?.full_name || "");
+                    setEditCity(profile.city || user.user_metadata?.city || "");
+                    setEditBirthDate(user.user_metadata?.birth_date || "");
+                }
+            });
 
             // Load badges
             const loadBadges = async () => {
@@ -128,6 +141,26 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         } catch (e) {
             console.error(e);
             toast.error("Error al actualizar el avatar");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSaveProfile = async () => {
+        setLoading(true);
+        try {
+            await userService.updateProfileData(user!.id, {
+                full_name: editName,
+                city: editCity,
+                birth_date: editBirthDate
+            });
+            const updatedProfile = await userService.getProfile(user!.id);
+            setUserProfile(updatedProfile);
+            toast.success("¡Datos actualizados!");
+            setIsEditingProfile(false);
+        } catch (e) {
+            console.error(e);
+            toast.error("Error al actualizar datos");
         } finally {
             setLoading(false);
         }
@@ -681,6 +714,40 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </DialogHeader>
                         
                         <div className="space-y-4 py-4">
+                            {isEditingProfile ? (
+                                <div className="space-y-3 bg-muted/20 p-4 rounded-xl border border-muted">
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-medium">Nombre Completo</label>
+                                        <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-9" placeholder="Tu nombre" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-medium">Ciudad</label>
+                                        <Input value={editCity} onChange={e => setEditCity(e.target.value)} className="h-9" placeholder="Ej: Cali" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-medium">Fecha de Nacimiento</label>
+                                        <Input type="date" value={editBirthDate} onChange={e => setEditBirthDate(e.target.value)} className="h-9" />
+                                    </div>
+                                    <div className="flex gap-2 pt-2">
+                                        <Button variant="outline" size="sm" className="flex-1" onClick={() => setIsEditingProfile(false)}>Cancelar</Button>
+                                        <Button size="sm" className="flex-1" onClick={handleSaveProfile} disabled={loading}>
+                                            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Guardar"}
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
+                                    <div>
+                                        <h4 className="text-sm font-semibold">Datos Personales</h4>
+                                        <p className="text-xs text-muted-foreground mt-0.5">{editName || displayName}</p>
+                                    </div>
+                                    <Button size="sm" variant="outline" onClick={() => setIsEditingProfile(true)} className="rounded-full h-8">
+                                        <Edit2 className="h-3.5 w-3.5 mr-1.5" />
+                                        {t('edit')}
+                                    </Button>
+                                </div>
+                            )}
+
                             <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
                                 <div>
                                     <h4 className="text-sm font-semibold">{language === 'es' ? 'Preferencias de Viaje' : 'Travel Preferences'}</h4>
