@@ -12,11 +12,15 @@ export function getTranslated<T extends object, K extends keyof T>(
   if (!item) return '';
   const enKey = `${String(key)}_en` as keyof T;
   
-  if (lang === 'en' && enKey in item && typeof (item as any)[enKey] !== 'undefined') {
-    return (item as any)[enKey];
+  if (lang === 'en' && enKey in item) {
+    const enVal = (item as any)[enKey];
+    if (enVal !== null && enVal !== undefined && enVal !== '') {
+      return enVal;
+    }
   }
   
-  return item[key] as T[K];
+  const val = item[key];
+  return (val === null || val === undefined) ? '' : (val as T[K]);
 }
 
 export const getMacroCategory = (category: string | undefined | null, lang: 'es' | 'en'): string => {
