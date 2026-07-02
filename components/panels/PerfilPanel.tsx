@@ -75,7 +75,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [editName, setEditName] = useState("");
     const [editCity, setEditCity] = useState("");
-    const [editBirthDate, setEditBirthDate] = useState("");
 
     const CUSTOM_AVATARS = [
         { id: 'gato', url: '/avatars/gato.png', name: 'Gato del Río' },
@@ -90,7 +89,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 if (profile) {
                     setEditName(profile.full_name || user.user_metadata?.full_name || "");
                     setEditCity(profile.city || user.user_metadata?.city || "");
-                    setEditBirthDate(user.user_metadata?.birth_date || "");
                 }
             });
 
@@ -151,8 +149,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         try {
             await userService.updateProfileData(user!.id, {
                 full_name: editName,
-                city: editCity,
-                birth_date: editBirthDate
+                city: editCity
             });
             const updatedProfile = await userService.getProfile(user!.id);
             setUserProfile(updatedProfile);
@@ -374,8 +371,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         );
     }
 
-    // Get name from user metadata if available
-    const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Explorador";
+    const displayName = userProfile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Explorador";
 
     const getLevelTitle = (lvl: number) => {
         if (!lvl || lvl < 3) return language === 'es' ? 'Explorador Novato' : 'Novice Explorer';
@@ -717,16 +713,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             {isEditingProfile ? (
                                 <div className="space-y-3 bg-muted/20 p-4 rounded-xl border border-muted">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-medium">Nombre Completo</label>
-                                        <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-9" placeholder="Tu nombre" />
+                                        <label className="text-xs font-medium">Alias o Seudónimo</label>
+                                        <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-9" placeholder="Tu alias" />
                                     </div>
                                     <div className="space-y-1">
                                         <label className="text-xs font-medium">Ciudad</label>
                                         <Input value={editCity} onChange={e => setEditCity(e.target.value)} className="h-9" placeholder="Ej: Cali" />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-medium">Fecha de Nacimiento</label>
-                                        <Input type="date" value={editBirthDate} onChange={e => setEditBirthDate(e.target.value)} className="h-9" />
                                     </div>
                                     <div className="flex gap-2 pt-2">
                                         <Button variant="outline" size="sm" className="flex-1" onClick={() => setIsEditingProfile(false)}>Cancelar</Button>
@@ -738,7 +730,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             ) : (
                                 <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
                                     <div>
-                                        <h4 className="text-sm font-semibold">Datos Personales</h4>
+                                        <h4 className="text-sm font-semibold">Datos del Explorador</h4>
                                         <p className="text-xs text-muted-foreground mt-0.5">{editName || displayName}</p>
                                     </div>
                                     <Button size="sm" variant="outline" onClick={() => setIsEditingProfile(true)} className="rounded-full h-8">
