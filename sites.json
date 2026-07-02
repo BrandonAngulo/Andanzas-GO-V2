@@ -475,7 +475,10 @@
     "datosCuriosos_en": [
       "It is one of the theaters with the largest capacity in the city (over 1200 seats).",
       "Preserves the retro style of the 60s, including its typography and finishes."
-    ]
+    ],
+    "horario": "Según programación de eventos.",
+    "precio": "Boletería según evento.",
+    "direccion": "Avenida Sexta (Calle 12 Nte #4-20)."
   },
   {
     "id": "s42",
@@ -605,7 +608,9 @@
     "datosCuriosos_en": [
       "The stage is almost at the same level as the audience, breaking the 'fourth wall'.",
       "They offer therapeutic theater workshops and workshops for non-actors."
-    ]
+    ],
+    "horario": "Funciones según cartelera (habitualmente fines de semana).",
+    "precio": "Boletería, con descuento para estudiantes."
   },
   {
     "id": "s69",
@@ -631,7 +636,9 @@
     "datosCuriosos_en": [
       "The hall has a slope and acoustics designed specifically to project the spoken voice without microphones.",
       "Its dressing rooms hold stories and signatures of great national actors."
-    ]
+    ],
+    "horario": "Funciones según cartelera (habitualmente de jueves a domingo); atención administrativa L–V.",
+    "precio": "Boletería según función."
   },
   {
     "id": "s70",
@@ -657,7 +664,9 @@
     "datosCuriosos_en": [
       "They have a beloved children's slot on Sunday mornings.",
       "Its colorful and artistic facade is unmistakable on 9N Avenue."
-    ]
+    ],
+    "horario": "Viernes y sábado 7:30 p. m.; temporada familiar los domingos 4:00 p. m.",
+    "precio": "Boletería según función."
   },
   {
     "id": "s96",
@@ -1021,7 +1030,9 @@
     "datosCuriosos_en": [
       "It is one of the best places for waterfowl watching within the city.",
       "Music and loud noise are not allowed to protect the wildlife."
-    ]
+    ],
+    "horario": "Martes a domingo, 8:00 a. m.–5:00 p. m. (lunes cerrado).",
+    "precio": "Entrada gratuita."
   },
   {
     "id": "s39",
