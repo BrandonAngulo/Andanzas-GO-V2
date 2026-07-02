@@ -5,13 +5,22 @@ interface TextWithLinksProps {
   text: string;
   sites: Site[];
   onNavigate: (siteId: string) => void;
+  currentSiteId?: string;
+  currentSiteName?: string;
 }
 
-export const TextWithLinks: React.FC<TextWithLinksProps> = ({ text, sites, onNavigate }) => {
+export const TextWithLinks: React.FC<TextWithLinksProps> = ({ text, sites, onNavigate, currentSiteId, currentSiteName }) => {
   if (!text) return null;
 
-  // Filter out sites with empty names just in case
-  const validSites = sites.filter(s => s.nombre && s.nombre.trim().length > 3);
+  // Use the explicitly provided currentSiteName, or try to find it by ID
+  const resolvedCurrentSiteName = currentSiteName?.toLowerCase().trim() || sites.find(s => s.id === currentSiteId)?.nombre?.toLowerCase().trim();
+
+  // Filter out sites with empty names just in case, and exclude the current site
+  const validSites = sites.filter(s => {
+    const isSameId = currentSiteId && s.id === currentSiteId;
+    const isSameName = resolvedCurrentSiteName && s.nombre?.toLowerCase().trim() === resolvedCurrentSiteName;
+    return s.nombre && s.nombre.trim().length > 3 && !isSameId && !isSameName;
+  });
   
   // Sort sites by name length descending to match longer names first (e.g. "Teatro Esquina Latina" before "Teatro")
   validSites.sort((a, b) => b.nombre.length - a.nombre.length);

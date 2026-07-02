@@ -7,9 +7,11 @@ interface ExpandableTextProps {
   text?: string;
   max?: number;
   sites?: Site[];
+  currentSiteId?: string;
+  currentSiteName?: string;
 }
 
-const ExpandableText: React.FC<ExpandableTextProps> = ({ text = "", max = 200, sites }) => {
+const ExpandableText: React.FC<ExpandableTextProps> = ({ text = "", max = 200, sites, currentSiteId, currentSiteName }) => {
   const { t } = useI18n();
   const [expanded, setExpanded] = useState(false);
   if (!text) return null;
@@ -22,7 +24,9 @@ const ExpandableText: React.FC<ExpandableTextProps> = ({ text = "", max = 200, s
           <TextWithLinks 
             text={shown} 
             sites={sites} 
-            onNavigate={(id) => { window.location.hash = `?view=site&id=${id}`; }} 
+            onNavigate={(id) => { window.location.hash = `#/site/${id}`; }} 
+            currentSiteId={currentSiteId}
+            currentSiteName={currentSiteName}
           />
         ) : (
           shown

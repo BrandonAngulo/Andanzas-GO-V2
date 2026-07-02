@@ -198,7 +198,7 @@ const SiteDetail: React.FC<{ data: Site, sites: Site[], addReview: any, addToRou
                 </div>
             </div>
 
-            <ExpandableText text={getTranslated(data, 'descripcion', language) as string} sites={sites} />
+            <ExpandableText text={getTranslated(data, 'descripcion', language) as string} sites={sites} currentSiteId={data.id} currentSiteName={getTranslated(data, 'nombre', language) as string} />
 
             <div className="flex flex-wrap items-center gap-2 border-b pb-4">
                 <Button size="sm" onClick={() => goToPlaceInMap(data.nombre)}>{t('fullView.viewOnMap')}</Button>

@@ -29,6 +29,7 @@ interface MapaGoogleProps {
     showAccessibilityOnly?: boolean;
     onAccessibilityChange?: (val: boolean) => void;
     plannedRoutePoints?: Site[];
+    activeRouteStep?: number;
 }
 
 const DEFAULT_CENTER = { lat: 3.4516, lng: -76.5320 };
@@ -160,6 +161,7 @@ const MapContent = ({
     userPos,
     language,
     activeRoute,
+    activeRouteStep,
     plannedRoutePoints
 }: {
     sites: Site[],
@@ -167,7 +169,8 @@ const MapContent = ({
     userPos: google.maps.LatLngLiteral | null,
     language: 'es' | 'en',
     activeRoute?: Ruta | null,
-    plannedRoutePoints?: Site[]
+    plannedRoutePoints?: Site[],
+    activeRouteStep?: number
 }) => {
     const map = useMap();
     const [previewSite, setPreviewSite] = useState<Site | null>(null);
@@ -190,6 +193,17 @@ const MapContent = ({
     useEffect(() => {
         if (!map || sites.length === 0) return;
 
+        // If active route and step exist, center on that step's point instead of fitting bounds
+        if (activeRoute && activeRouteStep !== undefined) {
+            const currentPointId = activeRoute.puntos[activeRouteStep];
+            const currentSite = sites.find(s => s.id === currentPointId);
+            if (currentSite && currentSite.lat && currentSite.lng) {
+                map.panTo({ lat: currentSite.lat, lng: currentSite.lng });
+                map.setZoom(16);
+                return;
+            }
+        }
+
         // Auto-fit bounds logic
         const bounds = new google.maps.LatLngBounds();
         let hasPoints = false;
@@ -203,7 +217,7 @@ const MapContent = ({
         if (hasPoints && !bounds.isEmpty()) {
             map.fitBounds(bounds, 50);
         }
-    }, [map, sites.length]); // Re-fit when list changes
+    }, [map, sites.length, activeRoute, activeRouteStep]); // Re-fit when list or step changes
 
     return (
         <>
@@ -380,6 +394,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
                     language={language}
                     activeRoute={props.activeRoute}
                     plannedRoutePoints={props.plannedRoutePoints}
+                    activeRouteStep={props.activeRouteStep}
                 />
             </Map>
 
