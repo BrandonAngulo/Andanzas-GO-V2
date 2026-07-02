@@ -55,8 +55,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
           </div>
           <Item id="mapa" icon={Compass} label={t('panelTitles.mapa')} />
           <Item id="explorar" icon={TrendingUp} label={t('panelTitles.explorar')} />
-          <Item id="noticias" icon={ScrollText} label={t('panelTitles.noticias')} />
           <Item id="eventos" icon={Calendar} label={t('panelTitles.eventos')} />
+          <Item id="noticias" icon={ScrollText} label={t('panelTitles.noticias')} />
 
           <div className="my-2 border-t border-border/40 mx-2" />
           <div className="text-xs font-medium text-muted-foreground px-3 py-2 uppercase tracking-wider opacity-70">

@@ -39,7 +39,8 @@
         "titulo": "Playlist Salsera",
         "titulo_en": "Salsa Playlist",
         "descripcion": "Escucha 'Cali Pachanguero' del Grupo Niche para entrar en ambiente.",
-        "descripcion_en": "Listen to 'Cali Pachanguero' by Grupo Niche to get in the mood."
+        "descripcion_en": "Listen to 'Cali Pachanguero' by Grupo Niche to get in the mood.",
+        "siteId": "s21"
       },
       {
         "tipo": "Vestuario",
@@ -47,7 +48,8 @@
         "titulo": "Zapatos de Baile",
         "titulo_en": "Dancing Shoes",
         "descripcion": "Usa calzado cómodo y sujeto, evita sandalias sueltas para bailar mejor.",
-        "descripcion_en": "Wear comfortable, secure shoes; avoid loose sandals to dance better."
+        "descripcion_en": "Wear comfortable, secure shoes; avoid loose sandals to dance better.",
+        "siteId": "s46"
       },
       {
         "tipo": "Bebida",
@@ -55,7 +57,8 @@
         "titulo": "Hidratación Local",
         "titulo_en": "Local Hydration",
         "descripcion": "Prueba una 'Lulada' bien fría en el intermedio de los sitios.",
-        "descripcion_en": "Try a cold 'Lulada' in between sites."
+        "descripcion_en": "Try a cold 'Lulada' in between sites.",
+        "siteId": "s27"
       }
     ],
     "gamificacion": [
@@ -231,7 +234,8 @@
         "titulo": "Mañana Temprano",
         "titulo_en": "Early Morning",
         "descripcion": "Inicia a las 9:00 AM para evitar el calor fuerte del mediodía.",
-        "descripcion_en": "Start at 9:00 AM to avoid the strong midday heat."
+        "descripcion_en": "Start at 9:00 AM to avoid the strong midday heat.",
+        "siteId": "s39"
       },
       {
         "tipo": "Snack",
@@ -239,7 +243,8 @@
         "titulo": "Pandebono Caliente",
         "titulo_en": "Warm Pandebono",
         "descripcion": "Imperdible comer un pandebono cerca a la Plaza de Cayzedo.",
-        "descripcion_en": "Must eat a pandebono near Plaza de Cayzedo."
+        "descripcion_en": "Must eat a pandebono near Plaza de Cayzedo.",
+        "siteId": "s39"
       },
       {
         "tipo": "Seguridad",
@@ -247,7 +252,8 @@
         "titulo": "Cuidado Personal",
         "titulo_en": "Personal Care",
         "descripcion": "Mantén tus pertenencias a la vista en zonas concurridas del centro.",
-        "descripcion_en": "Keep your belongings in sight in busy downtown areas."
+        "descripcion_en": "Keep your belongings in sight in busy downtown areas.",
+        "siteId": "s3"
       }
     ],
     "gamificacion": [
@@ -421,7 +427,8 @@
         "titulo": "Café de Origen",
         "titulo_en": "Single Origin Coffee",
         "descripcion": "El barrio Granada y Peñón tienen los mejores cafés de especialidad.",
-        "descripcion_en": "The Granada and Peñón neighborhoods have the best specialty coffees."
+        "descripcion_en": "The Granada and Peñón neighborhoods have the best specialty coffees.",
+        "siteId": "s61"
       },
       {
         "tipo": "Foto",
@@ -429,7 +436,8 @@
         "titulo": "Las Gatas",
         "titulo_en": "The Cats",
         "descripcion": "Elige tu 'Gata' favorita en el río y tómate una selfie artística.",
-        "descripcion_en": "Choose your favorite 'Gata' by the river and take an artistic selfie."
+        "descripcion_en": "Choose your favorite 'Gata' by the river and take an artistic selfie.",
+        "siteId": "s8"
       },
       {
         "tipo": "Transporte",
@@ -437,7 +445,8 @@
         "titulo": "Caminata",
         "titulo_en": "Walking",
         "descripcion": "Es una ruta 100% caminable y segura para disfrutar el paisaje.",
-        "descripcion_en": "It is a 100% walkable and safe route to enjoy the scenery."
+        "descripcion_en": "It is a 100% walkable and safe route to enjoy the scenery.",
+        "siteId": "s1"
       }
     ],
     "gamificacion": [
@@ -588,7 +597,8 @@
         "titulo": "Deportivo",
         "titulo_en": "Sporty",
         "descripcion": "Ropa ligera, tenis de agarre y gorra son obligatorios.",
-        "descripcion_en": "Light clothing, grip sneakers, and a cap are mandatory."
+        "descripcion_en": "Light clothing, grip sneakers, and a cap are mandatory.",
+        "siteId": "s65"
       },
       {
         "tipo": "Salud",
@@ -596,7 +606,8 @@
         "titulo": "Protección Solar",
         "titulo_en": "Sun Protection",
         "descripcion": "El sol de Cali es fuerte, usa bloqueador solar.",
-        "descripcion_en": "Cali's sun is strong, use sunscreen."
+        "descripcion_en": "Cali's sun is strong, use sunscreen.",
+        "siteId": "s20"
       },
       {
         "tipo": "Horario",
@@ -604,7 +615,8 @@
         "titulo": "Amanecer",
         "titulo_en": "Sunrise",
         "descripcion": "Para las Tres Cruces, sube antes de las 7:00 AM.",
-        "descripcion_en": "For Tres Cruces, climb before 7:00 AM."
+        "descripcion_en": "For Tres Cruces, climb before 7:00 AM.",
+        "siteId": "s65"
       }
     ],
     "gamificacion": [
@@ -729,7 +741,8 @@
         "titulo": "Cartelera",
         "titulo_en": "Billboard",
         "descripcion": "Revisa la programación de las obras antes de ir.",
-        "descripcion_en": "Check the play schedule before going."
+        "descripcion_en": "Check the play schedule before going.",
+        "siteId": "s2"
       },
       {
         "tipo": "Ubicación",
@@ -737,7 +750,8 @@
         "titulo": "San Antonio",
         "titulo_en": "San Antonio",
         "descripcion": "Aprovecha para cenar en San Antonio tras la función.",
-        "descripcion_en": "Take the opportunity to dine in San Antonio after the show."
+        "descripcion_en": "Take the opportunity to dine in San Antonio after the show.",
+        "siteId": "s22"
       }
     ],
     "gamificacion": [
@@ -894,7 +908,8 @@
         "titulo": "Hora Dorada",
         "titulo_en": "Golden Hour",
         "descripcion": "Visita Cristo Rey al atardecer para fotos increíbles.",
-        "descripcion_en": "Visit Cristo Rey at sunset for incredible photos."
+        "descripcion_en": "Visit Cristo Rey at sunset for incredible photos.",
+        "siteId": "s17"
       },
       {
         "tipo": "Transporte",
@@ -902,7 +917,8 @@
         "titulo": "Vehículo",
         "titulo_en": "Vehicle",
         "descripcion": "Necesitarás transporte para subir a los miradores.",
-        "descripcion_en": "You will need transport to go up to the viewpoints."
+        "descripcion_en": "You will need transport to go up to the viewpoints.",
+        "siteId": "s16"
       }
     ],
     "gamificacion": [

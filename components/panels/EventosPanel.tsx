@@ -23,7 +23,7 @@ const getEventCategory = (event: Evento, sites: Site[], language: 'es' | 'en'): 
   return site ? getMacroCategory(getTranslated(site, 'tipo', language) as string, language) : (language === 'es' ? 'Evento' : 'Event');
 };
 
-const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void; sites: Site[] }> = ({ event, onOpenEvent, sites }) => {
+const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void; sites: Site[]; onCategoryClick?: (cat: string) => void }> = ({ event, onOpenEvent, sites, onCategoryClick }) => {
   const { t, language } = useI18n();
   const dateObj = new Date(event.fecha);
 
@@ -76,7 +76,13 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
         <div className="relative z-10 flex-1 min-w-0">
           {/* Category Badge */}
           <div className="flex items-center gap-1 mb-1 flex-wrap">
-            <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-background/50 border shadow-sm text-foreground/80")}>
+            <span 
+              className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-background/50 border shadow-sm text-foreground/80 cursor-pointer hover:bg-primary/20 hover:text-primary transition-colors")}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onCategoryClick) onCategoryClick(category);
+              }}
+            >
               {category}
             </span>
             {isPast && (
@@ -306,7 +312,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
         {filteredEvents.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {filteredEvents.map(event => (
-              <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} sites={sites} />
+              <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} sites={sites} onCategoryClick={setCategoryFilter} />
             ))}
           </div>
         ) : (

@@ -460,6 +460,7 @@ export default function App() {
                   onResetFilter={handleResetFilter}
                   isLoading={isLoading}
                   activeRoute={activeGuidedRoute}
+                  activeRouteStep={currentRouteStep}
                   minRating={minRating}
                   onRatingChange={setMinRating}
                   showAccessibilityOnly={showAccessibilityOnly}
@@ -467,7 +468,7 @@ export default function App() {
                   plannedRoutePoints={newRoutePoints}
                 />
               )}
-              {activePanel === 'explorar' && <ExplorarPanel sites={sites} events={eventos} query={query} onOpenSite={openSite} onOpenEvent={openEvent} />}
+              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}

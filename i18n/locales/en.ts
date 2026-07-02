@@ -22,7 +22,7 @@ const en = {
     openMenu: "Open menu",
     nav: {
         map: "Map",
-        explore: "Explore",
+        explore: "Sites",
         routes: "Routes",
         news: "News",
         events: "Events",
@@ -36,7 +36,7 @@ const en = {
     // Panels
     panelTitles: {
         mapa: "Live Map",
-        explorar: "Explore",
+        explorar: "Explore sites",
         eventos: "Events",
         tendencias: "Trends",
         favoritos: "Favoritos",
@@ -128,7 +128,7 @@ const en = {
     // Bottom Nav
     bottomNav: {
         map: "Map",
-        explore: "Explore",
+        explore: "Sites",
         routes: "Routes",
         favs: "Favs",
         profile: "Profile"
