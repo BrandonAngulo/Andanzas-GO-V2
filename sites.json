@@ -179,7 +179,7 @@
     "descripcion_en": "Located in the heart of the historic Barrio Obrero, this place is considered the 'Vatican' of Cali salsa. More than a conventional museum, it is the home of Carlos Molina, who has dedicated his life to collecting the photographic and musical history of salsa in the city. Its walls are covered from floor to ceiling with original photos, signed instruments, and memorabilia from legends like Celia Cruz, Héctor Lavoe, and Grupo Niche. It is a nostalgic and vibrant journey where every object has an anecdote told with passion.",
     "importancia": "Es el repositorio de memoria visual más importante de la cultura salsera popular.",
     "importancia_en": "It is the most important repository of visual memory of popular salsa culture.",
-    "datosHistoricos": "Fundado hace más de 50 años como un archivo personal que se abrió al mundo.",
+    "datosHistoricos": "Fundado hace más de 50 años como un archivo personal que se abrió al mundo. Fundado en 1968 por Carlos Alfredo Molina; el museo de salsa más antiguo del mundo, con 40.000+ fotografías.",
     "datosHistoricos_en": "Founded over 50 years ago as a personal archive that opened to the world.",
     "datosCuriosos": [
       "Es el museo de salsa más antiguo del mundo.",
@@ -188,7 +188,10 @@
     "datosCuriosos_en": [
       "It is the oldest salsa museum in the world.",
       "Carlos Molina, its director, usually guides the tours personally."
-    ]
+    ],
+    "horario": "Lunes a sábado, recorridos guiados a las 11:00 a. m., 2:30 p. m. y 5:00 p. m.; domingos a las 3:00 p. m. (festivos cerrado).",
+    "precio": "$16.000 por persona (aporte cultural).",
+    "direccion": "Carrera 11B #24-44, barrio Obrero."
   },
   {
     "id": "s30",
@@ -495,7 +498,7 @@
     "descripcion_en": "More than just a theater, Esquina Latina is a social and cultural movement with decades of history. Located near the Universidad del Valle, this space is characterized by its collective creation methods addressing social, political, and youth issues of the environment. Its atmosphere is vibrant, rebellious, and deeply committed to the community. Here theater is used as a powerful tool for peacebuilding, memory, and critical reflection.",
     "importancia": "Referente nacional del teatro comunitario y la intervención social a través del arte.",
     "importancia_en": "National benchmark for community theater and social intervention through art.",
-    "datosHistoricos": "Nació en 1973 como un grupo estudiantil de la Universidad del Valle y se consolidó como fundación independiente.",
+    "datosHistoricos": "Nació en 1973 como un grupo estudiantil de la Universidad del Valle y se consolidó como fundación independiente. Fundado en 1973 por Orlando Cajamarca.",
     "datosHistoricos_en": "Born in 1973 as a student group at Universidad del Valle and consolidated as an independent foundation.",
     "datosCuriosos": [
       "Su programa 'Jóvenes, Teatro y Comunidad' ha impactado miles de vidas en zonas vulnerables.",
@@ -504,7 +507,10 @@
     "datosCuriosos_en": [
       "Its 'Youth, Theater, and Community' program has impacted thousands of lives in vulnerable areas.",
       "Their plays usually have live music and high physical energy."
-    ]
+    ],
+    "horario": "Obras para jóvenes y adultos: sábados 7:30 p. m.; funciones familiares: domingos 11:00 a. m. (con inscripción previa); conciertos: un viernes al mes, 7:30 p. m. (la programación varía; se consulta en redes).",
+    "precio": "Boletería según función (Sala Concertada).",
+    "direccion": "Calle 4 Oeste #35-30, barrio Tejares de San Fernando (junto al Parque de las Piedras)."
   },
   {
     "id": "s44",
@@ -965,7 +971,7 @@
     "rating": 4.7,
     "visitas": 1900,
     "logoUrl": "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800",
-    "descripcion": "El corazón social y gastronómico del barrio San Fernando. Este pequeño parque triangular, presidido por la estatua de un perro 'Teddy', es el punto de partida para una noche de diversión. A su alrededor se aglomeran decenas de restaurantes, bares y heladerías que ofrecen desde comida rápida gourmet hasta platos internacionales. El ambiente es joven, vibrante y muy concurrido, especialmente los fines de semana.",
+    "descripcion": "Parque tradicional del barrio San Fernando, cuyo nombre proviene de una escultura de un perro instalada en el lugar; con los años se transformó en una de las principales zonas de gastronomía y rumba de Cali.",
     "descripcion_en": "The social and gastronomic heart of the San Fernando neighborhood. This small triangular park, presided over by the statue of a dog 'Teddy', is the starting point for a night of fun. Dozens of restaurants, bars, and ice cream shops cluster around it, offering everything from gourmet fast food to international dishes. The atmosphere is young, vibrant, and very busy, especially on weekends.",
     "importancia": "Epicentro de la vida social y nocturna del sur de Cali.",
     "importancia_en": "Epicenter of social and nightlife in southern Cali.",
@@ -978,7 +984,9 @@
     "datosCuriosos_en": [
       "Originally the dog looked the other way; its orientation has changed with renovations.",
       "It is famous for its 'cholados' and 'mazorcas' stalls."
-    ]
+    ],
+    "horario": "Zona abierta; fuerte vida nocturna.",
+    "precio": "Libre (consumos aparte)."
   },
   {
     "id": "s26",
@@ -1305,7 +1313,7 @@
     "rating": 4.6,
     "visitas": 1100,
     "logoUrl": "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800",
-    "descripcion": "Un parque elegante, fresco y arborizado en el corazón de uno de los barrios más exclusivos y bohemios de Cali. Rodeado de cafés, galerías de arte y restaurantes de autor, es el lugar perfecto para comenzar una noche de cena o disfrutar de una mañana tranquila. Los domingos se transforma en una vibrante galería al aire libre donde artistas locales exhiben y venden sus pinturas.",
+    "descripcion": "Uno de los barrios tradicionales de Cali, a orillas del río Cali, contiguo a San Antonio y al Museo La Tertulia; con los años se consolidó como zona bohemia, gastronómica y de anticuarios. En su entorno (Bulevar del Río) se realizan mercados de antigüedades y pulgas los fines de semana.",
     "descripcion_en": "An elegant, fresh, and wooded park in the heart of one of Cali's most exclusive and bohemian neighborhoods. Surrounded by cafes, art galleries, and signature restaurants, it is the perfect place to start a dinner evening or enjoy a quiet morning. On Sundays, it transforms into a vibrant open-air gallery where local artists exhibit and sell their paintings.",
     "importancia": "Espacio de exhibición artística informal más importante de la ciudad cada domingo.",
     "importancia_en": "Most important informal artistic exhibition space in the city every Sunday.",
@@ -1318,7 +1326,9 @@
     "datosCuriosos_en": [
       "Houses a statue of Benito Juárez donated by Mexico.",
       "It is known for its large trees that provide cool shade all day."
-    ]
+    ],
+    "horario": "Zona abierta; fuerte vida gastronómica y nocturna.",
+    "precio": "Libre (consumos aparte)."
   },
   {
     "id": "s63",
@@ -1517,7 +1527,7 @@
     "descripcion_en": "It's not just a nightclub, it's a cultural institution of salsa. La Topa Tolondra is the democratic place where locals and foreigners meet on the dance floor. World-famous for its 'Salsa Mondays', it breaks the myth that Mondays are boring. The atmosphere is inclusive, sweaty, and authentic. Here it doesn't matter if you are an expert or a beginner, the important thing is to feel the beat. Walls full of salsa history and masterfully curated musical programming.",
     "importancia": "Responsable de revitalizar la rumba salsera en el centro y atraer turismo internacional masivo.",
     "importancia_en": "Responsible for revitalizing the salsa party downtown and attracting massive international tourism.",
-    "datosHistoricos": "Comenzó como un pequeño bar en la Calle 5ta y creció hasta convertirse en el templo actual frente al Parque Jovita.",
+    "datosHistoricos": "Comenzó como un pequeño bar en la Calle 5ta y creció hasta convertirse en el templo actual frente al Parque Jovita. Abrió en 2011.",
     "datosHistoricos_en": "Started as a small bar on 5th Street and grew to become the current temple facing Parque Jovita.",
     "datosCuriosos": [
       "Sus clases de baile gratuitas antes de la rumba son legendarias.",
@@ -1526,7 +1536,10 @@
     "datosCuriosos_en": [
       "Its free dance classes before the party are legendary.",
       "The owner, Carlos 'El Tribuno', is an iconic figure of Cali nightlife."
-    ]
+    ],
+    "horario": "Miércoles y jueves 6:00 p. m.–1:00 a. m.; viernes y sábado 6:00 p. m.–3:00 a. m.",
+    "precio": "Cover ~$10.000.",
+    "direccion": "Calle 5 #13-27."
   },
   {
     "id": "s27",
@@ -1569,7 +1582,7 @@
     "descripcion_en": "The temple of salsa in northern Cali. Zaperoco is an intimate space, with an aesthetic that evokes the 70s and 80s in New York and Puerto Rico. Here salsa is respected and lived with intensity and knowledge. It is famous for its live music Thursdays and for being the refuge of music lovers who prefer to listen and appreciate the music as much as dance it. Its atmosphere is dense, warm, and full of tradition.",
     "importancia": "Bastión de la identidad salsera tradicional frente a las modas comerciales.",
     "importancia_en": "Bastion of traditional salsa identity against commercial trends.",
-    "datosHistoricos": "Fundado en 1993, ha resistido el paso del tiempo manteniendo su esencia pura.",
+    "datosHistoricos": "Fundado en 1993, ha resistido el paso del tiempo manteniendo su esencia pura. Fundado en 1993.",
     "datosHistoricos_en": "Founded in 1993, it has withstood the test of time maintaining its pure essence.",
     "datosCuriosos": [
       "Sus paredes están forradas de afiches autografiados por leyendas de la salsa que han visitado el lugar.",
@@ -1578,7 +1591,10 @@
     "datosCuriosos_en": [
       "Its walls are lined with posters autographed by salsa legends who have visited the place.",
       "It is a must-visit place for musicians visiting the city."
-    ]
+    ],
+    "horario": "Noches, habitualmente de jueves a sábado (desde las 9:00–11:00 p. m.).",
+    "precio": "Cover / consumo según la noche.",
+    "direccion": "Avenida 5 Norte #16-46."
   },
   {
     "id": "s29",
@@ -1595,7 +1611,7 @@
     "descripcion_en": "A classic of Cali nightlife located near 5th Street. Tin Tin Deo is a place with soul and flavor, where Cuban son, classic salsa, and Latin jazz converge. Its atmosphere is bohemian, relaxed, and respectful, ideal for those looking for good music, conversation, and unpretentious dancing. It is a traditional meeting point for university students, intellectuals, and foreigners seeking the city's musical essence.",
     "importancia": "Promotor de la cultura del 'Melómano' y la música antillana y jazzística.",
     "importancia_en": "Promoter of the 'Music Lover' culture and Antillean and jazz music.",
-    "datosHistoricos": "Su nombre viene del famoso tema de Chano Pozo y Dizzy Gillespie, marcando su influencia de Latin Jazz.",
+    "datosHistoricos": "Su nombre viene del famoso tema de Chano Pozo y Dizzy Gillespie, marcando su influencia de Latin Jazz. Fundado en 1985.",
     "datosHistoricos_en": "Its name comes from the famous song by Chano Pozo and Dizzy Gillespie, marking its Latin Jazz influence.",
     "datosCuriosos": [
       "Decorado con obras de arte y fotografía local que cambia periódicamente.",
@@ -1604,7 +1620,10 @@
     "datosCuriosos_en": [
       "Decorated with local art and photography that changes periodically.",
       "Thursdays usually have special themed auditions."
-    ]
+    ],
+    "horario": "Jueves a sábado, aprox. 8:00 p. m.–3:00 a. m. (jueves de salsa y bachata; viernes de taxi dancer; sábado de rumba caleña).",
+    "precio": "Cover según la noche (desde ~$5.000).",
+    "direccion": "Calle 5 #38-71, sur."
   },
   {
     "id": "s46",
@@ -1903,7 +1922,7 @@
     "rating": 4.5,
     "visitas": 1800,
     "logoUrl": "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800",
-    "descripcion": "La 'Zona Rosa' tradicional y elegante de Cali. Granada combina la arquitectura señorial de sus mansiones de mediados de siglo con una oferta inagotable de boutiques de moda y restaurantes de alta cocina. Es un barrio para caminar, vitrinear y disfrutar de la buena mesa. La Avenida 9 Norte es su columna vertebral, llena de vida nocturna, terrazas al aire libre y un ambiente festivo pero sofisticado.",
+    "descripcion": "Barrio residencial del norte de Cali, desarrollado a mediados del siglo XX, que con el tiempo se consolidó como uno de los principales epicentros gastronómicos y de vida nocturna de la ciudad.",
     "descripcion_en": "Cali's traditional and elegant 'Pink Zone'. Granada combines the stately architecture of its mid-century mansions with an endless offer of fashion boutiques and haute cuisine restaurants. It is a neighborhood for walking, window shopping, and enjoying fine dining. 9th North Avenue is its backbone, full of nightlife, open-air terraces, and a festive yet sophisticated atmosphere.",
     "importancia": "Primer barrio de expansión moderna de Cali y actual distrito de moda y gastronomía.",
     "importancia_en": "First modern expansion neighborhood of Cali and current fashion and gastronomy district.",
@@ -1916,7 +1935,9 @@
     "datosCuriosos_en": [
       "It preserves many neoclassical and Art Deco houses.",
       "It is famous for its independent local designer shops."
-    ]
+    ],
+    "horario": "Zona abierta; fuerte movimiento nocturno.",
+    "precio": "Libre (consumos aparte)."
   },
   {
     "id": "s62",
@@ -1994,7 +2015,10 @@
     "datosCuriosos_en": [
       "It has the 'Hellen Keller' room specialized for visually impaired people.",
       "Its astronomical dome offers weekly star projection shows."
-    ]
+    ],
+    "horario": "Lunes a viernes 9:00 a. m.–7:00 p. m.; sábados 9:00 a. m.–6:00 p. m.; domingos 10:00 a. m.–3:00 p. m.",
+    "precio": "Gratuito (todos los servicios básicos).",
+    "direccion": "Calle 5 #24A-91 (Manzana del Saber), centro."
   },
   {
     "id": "s32",
@@ -2020,7 +2044,9 @@
     "datosCuriosos_en": [
       "It offers a season of very high-quality free concerts (Beethoven 7:30).",
       "Its immaculate white facade is an icon of the Centenario neighborhood."
-    ]
+    ],
+    "horario": "Según programación; las salas de exposición y buena parte de los conciertos son de acceso libre, en horario institucional (lunes a viernes).",
+    "precio": "Programas académicos con matrícula; muchas exposiciones y conciertos de entrada libre."
   },
   {
     "id": "s33",
@@ -2037,7 +2063,7 @@
     "descripcion_en": "A beacon of hope, technology, and creativity in the heart of the Aguablanca District. This modern center uses technology and art to transform lives. It features state-of-the-art recording studios, dance halls, traditional cooking, visual arts, and computer rooms. Here the city's next great artists and music producers are trained, demonstrating the power of talent over adversity.",
     "importancia": "Modelo exitoso de innovación social y formación técnica para jóvenes en zonas vulnerables.",
     "importancia_en": "Successful model of social innovation and technical training for youth in vulnerable areas.",
-    "datosHistoricos": "Inaugurado en 2013 gracias a la alianza público-privada liderada por la Fundación Alvaralice.",
+    "datosHistoricos": "Inaugurado en 2013 gracias a la alianza público-privada liderada por la Fundación Alvaralice. Fundado en 2011.",
     "datosHistoricos_en": "Inaugurated in 2013 thanks to the public-private partnership led by the Alvaralice Foundation.",
     "datosCuriosos": [
       "La banda ChocQuibTown ha apoyado fuertemente este proyecto.",
@@ -2046,7 +2072,10 @@
     "datosCuriosos_en": [
       "The band ChocQuibTown has strongly supported this project.",
       "They have their own certified school of music and traditional cooking."
-    ]
+    ],
+    "horario": "Lunes a sábado, 8:00 a. m.–5:00 p. m.",
+    "precio": "Programas de formación comunitaria, gratuitos o de bajo costo.",
+    "direccion": "Carrera 28B #121B-55, barrio Potrero Grande (comuna 21), oriente de Cali."
   },
   {
     "id": "s43",
