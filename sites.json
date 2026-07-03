@@ -12,7 +12,7 @@
     "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Museo_la_tertulia.JPG",
     "image_credit": "C arango, Public domain, via Wikimedia Commons",
     "descripcion": "Ubicado estratégicamente a orillas del río Cali, en el emblemático oeste de la ciudad, el Museo La Tertulia es un hito arquitectónico y cultural. Diseñado por los arquitectos Lago y Sáenz, su estructura modernista se integra orgánicamente con la naturaleza circundante, creando un oasis de paz bajo enormes árboles centenarios. Es la institución museal más importante del suroccidente colombiano, reconocida por poseer una de las colecciones de arte en papel y gráfica más completas de Iberoamérica. El complejo cuenta con varias salas de exhibición, una cinemateca que proyecta lo mejor del cine independiente mundial, un teatro al aire libre y jardines escultóricos donde el arte dialoga con el paisaje.",
-    "descripcion_en": "Strategically located on the banks of the Cali River, in the iconic west of the city, La Tertulia Museum is an architectural and cultural landmark. Designed by architects Lago and Sáenz, its modernist structure integrates organically with the surrounding nature, creating an oasis of peace under huge centennial trees. It is the most important museum institution in southwestern Colombia, recognized for possessing one of the most complete collections of paper and graphic art in Ibero-America. The complex features several exhibition halls, a cinematheque screening the best of world independent cinema, an open-air theater, and sculptural gardens where art dialogues with the landscape.",
+    "descripcion_en": "The La Tertulia Museum, founded in 1956 and moved to its current iconic headquarters on the banks of the Cali River in 1968, is the main epicenter of the plastic and visual arts in the city. Designed by celebrated architect Manuel Lago, the complex stands out for its bold architecture of pebble stone columns and geometric roofs that pay homage to the river landscape. The museum houses one of the most important collections of graphic works on paper in Latin America, in addition to having the legendary Cinemateca La Tertulia, a refuge for independent cinema since the time of the 'Caliwood' group. Its outdoor gardens, inhabited by iguanas and shaded by giant samanes, function as a public meeting park where artists, students and locals gather to enjoy the Cali breeze at sunset. Connecting the museum with San Antonio Hill through Bulevar del Río allows a pedestrian route full of urban murals, signature cafes and independent galleries that breathe the bohemian spirit of Cali.",
     "importancia": "Fue el primer museo de arte moderno fundado en Colombia y es vital para la preservación de obras en papel y arte gráfico.",
     "importancia_en": "It was the first modern art museum founded in Colombia and is vital for the preservation of works on paper and graphic art.",
     "datosHistoricos": "Fundado en 1956 por Maritza Uribe de Urdinola durante la dictadura de Rojas Pinilla como un espacio de libertad de expresión. Su edificio actual se inauguró en 1968.",
@@ -32,6 +32,13 @@
     "datosCuriosos_en": [
       "Its collection of works on paper is one of the most important in Latin America.",
       "The Cinematheque is the only theater in the city dedicated exclusively to art cinema."
+    ],
+    "horario_en": "Tuesday to Saturday: 10:00 AM - 6:00 PM | Sunday: 2:00 PM - 6:00 PM. Closed Mondays.",
+    "tarifa_en": "$15,000 COP (Students/Seniors $10,000 COP).",
+    "datos_historicos_en": "Founded in 1956 by Maritza Uribe de Urdinola during the Rojas Pinilla dictatorship as a space for freedom of expression. Its current building was inaugurated in 1968.",
+    "datos_curiosos_en": [
+      "His collection of works on paper is one of the most important in Latin America.",
+      "The Cinemateca is the only room in the city dedicated exclusively to art cinema."
     ]
   },
   {
@@ -72,7 +79,7 @@
     "visitas": 1100,
     "logoUrl": "https://images.unsplash.com/photo-1605218427306-633ba84c1f6d?auto=format&fit=crop&w=800",
     "descripcion": "Una bóveda de tesoros ancestrales gestionada por el Banco de la República. Este museo narra con maestría la historia de los orfebres de la región Calima (culturas Ilama, Yotoco y Sonso) a través del brillo del oro y la perfección de la cerámica. La museografía es impecable y didáctica, permitiendo apreciar el detalle microscópico de narigueras, pectorales, diademas y poporos que reflejan la cosmovisión indígena, sus jerarquías sociales y su profunda conexión con la naturaleza y el mundo espiritual.",
-    "descripcion_en": "A vault of ancestral treasures managed by the Bank of the Republic. This museum masterfully tells the story of the goldsmiths of the Calima region (Ilama, Yotoco, and Sonso cultures) through the shine of gold and the perfection of ceramics. The museography is impeccable and didactic, allowing you to appreciate the microscopic detail of nose rings, pectorals, diadems, and poporos that reflect the indigenous worldview, their social hierarchies, and their deep connection with nature and the spiritual world.",
+    "descripcion_en": "Under the administration of the Bank of the Republic, in the historic center, the Calima Gold Museum preserves the brilliance of the cultures that inhabited this valley thousands of years before Cali had a name. Its collection brings together pieces of goldsmithing, ceramics, stone, wood and shell from the Ilama, Yotoco and Sonso societies - grouped under the generic name of Calima culture -, people who were exceptional farmers and, above all, goldsmiths of a skill that still baffles today. \\n\\nTo travel through it is to understand that the territory we walk on today had a symbolic and technical density prior to any colonial plaza. The museum works with “pedagogical animators” instead of guides, lends educational kits to schools and maintains animations and exhibitions so that the pre-Hispanic past does not feel distant but rather its own.",
     "importancia": "Fundamental para entender la sofisticación tecnológica y artística de las culturas prehispánicas del Valle.",
     "importancia_en": "Fundamental for understanding the technological and artistic sophistication of the pre-Hispanic cultures of the Valley.",
     "datosHistoricos": "Inaugurado en 1991 como parte de la red de museos del oro del país. Inaugurado el 9 de mayo de 1991.",
@@ -87,7 +94,15 @@
     ],
     "horario": "Martes a viernes, 9:00 a. m.–5:00 p. m.; sábados, 10:00 a. m.–5:00 p. m. (cerrado domingos y lunes).",
     "precio": "Entrada libre y gratuita.",
-    "direccion": "Carrera 7 #4-69, Área Cultural del Banco de la República, centro histórico (diagonal al Teatro Municipal)."
+    "direccion": "Carrera 7 #4-69, Área Cultural del Banco de la República, centro histórico (diagonal al Teatro Municipal).",
+    "horario_en": "Tuesday to Friday, 9:00 a.m. m.–5:00 p.m. m.; Saturdays, 10:00 a.m. m.–5:00 p.m. m. (closed Sundays and Mondays).",
+    "tarifa_en": "Free entry.",
+    "datos_historicos_en": "Inaugurated in 1991 as part of the country's network of gold museums. Inaugurated on May 9, 1991.",
+    "datos_curiosos_en": [
+      "Its collection includes pieces of goldsmithing and pottery up to 2,000 years old from the Ilama, Yotoco and Sonso cultures.",
+      "In the Calima area, northwest of Cali, archeology has recovered more than 9,000 years of human history.",
+      "It lends “teaching suitcases” to educational institutions to set up small exhibitions in the classroom."
+    ]
   },
   {
     "id": "s12",
@@ -127,7 +142,7 @@
     "visitas": 5000,
     "logoUrl": "https://images.unsplash.com/photo-1577979749830-f1d742b96791?auto=format&fit=crop&w=800",
     "descripcion": "Considerado uno de los mejores zoológicos de América Latina, este santuario de vida silvestre está inmerso en un bosque tropical seco a orillas del río Cali. No es solo un lugar de exhibición, sino un centro líder en investigación y conservación. Sus hábitats están diseñados para sumergir al visitante en la naturaleza, con recorridos que van desde los Andes hasta la Amazonía. Es famoso por su mariposario y por el cuidado excepcional de sus animales.",
-    "descripcion_en": "Considered one of the best zoos in Latin America, this wildlife sanctuary is immersed in a tropical dry forest on the banks of the Cali River. It is not just an exhibition place, but a leading center for research and conservation. Its habitats are designed to immerse the visitor in nature, with tours ranging from the Andes to the Amazon. It is famous for its butterfly house and the exceptional care of its animals.",
+    "descripcion_en": "The Cali Zoo, founded in 1969, is internationally recognized as one of the best and most modern zoos in Latin America, and the only one accredited in Colombia by the Association of Zoos and Aquariums (AZA). Located on the western edge of the city, within the Cali River canyon in the Santa Teresita sector, the park stands out for its focus on biodiversity conservation, environmental education and animal welfare. It covers more than 25 hectares of recreated tropical jungle where nearly 2,500 animals of more than 230 species live, mainly from Colombian and South American fauna, including jaguars, Andean condors, spectacled bears, giant otters and a rich variety of primates. The zoo features unique immersive habitats such as the freshwater aquarium, interactive butterfly house, and cloud forest exhibit. Its pedestrian route runs under a thick natural shade fed by the clean waters of the Cali River, offering an oasis of freshness and scientific learning in the heart of the urban area.",
     "importancia": "Líder continental en la cría y preservación de especies amenazadas.",
     "importancia_en": "Continental leader in the breeding and preservation of threatened species.",
     "datosHistoricos": "Fundado en 1969. Ha transformado el concepto de zoológico clásico hacia uno de inmersión y respeto.",
@@ -139,6 +154,13 @@
     "datosCuriosos_en": [
       "The Cali River runs through the zoo, creating a cool microclimate.",
       "They have a successful breeding program for giant otters."
+    ],
+    "horario_en": "Daily: 9:00 AM - 4:30 PM.",
+    "tarifa_en": "Adultos: $28,000 COP | Children: $19,000 COP.",
+    "datos_historicos_en": "Founded in 1969. It has transformed the concept of the classic zoo into one of immersion and respect.",
+    "datos_curiosos_en": [
+      "The Cali River runs through the zoo, creating a cool microclimate.",
+      "They have a successful giant otter breeding program."
     ]
   },
   {
@@ -179,7 +201,7 @@
     "visitas": 2000,
     "logoUrl": "https://images.unsplash.com/photo-1516280440614-6697288d5d38?auto=format&fit=crop&w=800",
     "descripcion": "Ubicado en el corazón del histórico Barrio Obrero, este lugar es considerado el 'Vaticano' de la salsa caleña. Más que un museo convencional, es la casa de Carlos Molina, quien ha dedicado su vida a recopilar la historia fotográfica y musical de la salsa en la ciudad. Sus paredes están cubiertas de piso a techo con fotos originales, instrumentos firmados y recuerdos de leyendas como Celia Cruz, Héctor Lavoe y el Grupo Niche. Es un viaje nostálgico y vibrante donde cada objeto tiene una anécdota contada con pasión.",
-    "descripcion_en": "Located in the heart of the historic Barrio Obrero, this place is considered the 'Vatican' of Cali salsa. More than a conventional museum, it is the home of Carlos Molina, who has dedicated his life to collecting the photographic and musical history of salsa in the city. Its walls are covered from floor to ceiling with original photos, signed instruments, and memorabilia from legends like Celia Cruz, Héctor Lavoe, and Grupo Niche. It is a nostalgic and vibrant journey where every object has an anecdote told with passion.",
+    "descripcion_en": "On a block of the traditional Obrero neighborhood—the cradle of Cali salsa—there is a house that keeps the sonorous memory of an entire city. It all started in 1968, when photographer Carlos Alfredo Molina, camera in hand, began to photograph fair nights and the great artists who passed through Cali. From that curious lens was born an archive of more than 40,000 photographs that today is, by all accounts, the oldest salsa museum in the world. \\n\\nThere are no cold showcases here: there is a track covered in black and white, walls covered with faces—Marvin Santiago, Gilberto Santa Rosa, Sonora Ponceña—and three generations of the same family who inherited the trade like someone who inherits a last name. More than a collection, it is a living testimony that in Cali culture is not only heard: it is inherited.",
     "importancia": "Es el repositorio de memoria visual más importante de la cultura salsera popular.",
     "importancia_en": "It is the most important repository of visual memory of popular salsa culture.",
     "datosHistoricos": "Fundado hace más de 50 años como un archivo personal que se abrió al mundo. Fundado en 1968 por Carlos Alfredo Molina; el museo de salsa más antiguo del mundo, con 40.000+ fotografías.",
@@ -194,7 +216,15 @@
     ],
     "horario": "Lunes a sábado, recorridos guiados a las 11:00 a. m., 2:30 p. m. y 5:00 p. m.; domingos a las 3:00 p. m. (festivos cerrado).",
     "precio": "$16.000 por persona (aporte cultural).",
-    "direccion": "Carrera 11B #24-44, barrio Obrero."
+    "direccion": "Carrera 11B #24-44, barrio Obrero.",
+    "horario_en": "Monday through Saturday, guided tours at 11:00 a.m. m., 2:30 p.m. m. and 5:00 p.m. m.; Sundays at 3:00 p.m. m. (closed holidays).",
+    "tarifa_en": "$16,000 per person (cultural contribution).",
+    "datos_historicos_en": "Founded more than 50 years ago as a personal archive that was opened to the world. Founded in 1968 by Carlos Alfredo Molina; the oldest salsa museum in the world, with 40,000+ photographs.",
+    "datos_curiosos_en": [
+      "It houses more than 40,000 photographs of musicians, orchestras and dancers.",
+      "There are only a handful of museums like this in the world: the others are in New York and Puerto Rico, and this is the oldest.",
+      "It also offers dance classes and supports children and young people of the Obrero."
+    ]
   },
   {
     "id": "s30",
@@ -234,7 +264,7 @@
     "visitas": 500,
     "logoUrl": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800",
     "descripcion": "Un homenaje monumental a la obsesión de Cali por el cine y la imagen. Este museo alberga la colección privada de proyectores, cámaras filmadoras y afiches de cine más grande del país. Al recorrer sus pasillos, se viaja por la historia tecnológica del séptimo arte, desde los hermanos Lumière hasta la época dorada del cine mexicano y hollywoodense que tanto influyó en la cultura caleña. Además, ofrece una vista espectacular del oeste de Cali desde su terraza.",
-    "descripcion_en": "A monumental tribute to Cali's obsession with cinema and image. This museum houses the country's largest private collection of projectors, movie cameras, and film posters. Walking through its corridors is a journey through the technological history of the seventh art, from the Lumière brothers to the golden age of Mexican and Hollywood cinema that so influenced Cali culture. Furthermore, it offers a spectacular view of western Cali from its terrace.",
+    "descripcion_en": "It all started with two projectors rescued from the trash—the same ones that had been used at the inauguration of the Jorge Isaacs Theater. From that wonderful coincidence, as its founder calls it, Caliwood was born, the first museum of cinematography in Colombia. Hugo Suárez Fiat, a lawyer and collector from Cali, gathered cameras, projectors, magic lanterns and posters that reconstruct the evolution of cinema and photography, from daguerreotypes of 1840 to projectors of the early 20th century. \\n\\nThe name says it all: Caliwood is the nod to the irreverent cinema movement that Cali gave to the country in the seventies and eighties, with Luis Ospina, Carlos Mayolo and Andrés Caicedo at the helm. Walking through it is entering a time capsule of the seventh art, and a stubborn commitment to preserve the film memory of the city considered the mecca of Colombian cinema.",
     "importancia": "Primer museo de la cinematografía en Colombia, guardián de la cultura cinéfila caleña.",
     "importancia_en": "First cinematography museum in Colombia, guardian of Cali's cinephile culture.",
     "datosHistoricos": "Fundado en 2008 por Hugo Suárez, un apasionado coleccionista. Fundado el 22 de octubre de 2008 por Hugo Suárez Fiat.",
@@ -249,7 +279,15 @@
     ],
     "horario": "Lunes a viernes, 8:00 a. m.–6:00 p. m.; sábados, 3:00–6:00 p. m.; domingos, 10:00 a. m.–6:00 p. m.",
     "precio": "Entrada $20.000 (a modo de donación para su sostenimiento).",
-    "direccion": "Avenida Belalcázar (Carrera 2 Oeste) #5A-55, oeste de Cali (junto al Gato de Tejada y el Museo La Tertulia)."
+    "direccion": "Avenida Belalcázar (Carrera 2 Oeste) #5A-55, oeste de Cali (junto al Gato de Tejada y el Museo La Tertulia).",
+    "horario_en": "Monday to Friday, 8:00 a.m. m.–6:00 p.m. m.; Saturdays, 3:00–6:00 p.m. m.; Sundays, 10:00 a.m. m.–6:00 p.m. m.",
+    "tarifa_en": "Entry $20,000 (as a donation for its support).",
+    "datos_historicos_en": "Founded in 2008 by Hugo Suárez, a passionate collector. Founded on October 22, 2008 by Hugo Suárez Fiat.",
+    "datos_curiosos_en": [
+      "It keeps 30 original still photos from the filming of María (1922), the first Colombian film.",
+      "It was the first museum institution in the country to offer audio guides via QR codes.",
+      "His collection started with two projectors used at the inauguration of the Jorge Isaacs Theater."
+    ]
   },
   {
     "id": "s35",
@@ -289,7 +327,7 @@
     "visitas": 3000,
     "logoUrl": "https://images.unsplash.com/photo-1594833959828-9c6310cb8617?auto=format&fit=crop&w=800",
     "descripcion": "El ícono más romántico del Valle del Cauca. Ubicada en el municipio de El Cerrito, cerca de Cali, esta hacienda es mundialmente famosa por ser el escenario de 'María', la obra cumbre de Jorge Isaacs. La casa museo está restaurada con exquisito detalle, recreando la atmósfera del siglo XIX con sus jardines de rosas, sus habitaciones ventiladas y el paisaje inigualable del valle geográfico a sus pies. Es una peregrinación obligada para los amantes de la literatura y el amor.",
-    "descripcion_en": "The most romantic icon of Valle del Cauca. Located in the municipality of El Cerrito, near Cali, this hacienda is world-famous for being the setting of 'María', the masterpiece by Jorge Isaacs. The house museum is restored with exquisite detail, recreating the 19th-century atmosphere with its rose gardens, airy rooms, and the unmatched landscape of the geographic valley at its feet. It is a mandatory pilgrimage for lovers of literature and romance.",
+    "descripcion_en": "At the foot of the Central Mountain Range, in El Cerrito, this 19th century white house is a literary pilgrimage: here Jorge Isaacs set María, the crowning novel of Latin American romanticism, translated into more than thirty languages. The house—the “Sierra House” of the book—preserves the layout described in the novel: Efraín's room with its vase of always fresh roses, María's room, the study, the room where the family gathered to embroider and sing. \\n\\nSurrounded by water channels that prevented the passage of insects, with cool balconies, a rose garden and a view of the sugarcane plains and the giant samanes, the hacienda makes literature and territory merge. In front of it is the stone where, according to the novel, lovers sat, today witness of visitors who swear eternal love.",
     "importancia": "Símbolo del romanticismo latinoamericano y patrimonio cultural.",
     "importancia_en": "Symbol of Latin American romanticism and cultural heritage.",
     "datosHistoricos": "Construida entre 1816 y 1828. Fue adquirida por el padre de Jorge Isaacs en 1854. Casa museo administrada por INCIVA; BIC de la Nación.",
@@ -304,7 +342,15 @@
     ],
     "horario": "Martes a domingo y festivos, 9:30 a. m.–4:30 p. m. (cerrado el martes siguiente a un lunes festivo).",
     "precio": "Adultos $18.000; niños $10.500; adultos mayores y PcD $9.000; extranjeros 10 USD (venta solo en taquilla).",
-    "direccion": "Corregimiento de Santa Elena, El Cerrito (Valle), a ~36 km de Cali."
+    "direccion": "Corregimiento de Santa Elena, El Cerrito (Valle), a ~36 km de Cali.",
+    "horario_en": "Tuesday to Sunday and holidays, 9:30 a.m. m.–4:30 p.m. m. (closed on the Tuesday following a holiday Monday).",
+    "tarifa_en": "Adults $18,000; children $10,500; older adults and PwD $9,000; foreigners 10 USD (sale only at the box office).",
+    "datos_historicos_en": "Built between 1816 and 1828. It was acquired by Jorge Isaacs' father in 1854. House museum administered by INCIVA; BIC of the Nation.",
+    "datos_curiosos_en": [
+      "Maria was published in 1867; In 2017 its 150 years were commemorated with the Jorge Isaacs Year.",
+      "In Efraín's room, fresh roses are renewed every day, in memory of the ones María brought him.",
+      "Jorge Isaacs was the face of the old 50,000 Colombian peso bill."
+    ]
   },
   {
     "id": "s50",
@@ -397,7 +443,7 @@
     "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Teatro_Municipal_de_Cali_-Panorama-.JPG",
     "image_credit": "Alejo1983, CC BY-SA 3.0, via Wikimedia Commons",
     "descripcion": "El máximo templo de las artes escénicas en Cali y uno de los más bellos de Latinoamérica. Este majestuoso edificio de estilo republicano con influencia francesa es un monumento nacional que respira historia. Su sala principal, adornada con frescos del maestro Ricardo Richinimy, lámparas de cristal y terciopelo rojo, ha recibido a las compañías de ópera, ballet y teatro más importantes del mundo. Su acústica es legendaria, considerada una de las mejores del continente, permitiendo apreciar cada nota y susurro.",
-    "descripcion_en": "The supreme temple of performing arts in Cali and one of the most beautiful in Latin America. This majestic Republican-style building with French influence is a national monument that breathes history. Its main hall, adorned with frescoes by master Ricardo Richinimy, crystal chandeliers, and red velvet, has hosted the most important opera, ballet, and theater companies in the world. Its acoustics are legendary, considered among the best on the continent, allowing every note and whisper to be appreciated.",
+    "descripcion_en": "The Enrique Buenaventura Municipal Theater is the ultimate jewel of culture and scenic architecture in southwestern Colombia. Inaugurated in 1927 with plans inspired by classical Italian opera, the theater boasts a monumental neoclassical façade and a horseshoe-shaped interior decorated with tempera frescoes on the central ceiling painted by the Italian artist Mauricio Ramelli, which represent scenes from the Divine Comedy and allegories of the muses of art. The theater was renamed in honor of the playwright Enrique Buenaventura, founder of the Cali Experimental Theater (TEC) and father of modern theater in Colombia. Located on Carrera 5 and Calle 7, in the heart of the historic center, the building stands on colonial stone foundations and borders the old Convent of the Company of Jesus. Its acoustics are considered perfect, attracting the most important opera, ballet and theater companies in the world, as well as the galas of the Cali International Theater Festival. Its surroundings invite you to take a walk through narrow streets full of colonial history, literary cafes and the constant memory of the era.",
     "importancia": "Es el escenario cultural más prestigioso y antiguo de la ciudad en funcionamiento.",
     "importancia_en": "It is the most prestigious and oldest operating cultural stage in the city.",
     "datosHistoricos": "Inaugurado en 1927. Fue rebautizado en honor al gran dramaturgo caleño Enrique Buenaventura, padre del Nuevo Teatro Colombiano.",
@@ -409,6 +455,13 @@
     "datosCuriosos_en": [
       "The main curtain was painted by Italian artist Ricardo Richinimy and is a work of art in itself.",
       "It has a capacity for over 1,000 spectators in its various seating areas."
+    ],
+    "horario_en": "Monday to Friday: 8:00 AM - 12:00 PM & 2:00 PM - 6:00 PM (Show times vary).",
+    "tarifa_en": "Free lobby entry (Guided tour $5,000 COP).",
+    "datos_historicos_en": "Inaugurated in 1927. It was renamed in honor of the great Cali playwright Enrique Buenaventura, father of the New Colombian Theater.",
+    "datos_curiosos_en": [
+      "The mouth curtain was painted by the Italian artist Ricardo Richinimy and is a work of art in itself.",
+      "It has capacity for more than 1,000 spectators in its various locations."
     ]
   },
   {
@@ -449,7 +502,7 @@
     "visitas": 800,
     "logoUrl": "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=800",
     "descripcion": "Con su imponente fachada de estilo neoclásico francés y sus delicados detalles ornamentales, el Jorge Isaacs es una joya arquitectónica en pleno centro de Cali. Su interior es aún más sorprendente, con una distribución clásica de palcos en forma de herradura y una ornamentación exquisita que evoca la Belle Époque. Es el escenario favorito para conciertos íntimos, espectáculos de comedia y grandes producciones musicales debido a su ambiente elegante, romántico y nostálgico.",
-    "descripcion_en": "With its imposing French neoclassical facade and delicate ornamental details, the Jorge Isaacs is an architectural jewel right in downtown Cali. Its interior is even more surprising, with a classic horseshoe-shaped box layout and exquisite ornamentation evoking the Belle Époque. It is the favorite venue for intimate concerts, comedy shows, and major musical productions due to its elegant, romantic, and nostalgic atmosphere.",
+    "descripcion_en": "In front of the Ortiz Bridge, next to La Ermita and the Parque de los Poetas, the Jorge Isaacs Theater gives the historic center an elegance from another era. It was born from a misfortune and an ambition: where the Teatro Salón Moderno once stood—consumed by a fire in 1928—the businessman Hermann S. Bohmer built a new theater and named it in honor of Jorge Isaacs, the author of María. It was inaugurated on December 26, 1931. \\n\\nIn French neoclassical style with nods to Italian romanticism, decorated with Ionic capitals, a stained glass window of the city's coat of arms and the effigy of the poet, it boasts one of the best acoustics in the country. After decades of abandonment, it was declared a National Monument and restored, and today it is once again home to concerts, opera and great shows.",
     "importancia": "Monumento Nacional y homenaje al autor de 'María', la novela cumbre del romanticismo latinoamericano.",
     "importancia_en": "National Monument and tribute to the author of 'María', the pinnacle novel of Latin American romanticism.",
     "datosHistoricos": "Abrió sus puertas en 1931. Estuvo cerrado y en ruinas durante años hasta su gloriosa restauración en los años 80, salvándolo de la demolición. Sala de 1.136 sillas en cuatro localidades.",
@@ -464,7 +517,15 @@
     ],
     "horario": "Abierto en días de función; taquilla y venta en línea según cartelera.",
     "precio": "Boletería según evento.",
-    "direccion": "Carrera 3 #12-28, centro."
+    "direccion": "Carrera 3 #12-28, centro.",
+    "horario_en": "Open on performance days; box office and online sales according to billboard.",
+    "tarifa_en": "Ticket according to event.",
+    "datos_historicos_en": "It opened its doors in 1931. It was closed and in ruins for years until its glorious restoration in the 80s, saving it from demolition. Room with 1,136 seats in four locations.",
+    "datos_curiosos_en": [
+      "A fire in its early years led to the creation of the Cali volunteer fire department.",
+      "Its acoustic box is one of the largest in Latin America.",
+      "Its name honors the author of María, Colombia's most famous romantic novel."
+    ]
   },
   {
     "id": "s41",
@@ -478,7 +539,7 @@
     "visitas": 700,
     "logoUrl": "https://images.unsplash.com/photo-1585699324551-f6c309eedeca?auto=format&fit=crop&w=800",
     "descripcion": "El Teatro Calima es un magnífico sobreviviente de la época dorada de los grandes cines de mediados de siglo XX. Su arquitectura modernista, caracterizada por líneas limpias y espacios amplios, junto con su enorme aforo, lo hacen único en la ciudad. Tras una cuidadosa restauración que le devolvió su esplendor original, ha vuelto a ser un epicentro cultural, acogiendo desde conciertos sinfónicos hasta shows de stand-up comedy. Su amplio lobby y fachada son inconfundibles en la Avenida Sexta.",
-    "descripcion_en": "The Calima Theater is a magnificent survivor of the golden age of mid-20th-century grand cinemas. Its modernist architecture, characterized by clean lines and ample spaces, along with its enormous capacity, make it unique in the city. After careful restoration that returned it to its original splendor, it has once again become a cultural epicenter, hosting everything from symphonic concerts to stand-up comedy shows. Its spacious lobby and facade are unmistakable on Sixth Avenue.",
+    "descripcion_en": "Where the pink zone begins on Sixth Avenue stands the Calima Theater, a chest of art loaded with history. Inaugurated on November 27, 1963 —with the film *A Night in Hong Kong*, within the 1st Japanese Film Festival—, it was one of the largest and most beloved movie theaters in Cali. Its name evokes the Calima indigenous people; Its Roman-style architecture arranges the stands in the shape of an amphitheater under a high nave, with capacity for about 1,265 spectators and good visibility from any chair. It is listed as an Asset of Cultural Interest and architectural heritage of the city.",
     "importancia": "Es uno de los Bienes de Interés Cultural más importantes del norte de Cali y un referente de la arquitectura moderna.",
     "importancia_en": "It is one of the most important Assets of Cultural Interest in northern Cali and a benchmark of modern architecture.",
     "datosHistoricos": "Inaugurado en 1963, fue durante décadas el cine más elegante y tecnológico de la ciudad.",
@@ -493,7 +554,14 @@
     ],
     "horario": "Según programación de eventos.",
     "precio": "Boletería según evento.",
-    "direccion": "Avenida Sexta (Calle 12 Nte #4-20)."
+    "direccion": "Avenida Sexta (Calle 12 Nte #4-20).",
+    "horario_en": "According to event programming.",
+    "tarifa_en": "Ticket according to event.",
+    "datos_historicos_en": "November 27, 1963: inauguration, under the direction of Galindo Buenaventura. \\n70s: headquarters of decisive film clubs, including Andrés Caicedo's Cali Film Club. \\nJuly 9, 1999: last screening and closing. \\nOctober 2016 – July 2017: complete restoration and reopening (with a work by the Bambazú group).",
+    "datos_curiosos_en": [
+      "The restoration recovered original details such as the chairs, the fountain and the bronze doors at the entrance, according to the Special Heritage Protection Plan.",
+      "It has a special location for 20 people with reduced mobility, with a \"caterpillar\" imported from Italy to facilitate access."
+    ]
   },
   {
     "id": "s42",
@@ -507,7 +575,7 @@
     "visitas": 400,
     "logoUrl": "https://images.unsplash.com/photo-1533488765986-dfa2a9939acd?auto=format&fit=crop&w=800",
     "descripcion": "Más que un simple teatro, Esquina Latina es un movimiento social y cultural con décadas de trayectoria. Ubicado cerca a la Universidad del Valle, este espacio se caracteriza por sus métodos de creación colectiva que abordan problemáticas sociales, políticas y juveniles del entorno. Su ambiente es vibrante, rebelde y profundamente comprometido con la comunidad. Aquí el teatro se utiliza como una poderosa herramienta de construcción de paz, memoria y reflexión crítica.",
-    "descripcion_en": "More than just a theater, Esquina Latina is a social and cultural movement with decades of history. Located near the Universidad del Valle, this space is characterized by its collective creation methods addressing social, political, and youth issues of the environment. Its atmosphere is vibrant, rebellious, and deeply committed to the community. Here theater is used as a powerful tool for peacebuilding, memory, and critical reflection.",
+    "descripcion_en": "In 1973, a group of students from different majors at the Universidad del Valle began to meet in their free time to do what they were most passionate about: acting. In a Cali that only had TEC, that university \"patch\" led by Orlando Cajamarca became Esquina Latina, today one of the most important theater organizations in southwestern Colombia, with more than fifty years of artistic stubbornness. \\n\\nBut what distinguishes Esquina Latina is not only its theater in the Tejares neighborhood of San Fernando: it is its conviction that theater is not for the elites. Through the \"Youth, Theater and Community\" program, active since 1987, it has brought theater to the communes of the east and the hillside of Cali and to municipalities hit by the conflict, training theater entertainers and using the stage as a tool of peace. Here the word \"cultural\" recovers its social meaning.",
     "importancia": "Referente nacional del teatro comunitario y la intervención social a través del arte.",
     "importancia_en": "National benchmark for community theater and social intervention through art.",
     "datosHistoricos": "Nació en 1973 como un grupo estudiantil de la Universidad del Valle y se consolidó como fundación independiente. Fundado en 1973 por Orlando Cajamarca.",
@@ -522,7 +590,15 @@
     ],
     "horario": "Obras para jóvenes y adultos: sábados 7:30 p. m.; funciones familiares: domingos 11:00 a. m. (con inscripción previa); conciertos: un viernes al mes, 7:30 p. m. (la programación varía; se consulta en redes).",
     "precio": "Boletería según función (Sala Concertada).",
-    "direccion": "Calle 4 Oeste #35-30, barrio Tejares de San Fernando (junto al Parque de las Piedras)."
+    "direccion": "Calle 4 Oeste #35-30, barrio Tejares de San Fernando (junto al Parque de las Piedras).",
+    "horario_en": "Works for young people and adults: Saturdays 7:30 p.m. m.; Family Functions: Sundays 11:00 a.m. m. (with prior registration); concerts: one Friday a month, 7:30 p.m. m. (programming varies; consult networks).",
+    "tarifa_en": "Ticket office according to function (Concerted Room).",
+    "datos_historicos_en": "It was born in 1973 as a student group at the Universidad del Valle and was consolidated as an independent foundation. Founded in 1973 by Orlando Cajamarca.",
+    "datos_curiosos_en": [
+      "Its \"Youth, Theater and Community\" program has been working since 1987 in vulnerable communes and municipalities of the Valley and northern Cauca.",
+      "Thousands of people from popular sectors have gone on stage for the first time thanks to their Popular Theater Network.",
+      "Its founding director, Orlando Cajamarca, is a doctor, playwright and nationally and internationally awarded director."
+    ]
   },
   {
     "id": "s44",
@@ -614,7 +690,7 @@
     "visitas": 300,
     "logoUrl": "https://images.unsplash.com/photo-1507924538820-ede94a04019d?auto=format&fit=crop&w=800",
     "descripcion": "Una casa tradicional transformada en un escenario vibrante. Domus Teatro se caracteriza por su atmósfera familiar, acogedora y su extrema cercanía con el público. Es un espacio que apuesta decididamente por la dramaturgia propia y contemporánea, ofreciendo obras que reflexionan sobre la cotidianidad, el humor y la condición humana. Su patio interior y su pequeño café son ideales para charlar con los artistas después de la función.",
-    "descripcion_en": "A traditional house transformed into a vibrant stage. Domus Theater is characterized by its family-friendly, cozy atmosphere and extreme proximity to the audience. It is a space strongly committed to original and contemporary dramaturgy, offering plays that reflect on everyday life, humor, and the human condition. Its interior courtyard and small cafe are ideal for chatting with the artists after the show.",
+    "descripcion_en": "In an old house in the San Fernando neighborhood, adapted as a house-theater, beats Domus Teatro: an intimate room-studio, one of those designed not to fill large capacities but to form an audience. Founded in 1994 by Manuel Sierra and Luz Stella Gil, the Domus Teatro Foundation has since offered a permanent cultural program that includes theater, music, dance, pictorial exhibitions and conversations. Its rooms are small—for 50 or 70 spectators—with the idea of ​​cultivating, show by show, the spectators that Cali needs.",
     "importancia": "Espacio vital para la circulación de nuevos grupos teatrales y dramaturgos caleños.",
     "importancia_en": "Vital space for the circulation of new theater groups and Cali playwrights.",
     "datosHistoricos": "Surgió como una iniciativa independiente para descentralizar el teatro y ofrecer espacios alternativos.",
@@ -628,7 +704,15 @@
       "They offer therapeutic theater workshops and workshops for non-actors."
     ],
     "horario": "Funciones según cartelera (habitualmente fines de semana).",
-    "precio": "Boletería, con descuento para estudiantes."
+    "precio": "Boletería, con descuento para estudiantes.",
+    "horario_en": "Functions according to billboard (usually weekends).",
+    "tarifa_en": "Ticket office, with a discount for students.",
+    "datos_historicos_en": "1994: foundation of Domus Teatro by Manuel Sierra and Luz Stella Gil. Late 90s: the hall promotes a Festival of Halls in concert. It has maintained its own repertoire and continuous programming for more than 31 years (as of 2025).",
+    "datos_curiosos_en": [
+      "Domus is defined as a \"studio-room\": training and creation are as important as the exhibition.",
+      "He has invited important groups such as Ditirambo (Bogotá).",
+      "Its philosophy is summarized by a phrase from its founders to the artists they invite: \"Come on, let's study.\""
+    ]
   },
   {
     "id": "s69",
@@ -642,7 +726,7 @@
     "visitas": 400,
     "logoUrl": "https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?auto=format&fit=crop&w=800",
     "descripcion": "Ubicado en una imponente y hermosa casona de arquitectura republicana en las faldas de San Antonio, Cali Teatro combina la elegancia del pasado con la vitalidad del teatro moderno. Dirigido por el maestro Álvaro Arcos, se destaca por montajes de altísima calidad técnica y estética, que van desde clásicos universales hasta adaptaciones de literatura colombiana. Es un espacio con una mística y tradición únicas en la ciudad.",
-    "descripcion_en": "Located in an imposing and beautiful Republican-architecture mansion on the slopes of San Antonio, Cali Theater combines the elegance of the past with the vitality of modern theater. Directed by master Álvaro Arcos, it stands out for productions of very high technical and aesthetic quality, ranging from universal classics to adaptations of Colombian literature. It is a space with unique mystique and tradition in the city.",
+    "descripcion_en": "Cali Teatro operates in a house in the traditional San Antonio neighborhood, one of the largest and best-equipped independent theaters in the city. The Cali Teatro Stage Foundation was born in 1989 and, from its own headquarters, has built a space with capacity for about 150 spectators in the stalls and box, with an anteroom, cafeteria and a permanent exhibition of graphic material that bears witness to its career. For about ten months a year it programs theater seasons with its regular cast and guest groups from the city, the country and abroad.",
     "importancia": "Referente indiscutible de calidad escénica y formación de actores profesionales en la ciudad.",
     "importancia_en": "Undisputable benchmark of scenic quality and professional actor training in the city.",
     "datosHistoricos": "Fundado en 1989, ocupa y conserva una casa patrimonial de finales del siglo XIX.",
@@ -656,7 +740,14 @@
       "Its dressing rooms hold stories and signatures of great national actors."
     ],
     "horario": "Funciones según cartelera (habitualmente de jueves a domingo); atención administrativa L–V.",
-    "precio": "Boletería según función."
+    "precio": "Boletería según función.",
+    "horario_en": "Functions according to billboard (usually from Thursday to Sunday); administrative care M–F.",
+    "tarifa_en": "Ticket office according to function.",
+    "datos_historicos_en": "Foundation of the Cali Teatro Stage Foundation in 1989. It has performed more than 38 productions throughout its history. In 2021 the \"Alternative Theater Exhibition but of Good Good\" festival is created.",
+    "datos_curiosos_en": [
+      "Its 150-seat room is cinema-type, and the stage has a pit or stage trap.",
+      "Much of its recent programming addresses sensitive and contemporary topics: mental health, eating disorders, LGBTIQ+ population."
+    ]
   },
   {
     "id": "s70",
@@ -670,7 +761,7 @@
     "visitas": 300,
     "logoUrl": "https://images.unsplash.com/photo-1471478331149-c72f17e33c73?auto=format&fit=crop&w=800",
     "descripcion": "Un verdadero laboratorio escénico ubicado en el barrio Granada. El Teatro del Presagio es conocido por su apuesta radical por la investigación y la creación colectiva. Sus obras suelen mezclar diversos lenguajes artísticos, desde lo visual hasta lo sonoro, buscando constantemente nuevas formas de narrar. Es sede frecuente de la Universidad del Valle para sus muestras de tesis, lo que garantiza frescura y vanguardia en su programación.",
-    "descripcion_en": "A true scenic laboratory located in the Granada neighborhood. Presagio Theater is known for its radical commitment to research and collective creation. Its plays often mix diverse artistic languages, from visual to sonic, constantly seeking new ways to narrate. It is a frequent venue for Universidad del Valle for its thesis showcases, guaranteeing freshness and avant-garde in its programming.",
+    "descripcion_en": "The Teatro del Presagio was born in 2005 as a professional theater group formed by graduates in dramatic art from Cali, dedicated to research, creation and stage production. After almost ten years of itinerant work, in November 2014 he opened his own room—a cultural space—in the Granada neighborhood, an area of ​​cafes, restaurants and antique shops that until then had no real setting for the arts. Their proposal flees from large commercial spectacles: it is built, as they themselves say, \"from astonishment and the brief emotions that arise between the light.\"",
     "importancia": "Puente fundamental entre el teatro académico experimental y el público general.",
     "importancia_en": "Fundamental bridge between experimental academic theater and the general public.",
     "datosHistoricos": "El grupo se fundó en el año 2000, consolidando su sala propia años después para tener libertad creativa.",
@@ -684,7 +775,14 @@
       "Its colorful and artistic facade is unmistakable on 9N Avenue."
     ],
     "horario": "Viernes y sábado 7:30 p. m.; temporada familiar los domingos 4:00 p. m.",
-    "precio": "Boletería según función."
+    "precio": "Boletería según función.",
+    "horario_en": "Friday and Saturday 7:30 p.m. m.; family season Sundays 4:00 p.m. m.",
+    "tarifa_en": "Ticket office according to function.",
+    "datos_historicos_en": "2005: the group is formed, with dramaturgy and direction by Diego Fernando Montoya. \\nNovember 2014: inaugurates its own headquarters in the Granada neighborhood. \\nSince 2019: holds the Queer Art Meeting, with a rich artistic and academic agenda.",
+    "datos_curiosos_en": [
+      "Its usual programming is Friday and Saturday at 7:30 p.m. m., with a family season on Sundays at 4:00 p.m. m.",
+      "It has a program dedicated to forming new audiences among children and young people in educational institutions."
+    ]
   },
   {
     "id": "s96",
@@ -724,7 +822,7 @@
     "visitas": 1520,
     "logoUrl": "https://images.unsplash.com/photo-1626127027476-3392eedd9427?auto=format&fit=crop&w=800",
     "descripcion": "Es la 'sala de recibo' moderna de Cali. Un extenso y ventilado paseo peatonal a orillas del río que transformó el centro de la ciudad. Aquí la brisa de la tarde es la protagonista. Es el lugar democrático donde convergen caleños de todas las edades y clases sociales para caminar, tomar un café, escuchar música espontánea o simplemente ver pasar la vida. Conecta la arquitectura histórica del Puente Ortiz y la Ermita con la modernidad del centro administrativo. Inaugurado en 2013, tras peatonalizar el antiguo tramo de la Avenida Colombia a orillas del río Cali.",
-    "descripcion_en": "It is Cali's modern 'living room'. An extensive and breezy pedestrian promenade along the riverbanks that transformed the city center. Here, the afternoon breeze is the protagonist. It is the democratic place where Cali residents of all ages and social classes converge to walk, have a coffee, listen to spontaneous music, or simply watch life go by. It connects the historical architecture of the Ortiz Bridge and La Ermita with the modernity of the administrative center.",
+    "descripcion_en": "It is Cali's modern 'reception room'. An extensive and airy pedestrian promenade on the banks of the river that transformed the city center. Here the afternoon breeze is the protagonist. It is the democratic place where people from Cali of all ages and social classes converge to walk, have a coffee, listen to spontaneous music or simply watch life go by. It connects the historical architecture of the Ortiz Bridge and the Hermitage with the modernity of the administrative center. Inaugurated in 2013, after pedestrianizing the old section of Colombia Avenue on the banks of the Cali River.",
     "importancia": "La obra de renovación urbana más importante del siglo XXI en Cali, recuperando el espacio público para el peatón.",
     "importancia_en": "The most important urban renewal project of the 21st century in Cali, reclaiming public space for pedestrians.",
     "datosHistoricos": "Inaugurado en 2013. Se construyó sobre el túnel de la Avenida Colombia, el túnel urbano más largo del país en su momento.",
@@ -738,7 +836,15 @@
       "Along the boulevard, you will find sculptures and visible remains of the old Ortiz Bridge."
     ],
     "horario": "Espacio público abierto.",
-    "precio": "Libre."
+    "precio": "Libre.",
+    "horario_en": "Open public space.",
+    "tarifa_en": "Free.",
+    "datos_historicos_en": "Built starting in 2012 within the \"Megaobras\" program of the administration of Mayor Rodrigo Guerrero, it was inaugurated on May 16, 2013, on the longest urban tunnel in the country.",
+    "datos_curiosos_en": [
+      "The pedestrian promenade extends about 980 meters over the \"World Cup Tunnel.\"",
+      "Between 6,000 and 7,000 people walk through it every day.",
+      "His \"bridge of love\" was filled with padlocks, in the style of the Pont des Arts in Paris."
+    ]
   },
   {
     "id": "s5",
@@ -778,7 +884,7 @@
     "visitas": 1600,
     "logoUrl": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800",
     "descripcion": "Una deliciosa galería de arte a cielo abierto a orillas del río Cali. Presidida por el monumental 'Gato del Río', una obra en bronce del maestro Hernando Tejada, esta zona verde se convirtió en el hogar de sus 'novias': una colección de más de 15 gatas esculpidas e intervenidas pictóricamente por reconocidos artistas colombianos (como Maripaz Jaramillo, Omar Rayo, etc.). Cada gata tiene una personalidad, historia y diseño único. Es un paseo colorido, artístico y refrescante. El Gato del Río, de Hernando Tejada, se instaló el 3 de julio de 1996; 'Las Gatas del Río' (esculturas intervenidas por distintos artistas) se sumaron en 2006.",
-    "descripcion_en": "A delightful open-air art gallery on the banks of the Cali River. Presided over by the monumental 'River Cat', a bronze work by master Hernando Tejada, this green area became the home of his 'girlfriends': a collection of over 15 female cats sculpted and pictorially intervened by renowned Colombian artists (such as Maripaz Jaramillo, Omar Rayo, etc.). Each cat has a unique personality, history, and design. It is a colorful, artistic, and refreshing walk.",
+    "descripcion_en": "A delicious open-air art gallery on the banks of the Cali River. Presided over by the monumental 'Cat of the River', a bronze work by master Hernando Tejada, this green area became the home of his 'brides': a collection of more than 15 cats sculpted and painted by renowned Colombian artists (such as Maripaz Jaramillo, Omar Rayo, etc.). Each cat has a unique personality, history and design. It is a colorful, artistic and refreshing walk. El Gato del Río, by Hernando Tejada, was installed on July 3, 1996; 'Las Gatas del Río' (sculptures made by different artists) were added in 2006.",
     "importancia": "Recuperación exitosa de la ribera del río a través del arte público masivo y de calidad.",
     "importancia_en": "Successful recovery of the riverbank through massive and high-quality public art.",
     "datosHistoricos": "El Gato fue donado por el artista en 1996. Las 'novias del gato' se añadieron años después como parte de un proyecto de la Cámara de Comercio.",
@@ -792,7 +898,15 @@
       "The female cats are periodically painted or restored, so the park always offers something new."
     ],
     "horario": "Parque abierto todo el día.",
-    "precio": "Gratuita."
+    "precio": "Gratuita.",
+    "horario_en": "Park open all day.",
+    "tarifa_en": "Free.",
+    "datos_historicos_en": "Bronze sculpture by Hernando Tejada, inaugurated on July 3, 1996 on the banks of the Cali River. In 2006, \"the cat's girlfriends/cats\" were added, sculptures made by various artists, promoted by the Tejada family and the Chamber of Commerce.",
+    "datos_curiosos_en": [
+      "It weighs around three tons and was cast in Bogotá.",
+      "Each of the \"cats\" was decorated by a different artist.",
+      "It is one of the most visited and photographed monuments in the city."
+    ]
   },
   {
     "id": "s11",
@@ -806,7 +920,7 @@
     "visitas": 1300,
     "logoUrl": "https://images.unsplash.com/photo-1590059533324-5d2f62b6048c?auto=format&fit=crop&w=800",
     "descripcion": "El corazón de la artesanía y la cultura bohemia en Cali. Este parque artesanal, construido arquitectónicamente en niveles sobre una colina, está lleno de casetas donde artesanos locales fabrican y venden joyas, trabajos en cuero, madera e instrumentos musicales. Pero más que un mercado, es un centro cultural vivo: los jueves son noches de narración oral (cuenteros), y los fines de semana hay danzas folclóricas y música andina en vivo. Un espacio de resistencia cultural. Se consolidó como parque y mercado artesanal en las últimas décadas del siglo XX; es punto de referencia del comercio artesanal caleño.",
-    "descripcion_en": "The heart of craftsmanship and bohemian culture in Cali. This artisan park, architecturally built in tiers on a hill, is full of stalls where local artisans make and sell jewelry, leather work, wood, and musical instruments. But more than a market, it is a living cultural center: Thursdays are storytelling nights, and weekends feature folk dances and live Andean music. A space of cultural resistance.",
+    "descripcion_en": "The heart of crafts and bohemian culture in Cali. This craft park, architecturally built in tiers on a hill, is filled with booths where local artisans make and sell jewelry, leather work, wood, and musical instruments. But more than a market, it is a living cultural center: Thursdays are nights of oral storytelling (storytellers), and on weekends there are folk dances and live Andean music. A space of cultural resistance. It was consolidated as a park and craft market in the last decades of the 20th century; It is a reference point for the Cali artisan trade.",
     "importancia": "Espacio vital para la economía de los artesanos y la preservación de tradiciones orales y manuales.",
     "importancia_en": "Vital space for the artisans' economy and the preservation of oral and manual traditions.",
     "datosHistoricos": "Inaugurado en 1987. El lugar tiene una leyenda colonial sobre una 'mano negra' que señalaba la loma, donde se puso una cruz para conjurar el miedo.",
@@ -820,7 +934,15 @@
       "Here you can get the best Andean musical instruments in the city."
     ],
     "horario": "Abierto a diario, con más ambiente en la tarde-noche.",
-    "precio": "Ingreso libre (las artesanías y la comida se pagan aparte)."
+    "precio": "Ingreso libre (las artesanías y la comida se pagan aparte).",
+    "horario_en": "Open daily, with more atmosphere in the evening.",
+    "tarifa_en": "Free entry (crafts and food are paid separately).",
+    "datos_historicos_en": "The project began in 1987 at the initiative of Artesanías de Colombia (promoted by María Cristina Palau Londoño) and was officially inaugurated on July 12, 1990. In 1993 it passed to municipal administration.",
+    "datos_curiosos_en": [
+      "It owes its name to the cross on the hill, shrouded in Cali legends from the 16th century.",
+      "It brings together around 120 artisan families on its four levels.",
+      "Its theater hosts films, stories and poetry recitals."
+    ]
   },
   {
     "id": "s16",
@@ -834,7 +956,7 @@
     "visitas": 2100,
     "logoUrl": "https://images.unsplash.com/photo-1549643276-8e50b691079d?auto=format&fit=crop&w=800",
     "descripcion": "Una fantasía gótica en el trópico. La Ermita es quizás la postal más reconocida de Cali. Su arquitectura neogótica, inspirada en la Catedral de Ulm (Alemania), contrasta con la modernidad del Bulevar del Río. Sus agujas blancas se elevan hacia el cielo, y su interior alberga vitrales holandeses, campanas francesas y un órgano alemán. Es un símbolo de fe y resiliencia, reconstruida tras el terremoto que destruyó la capilla original.",
-    "descripcion_en": "A Gothic fantasy in the tropics. La Ermita is perhaps Cali's most recognized postcard. Its neo-Gothic architecture, inspired by Ulm Cathedral (Germany), contrasts with the modernity of the River Boulevard. Its white spires rise towards the sky, and its interior houses Dutch stained glass, French bells, and a German organ. It is a symbol of faith and resilience, rebuilt after the earthquake that destroyed the original chapel.",
+    "descripcion_en": "The neo-Gothic image of La Ermita, blue and white next to the river, is one of the most recognized postcards of Cali. But the church we see today is relatively young: the original hermitage, built at the beginning of the 17th century, was destroyed by the earthquake of June 7, 1925; Only the venerated image of the Lord of the Reed was saved from it. On these ruins, two Cali sisters - Micaela and Asunción Castro Borrero - promoted the construction of the current temple, inspired by the cathedral of Ulm, in Germany.\\n\\nCompleted in concrete and inaugurated in 1942, La Ermita is almost a catalog of the world brought to Cali: Carrara marble on its altars, bells cast in France, and a musical clock and stained glass windows with the twelve apostles commissioned in Amsterdam. A little piece of Europe on the riverbank, which survived where the city lost almost all of its ancient architecture.",
     "importancia": "Hito arquitectónico y religioso más fotografiado de la ciudad.",
     "importancia_en": "Most photographed architectural and religious landmark of the city.",
     "datosHistoricos": "La construcción actual se inició en 1930 y finalizó en 1942, reemplazando una capilla del siglo XVII. El templo neogótico actual se construyó en la primera mitad del siglo XX (décadas de 1930–1940), en reemplazo de la ermita colonial arruinada por los terremotos; su estilo se inspira en las catedrales góticas europeas.",
@@ -850,7 +972,15 @@
     ],
     "horario": "Abierta al público en horarios de culto (misas).",
     "precio": "Entrada gratuita.",
-    "direccion": "Carrera 1ª con Calle 13, a orillas del río Cali."
+    "direccion": "Carrera 1ª con Calle 13, a orillas del río Cali.",
+    "horario_en": "Open to the public during worship hours (masses).",
+    "tarifa_en": "Free admission.",
+    "datos_historicos_en": "The current construction began in 1930 and was completed in 1942, replacing a 17th-century chapel. The current neo-Gothic temple was built in the first half of the 20th century (1930s–1940s), replacing the colonial hermitage ruined by earthquakes; Its style is inspired by European Gothic cathedrals.",
+    "datos_curiosos_en": [
+      "It keeps the image of the 'Lord of the Cane', the only survivor of the 1787 earthquake.",
+      "Its musical clock rings every hour, brightening the center.",
+      "It preserves the colonial image of the Lord of the Cane (or Lord of Miracles), survivor of the earthquakes."
+    ]
   },
   {
     "id": "s17",
@@ -890,7 +1020,7 @@
     "visitas": 500,
     "logoUrl": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800",
     "descripcion": "Un pulmón verde secreto en el oeste de la ciudad. Este espacio está dedicado a la conservación del bosque seco tropical, uno de los ecosistemas más amenazados. Recorrer sus senderos es desconectarse del ruido urbano y entrar en un mundo de mariposas, aves y vegetación nativa. Cuenta con miradores naturales hacia la ciudad y una estación experimental de plantas. Es ideal para el senderismo suave y la educación ambiental.",
-    "descripcion_en": "A secret green lung in the west of the city. This space is dedicated to the conservation of the tropical dry forest, one of the most threatened ecosystems. Walking its trails is disconnecting from urban noise and entering a world of butterflies, birds, and native vegetation. It features natural viewpoints towards the city and an experimental plant station. It is ideal for gentle hiking and environmental education.",
+    "descripcion_en": "In the middle basin of the Cali River, a stone's throw from the Zoo, one of the last relics of the tropical dry forest survives—one of the most threatened ecosystems on the planet—turned into a garden. The project was born in 2001 from the efforts of biologist Jorge Enrique Orejuela and other people and institutions that set out to recover the river basin; The energy company EPSA gave on loan the hectares where samanes, guayacans and orchids grow today, one hundred species of butterflies flutter and more than one hundred birds nest. \\n\\nSince 2017, the Cali Zoological Foundation renovated it with a master plan that includes a four-story viewpoint designed by architect Simón Vélez, from where the forest canopy and the mountain range can be seen. It is a biodiversity refuge and outdoor classroom at the same time.",
     "importancia": "Reserva vital del ecosistema de Bosque Seco Tropical dentro del área urbana.",
     "importancia_en": "Vital reserve of the Tropical Dry Forest ecosystem within the urban area.",
     "datosHistoricos": "Promovido por la Fundación Zoológica de Cali para expandir la conservación vegetal. Reabierto al público en septiembre de 2024; administrado por la Fundación Zoológico de Cali.",
@@ -905,7 +1035,15 @@
     ],
     "horario": "Jueves a domingo, 9:00 a. m.–3:00 p. m. (último ingreso hacia las 2:00 p. m.).",
     "precio": "Adultos (13+) $17.000; niños (2–12) $15.000; combo con el Zoológico $40.000 / $30.000. Boletas en las taquillas del Zoológico o en TuBoleta.",
-    "direccion": "Oeste de Cali, sobre la cuenca del río Cali (contiguo al Zoológico de Cali), en terrenos de Celsia."
+    "direccion": "Oeste de Cali, sobre la cuenca del río Cali (contiguo al Zoológico de Cali), en terrenos de Celsia.",
+    "horario_en": "Thursday to Sunday, 9:00 a.m. m.–3:00 p.m. m. (last entry around 2:00 p.m.).",
+    "tarifa_en": "Adults (13+) $17,000; children (2–12) $15,000; combo with the Zoo $40,000 / $30,000. Tickets at the Zoo ticket offices or at TuBoleta.",
+    "datos_historicos_en": "Promoted by the Cali Zoological Foundation to expand plant conservation. Reopened to the public in September 2024; managed by the Cali Zoo Foundation.",
+    "datos_curiosos_en": [
+      "It is home to more than 190 species of plants, a hundred butterflies and about 120 species of birds.",
+      "Its viewpoint-tower was designed by Simón Vélez, world master of guadua architecture.",
+      "The forest it protects helps regulate the basin from which Cali takes much of its water."
+    ]
   },
   {
     "id": "s19",
@@ -945,7 +1083,7 @@
     "visitas": 3000,
     "logoUrl": "https://images.unsplash.com/photo-1447752875253-b791008657a7?auto=format&fit=crop&w=800",
     "descripcion": "Si quieres saber qué hace un caleño auténtico el domingo, ve a Pance. Este río de aguas frías y cristalinas que baja directamente de los Farallones es el balneario natural y democrático de la ciudad. El ecoparque ofrece senderos para caminar, zonas de picnic, lagos y acceso directo al río. Es un ritual sagrado sumergirse en sus aguas para 'sacarse el calor' y luego disfrutar de un sancocho de gallina en leña en los restaurantes aledaños. El río Pance nace en el Parque Nacional Natural Farallones de Cali; su ribera se consolidó como zona de recreación y ecoparque de la ciudad.",
-    "descripcion_en": "If you want to know what an authentic Caleño does on Sunday, go to Pance. This river of cold, crystalline waters coming directly down from the Farallones is the city's natural and democratic spa. The ecopark offers walking trails, picnic areas, lakes, and direct river access. It is a sacred ritual to immerse yourself in its waters to 'beat the heat' and then enjoy a chicken sancocho cooked on firewood in the nearby restaurants.",
+    "descripcion_en": "If you want to know what a real Caleño does on Sunday, go to Pance. This river with cold, crystalline waters that flows directly from the Farallones is the natural and democratic spa of the city. The ecopark offers walking trails, picnic areas, lakes and direct access to the river. It is a sacred ritual to immerse yourself in its waters to 'get off the heat' and then enjoy a wood-fired chicken stew in the surrounding restaurants. The Pance River rises in the Farallones de Cali National Natural Park; Its riverbank was consolidated as a recreation area and ecopark of the city.",
     "importancia": "Principal fuente hídrica recreativa y corredor ecológico vital de la ciudad.",
     "importancia_en": "Main recreational water source and vital ecological corridor of the city.",
     "datosHistoricos": "El río nace en el Parque Nacional Natural Farallones de Cali, una de las zonas más biodiversas.",
@@ -959,7 +1097,15 @@
       "It is an excellent place for birdwatching at sunrise."
     ],
     "horario": "Abierto; zona de baño en el río y senderos (mayor afluencia los fines de semana).",
-    "precio": "Ingreso libre (algunos servicios y parqueaderos privados aparte)."
+    "precio": "Ingreso libre (algunos servicios y parqueaderos privados aparte).",
+    "horario_en": "Open; Bathing area in the river and trails (higher influx on weekends).",
+    "tarifa_en": "Free entry (some services and private parking spaces apart).",
+    "datos_historicos_en": "The Government of the Valley acquired the properties around 1970 to create the Popular and Recreational Spa of the Pance River. Since 1985 it has been administered by the Corporation for Popular Recreation, which consolidated the \"Health Park\".",
+    "datos_curiosos_en": [
+      "The Pance River rises in the Farallones de Cali National Natural Park, at about 4,000 m above sea level. n. m.",
+      "On sunny weekends it can receive tens of thousands of visitors.",
+      "Its name comes from the Pance indigenous people, former inhabitants of the area."
+    ]
   },
   {
     "id": "s21",
@@ -973,7 +1119,7 @@
     "visitas": 1400,
     "logoUrl": "https://images.unsplash.com/photo-1542300057-0cb85d0d8e95?auto=format&fit=crop&w=800",
     "descripcion": "Un espacio público moderno dedicado a la memoria sonora de la ciudad. Ubicada frente al CAM (Centro Administrativo Municipal), esta plazoleta rinde homenaje al maestro Jairo Varela, creador del legendario Grupo Niche. Su atracción principal es 'Niche', una escultura sonora monumental en forma de trompetas y campanas. Si te paras debajo de ellas, escucharás los clásicos de la salsa como 'Cali Pachanguero'. Alberga también el Museo Jairo Varela en el segundo piso.",
-    "descripcion_en": "A modern public space dedicated to the city's sonic memory. Located in front of the CAM (Municipal Administrative Center), this square pays tribute to maestro Jairo Varela, creator of the legendary Grupo Niche. Its main attraction is 'Niche', a monumental sound sculpture in the shape of trumpets and bells. If you stand under them, you will hear salsa classics like 'Cali Pachanguero'. It also houses the Jairo Varela Museum on the second floor.",
+    "descripcion_en": "In front of the CAM, in the heart of the center, this small square turns Cali's salsa memory into a public space. It is dedicated to Jairo Varela (1949-2012), the Chocoano musician founder and director of Grupo Niche, author of \"Cali pachanguero\", that unofficial anthem of the city. Instead of a traditional bust, his tribute is a sound sculpture: an eight-meter golden structure, the work of architect Freddy Pantoja, which forms the word \"NICHE\" with trumpets and trombones and through whose bells the group's music really sounds.\\n\\nPeople approach, discover the name hidden in the instrument, get under it to listen and end up dancing a few steps before continuing on their way. Next to the sculpture is the museum dedicated to the master. It is the urban recognition that in Cali salsa is not just rumba: it is heritage and identity.",
     "importancia": "Reconocimiento a la identidad salsera de Cali y a su compositor más prolífico.",
     "importancia_en": "Recognition of Cali's salsa identity and its most prolific composer.",
     "datosHistoricos": "Inaugurada en 2013, un año después del fallecimiento del maestro Varela, como regalo a la ciudad.",
@@ -985,6 +1131,14 @@
     "datosCuriosos_en": [
       "The sculpture spells the word 'NICHE' if viewed from the air.",
       "It is a popular meeting point for salsa dancers and tourists."
+    ],
+    "horario_en": "Public access 24/7.",
+    "tarifa_en": "Free.",
+    "datos_historicos_en": "Small square dedicated to Jairo Varela, in the center of Cali in front of the CAM. His sound sculpture \"Niche\", by architect Freddy Pantoja, won a public competition (with a jury that included the maestro's daughter, Cristina Varela, and the writer Umberto Valverde) and was inaugurated in December 2015.",
+    "datos_curiosos_en": [
+      "The sculpture, about 8 meters, forms the word \"NICHE\" with trumpets and trombones.",
+      "Music recorded by Grupo Niche itself plays through its bells.",
+      "Next to the square there is a museum dedicated to Jairo Varela."
     ]
   },
   {
@@ -999,7 +1153,7 @@
     "visitas": 1900,
     "logoUrl": "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800",
     "descripcion": "Parque tradicional del barrio San Fernando, cuyo nombre proviene de una escultura de un perro instalada en el lugar; con los años se transformó en una de las principales zonas de gastronomía y rumba de Cali.",
-    "descripcion_en": "The social and gastronomic heart of the San Fernando neighborhood. This small triangular park, presided over by the statue of a dog 'Teddy', is the starting point for a night of fun. Dozens of restaurants, bars, and ice cream shops cluster around it, offering everything from gourmet fast food to international dishes. The atmosphere is young, vibrant, and very busy, especially on weekends.",
+    "descripcion_en": "Traditional park in the San Fernando neighborhood, whose name comes from a sculpture of a dog installed there; Over the years it became one of the main gastronomy and party areas in Cali.",
     "importancia": "Epicentro de la vida social y nocturna del sur de Cali.",
     "importancia_en": "Epicenter of social and nightlife in southern Cali.",
     "datosHistoricos": "El monumento al perro Teddy fue instalado en los años 70 en honor a la mascota de una casa vecina que 'cuidaba' el parque.",
@@ -1013,7 +1167,15 @@
       "It is famous for its 'cholados' and 'mazorcas' stalls."
     ],
     "horario": "Zona abierta; fuerte vida nocturna.",
-    "precio": "Libre (consumos aparte)."
+    "precio": "Libre (consumos aparte).",
+    "horario_en": "open area; strong nightlife.",
+    "tarifa_en": "Free (consumptions apart).",
+    "datos_historicos_en": "The statue of Teddy the dog was installed in 1970 by Víctor Alberto Delgado Mallarino, in a traditional park in the San Fernando neighborhood that, over time, became a gastronomy and nightlife area.",
+    "datos_curiosos_en": [
+      "The park was previously called \"Heart Park\" because of its shape.",
+      "Under the statue rest the remains of the dog Teddy.",
+      "It is close to the salsotecas on Calle 5 and Loma de la Cruz."
+    ]
   },
   {
     "id": "s26",
@@ -1053,7 +1215,7 @@
     "visitas": 900,
     "logoUrl": "https://images.unsplash.com/photo-1447752875253-b791008657a7?auto=format&fit=crop&w=800",
     "descripcion": "Un humedal tranquilo y hermoso en el sur de la ciudad, ideal para la contemplación y el silencio. El parque gira en torno a un lago rodeado de vegetación espesa donde habitan, como su nombre lo indica, garzas, patos, iguanas y tortugas. Sus senderos de madera y tierra permiten un recorrido relajante bajo la sombra. Es un refugio perfecto para leer, meditar o pasear con niños pequeños en contacto directo con la naturaleza.",
-    "descripcion_en": "A quiet and beautiful wetland in the south of the city, ideal for contemplation and silence. The park revolves around a lake surrounded by thick vegetation inhabited, as its name suggests, by herons, ducks, iguanas, and turtles. Its wooden and dirt paths allow a relaxing tour under the shade. It is a perfect refuge for reading, meditating, or walking with small children in direct contact with nature.",
+    "descripcion_en": "In the heart of commune 22, south of the city, the Lago de las Garzas Ecopark is an unexpected oasis: a wetland and one of the few remnants of tropical dry forest left in Cali, fed by the waters of the Pance River. Herons, tinguas, turtles, squirrels, iguanas, butterflies and dozens of species of resident and migratory birds coexist around its mirror of water, which come to rest on their journey between continents. There is a wooden dock for bird watching, ecological trails and an environment designed for \"passive recreation\": observing, breathing and disconnecting without disturbing the ecosystem.",
     "importancia": "Humedal urbano clave para la regulación hídrica y refugio de fauna silvestre.",
     "importancia_en": "Key urban wetland for water regulation and wildlife refuge.",
     "datosHistoricos": "Recuperado por la gestión comunitaria y ambiental para evitar su urbanización.",
@@ -1067,7 +1229,15 @@
       "Music and loud noise are not allowed to protect the wildlife."
     ],
     "horario": "Martes a domingo, 8:00 a. m.–5:00 p. m. (lunes cerrado).",
-    "precio": "Entrada gratuita."
+    "precio": "Entrada gratuita.",
+    "horario_en": "Tuesday to Sunday, 8:00 a.m. m.–5:00 p.m. m. (Monday closed).",
+    "tarifa_en": "Free admission.",
+    "datos_historicos_en": "It was born from a tragedy: the crash of American Airlines Flight 965 in 1995. In 1996, recovery work began and 400 trees were planted in memory of the victims. In 2002 it was included in the Territorial Planning Plan.",
+    "datos_curiosos_en": [
+      "It has an approximate area of ​​4.7 hectares, with a lake of about 0.8 hectares.",
+      "It is home to more than 80 species of birds and more than 70 species of butterflies.",
+      "It receives around 60,000 visitors a year."
+    ]
   },
   {
     "id": "s39",
@@ -1081,7 +1251,7 @@
     "visitas": 2000,
     "logoUrl": "https://images.unsplash.com/photo-1584464431052-1629857d34d3?auto=format&fit=crop&w=800",
     "descripcion": "El kilómetro cero de Cali. Esta plaza, rodeada de palmeras altísimas 'Roystonea regia', es el corazón cívico y comercial histórico de la ciudad. A su alrededor se erigen edificios emblemáticos de arquitectura republicana y neoclásica como la Catedral de San Pedro, el Palacio Nacional y el Edificio Otero. Es un lugar vibrante, lleno de vendedores de tinto, lustrabotas y transeúntes, donde se siente el pulso diario de la ciudad y se cruzan todas las historias. La antigua Plaza Mayor colonial (luego Plaza de la Constitución) fue rebautizada Plaza de Caycedo en 1813, en honor al prócer Joaquín de Caycedo y Cuero; el monumento central se erigió en 1913.",
-    "descripcion_en": "Cali's kilometer zero. This square, surrounded by towering 'Roystonea regia' palms, is the historical civic and commercial heart of the city. Around it stand emblematic buildings of Republican and neoclassical architecture such as St. Peter's Cathedral, the National Palace, and the Otero Building. It is a vibrant place, full of coffee sellers, shoeshine boys, and passersby, where you feel the city's daily pulse and all stories cross paths.",
+    "descripcion_en": "Cali's kilometer zero. This square, surrounded by towering 'Roystonea regia' palm trees, is the historic civic and commercial heart of the city. Around it stand emblematic buildings of republican and neoclassical architecture such as the Cathedral of San Pedro, the National Palace and the Otero Building. It is a vibrant place, full of red wine sellers, shoe shiners and passersby, where the daily pulse of the city is felt and all the stories intersect. The old colonial Plaza Mayor (later Plaza de la Constitución) was renamed Plaza de Caycedo in 1813, in honor of the hero Joaquín de Caycedo y Cuero; the central monument was erected in 1913.",
     "importancia": "Centro del poder político, religioso y comercial desde la época colonial.",
     "importancia_en": "Center of political, religious, and commercial power since colonial times.",
     "datosHistoricos": "Originalmente era la Plaza de la Constitución. Renombrada en honor al prócer vallecaucano Joaquín de Cayzedo y Cuero.",
@@ -1095,7 +1265,15 @@
       "It has been the scene of the most important political and social events in Cali's history."
     ],
     "horario": "Plaza pública, abierta.",
-    "precio": "Libre."
+    "precio": "Libre.",
+    "horario_en": "Public square, open.",
+    "tarifa_en": "Free.",
+    "datos_historicos_en": "The former colonial Plaza Mayor was renamed Plaza de Cayzedo in 1913 in honor of the hero Joaquín de Cayzedo y Cuero, whose statue was erected that same year. It functioned as a public market until the end of the 19th century and was remodeled in 1986, to mark the 450th anniversary of the city.",
+    "datos_curiosos_en": [
+      "His royal palms are an inseparable part of his image.",
+      "It is surrounded by the National Palace, the Otero Building and the Cathedral of San Pedro.",
+      "It occupies nearly 6,500 square meters in the heart of the center."
+    ]
   },
   {
     "id": "s40",
@@ -1343,7 +1521,7 @@
     "visitas": 1100,
     "logoUrl": "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800",
     "descripcion": "Uno de los barrios tradicionales de Cali, a orillas del río Cali, contiguo a San Antonio y al Museo La Tertulia; con los años se consolidó como zona bohemia, gastronómica y de anticuarios. En su entorno (Bulevar del Río) se realizan mercados de antigüedades y pulgas los fines de semana.",
-    "descripcion_en": "An elegant, fresh, and wooded park in the heart of one of Cali's most exclusive and bohemian neighborhoods. Surrounded by cafes, art galleries, and signature restaurants, it is the perfect place to start a dinner evening or enjoy a quiet morning. On Sundays, it transforms into a vibrant open-air gallery where local artists exhibit and sell their paintings.",
+    "descripcion_en": "One of the traditional neighborhoods of Cali, on the banks of the Cali River, adjacent to San Antonio and the La Tertulia Museum; Over the years it became established as a bohemian, gastronomic and antiques area. In its surroundings (Bulevar del Río) antique and flea markets are held on weekends.",
     "importancia": "Espacio de exhibición artística informal más importante de la ciudad cada domingo.",
     "importancia_en": "Most important informal artistic exhibition space in the city every Sunday.",
     "datosHistoricos": "El barrio El Peñón se desarrolló a principios del siglo XX como zona residencial de clase alta.",
@@ -1357,7 +1535,14 @@
       "It is known for its large trees that provide cool shade all day."
     ],
     "horario": "Zona abierta; fuerte vida gastronómica y nocturna.",
-    "precio": "Libre (consumos aparte)."
+    "precio": "Libre (consumos aparte).",
+    "horario_en": "open area; strong gastronomic and nightlife.",
+    "tarifa_en": "Free (consumptions apart).",
+    "datos_historicos_en": "The El Peñón neighborhood was developed at the beginning of the 20th century as an upper-class residential area.",
+    "datos_curiosos_en": [
+      "It houses a statue of Benito Juárez donated by Mexico.",
+      "It is known for its large trees that provide cool shade all day."
+    ]
   },
   {
     "id": "s63",
@@ -1425,7 +1610,7 @@
     "visitas": 2800,
     "logoUrl": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800",
     "descripcion": "El reto físico por excelencia de los caleños. Subir a las Tres Cruces es un ritual matutino de fin de semana para miles de personas. El sendero es empinado y exige esfuerzo físico, pero la recompensa es una vista inigualable de la ciudad y un jugo de naranja fresco en la cima. Las tres grandes cruces de concreto dominan el paisaje y protegen, según la leyenda, a la ciudad del demonio 'Buziraco'. Según la tradición, se erigió una cruz en el cerro para 'conjurar' al diablo Buziraco; las tres cruces actuales, en concreto, datan de finales de los años treinta del siglo XX.",
-    "descripcion_en": "The physical challenge par excellence for Caleños. Climbing Las Tres Cruces is a weekend morning ritual for thousands of people. The trail is steep and demands physical effort, but the reward is an unmatched view of the city and fresh orange juice at the top. The three large concrete crosses dominate the landscape and protect, according to legend, the city from the demon 'Buziraco'.",
+    "descripcion_en": "The physical challenge par excellence of Cali people. Climbing the Three Crosses is a weekend morning ritual for thousands of people. The trail is steep and physically demanding, but the reward is an unbeatable view of the city and fresh orange juice at the top. The three large concrete crosses dominate the landscape and protect, according to legend, the city from the demon 'Buziraco'. According to tradition, a cross was erected on the hill to 'conjure' the devil Buziraco; The three current crosses, in particular, date from the late 1930s.",
     "importancia": "Principal escenario de deporte al aire libre y senderismo urbano masivo.",
     "importancia_en": "Main setting for outdoor sports and massive urban hiking.",
     "datosHistoricos": "Construidas en 1938 para 'exorcizar' al demonio que supuestamente habitaba el cerro y causaba pestes y desgracias.",
@@ -1439,7 +1624,15 @@
       "There are improvised outdoor gyms at the top."
     ],
     "horario": "Se recomienda el ascenso de madrugada o en la mañana (por seguridad y clima); funciona como ecoparque (Bataclán).",
-    "precio": "Gratuita."
+    "precio": "Gratuita.",
+    "horario_en": "Climbing at dawn or in the morning is recommended (for safety and weather); It works as an ecopark (Bataclán).",
+    "tarifa_en": "Free.",
+    "datos_historicos_en": "According to tradition, in 1837 Franciscan friars placed three guadua crosses to conjure the legend of \"Buziraco.\" The concrete crosses that today crown the hill were erected around 1937-1938, after the previous ones fell in the 1925 earthquake.",
+    "datos_curiosos_en": [
+      "The central cross measures about 26 meters high.",
+      "Every May 3, Day of the Cross, and during Holy Week, pilgrimages are carried out.",
+      "It is one of the most popular sports climbs in the city."
+    ]
   },
   {
     "id": "s76",
@@ -1557,7 +1750,7 @@
     "visitas": 1100,
     "logoUrl": "https://images.unsplash.com/photo-1545959720-333d6b38c227?auto=format&fit=crop&w=800",
     "descripcion": "No es solo una discoteca, es una institución cultural de la salsa. La Topa Tolondra es el lugar democrático donde locales y extranjeros se encuentran en la pista de baile. Famosa mundialmente por sus 'Lunes de Salsa', rompe el mito de que los lunes son aburridos. El ambiente es inclusivo, sudoroso y auténtico. Aquí no importa si eres experto o principiante, lo importante es sentir la clave. Paredes llenas de historia salsera y una programación musical curada con maestría.",
-    "descripcion_en": "It's not just a nightclub, it's a cultural institution of salsa. La Topa Tolondra is the democratic place where locals and foreigners meet on the dance floor. World-famous for its 'Salsa Mondays', it breaks the myth that Mondays are boring. The atmosphere is inclusive, sweaty, and authentic. Here it doesn't matter if you are an expert or a beginner, the important thing is to feel the beat. Walls full of salsa history and masterfully curated musical programming.",
+    "descripcion_en": "On the mythical Calle 5—the one that Grupo Niche names in \"Cali Ají\"—is the salsoteca where the music lover and the private dancer share the same dance floor. La Topa Tolondra opened in 2011 almost by chance: it started with a table and a refrigerator, and its name comes from the Valle del Cauca saying \"a la topa tolondra\", which is doing things on the run, without a plan. From that improvisation came one of the temples of the Cali rumba. \\n\\nIt's not just commercial salsa that sounds here: bugalú, pachanga, guaguancó, bolero and collectible Afro-Latin downloads play, with a music library that respects the roots of the genre. He teaches dance classes during the week and brings together people from Cali and foreigners around the dance floor. It is the place where it is understood that salsa here is not a show for tourists, but rather a daily occupation.",
     "importancia": "Responsable de revitalizar la rumba salsera en el centro y atraer turismo internacional masivo.",
     "importancia_en": "Responsible for revitalizing the salsa party downtown and attracting massive international tourism.",
     "datosHistoricos": "Comenzó como un pequeño bar en la Calle 5ta y creció hasta convertirse en el templo actual frente al Parque Jovita. Abrió en 2011.",
@@ -1572,7 +1765,15 @@
     ],
     "horario": "Miércoles y jueves 6:00 p. m.–1:00 a. m.; viernes y sábado 6:00 p. m.–3:00 a. m.",
     "precio": "Cover ~$10.000.",
-    "direccion": "Calle 5 #13-27."
+    "direccion": "Calle 5 #13-27.",
+    "horario_en": "Wednesday and Thursday 6:00 p.m. m.–1:00 a.m. m.; Friday and Saturday 6:00 p.m. m.–3:00 a.m. m.",
+    "tarifa_en": "Cover ~$10,000.",
+    "datos_historicos_en": "It started as a small bar on 5th Street and grew to become the current temple in front of Jovita Park. It opened in 2011.",
+    "datos_curiosos_en": [
+      "It is on Calle 5, the same one that Grupo Niche mentions in \"Cali Ají\".",
+      "Many visitors take their first dance steps here, in classes prior to the party.",
+      "Their selection includes Los Hermanos Lebron, Ángel Canales and Sonora Ponceña."
+    ]
   },
   {
     "id": "s27",
@@ -1612,7 +1813,7 @@
     "visitas": 900,
     "logoUrl": "https://images.unsplash.com/photo-1514525253440-b393452e2729?auto=format&fit=crop&w=800",
     "descripcion": "El templo de la salsa en el norte de Cali. Zaperoco es un espacio íntimo, con una estética que evoca los años 70 y 80 en Nueva York y Puerto Rico. Aquí la salsa se respeta y se vive con intensidad y conocimiento. Es famoso por sus jueves de música en vivo y por ser el refugio de los melómanos que prefieren escuchar y apreciar la música tanto como bailarla. Su atmósfera es densa, cálida y llena de tradición.",
-    "descripcion_en": "The temple of salsa in northern Cali. Zaperoco is an intimate space, with an aesthetic that evokes the 70s and 80s in New York and Puerto Rico. Here salsa is respected and lived with intensity and knowledge. It is famous for its live music Thursdays and for being the refuge of music lovers who prefer to listen and appreciate the music as much as dance it. Its atmosphere is dense, warm, and full of tradition.",
+    "descripcion_en": "In 1993, a trio of salsa-loving friends opened a salsa club on Avenida 5 Norte that they called Zaperoco. Over the years it passed into the hands of the Levy Cote family, who turned it into a bastion where the old and the modern coexist, with vinyl, live orchestras and a vocation that goes beyond rumba: to be a platform for the new bands in the city. In its beginnings, groups such as Herencia de Timbiquí performed on its stage. \\n\\nIts hallmark is the \"Descargas Zaperoco\" Thursdays—created together with the writer and music lover Umberto Valverde, a loyal client of the house—, large gatherings of musicians with rotating directors where the salsa is felt in the body. It is one of those places where the Cali night shows its most authentic side.",
     "importancia": "Bastión de la identidad salsera tradicional frente a las modas comerciales.",
     "importancia_en": "Bastion of traditional salsa identity against commercial trends.",
     "datosHistoricos": "Fundado en 1993, ha resistido el paso del tiempo manteniendo su esencia pura. Fundado en 1993.",
@@ -1627,7 +1828,15 @@
     ],
     "horario": "Noches, habitualmente de jueves a sábado (desde las 9:00–11:00 p. m.).",
     "precio": "Cover / consumo según la noche.",
-    "direccion": "Avenida 5 Norte #16-46."
+    "direccion": "Avenida 5 Norte #16-46.",
+    "horario_en": "Evenings, usually Thursday through Saturday (from 9:00–11:00 p.m.).",
+    "tarifa_en": "Cover/consumption depending on the night.",
+    "datos_historicos_en": "Founded in 1993, it has stood the test of time while maintaining its pure essence. Founded in 1993.",
+    "datos_curiosos_en": [
+      "His Thursday \"Zaperoco Downloads\" were born together with the writer Umberto Valverde.",
+      "Herencia de Timbiquí passed through its stage in its beginnings.",
+      "It keeps live salsa alive, increasingly rare in the city."
+    ]
   },
   {
     "id": "s29",
@@ -1641,7 +1850,7 @@
     "visitas": 850,
     "logoUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800",
     "descripcion": "Un clásico de la noche caleña ubicado cerca a la Calle 5ta. Tin Tin Deo es un lugar con alma y sabor, donde convergen el son cubano, la salsa clásica y el jazz latino. Su ambiente es bohemio, relajado y respetuoso, ideal para quienes buscan buena música, conversación y baile sin pretensiones. Es un punto de encuentro tradicional para universitarios, intelectuales y extranjeros que buscan la esencia musical de la ciudad.",
-    "descripcion_en": "A classic of Cali nightlife located near 5th Street. Tin Tin Deo is a place with soul and flavor, where Cuban son, classic salsa, and Latin jazz converge. Its atmosphere is bohemian, relaxed, and respectful, ideal for those looking for good music, conversation, and unpretentious dancing. It is a traditional meeting point for university students, intellectuals, and foreigners seeking the city's musical essence.",
+    "descripcion_en": "Classic among classics, Tin Tin Deo is one of the most respected temples of salsa in Cali: a place where the genre is listened to with the same devotion with which it is danced. Its name – taken from a Dizzy Gillespie song – already announces the cult level of its musical selection, and its track is a pilgrimage point for dancers from all over the world. \\n\\nWith decades of experience, it has sustained a lifelong club atmosphere where the connoisseur and the fan coexist. It is a must-see stop for anyone who wants to understand why Cali is called the world capital of salsa, beyond the tourist spectacle.",
     "importancia": "Promotor de la cultura del 'Melómano' y la música antillana y jazzística.",
     "importancia_en": "Promoter of the 'Music Lover' culture and Antillean and jazz music.",
     "datosHistoricos": "Su nombre viene del famoso tema de Chano Pozo y Dizzy Gillespie, marcando su influencia de Latin Jazz. Fundado en 1985.",
@@ -1656,7 +1865,14 @@
     ],
     "horario": "Jueves a sábado, aprox. 8:00 p. m.–3:00 a. m. (jueves de salsa y bachata; viernes de taxi dancer; sábado de rumba caleña).",
     "precio": "Cover según la noche (desde ~$5.000).",
-    "direccion": "Calle 5 #38-71, sur."
+    "direccion": "Calle 5 #38-71, sur.",
+    "horario_en": "Thursday to Saturday, approx. 8:00 p.m. m.–3:00 a.m. m. (Thursday salsa and bachata; Friday taxi dancer; Saturday Cali rumba).",
+    "tarifa_en": "Cover depending on the night (from ~$5,000).",
+    "datos_historicos_en": "Its name comes from the famous song by Chano Pozo and Dizzy Gillespie, marking its Latin Jazz influence. Founded in 1985.",
+    "datos_curiosos_en": [
+      "Its name comes from a composition by jazz trumpeter Dizzy Gillespie.",
+      "It is usually cited among the most emblematic salsotecas in the city."
+    ]
   },
   {
     "id": "s46",
@@ -1878,7 +2094,7 @@
     "visitas": 1400,
     "logoUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800",
     "descripcion": "Más que un mercado, la Galería Alameda es un santuario de sabores y saberes. Aquí el Pacífico se encuentra con el Valle. Es el lugar donde los chefs más famosos de la ciudad vienen a comprar sus insumos frescos. Pasear por sus pasillos es un festín sensorial: el olor a albahaca y cimarrón, los colores vibrantes de frutas exóticas como el lulo, el chontaduro y el borojó, y el sonido de las cocineras tradicionales ofreciendo sancocho de pescado, ceviches, encocados y arroz atollado.",
-    "descripcion_en": "More than a market, the Alameda Gallery is a sanctuary of flavors and knowledge. Here the Pacific meets the Valley. It is the place where the city's most famous chefs come to buy their fresh supplies. Walking through its corridors is a sensory feast: the smell of basil and cimarrón, the vibrant colors of exotic fruits like lulo, chontaduro, and borojó, and the sound of traditional cooks offering fish sancocho, ceviches, encocados, and arroz atollado.",
+    "descripcion_en": "In the Alameda neighborhood, in the center of Cali, there is a market that is much more than a place to shop: it is a trip from the Andes to the Pacific in a few steps. The Alameda Gallery - or Alameda Market Square - is a labyrinth of colors and aromas where exotic fruits, fresh vegetables, meats, flowers and, above all, the best traditional cuisine of the Valley and the Colombian Pacific coexist. Here the cooks from Buenaventura—inheritors of culinary knowledge that dates back to the times of slavery—serve fish sancocho with coconut milk, shrimp ceviche, sudados, stuffed meat, and tamale on huge plates. To walk through it is to come into contact with the popular, happy and talkative spirit of the Cali people.",
     "importancia": "Principal punto de difusión de la cocina y cultura del Pacífico colombiano en Cali.",
     "importancia_en": "Main point of dissemination of Colombian Pacific cuisine and culture in Cali.",
     "datosHistoricos": "Fundada en 1950, ha mantenido su arquitectura abierta y ventilada original, típica de los mercados tropicales.",
@@ -1890,6 +2106,14 @@
     "datosCuriosos_en": [
       "Here you find the best 'spirit drinks' of the Pacific (Viche, Arrechón, Tumbacatre).",
       "It is considered the best place to try authentic 'rellena' and chuleta valluna."
+    ],
+    "horario_en": "Open daily; The plaza days—with more variety and atmosphere—are Tuesday, Thursday and Saturday, especially in the morning.",
+    "tarifa_en": "Free entry; separate consumption.",
+    "datos_historicos_en": "The Alameda neighborhood was founded in October 1930. The Market Square has its origins around 1947. Around 1970, most of the current building was built. Since 1994 it has been managed by ASOALAMEDA.",
+    "datos_curiosos_en": [
+      "The first sellers spread their products on the floor.",
+      "Among its treasures are little-known fruits: strawberry tree, chachairú, mangosteen, sapote, arazá, cherimoya.",
+      "There are 'food tours' that leave from San Antonio and have Alameda as their star stop."
     ]
   },
   {
@@ -1956,7 +2180,7 @@
     "visitas": 1800,
     "logoUrl": "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800",
     "descripcion": "Barrio residencial del norte de Cali, desarrollado a mediados del siglo XX, que con el tiempo se consolidó como uno de los principales epicentros gastronómicos y de vida nocturna de la ciudad.",
-    "descripcion_en": "Cali's traditional and elegant 'Pink Zone'. Granada combines the stately architecture of its mid-century mansions with an endless offer of fashion boutiques and haute cuisine restaurants. It is a neighborhood for walking, window shopping, and enjoying fine dining. 9th North Avenue is its backbone, full of nightlife, open-air terraces, and a festive yet sophisticated atmosphere.",
+    "descripcion_en": "Residential neighborhood in the north of Cali, developed in the mid-20th century, which over time established itself as one of the main gastronomic and nightlife epicenters of the city.",
     "importancia": "Primer barrio de expansión moderna de Cali y actual distrito de moda y gastronomía.",
     "importancia_en": "First modern expansion neighborhood of Cali and current fashion and gastronomy district.",
     "datosHistoricos": "Se desarrolló en los años 40 y 50 inspirándose en barrios europeos, con amplios antejardines.",
@@ -1970,7 +2194,15 @@
       "It is famous for its independent local designer shops."
     ],
     "horario": "Zona abierta; fuerte movimiento nocturno.",
-    "precio": "Libre (consumos aparte)."
+    "precio": "Libre (consumos aparte).",
+    "horario_en": "open area; strong night movement.",
+    "tarifa_en": "Free (consumptions apart).",
+    "datos_historicos_en": "Traditional residential neighborhood in the north of Cali, emerged at the beginning of the 20th century, which over time consolidated itself as a gastronomic and nightlife epicenter.",
+    "datos_curiosos_en": [
+      "It concentrates a good part of Cali's haute cuisine restaurants.",
+      "It houses the contemporary art space Lugar a Dudas.",
+      "It is a common starting point for gastronomic tours of the city."
+    ]
   },
   {
     "id": "s62",
@@ -2036,7 +2268,7 @@
     "visitas": 1200,
     "logoUrl": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=800",
     "descripcion": "El cerebro y corazón intelectual de la ciudad. Más que una biblioteca, es un complejo cultural gigantesco conocido como la 'Manzana del Saber'. Cuenta con la colección de libros más grande de la región, el Museo Interactivo Abrakadabra, un observatorio astronómico, salas de exposiciones y auditorios. Su arquitectura moderna y sus amplios espacios abiertos la convierten en el lugar favorito de estudiantes, investigadores y curiosos de todas las edades.",
-    "descripcion_en": "The intellectual brain and heart of the city. More than a library, it is a gigantic cultural complex known as the 'Apple of Knowledge'. It features the region's largest book collection, the Abrakadabra Interactive Museum, an astronomical observatory, exhibition halls, and auditoriums. Its modern architecture and wide open spaces make it the favorite place for students, researchers, and curious people of all ages.",
+    "descripcion_en": "More than a book depository, the Departmental is a cultural plaza: the first departmental library in Colombia, born from a gesture of filial love. When the industrialist Jorge Garcés Borrero died in 1949, he left more than seven thousand books; His son Diego Garcés Giraldo, being governor of the Valley, donated them to found a public library in 1953 that would bear his father's name. Convinced that \"the progress of a society is made through education\", he promoted it obsessively. \\n\\nAfter several offices, since 1990 it has occupied a 15,000 m² building next to Roosevelt Avenue, today the heart of the \"Manzana del Saber\". There are reading rooms with exhibitions, cinema, concerts, a valuable newspaper library and festivals such as \"Hey, Look, Read\". It embodies the idea that public culture has to be free and open doors.",
     "importancia": "Principal centro de gestión del conocimiento y patrimonio bibliográfico del Valle del Cauca.",
     "importancia_en": "Main center for knowledge management and bibliographic heritage of Valle del Cauca.",
     "datosHistoricos": "Fundada en 1953. Su transformación radical en la 'Manzana del Saber' comenzó en los años 90.",
@@ -2051,7 +2283,15 @@
     ],
     "horario": "Lunes a viernes 9:00 a. m.–7:00 p. m.; sábados 9:00 a. m.–6:00 p. m.; domingos 10:00 a. m.–3:00 p. m.",
     "precio": "Gratuito (todos los servicios básicos).",
-    "direccion": "Calle 5 #24A-91 (Manzana del Saber), centro."
+    "direccion": "Calle 5 #24A-91 (Manzana del Saber), centro.",
+    "horario_en": "Monday to Friday 9:00 a.m. m.–7:00 p.m. m.; Saturdays 9:00 a.m. m.–6:00 p.m. m.; Sundays 10:00 a.m. m.–3:00 p.m. m.",
+    "tarifa_en": "Free (all basic services).",
+    "datos_historicos_en": "Created in 1953 by decree of Governor Diego Garcés Giraldo and inaugurated on June 13, 1954, from the personal library of Jorge Garcés Borrero. Its current headquarters, measuring 15,000 m², was completed in 1990.",
+    "datos_curiosos_en": [
+      "He was born with the ~7,000 books from the Garcés family's personal library.",
+      "Every September it hosts the International Literature Festival \"Hey, Look, Read\".",
+      "Its newspaper archive preserves newspapers and magazines of great regional historical value."
+    ]
   },
   {
     "id": "s32",
@@ -2065,7 +2305,7 @@
     "visitas": 600,
     "logoUrl": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800",
     "descripcion": "El lugar donde nacen los artistas de Cali. Este hermoso edificio de estilo republicano es la escuela de artes más prestigiosa y antigua de la región. De sus aulas han salido grandes músicos, pintores y actores que han dado gloria a la ciudad. El sonido de pianos, violines y coros se escapa constantemente por sus ventanas hacia la calle. Alberga la Sala Beethoven, el escenario de música clásica por excelencia de la ciudad.",
-    "descripcion_en": "The place where Cali's artists are born. This beautiful Republican-style building is the region's most prestigious and oldest art school. Great musicians, painters, and actors who have brought glory to the city have emerged from its classrooms. The sound of pianos, violins, and choirs constantly escapes through its windows into the street. It houses the Beethoven Hall, the city's classical music venue par excellence.",
+    "descripcion_en": "Bellas Artes is the silent factory behind much of Cali's cultural scene: the first institution dedicated to the professional teaching of art in southwestern Colombia. It was born in the early 1930s at the initiative of maestro Antonio María Valencia – Cali pianist and composer – as a Music Conservatory, and from there it grew to embrace music, the plastic arts, design and the performing arts. \\n\\nGenerations of musicians, painters, designers and actors who today represent the city have passed through its classrooms, and milestones such as the Cali International Art Festival have emerged from its midst. A heritage institution and engine of renewal at the same time, it is one of those places that are not seen on the tourist agenda but support, from below, everything else.",
     "importancia": "Alma mater de la cultura caleña y Monumento Nacional.",
     "importancia_en": "Alma mater of Cali culture and National Monument.",
     "datosHistoricos": "Fundado en 1933 como conservatorio. El edificio actual se terminó en 1937.",
@@ -2079,7 +2319,14 @@
       "Its immaculate white facade is an icon of the Centenario neighborhood."
     ],
     "horario": "Según programación; las salas de exposición y buena parte de los conciertos son de acceso libre, en horario institucional (lunes a viernes).",
-    "precio": "Programas académicos con matrícula; muchas exposiciones y conciertos de entrada libre."
+    "precio": "Programas académicos con matrícula; muchas exposiciones y conciertos de entrada libre.",
+    "horario_en": "According to programming; The exhibition halls and a good part of the concerts are free access, during institutional hours (Monday to Friday).",
+    "tarifa_en": "Tuition-based academic programs; many exhibitions and concerts with free admission.",
+    "datos_historicos_en": "Founded in the early 1930s (Cali Conservatory of Music, 1932–1933) on the initiative of maestro Antonio María Valencia. In 1936 it was departmentalized as the Cali Conservatory–Departmental School of Fine Arts.",
+    "datos_curiosos_en": [
+      "The Cali International Art Festival arose from an idea by Fanny Mickey in the then \"Palacio de Bellas Artes\".",
+      "Its music conservatory is named after its founder, Antonio María Valencia."
+    ]
   },
   {
     "id": "s33",
@@ -2093,7 +2340,7 @@
     "visitas": 500,
     "logoUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800",
     "descripcion": "Un faro de esperanza, tecnología y creatividad en el corazón del Distrito de Aguablanca. Este moderno centro utiliza la tecnología y el arte para transformar vidas. Cuenta con estudios de grabación de última generación, salas de danza, cocina tradicional, artes plásticas y computación. Aquí se forman los próximos grandes artistas y productores musicales de la ciudad, demostrando el poder del talento sobre la adversidad.",
-    "descripcion_en": "A beacon of hope, technology, and creativity in the heart of the Aguablanca District. This modern center uses technology and art to transform lives. It features state-of-the-art recording studios, dance halls, traditional cooking, visual arts, and computer rooms. Here the city's next great artists and music producers are trained, demonstrating the power of talent over adversity.",
+    "descripcion_en": "In Potrero Grande, in the heart of the Aguablanca District—one of the territories hardest hit by inequality and largely populated by families displaced from the Pacific by the armed conflict—the Tecnocentro turns culture and technology into concrete opportunity. It was born from the dream of Sister Alba Stella Barreto, from the Paz y Bien Foundation, who wanted a neutral space where children could meet without the fear of \"invisible borders\" to learn theater, dance, music, robotics, video editing, programming and plastic arts. \\n\\nThe result of a public-private alliance (Alvaralice Foundation, Comfandi, the Mayor's Office, the Icesi University, the Ministry of Culture), it opened its doors around 2013 and since then it has served thousands of children and young people a year. It has its own symphony orchestra, public library and a Computer Clubhouse. It is proof that Cali's cultural offer is also built, strongly, in the east.",
     "importancia": "Modelo exitoso de innovación social y formación técnica para jóvenes en zonas vulnerables.",
     "importancia_en": "Successful model of social innovation and technical training for youth in vulnerable areas.",
     "datosHistoricos": "Inaugurado en 2013 gracias a la alianza público-privada liderada por la Fundación Alvaralice. Fundado en 2011.",
@@ -2108,7 +2355,15 @@
     ],
     "horario": "Lunes a sábado, 8:00 a. m.–5:00 p. m.",
     "precio": "Programas de formación comunitaria, gratuitos o de bajo costo.",
-    "direccion": "Carrera 28B #121B-55, barrio Potrero Grande (comuna 21), oriente de Cali."
+    "direccion": "Carrera 28B #121B-55, barrio Potrero Grande (comuna 21), oriente de Cali.",
+    "horario_en": "Monday to Saturday, 8:00 a.m. m.–5:00 p.m. m.",
+    "tarifa_en": "Free or low-cost community training programs.",
+    "datos_historicos_en": "Inaugurated in 2013 thanks to the public-private alliance led by the Alvaralice Foundation. Founded in 2011.",
+    "datos_curiosos_en": [
+      "His symphony orchestra was formed with the Batuta Foundation; several of his young people received scholarships at the Conservatory of Fine Arts.",
+      "His Computer Clubhouse was articulated with MIT in Boston.",
+      "Every year he presents the show \"Pescadores de Sueños\" at the Municipal Theater."
+    ]
   },
   {
     "id": "s43",
@@ -2122,7 +2377,7 @@
     "visitas": 650,
     "logoUrl": "https://images.unsplash.com/photo-1603539268673-f6551b8c2876?auto=format&fit=crop&w=800",
     "descripcion": "El lugar más 'hipster', auténtico y colorido de San Antonio. La Linterna es un taller de impresión tipográfica tradicional que se negó a morir ante lo digital. Sus enormes máquinas Heidelberg del siglo XIX siguen rugiendo, imprimiendo carteles que definen la estética gráfica de Cali. Lo que era una imprenta comercial en crisis se convirtió en un templo del diseño gráfico y el arte callejero, colaborando con artistas modernos.",
-    "descripcion_en": "The most 'hipster', authentic, and colorful place in San Antonio. La Linterna is a traditional letterpress printing workshop that refused to die in the face of digital technology. Its huge 19th-century Heidelberg machines keep roaring, printing posters that define Cali's graphic aesthetic. What was a commercial printing press in crisis became a temple of graphic design and street art, collaborating with modern artists.",
+    "descripcion_en": "Squeezed between the colorful houses of San Antonio is a printing press that refuses to die. The Lantern has been operating since 1934, printing street posters with movable type and linoleum engraving—the same technique with which Gutenberg changed the world half a millennium ago—on machines that are living relics: a Marinoni press from Paris (1870), a Reliance from New York (1890), a Rápida di Lusso from Turin (1934). For decades his posters covered the walls of Cali announcing concerts, plays and political campaigns. \\n\\nAndrés Caicedo was a client and friend of the workshop. In 2016 it almost closed. But in 2017 a group of managers and graphic artists reactivated it, articulating the centuries-old craft with contemporary design, and today it is a living cultural company, gallery and emblem of popular Cali graphics, with exhibitions in Mexico, Italy, France and Germany.",
     "importancia": "Patrimonio vivo de las artes gráficas en Colombia y ejemplo de reinvención.",
     "importancia_en": "Living heritage of graphic arts in Colombia and an example of reinvention.",
     "datosHistoricos": "Fundada en 1934. Fue salvada de la quiebra en 2017 gracias a la unión de sus trabajadores veteranos y diseñadores jóvenes. Funciona desde 1934; en San Antonio desde 1987.",
@@ -2137,7 +2392,15 @@
     ],
     "horario": "Lunes a viernes, 9:00 a. m.–12:30 p. m. y 2:00–5:00 p. m.",
     "precio": "Visita libre al taller-tienda (los carteles y productos se venden aparte).",
-    "direccion": "Carrera 5 #2-70, barrio San Antonio."
+    "direccion": "Carrera 5 #2-70, barrio San Antonio.",
+    "horario_en": "Monday to Friday, 9:00 a.m. m.–12:30 p.m. m. and 2:00–5:00 p.m. m.",
+    "tarifa_en": "Free visit to the workshop-store (posters and products are sold separately).",
+    "datos_historicos_en": "Founded in 1934. It was saved from bankruptcy in 2017 thanks to the union of its veteran workers and young designers. It has been operating since 1934; in San Antonio since 1987.",
+    "datos_curiosos_en": [
+      "Editorial Planeta chose her to illustrate the covers of the reissues of Andrés Caicedo, a historical client of the workshop.",
+      "His machines are relics: a Marinoni press from Paris from 1870, a Reliance from New York from 1890, and a Rápida di Lusso from Turin from 1934.",
+      "His posters have already gone around the world in exhibitions in Europe and America."
+    ]
   },
   {
     "id": "s45",
@@ -2255,7 +2518,7 @@
     "visitas": 600,
     "logoUrl": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=800",
     "descripcion": "Una joya arquitectónica monumental en el corazón del Distrito de Aguablanca. Nuevo Latir es un símbolo de dignidad, inclusión y acceso a la cultura. Su imponente edificio de ladrillo y concreto, premiado internacionalmente, alberga una biblioteca moderna, auditorios, salas de ensayo y espacios de encuentro. Es un punto vital para la comunidad del oriente, donde se respira esperanza y transformación social a través del conocimiento.",
-    "descripcion_en": "A monumental architectural jewel in the heart of the Aguablanca District. Nuevo Latir is a symbol of dignity, inclusion, and access to culture. Its imposing brick and concrete building, internationally awarded, houses a modern library, auditoriums, rehearsal rooms, and meeting spaces. It is a vital point for the eastern community, where hope and social transformation through knowledge are breathed.",
+    "descripcion_en": "The Nuevo Latir Public Library and Cultural Center, inaugurated in 2011 as part of the city's Megaworks plan, represents the largest and most significant cultural and educational infrastructure in eastern Cali (Aguablanca District). Designed by architect Yemail Arquitectura with an innovative bioclimatic approach, the structure has thermal chimneys and parasols that allow the interior to be kept cool naturally in the warm climate of the east of the city. The center functions as a hub for development and social inclusion, housing specialized reading rooms, play libraries, auditoriums and digital rooms that connect thousands of young people from communes 13, 14 and 15 with knowledge. In addition to being a library, it is the official headquarters of multiple community events of the Petronio Álvarez Pacific Music Festival and periodically hosts decentralized concerts by the Cali Philharmonic Orchestra. Its construction at the intersection of the Aguablanca Trunk and Carrera 28 turned a vacant lot into an architectural beacon of polished cement and openwork panels that invites the community to appropriate knowledge and art in a safe and exchange environment.",
     "importancia": "La infraestructura cultural más grande e importante del oriente de Cali.",
     "importancia_en": "The largest and most important cultural infrastructure in eastern Cali.",
     "datosHistoricos": "Inaugurada en 2011 como una de las 'Megaobras' de la ciudad para cerrar brechas sociales.",
@@ -2265,6 +2528,13 @@
       "Acoge grandes conciertos de la Orquesta Filarmónica de Cali."
     ],
     "datosCuriosos_en": [
+      "Its bioclimatic design allows it to be cool without air conditioning.",
+      "It hosts major concerts by the Cali Philharmonic Orchestra."
+    ],
+    "horario_en": "Monday to Friday: 8:00 AM - 5:00 PM | Saturdays: 9:00 AM - 1:00 PM.",
+    "tarifa_en": "Free entry.",
+    "datos_historicos_en": "Inaugurated in 2011 as one of the city's 'Mega Works' to close social gaps.",
+    "datos_curiosos_en": [
       "Its bioclimatic design allows it to be cool without air conditioning.",
       "It hosts major concerts by the Cali Philharmonic Orchestra."
     ]
