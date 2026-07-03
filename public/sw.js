@@ -2,8 +2,6 @@ const CACHE_NAME = 'andanzas-go-cache-v1';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/index.css',
-  '/index.tsx',
   '/manifest.json',
   '/pwa-icon-192.png',
   '/pwa-icon-512.png'

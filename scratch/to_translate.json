@@ -1,0 +1,373 @@
+[
+  {
+    "id": "s69",
+    "nombre": "Cali Teatro",
+    "horario": "Funciones según cartelera (habitualmente de jueves a domingo); atención administrativa L–V.",
+    "tarifa": "Boletería según función.",
+    "datos_historicos": "Fundado en 1989, ocupa y conserva una casa patrimonial de finales del siglo XIX.",
+    "descripcion": "Ubicado en una imponente y hermosa casona de arquitectura republicana en las faldas de San Antonio, Cali Teatro combina la elegancia del pasado con la vitalidad del teatro moderno. Dirigido por el maestro Álvaro Arcos, se destaca por montajes de altísima calidad técnica y estética, que van desde clásicos universales hasta adaptaciones de literatura colombiana. Es un espacio con una mística y tradición únicas en la ciudad.",
+    "datos_curiosos": [
+      "La sala tiene una pendiente y acústica diseñadas específicamente para proyectar la voz hablada sin micrófonos.",
+      "Sus camerinos guardan historias y firmas de grandes actores nacionales."
+    ]
+  },
+  {
+    "id": "s38",
+    "nombre": "Ecoparque Lago de las Garzas",
+    "horario": "Martes a domingo, 8:00 a. m.–5:00 p. m. (lunes cerrado).",
+    "tarifa": "Entrada gratuita.",
+    "datos_historicos": "Recuperado por la gestión comunitaria y ambiental para evitar su urbanización.",
+    "descripcion": "Un humedal tranquilo y hermoso en el sur de la ciudad, ideal para la contemplación y el silencio. El parque gira en torno a un lago rodeado de vegetación espesa donde habitan, como su nombre lo indica, garzas, patos, iguanas y tortugas. Sus senderos de madera y tierra permiten un recorrido relajante bajo la sombra. Es un refugio perfecto para leer, meditar o pasear con niños pequeños en contacto directo con la naturaleza.",
+    "datos_curiosos": [
+      "Es uno de los mejores lugares para el avistamiento de aves acuáticas dentro de la ciudad.",
+      "No se permite música ni ruido alto para proteger a la fauna."
+    ]
+  },
+  {
+    "id": "s9",
+    "nombre": "Plaza de Mercado Alameda",
+    "datos_historicos": "Fundada en 1950, ha mantenido su arquitectura abierta y ventilada original, típica de los mercados tropicales.",
+    "descripcion": "Más que un mercado, la Galería Alameda es un santuario de sabores y saberes. Aquí el Pacífico se encuentra con el Valle. Es el lugar donde los chefs más famosos de la ciudad vienen a comprar sus insumos frescos. Pasear por sus pasillos es un festín sensorial: el olor a albahaca y cimarrón, los colores vibrantes de frutas exóticas como el lulo, el chontaduro y el borojó, y el sonido de las cocineras tradicionales ofreciendo sancocho de pescado, ceviches, encocados y arroz atollado.",
+    "datos_curiosos": [
+      "Aquí encuentras las mejores 'bebidas espirituosas' del Pacífico (Viche, Arrechón, Tumbacatre).",
+      "Es considerado el mejor lugar para probar la auténtica 'rellena' y la chuleta valluna."
+    ]
+  },
+  {
+    "id": "s68",
+    "nombre": "Domus Teatro",
+    "horario": "Funciones según cartelera (habitualmente fines de semana).",
+    "tarifa": "Boletería, con descuento para estudiantes.",
+    "datos_historicos": "Surgió como una iniciativa independiente para descentralizar el teatro y ofrecer espacios alternativos.",
+    "descripcion": "Una casa tradicional transformada en un escenario vibrante. Domus Teatro se caracteriza por su atmósfera familiar, acogedora y su extrema cercanía con el público. Es un espacio que apuesta decididamente por la dramaturgia propia y contemporánea, ofreciendo obras que reflexionan sobre la cotidianidad, el humor y la condición humana. Su patio interior y su pequeño café son ideales para charlar con los artistas después de la función.",
+    "datos_curiosos": [
+      "El escenario está casi al mismo nivel del público, rompiendo la 'cuarta pared'.",
+      "Ofrecen talleres de teatro terapéutico y para no actores."
+    ]
+  },
+  {
+    "id": "s70",
+    "nombre": "Teatro del Presagio",
+    "horario": "Viernes y sábado 7:30 p. m.; temporada familiar los domingos 4:00 p. m.",
+    "tarifa": "Boletería según función.",
+    "datos_historicos": "El grupo se fundó en el año 2000, consolidando su sala propia años después para tener libertad creativa.",
+    "descripcion": "Un verdadero laboratorio escénico ubicado en el barrio Granada. El Teatro del Presagio es conocido por su apuesta radical por la investigación y la creación colectiva. Sus obras suelen mezclar diversos lenguajes artísticos, desde lo visual hasta lo sonoro, buscando constantemente nuevas formas de narrar. Es sede frecuente de la Universidad del Valle para sus muestras de tesis, lo que garantiza frescura y vanguardia en su programación.",
+    "datos_curiosos": [
+      "Tienen una franja infantil muy querida los domingos por la mañana.",
+      "Su fachada colorida y artística es inconfundible en la Avenida 9N."
+    ]
+  },
+  {
+    "id": "s41",
+    "nombre": "Teatro Calima",
+    "horario": "Según programación de eventos.",
+    "tarifa": "Boletería según evento.",
+    "datos_historicos": "Inaugurado en 1963, fue durante décadas el cine más elegante y tecnológico de la ciudad.",
+    "descripcion": "El Teatro Calima es un magnífico sobreviviente de la época dorada de los grandes cines de mediados de siglo XX. Su arquitectura modernista, caracterizada por líneas limpias y espacios amplios, junto con su enorme aforo, lo hacen único en la ciudad. Tras una cuidadosa restauración que le devolvió su esplendor original, ha vuelto a ser un epicentro cultural, acogiendo desde conciertos sinfónicos hasta shows de stand-up comedy. Su amplio lobby y fachada son inconfundibles en la Avenida Sexta.",
+    "datos_curiosos": [
+      "Es uno de los teatros con mayor capacidad de aforo en la ciudad (más de 1200 sillas).",
+      "Conserva el estilo retro de los años 60, incluyendo su tipografía y acabados."
+    ]
+  },
+  {
+    "id": "s25",
+    "nombre": "Museo de la Salsa",
+    "horario": "Lunes a sábado, recorridos guiados a las 11:00 a. m., 2:30 p. m. y 5:00 p. m.; domingos a las 3:00 p. m. (festivos cerrado).",
+    "tarifa": "$16.000 por persona (aporte cultural).",
+    "datos_historicos": "Fundado hace más de 50 años como un archivo personal que se abrió al mundo. Fundado en 1968 por Carlos Alfredo Molina; el museo de salsa más antiguo del mundo, con 40.000+ fotografías.",
+    "descripcion": "Ubicado en el corazón del histórico Barrio Obrero, este lugar es considerado el 'Vaticano' de la salsa caleña. Más que un museo convencional, es la casa de Carlos Molina, quien ha dedicado su vida a recopilar la historia fotográfica y musical de la salsa en la ciudad. Sus paredes están cubiertas de piso a techo con fotos originales, instrumentos firmados y recuerdos de leyendas como Celia Cruz, Héctor Lavoe y el Grupo Niche. Es un viaje nostálgico y vibrante donde cada objeto tiene una anécdota contada con pasión.",
+    "datos_curiosos": [
+      "Es el museo de salsa más antiguo del mundo.",
+      "Carlos Molina, su director, suele guiar personalmente las visitas."
+    ]
+  },
+  {
+    "id": "s32",
+    "nombre": "Instituto Departamental de Bellas Artes",
+    "horario": "Según programación; las salas de exposición y buena parte de los conciertos son de acceso libre, en horario institucional (lunes a viernes).",
+    "tarifa": "Programas académicos con matrícula; muchas exposiciones y conciertos de entrada libre.",
+    "datos_historicos": "Fundado en 1933 como conservatorio. El edificio actual se terminó en 1937.",
+    "descripcion": "El lugar donde nacen los artistas de Cali. Este hermoso edificio de estilo republicano es la escuela de artes más prestigiosa y antigua de la región. De sus aulas han salido grandes músicos, pintores y actores que han dado gloria a la ciudad. El sonido de pianos, violines y coros se escapa constantemente por sus ventanas hacia la calle. Alberga la Sala Beethoven, el escenario de música clásica por excelencia de la ciudad.",
+    "datos_curiosos": [
+      "Ofrece una temporada de conciertos gratuitos de muy alta calidad (Beethoven 7:30).",
+      "Su fachada blanca inmaculada es un icono del barrio Centenario."
+    ]
+  },
+  {
+    "id": "s15",
+    "nombre": "Biblioteca Departamental Jorge Garcés Borrero",
+    "horario": "Lunes a viernes 9:00 a. m.–7:00 p. m.; sábados 9:00 a. m.–6:00 p. m.; domingos 10:00 a. m.–3:00 p. m.",
+    "tarifa": "Gratuito (todos los servicios básicos).",
+    "datos_historicos": "Fundada en 1953. Su transformación radical en la 'Manzana del Saber' comenzó en los años 90.",
+    "descripcion": "El cerebro y corazón intelectual de la ciudad. Más que una biblioteca, es un complejo cultural gigantesco conocido como la 'Manzana del Saber'. Cuenta con la colección de libros más grande de la región, el Museo Interactivo Abrakadabra, un observatorio astronómico, salas de exposiciones y auditorios. Su arquitectura moderna y sus amplios espacios abiertos la convierten en el lugar favorito de estudiantes, investigadores y curiosos de todas las edades.",
+    "datos_curiosos": [
+      "Tiene la sala 'Hellen Keller' especializada para personas con discapacidad visual.",
+      "Su cúpula astronómica ofrece funciones de proyección estelar semanales."
+    ]
+  },
+  {
+    "id": "s7",
+    "nombre": "La Topa Tolondra",
+    "horario": "Miércoles y jueves 6:00 p. m.–1:00 a. m.; viernes y sábado 6:00 p. m.–3:00 a. m.",
+    "tarifa": "Cover ~$10.000.",
+    "datos_historicos": "Comenzó como un pequeño bar en la Calle 5ta y creció hasta convertirse en el templo actual frente al Parque Jovita. Abrió en 2011.",
+    "descripcion": "No es solo una discoteca, es una institución cultural de la salsa. La Topa Tolondra es el lugar democrático donde locales y extranjeros se encuentran en la pista de baile. Famosa mundialmente por sus 'Lunes de Salsa', rompe el mito de que los lunes son aburridos. El ambiente es inclusivo, sudoroso y auténtico. Aquí no importa si eres experto o principiante, lo importante es sentir la clave. Paredes llenas de historia salsera y una programación musical curada con maestría.",
+    "datos_curiosos": [
+      "Sus clases de baile gratuitas antes de la rumba son legendarias.",
+      "El dueño, Carlos 'El Tribuno', es un personaje icónico de la noche caleña."
+    ]
+  },
+  {
+    "id": "s28",
+    "nombre": "Zaperoco Bar",
+    "horario": "Noches, habitualmente de jueves a sábado (desde las 9:00–11:00 p. m.).",
+    "tarifa": "Cover / consumo según la noche.",
+    "datos_historicos": "Fundado en 1993, ha resistido el paso del tiempo manteniendo su esencia pura. Fundado en 1993.",
+    "descripcion": "El templo de la salsa en el norte de Cali. Zaperoco es un espacio íntimo, con una estética que evoca los años 70 y 80 en Nueva York y Puerto Rico. Aquí la salsa se respeta y se vive con intensidad y conocimiento. Es famoso por sus jueves de música en vivo y por ser el refugio de los melómanos que prefieren escuchar y apreciar la música tanto como bailarla. Su atmósfera es densa, cálida y llena de tradición.",
+    "datos_curiosos": [
+      "Sus paredes están forradas de afiches autografiados por leyendas de la salsa que han visitado el lugar.",
+      "Es un lugar imperdible para los músicos que visitan la ciudad."
+    ]
+  },
+  {
+    "id": "s29",
+    "nombre": "Tin Tin Deo",
+    "horario": "Jueves a sábado, aprox. 8:00 p. m.–3:00 a. m. (jueves de salsa y bachata; viernes de taxi dancer; sábado de rumba caleña).",
+    "tarifa": "Cover según la noche (desde ~$5.000).",
+    "datos_historicos": "Su nombre viene del famoso tema de Chano Pozo y Dizzy Gillespie, marcando su influencia de Latin Jazz. Fundado en 1985.",
+    "descripcion": "Un clásico de la noche caleña ubicado cerca a la Calle 5ta. Tin Tin Deo es un lugar con alma y sabor, donde convergen el son cubano, la salsa clásica y el jazz latino. Su ambiente es bohemio, relajado y respetuoso, ideal para quienes buscan buena música, conversación y baile sin pretensiones. Es un punto de encuentro tradicional para universitarios, intelectuales y extranjeros que buscan la esencia musical de la ciudad.",
+    "datos_curiosos": [
+      "Decorado con obras de arte y fotografía local que cambia periódicamente.",
+      "Los jueves suelen tener audiciones temáticas especiales."
+    ]
+  },
+  {
+    "id": "s42",
+    "nombre": "Teatro Esquina Latina",
+    "horario": "Obras para jóvenes y adultos: sábados 7:30 p. m.; funciones familiares: domingos 11:00 a. m. (con inscripción previa); conciertos: un viernes al mes, 7:30 p. m. (la programación varía; se consulta en redes).",
+    "tarifa": "Boletería según función (Sala Concertada).",
+    "datos_historicos": "Nació en 1973 como un grupo estudiantil de la Universidad del Valle y se consolidó como fundación independiente. Fundado en 1973 por Orlando Cajamarca.",
+    "descripcion": "Más que un simple teatro, Esquina Latina es un movimiento social y cultural con décadas de trayectoria. Ubicado cerca a la Universidad del Valle, este espacio se caracteriza por sus métodos de creación colectiva que abordan problemáticas sociales, políticas y juveniles del entorno. Su ambiente es vibrante, rebelde y profundamente comprometido con la comunidad. Aquí el teatro se utiliza como una poderosa herramienta de construcción de paz, memoria y reflexión crítica.",
+    "datos_curiosos": [
+      "Su programa 'Jóvenes, Teatro y Comunidad' ha impactado miles de vidas en zonas vulnerables.",
+      "Sus obras suelen tener música en vivo y mucha energía física."
+    ]
+  },
+  {
+    "id": "s33",
+    "nombre": "Tecnocentro Cultural Somos Pacífico",
+    "horario": "Lunes a sábado, 8:00 a. m.–5:00 p. m.",
+    "tarifa": "Programas de formación comunitaria, gratuitos o de bajo costo.",
+    "datos_historicos": "Inaugurado en 2013 gracias a la alianza público-privada liderada por la Fundación Alvaralice. Fundado en 2011.",
+    "descripcion": "Un faro de esperanza, tecnología y creatividad en el corazón del Distrito de Aguablanca. Este moderno centro utiliza la tecnología y el arte para transformar vidas. Cuenta con estudios de grabación de última generación, salas de danza, cocina tradicional, artes plásticas y computación. Aquí se forman los próximos grandes artistas y productores musicales de la ciudad, demostrando el poder del talento sobre la adversidad.",
+    "datos_curiosos": [
+      "La banda ChocQuibTown ha apoyado fuertemente este proyecto.",
+      "Tienen su propia escuela de música y cocina tradicional certificada."
+    ]
+  },
+  {
+    "id": "s60",
+    "nombre": "Parque del Peñón",
+    "horario": "Zona abierta; fuerte vida gastronómica y nocturna.",
+    "tarifa": "Libre (consumos aparte).",
+    "datos_historicos": "El barrio El Peñón se desarrolló a principios del siglo XX como zona residencial de clase alta.",
+    "descripcion": "Uno de los barrios tradicionales de Cali, a orillas del río Cali, contiguo a San Antonio y al Museo La Tertulia; con los años se consolidó como zona bohemia, gastronómica y de anticuarios. En su entorno (Bulevar del Río) se realizan mercados de antigüedades y pulgas los fines de semana.",
+    "datos_curiosos": [
+      "Alberga una estatua de Benito Juárez donada por México.",
+      "Es conocido por sus grandes árboles que dan sombra fresca todo el día."
+    ]
+  },
+  {
+    "id": "s61",
+    "nombre": "Barrio Granada",
+    "horario": "Zona abierta; fuerte movimiento nocturno.",
+    "tarifa": "Libre (consumos aparte).",
+    "datos_historicos": "Se desarrolló en los años 40 y 50 inspirándose en barrios europeos, con amplios antejardines.",
+    "descripcion": "Barrio residencial del norte de Cali, desarrollado a mediados del siglo XX, que con el tiempo se consolidó como uno de los principales epicentros gastronómicos y de vida nocturna de la ciudad.",
+    "datos_curiosos": [
+      "Conserva muchas casas de arquitectura neoclásica y art déco.",
+      "Es famoso por sus tiendas de diseñadores locales independientes."
+    ]
+  },
+  {
+    "id": "s24",
+    "nombre": "Parque del Perro",
+    "horario": "Zona abierta; fuerte vida nocturna.",
+    "tarifa": "Libre (consumos aparte).",
+    "datos_historicos": "El monumento al perro Teddy fue instalado en los años 70 en honor a la mascota de una casa vecina que 'cuidaba' el parque.",
+    "descripcion": "Parque tradicional del barrio San Fernando, cuyo nombre proviene de una escultura de un perro instalada en el lugar; con los años se transformó en una de las principales zonas de gastronomía y rumba de Cali.",
+    "datos_curiosos": [
+      "Originalmente el perro miraba hacia otro lado; su orientación ha cambiado con las remodelaciones.",
+      "Es famoso por sus puestos de 'cholados' y 'mazorcas'."
+    ]
+  },
+  {
+    "id": "s10",
+    "nombre": "Museo del Oro Calima",
+    "horario": "Martes a viernes, 9:00 a. m.–5:00 p. m.; sábados, 10:00 a. m.–5:00 p. m. (cerrado domingos y lunes).",
+    "tarifa": "Entrada libre y gratuita.",
+    "datos_historicos": "Inaugurado en 1991 como parte de la red de museos del oro del país. Inaugurado el 9 de mayo de 1991.",
+    "descripcion": "Una bóveda de tesoros ancestrales gestionada por el Banco de la República. Este museo narra con maestría la historia de los orfebres de la región Calima (culturas Ilama, Yotoco y Sonso) a través del brillo del oro y la perfección de la cerámica. La museografía es impecable y didáctica, permitiendo apreciar el detalle microscópico de narigueras, pectorales, diademas y poporos que reflejan la cosmovisión indígena, sus jerarquías sociales y su profunda conexión con la naturaleza y el mundo espiritual.",
+    "datos_curiosos": [
+      "La entrada es siempre gratuita.",
+      "Explica cómo el oro no tenía valor comercial, sino espiritual y de rango."
+    ]
+  },
+  {
+    "id": "s22",
+    "nombre": "Teatro Jorge Isaacs",
+    "horario": "Abierto en días de función; taquilla y venta en línea según cartelera.",
+    "tarifa": "Boletería según evento.",
+    "datos_historicos": "Abrió sus puertas en 1931. Estuvo cerrado y en ruinas durante años hasta su gloriosa restauración en los años 80, salvándolo de la demolición. Sala de 1.136 sillas en cuatro localidades.",
+    "descripcion": "Con su imponente fachada de estilo neoclásico francés y sus delicados detalles ornamentales, el Jorge Isaacs es una joya arquitectónica en pleno centro de Cali. Su interior es aún más sorprendente, con una distribución clásica de palcos en forma de herradura y una ornamentación exquisita que evoca la Belle Époque. Es el escenario favorito para conciertos íntimos, espectáculos de comedia y grandes producciones musicales debido a su ambiente elegante, romántico y nostálgico.",
+    "datos_curiosos": [
+      "Su acústica y visibilidad son excelentes desde cualquier punto de la herradura.",
+      "Fue uno de los primeros edificios altos de la ciudad, símbolo de modernidad en su época."
+    ]
+  },
+  {
+    "id": "s18",
+    "nombre": "Jardín Botánico de Cali",
+    "horario": "Jueves a domingo, 9:00 a. m.–3:00 p. m. (último ingreso hacia las 2:00 p. m.).",
+    "tarifa": "Adultos (13+) $17.000; niños (2–12) $15.000; combo con el Zoológico $40.000 / $30.000. Boletas en las taquillas del Zoológico o en TuBoleta.",
+    "datos_historicos": "Promovido por la Fundación Zoológica de Cali para expandir la conservación vegetal. Reabierto al público en septiembre de 2024; administrado por la Fundación Zoológico de Cali.",
+    "descripcion": "Un pulmón verde secreto en el oeste de la ciudad. Este espacio está dedicado a la conservación del bosque seco tropical, uno de los ecosistemas más amenazados. Recorrer sus senderos es desconectarse del ruido urbano y entrar en un mundo de mariposas, aves y vegetación nativa. Cuenta con miradores naturales hacia la ciudad y una estación experimental de plantas. Es ideal para el senderismo suave y la educación ambiental.",
+    "datos_curiosos": [
+      "Tiene un sendero sensorial para conectar con la naturaleza a través del tacto y el olfato.",
+      "Es hogar de muchas especies de aves migratorias."
+    ]
+  },
+  {
+    "id": "s36",
+    "nombre": "Hacienda El Paraíso",
+    "horario": "Martes a domingo y festivos, 9:30 a. m.–4:30 p. m. (cerrado el martes siguiente a un lunes festivo).",
+    "tarifa": "Adultos $18.000; niños $10.500; adultos mayores y PcD $9.000; extranjeros 10 USD (venta solo en taquilla).",
+    "datos_historicos": "Construida entre 1816 y 1828. Fue adquirida por el padre de Jorge Isaacs en 1854. Casa museo administrada por INCIVA; BIC de la Nación.",
+    "descripcion": "El ícono más romántico del Valle del Cauca. Ubicada en el municipio de El Cerrito, cerca de Cali, esta hacienda es mundialmente famosa por ser el escenario de 'María', la obra cumbre de Jorge Isaacs. La casa museo está restaurada con exquisito detalle, recreando la atmósfera del siglo XIX con sus jardines de rosas, sus habitaciones ventiladas y el paisaje inigualable del valle geográfico a sus pies. Es una peregrinación obligada para los amantes de la literatura y el amor.",
+    "datos_curiosos": [
+      "La piedra donde Efraín y María se sentaban aún se conserva en el jardín.",
+      "Los rosales son cuidados meticulosamente para evocar la novela."
+    ]
+  },
+  {
+    "id": "s43",
+    "nombre": "La Linterna",
+    "horario": "Lunes a viernes, 9:00 a. m.–12:30 p. m. y 2:00–5:00 p. m.",
+    "tarifa": "Visita libre al taller-tienda (los carteles y productos se venden aparte).",
+    "datos_historicos": "Fundada en 1934. Fue salvada de la quiebra en 2017 gracias a la unión de sus trabajadores veteranos y diseñadores jóvenes. Funciona desde 1934; en San Antonio desde 1987.",
+    "descripcion": "El lugar más 'hipster', auténtico y colorido de San Antonio. La Linterna es un taller de impresión tipográfica tradicional que se negó a morir ante lo digital. Sus enormes máquinas Heidelberg del siglo XIX siguen rugiendo, imprimiendo carteles que definen la estética gráfica de Cali. Lo que era una imprenta comercial en crisis se convirtió en un templo del diseño gráfico y el arte callejero, colaborando con artistas modernos.",
+    "datos_curiosos": [
+      "Sus carteles de conciertos de rock y salsa son icónicos y objetos de colección.",
+      "Puedes ver a los maestros impresores trabajando en vivo y comprar arte original."
+    ]
+  },
+  {
+    "id": "s34",
+    "nombre": "Museo Caliwood",
+    "horario": "Lunes a viernes, 8:00 a. m.–6:00 p. m.; sábados, 3:00–6:00 p. m.; domingos, 10:00 a. m.–6:00 p. m.",
+    "tarifa": "Entrada $20.000 (a modo de donación para su sostenimiento).",
+    "datos_historicos": "Fundado en 2008 por Hugo Suárez, un apasionado coleccionista. Fundado el 22 de octubre de 2008 por Hugo Suárez Fiat.",
+    "descripcion": "Un homenaje monumental a la obsesión de Cali por el cine y la imagen. Este museo alberga la colección privada de proyectores, cámaras filmadoras y afiches de cine más grande del país. Al recorrer sus pasillos, se viaja por la historia tecnológica del séptimo arte, desde los hermanos Lumière hasta la época dorada del cine mexicano y hollywoodense que tanto influyó en la cultura caleña. Además, ofrece una vista espectacular del oeste de Cali desde su terraza.",
+    "datos_curiosos": [
+      "Tiene proyectores que funcionaron en los antiguos teatros de barrio de Cali.",
+      "El nombre alude al fenómeno cultural de 'Caliwood' de los años 70."
+    ]
+  },
+  {
+    "id": "s16",
+    "nombre": "Iglesia La Ermita",
+    "horario": "Abierta al público en horarios de culto (misas).",
+    "tarifa": "Entrada gratuita.",
+    "datos_historicos": "La construcción actual se inició en 1930 y finalizó en 1942, reemplazando una capilla del siglo XVII. El templo neogótico actual se construyó en la primera mitad del siglo XX (décadas de 1930–1940), en reemplazo de la ermita colonial arruinada por los terremotos; su estilo se inspira en las catedrales góticas europeas.",
+    "descripcion": "Una fantasía gótica en el trópico. La Ermita es quizás la postal más reconocida de Cali. Su arquitectura neogótica, inspirada en la Catedral de Ulm (Alemania), contrasta con la modernidad del Bulevar del Río. Sus agujas blancas se elevan hacia el cielo, y su interior alberga vitrales holandeses, campanas francesas y un órgano alemán. Es un símbolo de fe y resiliencia, reconstruida tras el terremoto que destruyó la capilla original.",
+    "datos_curiosos": [
+      "Guarda la imagen del 'Señor de la Caña', única sobreviviente del terremoto de 1787.",
+      "Su reloj musical suena cada hora, alegrando el centro.",
+      "Conserva la imagen colonial del Señor de la Caña (o Señor de los Milagros), sobreviviente de los sismos."
+    ]
+  },
+  {
+    "id": "s63",
+    "nombre": "Capilla de San Antonio",
+    "horario": "Colina y parque abiertos todo el día; la capilla abre en horarios de misa.",
+    "tarifa": "Gratuita.",
+    "datos_historicos": "Construida en 1747 en honor a San Antonio de Padua. La capilla data de 1747 (construcción iniciada en 1746); es uno de los templos más antiguos de la ciudad (BIC).",
+    "descripcion": "La joya de la corona del barrio San Antonio. Esta pequeña capilla barroca, ubicada en la cima de la colina, es uno de los monumentos más antiguos y queridos de Cali. Su fachada blanca y sus gradas de piedra son el escenario perfecto para bodas y fotos. En su interior reposan altares de madera tallada y santos de la época colonial. Es un remanso de paz con una vista inigualable.",
+    "datos_curiosos": [
+      "Las gradas frente a la iglesia son un punto de encuentro social espontáneo.",
+      "Alberga una valiosa colección de arte religioso quiteño."
+    ]
+  },
+  {
+    "id": "s8",
+    "nombre": "Parque del Gato de Tejada",
+    "horario": "Parque abierto todo el día.",
+    "tarifa": "Gratuita.",
+    "datos_historicos": "El Gato fue donado por el artista en 1996. Las 'novias del gato' se añadieron años después como parte de un proyecto de la Cámara de Comercio.",
+    "descripcion": "Una deliciosa galería de arte a cielo abierto a orillas del río Cali. Presidida por el monumental 'Gato del Río', una obra en bronce del maestro Hernando Tejada, esta zona verde se convirtió en el hogar de sus 'novias': una colección de más de 15 gatas esculpidas e intervenidas pictóricamente por reconocidos artistas colombianos (como Maripaz Jaramillo, Omar Rayo, etc.). Cada gata tiene una personalidad, historia y diseño único. Es un paseo colorido, artístico y refrescante. El Gato del Río, de Hernando Tejada, se instaló el 3 de julio de 1996; 'Las Gatas del Río' (esculturas intervenidas por distintos artistas) se sumaron en 2006.",
+    "datos_curiosos": [
+      "El Gato pesa 3.5 toneladas y está fundido en bronce.",
+      "Las gatas son pintadas periódicamente o restauradas, por lo que el parque siempre ofrece algo nuevo."
+    ]
+  },
+  {
+    "id": "s11",
+    "nombre": "Loma de la Cruz",
+    "horario": "Abierto a diario, con más ambiente en la tarde-noche.",
+    "tarifa": "Ingreso libre (las artesanías y la comida se pagan aparte).",
+    "datos_historicos": "Inaugurado en 1987. El lugar tiene una leyenda colonial sobre una 'mano negra' que señalaba la loma, donde se puso una cruz para conjurar el miedo.",
+    "descripcion": "El corazón de la artesanía y la cultura bohemia en Cali. Este parque artesanal, construido arquitectónicamente en niveles sobre una colina, está lleno de casetas donde artesanos locales fabrican y venden joyas, trabajos en cuero, madera e instrumentos musicales. Pero más que un mercado, es un centro cultural vivo: los jueves son noches de narración oral (cuenteros), y los fines de semana hay danzas folclóricas y música andina en vivo. Un espacio de resistencia cultural. Se consolidó como parque y mercado artesanal en las últimas décadas del siglo XX; es punto de referencia del comercio artesanal caleño.",
+    "datos_curiosos": [
+      "Es uno de los pocos parques diseñados arquitectónicamente específicamente para la venta de artesanías.",
+      "Aquí se consiguen los mejores instrumentos musicales andinos de la ciudad."
+    ]
+  },
+  {
+    "id": "s39",
+    "nombre": "Plaza de Cayzedo",
+    "horario": "Plaza pública, abierta.",
+    "tarifa": "Libre.",
+    "datos_historicos": "Originalmente era la Plaza de la Constitución. Renombrada en honor al prócer vallecaucano Joaquín de Cayzedo y Cuero.",
+    "descripcion": "El kilómetro cero de Cali. Esta plaza, rodeada de palmeras altísimas 'Roystonea regia', es el corazón cívico y comercial histórico de la ciudad. A su alrededor se erigen edificios emblemáticos de arquitectura republicana y neoclásica como la Catedral de San Pedro, el Palacio Nacional y el Edificio Otero. Es un lugar vibrante, lleno de vendedores de tinto, lustrabotas y transeúntes, donde se siente el pulso diario de la ciudad y se cruzan todas las historias. La antigua Plaza Mayor colonial (luego Plaza de la Constitución) fue rebautizada Plaza de Caycedo en 1813, en honor al prócer Joaquín de Caycedo y Cuero; el monumento central se erigió en 1913.",
+    "datos_curiosos": [
+      "Las palmeras 'reales' son el sello distintivo de la plaza y algunas son centenarias.",
+      "Ha sido escenario de los eventos políticos y sociales más importantes de la historia de Cali."
+    ]
+  },
+  {
+    "id": "s65",
+    "nombre": "Cerro de las Tres Cruces",
+    "horario": "Se recomienda el ascenso de madrugada o en la mañana (por seguridad y clima); funciona como ecoparque (Bataclán).",
+    "tarifa": "Gratuita.",
+    "datos_historicos": "Construidas en 1938 para 'exorcizar' al demonio que supuestamente habitaba el cerro y causaba pestes y desgracias.",
+    "descripcion": "El reto físico por excelencia de los caleños. Subir a las Tres Cruces es un ritual matutino de fin de semana para miles de personas. El sendero es empinado y exige esfuerzo físico, pero la recompensa es una vista inigualable de la ciudad y un jugo de naranja fresco en la cima. Las tres grandes cruces de concreto dominan el paisaje y protegen, según la leyenda, a la ciudad del demonio 'Buziraco'. Según la tradición, se erigió una cruz en el cerro para 'conjurar' al diablo Buziraco; las tres cruces actuales, en concreto, datan de finales de los años treinta del siglo XX.",
+    "datos_curiosos": [
+      "Se dice que el diablo (Buziraco) está atrapado bajo las cruces.",
+      "Hay gimnasios al aire libre improvisados en la cima."
+    ]
+  },
+  {
+    "id": "s3",
+    "nombre": "Bulevar del Río",
+    "horario": "Espacio público abierto.",
+    "tarifa": "Libre.",
+    "datos_historicos": "Inaugurado en 2013. Se construyó sobre el túnel de la Avenida Colombia, el túnel urbano más largo del país en su momento.",
+    "descripcion": "Es la 'sala de recibo' moderna de Cali. Un extenso y ventilado paseo peatonal a orillas del río que transformó el centro de la ciudad. Aquí la brisa de la tarde es la protagonista. Es el lugar democrático donde convergen caleños de todas las edades y clases sociales para caminar, tomar un café, escuchar música espontánea o simplemente ver pasar la vida. Conecta la arquitectura histórica del Puente Ortiz y la Ermita con la modernidad del centro administrativo. Inaugurado en 2013, tras peatonalizar el antiguo tramo de la Avenida Colombia a orillas del río Cali.",
+    "datos_curiosos": [
+      "Es el epicentro del alumbrado navideño cada diciembre.",
+      "A lo largo del bulevar encontrarás esculturas y restos visibles del antiguo Puente Ortiz."
+    ]
+  },
+  {
+    "id": "s20",
+    "nombre": "Ecoparque Río Pance",
+    "horario": "Abierto; zona de baño en el río y senderos (mayor afluencia los fines de semana).",
+    "tarifa": "Ingreso libre (algunos servicios y parqueaderos privados aparte).",
+    "datos_historicos": "El río nace en el Parque Nacional Natural Farallones de Cali, una de las zonas más biodiversas.",
+    "descripcion": "Si quieres saber qué hace un caleño auténtico el domingo, ve a Pance. Este río de aguas frías y cristalinas que baja directamente de los Farallones es el balneario natural y democrático de la ciudad. El ecoparque ofrece senderos para caminar, zonas de picnic, lagos y acceso directo al río. Es un ritual sagrado sumergirse en sus aguas para 'sacarse el calor' y luego disfrutar de un sancocho de gallina en leña en los restaurantes aledaños. El río Pance nace en el Parque Nacional Natural Farallones de Cali; su ribera se consolidó como zona de recreación y ecoparque de la ciudad.",
+    "datos_curiosos": [
+      "El agua es notablemente fría, lo que contrasta deliciosamente con el clima cálido de Cali.",
+      "Es un excelente lugar para el avistamiento de aves al amanecer."
+    ]
+  }
+]

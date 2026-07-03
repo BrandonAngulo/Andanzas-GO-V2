@@ -1,0 +1,565 @@
+[
+  {
+    "id": "s121",
+    "nombre": "Teatro al Aire Libre Los Cristales",
+    "horario": "Abierto en días de evento (conciertos de Feria, festival Ajazzgo, cine); el parque superior es de acceso público.",
+    "tarifa": "Los eventos públicos suelen ser gratuitos.",
+    "datos_historicos": "La famosa concha acústica se construyó en 1986, por gestión de Hernando Botero O'Byrne. Diseñada por el arquitecto Sigifredo Rojas y calculada por el ingeniero Camilo Niño Vélez. En 2025 se logró la titulación del predio a favor del Distrito.",
+    "descripcion": "Trepado en la ladera occidental de Cali, muy cerca de San Antonio, Los Cristales es uno de los escenarios más queridos de la ciudad: un gran anfiteatro al aire libre cuya concha acústica y graderías en terraza forman el marco perfecto para conciertos, cine bajo las estrellas y festivales. Además del escenario, el complejo tiene camerinos, oficinas y, en su parte alta, un amplio parque con nacimiento de agua, flora y una fauna especialmente rica en aves. Por sus tablas han pasado la salsa, el rock, la música clásica, la andina, el jazz y la chirimía.",
+    "datos_curiosos": [
+      "El área construida del teatro ronda los 3.920 m²; el aforo teórico se cifra en 15.000 personas.",
+      "El escenario mide 10 metros de ancho por dentro y se abre a 25 metros hacia el exterior.",
+      "Su parte alta funciona casi como un pequeño ecoparque, con nacimiento de agua y aves."
+    ]
+  },
+  {
+    "id": "s122",
+    "nombre": "Universidad del Valle (Ciudad Universitaria Meléndez)",
+    "horario": "Campus de acceso público en horarios de la institución; la Biblioteca Mario Carvajal y las zonas verdes se pueden recorrer según normas.",
+    "tarifa": "No aplica.",
+    "datos_historicos": "Creada el 11 de junio de 1945 mediante la Ordenanza 12. En 1954 cambia su nombre a Universidad del Valle. Desde 1965 se construye la Ciudad Universitaria de Meléndez. En 1971 sirvió de villa olímpica para los Juegos Panamericanos.",
+    "descripcion": "Al sur de Cali, entre la avenida Pasoancho y las colinas de Pance, se extiende uno de los campus universitarios más grandes y hermosos de Colombia: la Ciudad Universitaria Meléndez de la Universidad del Valle. Sobre un millón de metros cuadrados que antes fueron cañaduzal, la \"Univalle\" levantó una ciudad-parque con lago artificial, arboledas y vista a los Farallones. Es la principal institución de educación superior del suroccidente colombiano, pública y de investigación, con más de 30.000 estudiantes, y su emblema —el búho— preside una vida académica y cultural que ha marcado la historia de la ciudad.",
+    "datos_curiosos": [
+      "El diseño arquitectónico fue coordinado por los arquitectos Jaime Cruz y Diego Peñalosa.",
+      "El símbolo de la universidad es el búho, y su biblioteca central lleva el nombre de Mario Carvajal.",
+      "Buena parte del campus permanece deliberadamente sin construir, como reserva verde."
+    ]
+  },
+  {
+    "id": "s69",
+    "nombre": "Cali Teatro",
+    "horario": "Funciones según cartelera (habitualmente de jueves a domingo); atención administrativa L–V.",
+    "tarifa": "Boletería según función.",
+    "datos_historicos": "Fundación de la Fundación Escénica Cali Teatro en 1989. Ha realizado más de 38 montajes a lo largo de su historia. En 2021 se crea el festival \"Muestra Alternativa de Teatro pero del Bueno Bueno\".",
+    "descripcion": "En una casa del tradicional barrio San Antonio funciona Cali Teatro, una de las salas independientes más amplias y mejor equipadas de la ciudad. La Fundación Escénica Cali Teatro nació en 1989 y, desde su sede propia, ha construido un espacio con capacidad para unos 150 espectadores en platea y palco, con antesala, cafetería y una exhibición permanente de material gráfico que da testimonio de su trayectoria. Durante cerca de diez meses al año programa temporadas de teatro con su elenco de planta y grupos invitados de la ciudad, el país y el exterior.",
+    "datos_curiosos": [
+      "Su sala de 150 sillas es de tipo cine, y el escenario cuenta con foso o trampa escénica.",
+      "Buena parte de su programación reciente aborda temas sensibles y contemporáneos: salud mental, trastornos alimentarios, población LGBTIQ+."
+    ]
+  },
+  {
+    "id": "s68",
+    "nombre": "Domus Teatro",
+    "horario": "Funciones según cartelera (habitualmente fines de semana).",
+    "tarifa": "Boletería, con descuento para estudiantes.",
+    "datos_historicos": "1994: fundación de Domus Teatro por Manuel Sierra y Luz Stella Gil. Finales de los 90: la sala impulsa un Festival de Salas en concierto. Ha mantenido repertorio propio y programación continua durante más de 31 años (dato a 2025).",
+    "descripcion": "En una vieja casona del barrio San Fernando, adaptada como casa-teatro, late Domus Teatro: una sala-estudio íntima, de esas pensadas no para llenar grandes aforos sino para formar público. Nacida en 1994 de la mano de Manuel Sierra y Luz Stella Gil, la Fundación Domus Teatro ofrece desde entonces una programación cultural permanente que abarca teatro, música, danza, exposiciones pictóricas y conversatorios. Sus salas son pequeñas —para 50 o 70 espectadores—, con la idea de cultivar, función a función, los espectadores que Cali necesita.",
+    "datos_curiosos": [
+      "Domus se define como \"sala-estudio\": la formación y la creación son tan importantes como la exhibición.",
+      "Ha invitado a grupos de peso como Ditirambo (Bogotá).",
+      "Su filosofía la resume una frase de sus fundadores a los artistas que invitan: \"Venga estudiamos\"."
+    ]
+  },
+  {
+    "id": "s70",
+    "nombre": "Teatro del Presagio",
+    "horario": "Viernes y sábado 7:30 p. m.; temporada familiar los domingos 4:00 p. m.",
+    "tarifa": "Boletería según función.",
+    "datos_historicos": "2005: se conforma el grupo, con dramaturgia y dirección de Diego Fernando Montoya.\nNoviembre de 2014: inaugura su sede propia en el barrio Granada.\nDesde 2019: realiza el Encuentro de Arte Queer, con una nutrida agenda artística y académica.",
+    "descripcion": "El Teatro del Presagio nació en 2005 como una agrupación teatral profesional formada por licenciados en arte dramático de Cali, dedicada a la investigación, creación y producción escénica. Tras casi diez años de trabajo itinerante, en noviembre de 2014 abrió su propia sala —un espacio cultural— en el barrio Granada, una zona de cafés, restaurantes y anticuarios que hasta entonces no tenía un verdadero escenario para las artes. Su propuesta huye de los grandes espectáculos comerciales: se construye, como ellos mismos dicen, \"a partir del asombro y de las breves emociones que brotan entre la luz\".",
+    "datos_curiosos": [
+      "Su programación habitual es viernes y sábado a las 7:30 p. m., con temporada familiar los domingos a las 4:00 p. m.",
+      "Tiene un programa dedicado a formar nuevos públicos entre niños y jóvenes de instituciones educativas."
+    ]
+  },
+  {
+    "id": "s123",
+    "nombre": "Espacio T",
+    "horario": "Microteatro por temporadas, habitualmente de jueves a sábado, entre las 8:00 y las 11:00 p. m.",
+    "tarifa": "Boletería por función; consumos de comida y bebida aparte.",
+    "datos_historicos": "3 de diciembre de 2015: inauguración de Espacio T en el centro histórico.\n2023: apertura de La Carpa T, su escenario de patio para largo formato.",
+    "descripcion": "Espacio T le trajo a Cali un formato que no existía en la ciudad: el microteatro. En una hermosa casa antigua del barrio San Antonio, sus alcobas se convirtieron en salas mínimas donde se presentan tres piezas de unos 15 minutos, en espacios de 15 m², para apenas 15 espectadores cada una. Las obras rotan cada media hora entre las 8 y las 11 de la noche, y la experiencia se completa con restaurante y bar de bebidas artesanales: teatro y sobremesa en un mismo plan. Lo inauguraron el 3 de diciembre de 2015 Leandro Fernández —actor y director caleño radicado en Miami— y su esposa Ángela María Osorio, que trajeron el concepto desde su sala en esa ciudad.",
+    "datos_curiosos": [
+      "La fórmula que lo define: obras de 15 minutos, para 15 personas, en salas de 15 metros cuadrados.",
+      "Leandro Fernández, su fundador, es hermano de algunos de los creadores del TEC (Teatro Experimental de Cali).",
+      "Entre función y función suele sonar salsa viejita."
+    ]
+  },
+  {
+    "id": "s118",
+    "nombre": "Teatro La Concha",
+    "horario": "Funciones habitualmente viernes y sábado, 7:30 p. m.",
+    "tarifa": "Boletería según función.",
+    "datos_historicos": "2007: fundación del Teatro La Concha, dentro de la Fundación de Teatro y Artes \"Yolanda García Reina\".\nSu sede es una casa del centro histórico catalogada como Patrimonio Arquitectónico-Urbano de Cali.\nHa desarrollado coproducciones (por ejemplo, con Entropía Teatro) y participa activamente en la Red de Teatro Independiente de Cali.",
+    "descripcion": "En una casa declarada Patrimonio Arquitectónico-Urbano de Cali, en pleno barrio San Antonio, funciona el Teatro La Concha: un espacio escénico al servicio de la comunidad artística iberoamericana. Fundado en 2007, hace parte de la Fundación de Teatro y Artes \"Yolanda García Reina\" y cuenta con una sala de mediano formato, una sala de exposición y un salón alterno para ensayos y montajes de pequeño formato. La casa guarda, además, una capa de memoria caleña: alberga de manera permanente la exposición del artista plástico Carlos Zuluaga sobre Jovita Feijóo, uno de los personajes populares más entrañables de la ciudad.",
+    "datos_curiosos": [
+      "En la misma casa se puede visitar la exposición permanente sobre Jovita Feijóo, figura mítica del \"Cali viejo\".",
+      "Durante la pandemia fue una de las primeras salas de Cali en habilitar una plataforma web para transmitir sus obras."
+    ]
+  },
+  {
+    "id": "s38",
+    "nombre": "Ecoparque Lago de las Garzas",
+    "horario": "Martes a domingo, 8:00 a. m.–5:00 p. m. (lunes cerrado).",
+    "tarifa": "Entrada gratuita.",
+    "datos_historicos": "Nació de una tragedia: el accidente del vuelo 965 de American Airlines en 1995. En 1996 comenzaron los trabajos de recuperación y se sembraron 400 árboles en memoria de las víctimas. En 2002 fue incluido en el Plan de Ordenamiento Territorial.",
+    "descripcion": "En plena comuna 22, al sur de la ciudad, el Ecoparque Lago de las Garzas es un oasis inesperado: un humedal y uno de los pocos remanentes de bosque seco tropical que le quedan a Cali, alimentado por las aguas del río Pance. Alrededor de su espejo de agua conviven garzas, tinguas, tortugas, ardillas, iguanas, mariposas y decenas de especies de aves residentes y migratorias, que llegan a descansar en su viaje entre continentes. Hay un muelle de madera para el avistamiento, senderos ecológicos y un ambiente pensado para la \"recreación pasiva\": observar, respirar y desconectarse sin alterar el ecosistema.",
+    "datos_curiosos": [
+      "Tiene una extensión aproximada de 4,7 hectáreas, con un lago de cerca de 0,8 hectáreas.",
+      "Alberga más de 80 especies de aves y más de 70 de mariposas.",
+      "Recibe alrededor de 60.000 visitantes al año."
+    ]
+  },
+  {
+    "id": "s124",
+    "nombre": "Fundación AESCENA",
+    "horario": "Funciones y talleres según programación (habitualmente fines de semana).",
+    "tarifa": "Boletería según función; talleres con inscripción.",
+    "datos_historicos": "Lleva más de dos décadas de trabajo continuo como escuela y sala independiente.\nSu Casa Aescena cuenta con una sala para unas 50 personas y un escenario de 4,80 × 5,60 m, además de espacios para talleres y ensayos.",
+    "descripcion": "AESCENA (Arte Escénico Nacional) es una fundación artística profesional que, desde hace más de dos décadas, funciona a la vez como escuela y como sala independiente. En su \"Casa Aescena\" ofrece programación permanente de teatro para adultos, jóvenes y niños —comedia, drama, experimental—, y una línea de formación integral en interpretación, dramaturgia y expresión corporal a cargo de docentes reconocidos de la escena local. Su equipo es interdisciplinario: al arte suma la sociología, el derecho, la comunicación social y la pedagogía.",
+    "datos_curiosos": [
+      "Organiza espacios abiertos como la \"Jam Actoral\", para actores y no actores que quieran subirse a improvisar sin guion.",
+      "Su trabajo articula varias disciplinas del conocimiento en torno a la escena."
+    ]
+  },
+  {
+    "id": "s132",
+    "nombre": "Teatro Casa Naranja",
+    "horario": "Funciones y talleres los sábados.",
+    "tarifa": "La entrada se paga con alimentos (un huevo, arroz, panela, atún…).",
+    "datos_historicos": "Sus raíces están en el \"Colectivo Teatral Espejos\", hacia 1998; la sala como tal funciona desde 2004.\nSe estima que por sus tablas han pasado más de 7.600 niños y jóvenes formados de manera gratuita; cada año pasan más de 400.\nCuenta con el respaldo de Compromiso Valle, la Fundación Fanalca, Bolívar Davivienda, la Cámara de Comercio, ProPacífico y la Alcaldía, entre otros.",
+    "descripcion": "En una casa de tres pisos pintada de naranja, en el barrio El Poblado I, en pleno Distrito de Aguablanca, está el único teatro del oriente de Cali. Casa Naranja es una historia de terquedad y de amor por el arte: la levantó, ladrillo a ladrillo, John Jairo Perdomo, líder comunitario y artista escénico, para que los niños y jóvenes de una de las zonas más golpeadas de la ciudad tuvieran un lugar donde descubrir su talento. Aquí la entrada tiene un precio insólito y hermoso: se paga con comida. Un huevo es una entrada; dos huevos, dos; media libra de arroz o de azúcar, o una panela, valen por tres; un atún, por cuatro. Lo que se recoge alimenta a los artistas y a la comunidad.",
+    "datos_curiosos": [
+      "Su filosofía es la \"vitamina C\": Cristo, confianza, cultura, carnaval, cariño, convivencia, comunidad y celebración. De ahí el nombre.",
+      "Su lema es \"Todos somos los otros\".",
+      "Uno de sus proyectos insignia es el \"Desfile de la Luz\", cada 7 de agosto por las calles del oriente (ha reunido hasta 800 participantes). Nació tras el asesinato de seis jóvenes, como un acto para llevar luz y honrar la vida de los muchachos del sector.",
+      "En su terraza guarda muñecos gigantes del Gato de Tejada, de Jovita y de la vendedora de chontaduros, destinados a un futuro Museo del Cali Viejo."
+    ]
+  },
+  {
+    "id": "s133",
+    "nombre": "Instituto Popular de Cultura (IPC)",
+    "horario": "Según calendario académico.",
+    "tarifa": "Formación pública; programas con matrícula según la institución.",
+    "datos_historicos": "18 de diciembre de 1947: creación mediante el Acuerdo No. 450 del Concejo Municipal.\n2011: se transforma en Establecimiento Público Descentralizado, vinculado a la Secretaría de Educación (Acuerdo 0313), con autonomía y patrimonio propios.\n2023: al cumplir 76 años, el Ministerio de Educación aprueba la creación de la Institución Universitaria de las Culturas y las Artes Populares IPC (IUIPC), la primera de su tipo en el país, en el rehabilitado Edificio Coltabaco.",
+    "descripcion": "El Instituto Popular de Cultura —el IPC— es una de las instituciones que más ha marcado la vida artística de Cali. Nació por iniciativa del Concejo Municipal el 18 de diciembre de 1947, en pleno contexto de la \"República Liberal\", con una misión pionera: dar formación artístico-cultural a los sectores populares de la ciudad, entendiendo el arte como herramienta para educar y transformar la realidad social. Con el tiempo consolidó cuatro escuelas —Artes Plásticas, Danza, Música y Teatro— por donde han pasado generaciones de artistas, docentes y gestores culturales caleños.",
+    "datos_curiosos": [
+      "En sus inicios enseñaba también historia patria, educación cívica, geografía, higiene y urbanidad a las clases obreras.",
+      "Su publicación y sus encuentros han documentado, entre otras memorias, la de la ladera (\"Siloé resiste\"), enlazando con el Museo Popular de Siloé."
+    ]
+  },
+  {
+    "id": "s8",
+    "nombre": "Parque del Gato de Tejada",
+    "horario": "Parque abierto todo el día.",
+    "tarifa": "Gratuita.",
+    "datos_historicos": "Escultura en bronce de Hernando Tejada, inaugurada el 3 de julio de 1996 a orillas del río Cali. En 2006 se sumaron \"las novias/gatas del gato\", esculturas intervenidas por diversos artistas, impulsadas por la familia Tejada y la Cámara de Comercio.",
+    "descripcion": "Una deliciosa galería de arte a cielo abierto a orillas del río Cali. Presidida por el monumental 'Gato del Río', una obra en bronce del maestro Hernando Tejada, esta zona verde se convirtió en el hogar de sus 'novias': una colección de más de 15 gatas esculpidas e intervenidas pictóricamente por reconocidos artistas colombianos (como Maripaz Jaramillo, Omar Rayo, etc.). Cada gata tiene una personalidad, historia y diseño único. Es un paseo colorido, artístico y refrescante. El Gato del Río, de Hernando Tejada, se instaló el 3 de julio de 1996; 'Las Gatas del Río' (esculturas intervenidas por distintos artistas) se sumaron en 2006.",
+    "datos_curiosos": [
+      "Pesa alrededor de tres toneladas y fue fundido en Bogotá.",
+      "Cada una de \"las gatas\" fue decorada por un artista diferente.",
+      "Es uno de los monumentos más visitados y fotografiados de la ciudad."
+    ]
+  },
+  {
+    "id": "s134",
+    "nombre": "Teatro de Títeres Castillo Sol y Luna",
+    "horario": "Funciones los domingos; entre semana para colegios y grupos con reserva previa.",
+    "tarifa": "Entrada general aprox. $15.000; gratuita para los niños de la vereda.",
+    "datos_historicos": "Fundado en 2002 por el maestro Reynel Osorio, junto a su esposa Luz Myriam García Franco y su hija Melisa Osorio García.\nHa participado en festivales de títeres departamentales, nacionales e internacionales.",
+    "descripcion": "A veinte minutos de la ciudad, en la vereda Los Limones del corregimiento La Castilla, al oeste de Cali, hay un castillo de verdad: dos torres de aire medieval, zona verde y cielo abierto, hechas para que los niños tengan su teatro de títeres. Es el Castillo Sol y Luna, la única sala en forma de castillo y en zona rural de la ciudad. Lo soñó y lo construyó el maestro Reynel Osorio Torres —titiritero, actor y docente con más de 45 años de oficio— cuando se jubiló del Instituto Popular de Cultura e invirtió sus ahorros en levantar, con su familia, este espacio para la primera infancia.",
+    "datos_curiosos": [
+      "Tiene programas de inclusión (\"Somos diversos con derechos\") para niños en situación de discapacidad, riesgo social o enfermedad: con niños ciegos, por ejemplo, dejan tocar los muñecos antes de la función para reconocerlos por la voz.",
+      "En el campus viven patos, gallinas, conejos, palomos y hasta una oveja llamada Cornelia, que pide guayabas.",
+      "Los niños de la vereda siempre entran gratis."
+    ]
+  },
+  {
+    "id": "s135",
+    "nombre": "Colectivo Teatral Infinito",
+    "horario": "Funciones y talleres según programación (fines de semana).",
+    "tarifa": "Boletería según función.",
+    "datos_historicos": "2 de diciembre de 2005: constitución de la Fundación Artística y Cultural Colectivo Teatral Infinito.\nHa construido un repertorio de obras propias (como *Mío Amor*) que han representado a la ciudad dentro y fuera de Cali.\n2023: gracias a la Ley de Espectáculos Públicos (LEP) y la gestión de la Secretaría de Cultura, estrenó por fin su propia sala.\n2025: celebración de 20 años de trabajo.",
+    "descripcion": "El Colectivo Teatral Infinito es uno de los proyectos más conmovedores de la escena caleña: la primera —y durante mucho tiempo única— escuela de formación teatral para personas con discapacidad del país. Fundado en 2005 por el maestro Harold Molina (egresado del IPC) y Paula Macía, el CTI integra a niños, jóvenes y adultos, y muy especialmente a actores y actrices con Síndrome de Down, en producciones de nivel profesional. Su apuesta es demostrar, sobre las tablas, que lejos de la idea de \"discapacidad\" hay un talento enorme por mostrar.",
+    "datos_curiosos": [
+      "Es reconocida como la primera y única escuela de formación teatral para población con discapacidad en el país.",
+      "Su director, Harold Molina, se formó en el IPC —otro hilo que enlaza a esta institución con el circuito escénico de la ciudad."
+    ]
+  },
+  {
+    "id": "s7",
+    "nombre": "La Topa Tolondra",
+    "horario": "Miércoles y jueves 6:00 p. m.–1:00 a. m.; viernes y sábado 6:00 p. m.–3:00 a. m.",
+    "tarifa": "Cover ~$10.000.",
+    "datos_historicos": "Comenzó como un pequeño bar en la Calle 5ta y creció hasta convertirse en el templo actual frente al Parque Jovita. Abrió en 2011.",
+    "descripcion": "Sobre la mítica Calle 5 —esa que el Grupo Niche nombra en \"Cali Ají\"— está la salsoteca donde el melómano y el bailarín raso comparten la misma pista. La Topa Tolondra abrió en 2011 casi de casualidad: empezó con una mesa y una nevera, y su nombre viene del dicho vallecaucano \"a la topa tolondra\", que es hacer las cosas a la carrera, sin plan. De esa improvisación salió uno de los templos de la rumba caleña.\n\nAcá no suena solo salsa comercial: suenan bugalú, pachanga, guaguancó, bolero y descargas afrolatinas de colección, con una librería musical que respeta la raíz del género. Da clases de baile entre semana y reúne a caleños y extranjeros alrededor de la pista. Es el lugar donde se entiende que aquí la salsa no es show para turistas, sino oficio cotidiano.",
+    "datos_curiosos": [
+      "Está sobre la Calle 5, la misma que menciona el Grupo Niche en \"Cali Ají\".",
+      "Muchos visitantes dan aquí sus primeros pasos de baile, en clases previas a la fiesta.",
+      "Su selección incluye a Los Hermanos Lebrón, Ángel Canales y la Sonora Ponceña."
+    ]
+  },
+  {
+    "id": "s127",
+    "nombre": "Cementerio Central de Cali",
+    "horario": "Jardines abiertos al público de lunes a domingo, 9:00 a. m.–4:00 p. m. (jornada continua).",
+    "tarifa": "Ingreso libre.",
+    "datos_historicos": "Hacia 1852 se adjudicó el terreno actual y se instaló allí el cementerio (tercera ubicación del camposanto católico de Cali).\nEl sitio fue, en tiempos coloniales, el asentamiento indígena de San Diego de Alcalá de Yanaconas.\nHa sido investigado por especialistas en patrimonio funerario, como el arquitecto Ricardo Hincapié (Universidad del Valle).",
+    "descripcion": "En el centro-norte de la ciudad, el Cementerio Central es mucho más que un camposanto: es un archivo vivo donde reposa buena parte de la memoria de Cali. Instalado oficialmente en este punto hacia 1852, fue el tercer emplazamiento del cementerio católico de la ciudad —el primero estuvo donde hoy está la Plaza de Cayzedo y el segundo en el actual Parque de San Nicolás—. Y el terreno tiene raíces aún más hondas: fue el antiguo asentamiento indígena de San Diego de Alcalá de Yanaconas, de donde los yanaconas fueron trasladados en 1778. Entre su arquitectura funeraria republicana y su capilla, una de las más antiguas de la ciudad, se recorre como una alameda de la historia caleña.",
+    "datos_curiosos": [
+      "Junto a los mausoleos de mármol conviven \"santos populares\": tumbas convertidas en lugar de devoción, adornadas con flores, cartas, fotos y ofrendas.",
+      "La tumba de Jovita Feijóo enlaza este lugar con el Teatro La Concha (que le dedica una exposición) y con los muñecos del Cali viejo de Casa Naranja.",
+      "La presencia de los yanaconas en su origen conecta el sitio con el Museo Popular de Siloé, que también narra esa raíz indígena de la ciudad."
+    ]
+  },
+  {
+    "id": "s9",
+    "nombre": "Plaza de Mercado Alameda",
+    "horario": "Abierta a diario; los días de plaza —con más surtido y ambiente— son martes, jueves y sábado, sobre todo en la mañana.",
+    "tarifa": "Ingreso libre; consumos por aparte.",
+    "datos_historicos": "El barrio Alameda fue fundado en octubre de 1930. La Plaza de Mercado tiene su origen hacia 1947. Hacia 1970 se levantó la mayor parte del edificio actual. Desde 1994 la maneja ASOALAMEDA.",
+    "descripcion": "En el barrio Alameda, en el centro de Cali, hay un mercado que es mucho más que un sitio para comprar: es un viaje de los Andes al Pacífico en pocos pasos. La Galería Alameda —o Plaza de Mercado Alameda— es un laberinto de colores y aromas donde conviven frutas exóticas, verduras fresquísimas, carnes, flores y, sobre todo, la mejor cocina tradicional del Valle y del Pacífico colombiano. Aquí las cocineras venidas de Buenaventura —herederas de saberes culinarios que vienen desde los tiempos de la esclavitud— sirven sancocho de pescado con leche de coco, ceviche de camarón, sudados, rellena y tamal en platos enormes. Recorrerla es entrar en contacto con el espíritu popular, alegre y conversador de los caleños.",
+    "datos_curiosos": [
+      "Los primeros vendedores extendían sus productos sobre el piso.",
+      "Entre sus tesoros hay frutas poco conocidas: madroño, chachairú, mangostino, zapote, arazá, chirimoya.",
+      "Existen 'food tours' que salen desde San Antonio y tienen a la Alameda como parada estrella."
+    ]
+  },
+  {
+    "id": "s29",
+    "nombre": "Tin Tin Deo",
+    "horario": "Jueves a sábado, aprox. 8:00 p. m.–3:00 a. m. (jueves de salsa y bachata; viernes de taxi dancer; sábado de rumba caleña).",
+    "tarifa": "Cover según la noche (desde ~$5.000).",
+    "datos_historicos": "Su nombre viene del famoso tema de Chano Pozo y Dizzy Gillespie, marcando su influencia de Latin Jazz. Fundado en 1985.",
+    "descripcion": "Clásico entre los clásicos, Tin Tin Deo es de los templos más respetados de la salsa en Cali: un lugar donde el género se escucha con la misma devoción con que se baila. Su nombre —tomado de un tema de Dizzy Gillespie— ya anuncia el nivel de culto de su selección musical, y su pista es punto de peregrinación para bailadores de todo el mundo.\n\nCon décadas de trayectoria, ha sostenido una atmósfera de club de toda la vida donde conviven el conocedor y el aficionado. Es una parada obligada para quien quiera entender por qué a Cali la llaman la capital mundial de la salsa, más allá del espectáculo turístico.",
+    "datos_curiosos": [
+      "Su nombre proviene de una composición del trompetista de jazz Dizzy Gillespie.",
+      "Es habitualmente citada entre las salsotecas más emblemáticas de la ciudad."
+    ]
+  },
+  {
+    "id": "s42",
+    "nombre": "Teatro Esquina Latina",
+    "horario": "Obras para jóvenes y adultos: sábados 7:30 p. m.; funciones familiares: domingos 11:00 a. m. (con inscripción previa); conciertos: un viernes al mes, 7:30 p. m. (la programación varía; se consulta en redes).",
+    "tarifa": "Boletería según función (Sala Concertada).",
+    "datos_historicos": "Nació en 1973 como un grupo estudiantil de la Universidad del Valle y se consolidó como fundación independiente. Fundado en 1973 por Orlando Cajamarca.",
+    "descripcion": "En 1973, un grupo de estudiantes de distintas carreras de la Universidad del Valle empezó a reunirse en su tiempo libre para hacer lo que más les apasionaba: actuar. En una Cali que solo tenía al TEC, ese \"parche\" universitario liderado por Orlando Cajamarca se volvió Esquina Latina, hoy una de las organizaciones teatrales más importantes del suroccidente colombiano, con más de cincuenta años de terquedad artística.\n\nPero lo que distingue a Esquina Latina no es solo su sala en el barrio Tejares de San Fernando: es su convicción de que el teatro no es para las élites. A través del programa \"Jóvenes, Teatro y Comunidad\", activo desde 1987, ha llevado el teatro a las comunas del oriente y la ladera de Cali y a municipios golpeados por el conflicto, formando animadores teatrales y usando la escena como herramienta de paz. Aquí la palabra \"cultural\" recupera su sentido social.",
+    "datos_curiosos": [
+      "Su programa \"Jóvenes, Teatro y Comunidad\" trabaja desde 1987 en comunas vulnerables y municipios del Valle y el norte del Cauca.",
+      "Miles de personas de sectores populares han subido por primera vez a un escenario gracias a su Red Popular de Teatro.",
+      "Su director fundador, Orlando Cajamarca, es médico, dramaturgo y director premiado nacional e internacionalmente."
+    ]
+  },
+  {
+    "id": "s97",
+    "nombre": "Delirio",
+    "horario": "El último viernes de cada mes (apertura de puertas 7:00 p. m.; inicio del show hacia las 9:30 p. m.); ediciones especiales en la Feria de Cali (diciembre). Ingreso solo para mayores de 18 años.",
+    "tarifa": "Boletería por zonas y localidades (compra anticipada por TuBoleta y canales oficiales).",
+    "datos_historicos": "La Fundación Delirio también opera el parque temático Paseo de la Aurora, sáb–dom 12:00 m.–8:00 p. m.",
+    "descripcion": "En 2006, cuando Cali aún cargaba el recuerdo de sus épocas más duras, cuatro mujeres —Andrea Buenaventura, exdirectora de la Feria de Cali, junto a Eleonora Barberena, Liliana Ocampo y Ángela María Gallo— se propusieron una ecuación delirante: llevar la salsa de los barrios al formato del cabaret europeo, sumándole circo y orquesta en vivo. Empezaron con una tarima pequeña que hoy da vergüenza en las fotos; terminaron creando uno de los espectáculos de salsa más grandes del mundo.\n\nBajo la Carpa Delirio, el último viernes de cada mes, la velocidad de la salsa caleña se cruza con acróbatas, una orquesta propia y una puesta en escena que ha girado por más de veinte países. Detrás del brillo hay una fundación con propósito social: usa el baile y la música para transformar la vida de jóvenes de sectores golpeados por la violencia. Es Cali convertida en industria creativa y en orgullo.",
+    "datos_curiosos": [
+      "Ha realizado cientos de funciones en más de 20 países y ha sido visto por más de medio millón de personas.",
+      "Su música la interpreta en vivo la Orquesta Boranda; el circo lo aporta la compañía Circo Herencias.",
+      "Su programa social \"Paso Firme\" trabaja con jóvenes de centros de formación en contextos de vulnerabilidad."
+    ]
+  },
+  {
+    "id": "s24",
+    "nombre": "Parque del Perro",
+    "horario": "Zona abierta; fuerte vida nocturna.",
+    "tarifa": "Libre (consumos aparte).",
+    "datos_historicos": "La estatua del perro Teddy fue instalada en 1970 por Víctor Alberto Delgado Mallarino, en un parque tradicional del barrio San Fernando que, con el tiempo, se convirtió en zona de gastronomía y vida nocturna.",
+    "descripcion": "Parque tradicional del barrio San Fernando, cuyo nombre proviene de una escultura de un perro instalada en el lugar; con los años se transformó en una de las principales zonas de gastronomía y rumba de Cali.",
+    "datos_curiosos": [
+      "El parque se llamaba antes \"Parque del Corazón\" por su forma.",
+      "Bajo la estatua reposan los restos del perro Teddy.",
+      "Está cerca de las salsotecas de la Calle 5 y de la Loma de la Cruz."
+    ]
+  },
+  {
+    "id": "s10",
+    "nombre": "Museo del Oro Calima",
+    "horario": "Martes a viernes, 9:00 a. m.–5:00 p. m.; sábados, 10:00 a. m.–5:00 p. m. (cerrado domingos y lunes).",
+    "tarifa": "Entrada libre y gratuita.",
+    "datos_historicos": "Inaugurado en 1991 como parte de la red de museos del oro del país. Inaugurado el 9 de mayo de 1991.",
+    "descripcion": "Bajo la administración del Banco de la República, en pleno centro histórico, el Museo del Oro Calima custodia el brillo de las culturas que habitaron este valle miles de años antes de que Cali tuviera nombre. Su colección reúne piezas de orfebreía, cerámica, piedra, madera y concha de las sociedades Ilama, Yotoco y Sonso —agrupadas bajo el nombre genérico de cultura Calima—, pueblos que fueron agricultores excepcionales y, sobre todo, orfebres de una destreza que aún hoy desconcierta.\n\nRecorrerlo es entender que el territorio que hoy pisamos tuvo una densidad simbólica y técnica anterior a cualquier plaza colonial. El museo trabaja con “animadores pedagógicos” en lugar de guías, presta maletas didácticas a colegios y mantiene animaciones y exposiciones para que el pasado prehispánico no se sienta lejano sino propio.",
+    "datos_curiosos": [
+      "Su colección incluye piezas de orfebreía y alfarería de hasta 2.000 años de antigüedad de las culturas Ilama, Yotoco y Sonso.",
+      "En el área Calima, al noroeste de Cali, la arqueología ha recuperado más de 9.000 años de historia humana.",
+      "Presta “maletas didácticas” a instituciones educativas para montar pequeñas exposiciones en el aula."
+    ]
+  },
+  {
+    "id": "s18",
+    "nombre": "Jardín Botánico de Cali",
+    "horario": "Jueves a domingo, 9:00 a. m.–3:00 p. m. (último ingreso hacia las 2:00 p. m.).",
+    "tarifa": "Adultos (13+) $17.000; niños (2–12) $15.000; combo con el Zoológico $40.000 / $30.000. Boletas en las taquillas del Zoológico o en TuBoleta.",
+    "datos_historicos": "Promovido por la Fundación Zoológica de Cali para expandir la conservación vegetal. Reabierto al público en septiembre de 2024; administrado por la Fundación Zoológico de Cali.",
+    "descripcion": "En la cuenca media del río Cali, a un paso del Zoológico, sobrevive uno de los últimos relictos del bosque seco tropical —uno de los ecosistemas más amenazados del planeta— convertido en jardín. El proyecto nació en 2001 del empeño del biólogo Jorge Enrique Orejuela y otras personas e instituciones que se propusieron recuperar la cuenca del río; la empresa de energía EPSA entregó en comodato las hectáreas donde hoy crecen samanes, guayacanes y orquídeas, revolotean cien especies de mariposas y anidan más de cien de aves.\n\nDesde 2017 la Fundación Zoológica de Cali lo renovó con un plan maestro que incluye un mirador de cuatro pisos diseñado por el arquitecto Simón Vélez, desde donde se contempla el dosel del bosque y la cordillera. Es refugio de biodiversidad y aula al aire libre a la vez.",
+    "datos_curiosos": [
+      "Alberga más de 190 especies de plantas, un centenar de mariposas y unas 120 especies de aves.",
+      "Su mirador-torre fue diseñado por Simón Vélez, maestro mundial de la arquitectura en guadua.",
+      "El bosque que protege ayuda a regular la cuenca de la que Cali toma buena parte de su agua."
+    ]
+  },
+  {
+    "id": "s32",
+    "nombre": "Instituto Departamental de Bellas Artes",
+    "horario": "Según programación; las salas de exposición y buena parte de los conciertos son de acceso libre, en horario institucional (lunes a viernes).",
+    "tarifa": "Programas académicos con matrícula; muchas exposiciones y conciertos de entrada libre.",
+    "datos_historicos": "Fundado a comienzos de los años treinta (Conservatorio de Música de Cali, 1932–1933) por iniciativa del maestro Antonio María Valencia. En 1936 se departamentalizó como Conservatorio de Cali–Escuela Departamental de Bellas Artes.",
+    "descripcion": "Bellas Artes es la fábrica silenciosa detrás de buena parte de la escena cultural de Cali: la primera institución dedicada a la enseñanza profesional del arte en el suroccidente colombiano. Nació a comienzos de los años treinta por iniciativa del maestro Antonio María Valencia —pianista y compositor caleño— como Conservatorio de Música, y de ahí creció hasta abrazar la música, las artes plásticas, el diseño y las artes escénicas.\n\nPor sus aulas han pasado generaciones de músicos, pintores, diseñadores y actores que hoy representan a la ciudad, y de su seno salieron hitos como el Festival Internacional de Arte de Cali. Institución patrimonial y motor de renovación a la vez, es de esos lugares que no se ven en la agenda turística pero sostienen, desde abajo, todo lo demás.",
+    "datos_curiosos": [
+      "El Festival Internacional de Arte de Cali surgió de una idea de Fanny Mickey en el entonces \"Palacio de Bellas Artes\".",
+      "Su conservatorio de música lleva el nombre de su fundador, Antonio María Valencia."
+    ]
+  },
+  {
+    "id": "s36",
+    "nombre": "Hacienda El Paraíso",
+    "horario": "Martes a domingo y festivos, 9:30 a. m.–4:30 p. m. (cerrado el martes siguiente a un lunes festivo).",
+    "tarifa": "Adultos $18.000; niños $10.500; adultos mayores y PcD $9.000; extranjeros 10 USD (venta solo en taquilla).",
+    "datos_historicos": "Construida entre 1816 y 1828. Fue adquirida por el padre de Jorge Isaacs en 1854. Casa museo administrada por INCIVA; BIC de la Nación.",
+    "descripcion": "A los pies de la Cordillera Central, en El Cerrito, esta casona blanca del siglo XIX es peregrinación literaria: aquí Jorge Isaacs ambientó María, la novela cumbre del romanticismo latinoamericano, traducida a más de treinta idiomas. La casa —la “Casa de la Sierra” del libro— conserva la distribución que describe la novela: el cuarto de Efraín con su florero de rosas siempre frescas, el cuarto de María, el estudio, la sala donde la familia se reunía a bordar y cantar.\n\nRodeada de canales de agua que impedían el paso de insectos, con balcones frescos, un jardín de rosas y una vista a las planicies de caña y a los samanes gigantes, la hacienda hace que literatura y territorio se confundan. Frente a ella está la piedra donde, según la novela, se sentaban los enamorados, hoy testigo de visitantes que se juran amor eterno.",
+    "datos_curiosos": [
+      "María se publicó en 1867; en 2017 se conmemoraron sus 150 años con el Año Jorge Isaacs.",
+      "En el cuarto de Efraín se renuevan cada día rosas frescas, en recuerdo de las que María le llevaba.",
+      "Jorge Isaacs fue el rostro del antiguo billete de 50.000 pesos colombianos."
+    ]
+  },
+  {
+    "id": "s43",
+    "nombre": "La Linterna",
+    "horario": "Lunes a viernes, 9:00 a. m.–12:30 p. m. y 2:00–5:00 p. m.",
+    "tarifa": "Visita libre al taller-tienda (los carteles y productos se venden aparte).",
+    "datos_historicos": "Fundada en 1934. Fue salvada de la quiebra en 2017 gracias a la unión de sus trabajadores veteranos y diseñadores jóvenes. Funciona desde 1934; en San Antonio desde 1987.",
+    "descripcion": "Apretada entre las casas de colores de San Antonio hay una imprenta que se niega a morir. La Linterna funciona desde 1934 imprimiendo carteles callejeros con tipos móviles y grabado en linóleo —la misma técnica con la que Gutenberg cambió el mundo hace medio milenio—, en máquinas que son reliquias vivas: una prensa Marinoni de París (1870), una Reliance de Nueva York (1890), una Rápida di Lusso de Turín (1934). Durante décadas sus afiches empapelaron los muros de Cali anunciando conciertos, obras de teatro y campañas políticas.\n\nAndrés Caicedo era cliente y amigo del taller. En 2016 casi cierra. Pero en 2017 un grupo de gestores y artistas gráficos la reactivó articulando el oficio centenario con el diseño contemporáneo, y hoy es empresa cultural viva, galería y emblema de la gráfica popular caleña, con exposiciones en México, Italia, Francia y Alemania.",
+    "datos_curiosos": [
+      "Editorial Planeta la eligió para ilustrar las portadas de las reediciones de Andrés Caicedo, cliente histórico del taller.",
+      "Sus máquinas son reliquias: una prensa Marinoni de París de 1870, una Reliance de Nueva York de 1890, y una Rápida di Lusso de Turín de 1934.",
+      "Sus carteles ya le dieron la vuelta al mundo en exposiciones por Europa y América."
+    ]
+  },
+  {
+    "id": "s34",
+    "nombre": "Museo Caliwood",
+    "horario": "Lunes a viernes, 8:00 a. m.–6:00 p. m.; sábados, 3:00–6:00 p. m.; domingos, 10:00 a. m.–6:00 p. m.",
+    "tarifa": "Entrada $20.000 (a modo de donación para su sostenimiento).",
+    "datos_historicos": "Fundado en 2008 por Hugo Suárez, un apasionado coleccionista. Fundado el 22 de octubre de 2008 por Hugo Suárez Fiat.",
+    "descripcion": "Todo empezó con dos proyectores rescatados de la basura —los mismos que se habían usado en la inauguración del Teatro Jorge Isaacs—. De esa coincidencia maravillosa, como la llama su fundador, nació Caliwood, el primer museo de la cinematografía de Colombia. El caleño Hugo Suárez Fiat, abogado y coleccionista, reunió cámaras, proyectores, linternas mágicas y afiches que reconstruyen la evolución del cine y la fotografía, desde daguerrotipos de 1840 hasta proyectores de principios del siglo XX.\n\nEl nombre lo dice todo: Caliwood es el guiño al movimiento de cine irreverente que Cali le dio al país en los años setenta y ochenta, con Luis Ospina, Carlos Mayolo y Andrés Caicedo a la cabeza. Recorrerlo es entrar a una cápsula del tiempo del séptimo arte, y una apuesta terca por conservar la memoria fílmica de la ciudad considerada la meca del cine colombiano.",
+    "datos_curiosos": [
+      "Guarda 30 fotos fijas originales de la filmación de María (1922), la primera película colombiana.",
+      "Fue la primera institución museológica del país en ofrecer audioguías por códigos QR.",
+      "Su colección arrancó con dos proyectores usados en la inauguración del Teatro Jorge Isaacs."
+    ]
+  },
+  {
+    "id": "s39",
+    "nombre": "Plaza de Cayzedo",
+    "horario": "Plaza pública, abierta.",
+    "tarifa": "Libre.",
+    "datos_historicos": "Antigua Plaza Mayor colonial, fue rebautizada en 1913 como Plaza de Cayzedo en honor al prócer Joaquín de Cayzedo y Cuero, cuya estatua se erigió ese mismo año. Funcionó como mercado público hasta finales del siglo XIX y fue remodelada en 1986, con motivo de los 450 años de la ciudad.",
+    "descripcion": "El kilómetro cero de Cali. Esta plaza, rodeada de palmeras altísimas 'Roystonea regia', es el corazón cívico y comercial histórico de la ciudad. A su alrededor se erigen edificios emblemáticos de arquitectura republicana y neoclásica como la Catedral de San Pedro, el Palacio Nacional y el Edificio Otero. Es un lugar vibrante, lleno de vendedores de tinto, lustrabotas y transeúntes, donde se siente el pulso diario de la ciudad y se cruzan todas las historias. La antigua Plaza Mayor colonial (luego Plaza de la Constitución) fue rebautizada Plaza de Caycedo en 1813, en honor al prócer Joaquín de Caycedo y Cuero; el monumento central se erigió en 1913.",
+    "datos_curiosos": [
+      "Sus palmas reales son parte inseparable de su imagen.",
+      "Está rodeada por el Palacio Nacional, el Edificio Otero y la Catedral de San Pedro.",
+      "Ocupa cerca de 6.500 metros cuadrados en pleno centro."
+    ]
+  },
+  {
+    "id": "s65",
+    "nombre": "Cerro de las Tres Cruces",
+    "horario": "Se recomienda el ascenso de madrugada o en la mañana (por seguridad y clima); funciona como ecoparque (Bataclán).",
+    "tarifa": "Gratuita.",
+    "datos_historicos": "Según la tradición, en 1837 frailes franciscanos colocaron tres cruces de guadua para conjurar la leyenda del \"Buziraco\". Las cruces de concreto que hoy coronan el cerro se erigieron hacia 1937-1938, tras la caída de las anteriores en el terremoto de 1925.",
+    "descripcion": "El reto físico por excelencia de los caleños. Subir a las Tres Cruces es un ritual matutino de fin de semana para miles de personas. El sendero es empinado y exige esfuerzo físico, pero la recompensa es una vista inigualable de la ciudad y un jugo de naranja fresco en la cima. Las tres grandes cruces de concreto dominan el paisaje y protegen, según la leyenda, a la ciudad del demonio 'Buziraco'. Según la tradición, se erigió una cruz en el cerro para 'conjurar' al diablo Buziraco; las tres cruces actuales, en concreto, datan de finales de los años treinta del siglo XX.",
+    "datos_curiosos": [
+      "La cruz central mide unos 26 metros de altura.",
+      "Cada 3 de mayo, Día de la Cruz, y en Semana Santa se realizan peregrinaciones.",
+      "Es uno de los ascensos deportivos más populares de la ciudad."
+    ]
+  },
+  {
+    "id": "s119",
+    "nombre": "Museo Popular de Siloé",
+    "horario": "Abierto al público; se recomienda coordinar la visita o el recorrido (Ruta de Siloé) directamente con el museo (David Gómez / canal @siloécitytv).",
+    "tarifa": "Gratuita.",
+    "datos_historicos": "El museo narra a Siloé desde sus raíces más hondas: los indígenas yanaconas, los africanos esclavizados y los mineros de Marmato (Caldas) que llegaron atraídos por el carbón —Siloé está literalmente construido sobre socavones—. Guarda una sala dedicada al conflicto armado y a la memoria del M-19.",
+    "descripcion": "En una casa de fachada pintada a mano en el barrio El Cortijo, comuna 20, funciona uno de los museos más singulares de Colombia: un lugar donde está prohibido hacer silencio. El Museo Popular de Siloé no se parece a ningún otro. Aquí se puede gritar, tocar los objetos, tomar fotos, cantar y dejar la propia huella. Sus creadores lo llaman \"contramuseo\": una apuesta política y estética que le devuelve al barrio el poder de contar su propia historia, contra la lógica del museo tradicional —silencioso, de vitrinas intocables y curaduría de expertos—. Fue fundado en agosto del año 2000 por David Gómez, líder comunitario, guía voluntario e historiador empírico nacido y criado en la ladera, y lo sostiene la misma comunidad: las piezas son donadas por los vecinos y la curaduría nace del diálogo, la memoria y hasta el conflicto.\n\nEs la casa de David, y también es Siloé entero. Zapatos que cuelgan del techo, una bicicleta quemada en la entrada, violines en la pared, fotos de los años 50, máscaras, cascos, un trozo de carbón, disfraces de diablo. Todo aparente caos que se ordena cuando David narra: cada objeto tiene una historia, y esa historia es memoria del territorio. El museo entiende que el barrio mismo es el museo, y por eso su equipo ofrece desde 1998 la Ruta Turística por Siloé y las \"caminatas de memoria\" por las empinadas calles, gradas y callejones de la comuna. Practican lo que llaman \"museología viva\": dar la palabra a quienes históricamente fueron silenciados.",
+    "datos_curiosos": [
+      "El lema que recibe al visitante: \"Prohibido hacer silencio. Att. La Memoria de Siloé\".",
+      "El único requisito para que un objeto entre al museo es que cuente algo, que sea memoria del territorio.",
+      "El museo se articula con el recorrido de la ladera que incluye el mirador de La Estrella de Siloé."
+    ]
+  },
+  {
+    "id": "s20",
+    "nombre": "Ecoparque Río Pance",
+    "horario": "Abierto; zona de baño en el río y senderos (mayor afluencia los fines de semana).",
+    "tarifa": "Ingreso libre (algunos servicios y parqueaderos privados aparte).",
+    "datos_historicos": "La Gobernación del Valle adquirió los predios hacia 1970 para crear el Balneario Popular y Recreativo del Río Pance. Desde 1985 lo administra la Corporación para la Recreación Popular, que consolidó el \"Parque de la Salud\".",
+    "descripcion": "Si quieres saber qué hace un caleño auténtico el domingo, ve a Pance. Este río de aguas frías y cristalinas que baja directamente de los Farallones es el balneario natural y democrático de la ciudad. El ecoparque ofrece senderos para caminar, zonas de picnic, lagos y acceso directo al río. Es un ritual sagrado sumergirse en sus aguas para 'sacarse el calor' y luego disfrutar de un sancocho de gallina en leña en los restaurantes aledaños. El río Pance nace en el Parque Nacional Natural Farallones de Cali; su ribera se consolidó como zona de recreación y ecoparque de la ciudad.",
+    "datos_curiosos": [
+      "El río Pance nace en el Parque Nacional Natural Farallones de Cali, a unos 4.000 m s. n. m.",
+      "Los fines de semana soleados puede recibir decenas de miles de visitantes.",
+      "Su nombre proviene del pueblo indígena Pance, antiguo habitante de la zona."
+    ]
+  },
+  {
+    "id": "s25",
+    "nombre": "Museo de la Salsa",
+    "horario": "Lunes a sábado, recorridos guiados a las 11:00 a. m., 2:30 p. m. y 5:00 p. m.; domingos a las 3:00 p. m. (festivos cerrado).",
+    "tarifa": "$16.000 por persona (aporte cultural).",
+    "datos_historicos": "Fundado hace más de 50 años como un archivo personal que se abrió al mundo. Fundado en 1968 por Carlos Alfredo Molina; el museo de salsa más antiguo del mundo, con 40.000+ fotografías.",
+    "descripcion": "En una cuadra del tradicional barrio Obrero —la cuna de la salsa caleña— hay una casa que guarda la memoria sonora de toda una ciudad. Todo empezó en 1968, cuando el fotógrafo Carlos Alfredo Molina, cámara en mano, comenzó a retratar las noches de feria y a los grandes artistas que pasaban por Cali. De ese lente curioso nació un archivo de más de 40.000 fotografías que hoy es, según se reconoce, el museo de salsa más antiguo del mundo.\n\nAcá no hay vitrinas frías: hay pista enchapada en blanco y negro, paredes tapizadas de rostros —Marvin Santiago, Gilberto Santa Rosa, la Sonora Ponceña— y tres generaciones de una misma familia que heredaron el oficio como quien hereda un apellido. Más que una colección, es un testimonio vivo de que en Cali la cultura no solo se escucha: se hereda.",
+    "datos_curiosos": [
+      "Custodia más de 40.000 fotografías de músicos, orquestas y bailadores.",
+      "En el mundo existen apenas un puñado de museos así: los otros están en Nueva York y Puerto Rico, y este es el más longevo.",
+      "Ofrece además clases de baile y apoya a niños y jóvenes del Obrero."
+    ]
+  },
+  {
+    "id": "s22",
+    "nombre": "Teatro Jorge Isaacs",
+    "horario": "Abierto en días de función; taquilla y venta en línea según cartelera.",
+    "tarifa": "Boletería según evento.",
+    "datos_historicos": "Abrió sus puertas en 1931. Estuvo cerrado y en ruinas durante años hasta su gloriosa restauración en los años 80, salvándolo de la demolición. Sala de 1.136 sillas en cuatro localidades.",
+    "descripcion": "Frente al Puente Ortiz, contiguo a La Ermita y al Parque de los Poetas, el Teatro Jorge Isaacs le pone al centro histórico una elegancia de otra época. Nació de una desgracia y una ambición: donde antes estuvo el Teatro Salón Moderno —consumido por un incendio en 1928—, el empresario Hermann S. Bohmer levantó un teatro nuevo y lo bautizó en honor a Jorge Isaacs, el autor de María. Se inauguró el 26 de diciembre de 1931.\n\nDe estilo neoclásico francés con guiños al romanticismo italiano, decorado con capiteles jónicos, un vitral del escudo de la ciudad y la efigie del poeta, presume de una de las mejores acústicas del país. Tras décadas de abandono, fue declarado Monumento Nacional y restaurado, y hoy vuelve a ser casa de conciertos, ópera y grandes espectáculos.",
+    "datos_curiosos": [
+      "Un incendio en sus primeros años motivó la creación del cuerpo de bomberos voluntarios de Cali.",
+      "Su caja acústica es una de las de mayor tamaño de Latinoamérica.",
+      "Su nombre honra al autor de María, la novela romántica más célebre de Colombia."
+    ]
+  },
+  {
+    "id": "s15",
+    "nombre": "Biblioteca Departamental Jorge Garcés Borrero",
+    "horario": "Lunes a viernes 9:00 a. m.–7:00 p. m.; sábados 9:00 a. m.–6:00 p. m.; domingos 10:00 a. m.–3:00 p. m.",
+    "tarifa": "Gratuito (todos los servicios básicos).",
+    "datos_historicos": "Creada en 1953 por decreto del gobernador Diego Garcés Giraldo e inaugurada el 13 de junio de 1954, a partir de la biblioteca personal de Jorge Garcés Borrero. Su sede actual, de 15.000 m², se concluyó en 1990.",
+    "descripcion": "Más que un depósito de libros, la Departamental es plaza cultural: la primera biblioteca departamental de Colombia, nacida de un gesto de amor filial. Cuando en 1949 murió el industrial Jorge Garcés Borrero, dejó más de siete mil libros; su hijo Diego Garcés Giraldo, siendo gobernador del Valle, los donó para fundar en 1953 una biblioteca pública que llevaría el nombre del padre. Convencido de que \"el progreso de una sociedad se hace a través de la educación\", la impulsó con obsesión.\n\nTras varias sedes, desde 1990 ocupa un edificio de 15.000 m² junto a la Avenida Roosevelt, hoy corazón de la \"Manzana del Saber\". Allí conviven salas de lectura con exposiciones, cine, conciertos, una hemeroteca de gran valor y festivales como \"Oiga, Mire, Lea\". Encarna la idea de que la cultura pública tiene que ser gratuita y de puertas abiertas.",
+    "datos_curiosos": [
+      "Nació con los ~7.000 libros de la biblioteca personal de la familia Garcés.",
+      "Cada septiembre acoge el Festival Internacional de Literatura \"Oiga, Mire, Lea\".",
+      "Su hemeroteca conserva periódicos y revistas de gran valor histórico regional."
+    ]
+  },
+  {
+    "id": "s28",
+    "nombre": "Zaperoco Bar",
+    "horario": "Noches, habitualmente de jueves a sábado (desde las 9:00–11:00 p. m.).",
+    "tarifa": "Cover / consumo según la noche.",
+    "datos_historicos": "Fundado en 1993, ha resistido el paso del tiempo manteniendo su esencia pura. Fundado en 1993.",
+    "descripcion": "En 1993, un trío de amigos amantes de la salsa inauguró en la Avenida 5 Norte una salsoteca a la que llamaron Zaperoco. Con los años pasó a manos de la familia Levy Cote, que la convirtió en un bastión donde conviven lo viejo y lo moderno, con vinilos, orquestas en vivo y una vocación que va más allá de la rumba: ser plataforma para las nuevas bandas de la ciudad. Por su tarima pasaron, en sus inicios, agrupaciones como Herencia de Timbiquí.\n\nSu sello son los jueves de \"Descargas Zaperoco\" —creados junto al escritor y melómano Umberto Valverde, cliente fiel de la casa—, grandes reuniones de músicos con directores rotativos donde la salsa se siente en el cuerpo. Es de esos lugares donde la noche caleña muestra su cara más auténtica.",
+    "datos_curiosos": [
+      "Sus \"Descargas Zaperoco\" de los jueves nacieron junto al escritor Umberto Valverde.",
+      "Por su tarima pasó Herencia de Timbiquí en sus inicios.",
+      "Mantiene viva la salsa tocada en directo, cada vez más rara en la ciudad."
+    ]
+  },
+  {
+    "id": "s33",
+    "nombre": "Tecnocentro Cultural Somos Pacífico",
+    "horario": "Lunes a sábado, 8:00 a. m.–5:00 p. m.",
+    "tarifa": "Programas de formación comunitaria, gratuitos o de bajo costo.",
+    "datos_historicos": "Inaugurado en 2013 gracias a la alianza público-privada liderada por la Fundación Alvaralice. Fundado en 2011.",
+    "descripcion": "En Potrero Grande, en el corazón del Distrito de Aguablanca —uno de los territorios más golpeados por la desigualdad y poblado en buena parte por familias desplazadas del Pacífico por el conflicto armado—, el Tecnocentro convierte la cultura y la tecnología en oportunidad concreta. Nació del sueño de la hermana Alba Stella Barreto, de la Fundación Paz y Bien, que quería un espacio neutral donde los muchachos pudieran encontrarse sin el miedo de las \"fronteras invisibles\" para aprender teatro, danza, música, robótica, edición de video, programación y artes plásticas.\n\nFruto de una alianza público-privada (Fundación Alvaralice, Comfandi, la Alcaldía, la Universidad Icesi, el Ministerio de Cultura), abrió sus puertas hacia 2013 y desde entonces atiende a miles de niños y jóvenes al año. Tiene orquesta sinfónica propia, biblioteca pública y un Computer Clubhouse. Es la prueba de que la oferta cultural de Cali también se construye, con fuerza, en el oriente.",
+    "datos_curiosos": [
+      "Su orquesta sinfónica se formó con la Fundación Batuta; varios de sus jóvenes llegaron a becas en el Conservatorio de Bellas Artes.",
+      "Su Computer Clubhouse se articuló con el MIT de Boston.",
+      "Cada año presenta el espectáculo \"Pescadores de Sueños\" en el Teatro Municipal."
+    ]
+  },
+  {
+    "id": "s108",
+    "nombre": "Edificio Otero",
+    "horario": "Edificio de uso comercial y de oficinas; se aprecia desde la Plaza de Cayzedo (sin visita turística interior).",
+    "tarifa": "No aplica (se aprecia desde el exterior).",
+    "datos_historicos": "1916: Emiliano Otero compra y demuele la casa del coronel Ocampo. 1922–1926: construcción por la firma Borrero y Ospina. Durante sus primeros años fue epicentro de la vida social caleña. 25 de julio de 1977: declarado Monumento Nacional.",
+    "descripcion": "En una esquina de la Plaza de Cayzedo, frente al corazón fundacional de Cali, se alza el Edificio Otero: una mole ecléctica de inspiración republicana francesa que cambió para siempre el paisaje del centro. Su historia empieza con un sueño europeo. El empresario Emiliano Otero, deslumbrado por la arquitectura que había visto en sus viajes, decidió traer a Cali un edificio a la altura de los que admiraba en el viejo continente. En 1916 compró la casa del coronel Ocampo, la mandó demoler y encargó la obra a la firma Borrero y Ospina, que la levantó entre 1922 y 1926.\n\nEl Otero fue el primer edificio de Cali construido con estructura en hormigón armado, dejando a los muros el papel de simple cerramiento: una innovación técnica que permitía más altura, más ligereza y más libertad decorativa. Con él prácticamente arrancó la sustitución de la vieja arquitectura colonial por el eclecticismo académico europeo y las técnicas modernas. Su fachada mezcla elementos renacentistas y barrocos, y en la esquina una cúpula con óculos corona un volumen ochavado que le da verticalidad y rompe la simetría.",
+    "datos_curiosos": [
+      "El actor de Hollywood Tyrone Power se hospedó en el Hotel Europa en 1939.",
+      "La firma Borrero y Ospina se consolidó, prácticamente con este edificio, como la más importante casa de constructores de Cali.",
+      "El edificio también tuvo un capítulo oscuro: en 1984 fue escenario de la llamada \"masacre del Diners Club\"."
+    ]
+  },
+  {
+    "id": "s113",
+    "nombre": "Archivo Histórico de Cali",
+    "horario": "Lunes a viernes, 8:00 a. m.–12:00 m. y 2:00–5:30 p. m.",
+    "tarifa": "Gratuito.",
+    "datos_historicos": "Fue creado mediante el Decreto Municipal N.º 378 del 24 de junio de 1958. Desde febrero del año 2000 se ubica de manera definitiva en el Centro Cultural de la ciudad. Organiza su acervo en cinco fondos documentales.",
+    "descripcion": "En el segundo piso del Centro Cultural de Cali se guarda, tomo a tomo, la memoria escrita de la ciudad. El Archivo Histórico de Cali es la entidad encargada de custodiar, organizar y difundir el patrimonio documental de los caleños, siguiendo los lineamientos del Archivo General de la Nación. En sus estantes reposan cerca de 9.000 tomos —unos 800 metros lineales— de documentación producida por las distintas figuras de gobierno que ha tenido la ciudad: el cabildo colonial, el municipio y hoy el distrito. Es uno de los lugares más importantes para investigar la historia de Cali, y también uno de los mejor guardados: su documento más antiguo es un acta del Cabildo de 1564.",
+    "datos_curiosos": [
+      "Cali se anticipó diez años a la Real Cédula de 1573 que ordenaba a los cabildos llevar Libros de Actas.",
+      "Entre sus documentos hay cartas de libertad de personas esclavizadas.",
+      "El documento más antiguo del Archivo de Cali es de 1564."
+    ]
+  },
+  {
+    "id": "s16",
+    "nombre": "Iglesia La Ermita",
+    "horario": "Abierta al público en horarios de culto (misas).",
+    "tarifa": "Entrada gratuita.",
+    "datos_historicos": "La construcción actual se inició en 1930 y finalizó en 1942, reemplazando una capilla del siglo XVII. El templo neogótico actual se construyó en la primera mitad del siglo XX (décadas de 1930–1940), en reemplazo de la ermita colonial arruinada por los terremotos; su estilo se inspira en las catedrales góticas europeas.",
+    "descripcion": "La estampa neogótica de La Ermita, azul y blanca junto al río, es una de las postales más reconocidas de Cali. Pero la iglesia que hoy vemos es relativamente joven: la ermita original, levantada a comienzos del siglo XVII, quedó destruida por el terremoto del 7 de junio de 1925; de ella solo se salvó la venerada imagen del Señor de la Caña. Sobre esas ruinas, dos hermanas caleñas —Micaela y Asunción Castro Borrero— impulsaron la construcción del templo actual, inspirado en la catedral de Ulm, en Alemania.\\n\\nTerminado en concreto e inaugurado en 1942, La Ermita es casi un catálogo del mundo traído a Cali: mármol de Carrara en sus altares, campanas fundidas en Francia, y un reloj musical y vitrales con los doce apóstoles encargados en Ámsterdam. Un pedacito de Europa a la orilla del río, que sobrevivió donde la ciudad perdió casi toda su arquitectura antigua.",
+    "datos_curiosos": [
+      "Guarda la imagen del 'Señor de la Caña', única sobreviviente del terremoto de 1787.",
+      "Su reloj musical suena cada hora, alegrando el centro.",
+      "Conserva la imagen colonial del Señor de la Caña (o Señor de los Milagros), sobreviviente de los sismos."
+    ]
+  },
+  {
+    "id": "s3",
+    "nombre": "Bulevar del Río",
+    "horario": "Espacio público abierto.",
+    "tarifa": "Libre.",
+    "datos_historicos": "Construido a partir de 2012 dentro del programa \"Megaobras\" de la administración del alcalde Rodrigo Guerrero, se inauguró el 16 de mayo de 2013, sobre el túnel urbano más largo del país.",
+    "descripcion": "Es la 'sala de recibo' moderna de Cali. Un extenso y ventilado paseo peatonal a orillas del río que transformó el centro de la ciudad. Aquí la brisa de la tarde es la protagonista. Es el lugar democrático donde convergen caleños de todas las edades y clases sociales para caminar, tomar un café, escuchar música espontánea o simplemente ver simplemente ver pasar la vida. Conecta la arquitectura histórica del Puente Ortiz y la Ermita con la modernidad del centro administrativo. Inaugurado en 2013, tras peatonalizar el antiguo tramo de la Avenida Colombia a orillas del río Cali.",
+    "datos_curiosos": [
+      "El paseo peatonal se extiende cerca de 980 metros sobre el \"Túnel Mundialista\".",
+      "Por él caminan a diario entre 6.000 y 7.000 personas.",
+      "Su \"puente del amor\" se llenó de candados, al estilo del Pont des Arts de París."
+    ]
+  },
+  {
+    "id": "s61",
+    "nombre": "Barrio Granada",
+    "horario": "Zona abierta; fuerte movimiento nocturno.",
+    "tarifa": "Libre (consumos aparte).",
+    "datos_historicos": "Barrio residencial tradicional del norte de Cali, surgido a comienzos del siglo XX, que con el tiempo se consolidó como epicentro gastronómico y de vida nocturna.",
+    "descripcion": "Barrio residencial del norte de Cali, desarrollado a mediados del siglo XX, que con el tiempo se consolidó como uno de los principales epicentros gastronómicos y de vida nocturna de la ciudad.",
+    "datos_curiosos": [
+      "Concentra buena parte de los restaurantes de alta cocina de Cali.",
+      "Alberga el espacio de arte contemporáneo Lugar a Dudas.",
+      "Es punto de partida habitual de recorridos gastronómicos por la ciudad."
+    ]
+  },
+  {
+    "id": "s11",
+    "nombre": "Loma de la Cruz",
+    "horario": "Abierto a diario, con más ambiente en la tarde-noche.",
+    "tarifa": "Ingreso libre (las artesanías y la comida se pagan aparte).",
+    "datos_historicos": "El proyecto se inició en 1987 por iniciativa de Artesanías de Colombia (impulsado por María Cristina Palau Londoño) y se inauguró oficialmente el 12 de julio de 1990. En 1993 pasó a administración municipal.",
+    "descripcion": "El corazón de la artesanía y la cultura bohemia en Cali. Este parque artesanal, construido arquitectónicamente en niveles sobre una colina, está lleno de casetas donde artesanos locales fabrican y venden joyas, trabajos en cuero, madera e instrumentos musicales. Pero más que un mercado, es un centro cultural vivo: los jueves son noches de narración oral (cuenteros), y los fines de semana hay danzas folclóricas y música andina en vivo. Un espacio de resistencia cultural. Se consolidó como parque y mercado artesanal en las últimas décadas del siglo XX; es punto de referencia del comercio artesanal caleño.",
+    "datos_curiosos": [
+      "Debe su nombre a la cruz de la colina, envuelta en leyendas caleñas del siglo XVI.",
+      "Reúne a cerca de 120 familias artesanas en sus cuatro niveles.",
+      "Su teatrino acoge cine, cuentería y recitales de poesía."
+    ]
+  },
+  {
+    "id": "s60",
+    "nombre": "Parque del Peñón",
+    "horario": "Zona abierta; fuerte vida gastronómica y nocturna.",
+    "tarifa": "Libre (consumos aparte).",
+    "datos_historicos": "El barrio El Peñón se desarrolló a principios del siglo XX como zona residencial de clase alta.",
+    "descripcion": "Uno de los barrios tradicionales de Cali, a orillas del río Cali, contiguo a San Antonio y al Museo La Tertulia; con los años se consolidó como zona bohemia, gastronómica y de anticuarios. En su entorno (Bulevar del Río) se realizan mercados de antigüedades y pulgas los fines de semana.",
+    "datos_curiosos": [
+      "Alberga una estatua de Benito Juárez donada por México.",
+      "Es conocido por sus grandes árboles que dan sombra fresca todo el día."
+    ]
+  },
+  {
+    "id": "s41",
+    "nombre": "Teatro Calima",
+    "horario": "Según programación de eventos.",
+    "tarifa": "Boletería según evento.",
+    "datos_historicos": "27 de noviembre de 1963: inauguración, bajo la dirección de Galindo Buenaventura.\nAños 70: sede de cineclubes decisivos, entre ellos el Cineclub de Cali de Andrés Caicedo.\n9 de julio de 1999: última proyección y cierre.\nOctubre de 2016 – julio de 2017: restauración completa y reapertura (con una obra del grupo Bambazú).",
+    "descripcion": "Donde arranca la zona rosa de la Avenida Sexta se alza el Teatro Calima, un cofre de arte cargado de historia. Inaugurado el 27 de noviembre de 1963 —con la película *Una noche en Hong Kong*, dentro del I Festival de Cine Japonés—, fue una de las salas de cine más grandes y queridas de Cali. Su nombre evoca a los pueblos indígenas Calima; su arquitectura, de estilo romano, dispone las graderías en forma de anfiteatro bajo una nave alta, con capacidad para unos 1.265 espectadores y buena visibilidad desde cualquier silla. Está catalogado como Bien de Interés Cultural y patrimonio arquitectónico de la ciudad.",
+    "datos_curiosos": [
+      "La restauración recuperó detalles originales como la silletería, la fuente y las puertas de bronce de la entrada, según el Plan Especial de Protección del Patrimonio.",
+      "Tiene una localidad especial para 20 personas con movilidad reducida, con una \"oruga\" importada de Italia para facilitar el acceso."
+    ]
+  }
+]

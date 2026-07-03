@@ -1,196 +1,166 @@
 [
   {
     "id": "ruta1",
-    "nombre": "Ruta de la Salsa y el Sabor",
-    "nombre_en": "Salsa and Flavor Route",
-    "puntos": [
-      "s25",
-      "s21",
-      "s7",
-      "s28",
-      "s46",
-      "s27"
-    ],
+    "nombre": "La Clave del Barrio",
+    "nombre_en": "The Key of the Neighborhood",
     "duracionMin": 240,
-    "descripcion": "Esta ruta es una peregrinación al corazón sonoro de Cali, la Capital Mundial de la Salsa. Más que un género musical, aquí la salsa es una religión que se baila y se vive en cada esquina. 'La Ruta de la Salsa y el Sabor' te sumerge en la identidad de un pueblo que transformó un ritmo antillano en su propia bandera cultural. Es un viaje vibrante donde el cuerpo no puede evitar moverse y donde entenderás por qué en Cali, la vida tiene su propia clave.",
-    "descripcion_en": "This route is a pilgrimage to the sonic heart of Cali, the Salsa Capital of the World. More than a musical genre, salsa here is a religion danced and lived on every corner. 'The Salsa and Flavor Route' immerses you in the identity of a people who transformed an Antillean rhythm into their own cultural flag. It is a vibrant journey where the body cannot help but move and where you will understand why in Cali, life has its own beat.",
-    "intro_story": "Agente, tu misión es infiltrarte en el ritmo de la ciudad. Se dice que el secreto de la felicidad caleña está oculto en una clave de 4/4. Debes visitar los templos sagrados de la salsa, descifrar los pasos prohibidos y encontrar el verdadero 'Golpe'. ¿Tienes lo que se necesita para mantener el ritmo?",
-    "intro_story_en": "Agent, your mission is to infiltrate the rhythm of the city. It is said that the secret of Caleño happiness is hidden in a 4/4 key. You must visit the sacred temples of salsa, decipher the forbidden steps, and find the true 'Beat'. Do you have what it takes to keep the rhythm?",
+    "descripcion": "Esta ruta es una peregrinación al corazón sonoro de Cali, la Capital Mundial de la Salsa. Más que un género musical, aquí la salsa es una religión que se baila y se vive en cada esquina. 'La Clave del Barrio' te sumerge en la identidad de un pueblo que transformó un ritmo antillano en su propia bandera cultural: desde la habitación donde Carlos Molina guardaba sus primeras fotos, hasta la sala de vinilos donde la Audioteca preserva grabaciones que no existen en ningún otro lugar del mundo. Es un viaje donde el cuerpo no puede evitar moverse y donde entenderás por qué en Cali, la vida tiene su propia clave.",
+    "descripcion_en": "This route is a pilgrimage to the sonic heart of Cali, the World Capital of Salsa. More than a musical genre, salsa here is a religion danced and lived on every corner. 'The Key of the Neighborhood' immerses you in the identity of a people who transformed an Antillean rhythm into their own cultural flag — from the room where Carlos Molina kept his first photographs to the vinyl hall where the Audioteca preserves recordings that exist nowhere else in the world.",
+    "intro_story": "El Barrio Obrero no se anuncia con letreros. Se anuncia con clave. Antes de entrar, escucha: ¿puedes oír el ritmo que late en las paredes de ladrillo? Aquí nació el estilo caleño, no en un estudio de grabación, sino en los solares y bailaderos de esta cuadrícula popular. Hoy vas a leer la historia que no aparece en los libros.",
+    "intro_story_en": "Barrio Obrero doesn't announce itself with signs. It announces itself with rhythm. Before entering, listen: can you hear the beat pulsing through the brick walls? The Cali style was born here — not in a recording studio, but in the courtyards and dance halls of this working-class grid. Today you will read the history that doesn't appear in books.",
     "justificaciones": [
-      "El origen histórico y fotográfico de la salsa.",
-      "Homenaje al Grupo Niche y Jairo Varela.",
-      "El lugar más democrático para bailar salsa hoy.",
-      "El templo de la salsa tradicional y el vinilo.",
-      "Espectáculo tipo cabaret de talla mundial.",
-      "La escuela de los campeones mundiales."
+      "La salsa caleña es un lenguaje social propio, distinto al modelo neoyorquino.",
+      "El Museo de la Salsa es el repositorio fotográfico salsero más antiguo del mundo.",
+      "La Audioteca Municipal guarda grabaciones del Pacífico que no existen en ningún otro archivo global."
     ],
     "justificaciones_en": [
-      "The historical and photographic origin of salsa.",
-      "Tribute to Grupo Niche and Jairo Varela.",
-      "The most democratic place to dance salsa today.",
-      "The temple of traditional salsa and vinyl.",
-      "World-class cabaret-style show.",
-      "The school of world champions."
+      "Cali salsa is its own social language, distinct from the New York model.",
+      "The Salsa Museum is the world's oldest salsa photographic repository.",
+      "The Municipal Audioteca holds Pacific music recordings that exist in no other global archive."
     ],
+    "puntos": [
+      "museo-salsa-obrero",
+      "plazoleta-jairo-varela",
+      "audiosca-municipal"
+    ],
+    "reward_badge_id": "badge-salsa",
+    "publico": true,
     "recomendaciones": [
       {
         "tipo": "Música",
-        "tipo_en": "Music",
-        "titulo": "Playlist Salsera",
-        "titulo_en": "Salsa Playlist",
-        "descripcion": "Escucha 'Cali Pachanguero' del Grupo Niche para entrar en ambiente.",
-        "descripcion_en": "Listen to 'Cali Pachanguero' by Grupo Niche to get in the mood.",
-        "siteId": "s21"
+        "titulo": "Tu playlist de la ruta",
+        "titulo_en": "Your route playlist",
+        "descripcion": "Antes de salir, carga en tu teléfono: \"Buenaventura y Caney\" (Grupo Niche), \"Las Caleñas son como las Flores\" (Piper Pimienta) y cualquier álbum de Joe Arroyo. Úsalos como banda sonora entre sitio y sitio — es parte de la experiencia.",
+        "descripcion_en": "Before leaving, load on your phone: \"Buenaventura y Caney\" (Grupo Niche), \"Las Caleñas son como las Flores\" (Piper Pimienta), and any Joe Arroyo album. Use them as the soundtrack between sites — it's part of the experience."
       },
       {
         "tipo": "Vestuario",
-        "tipo_en": "Attire",
-        "titulo": "Zapatos de Baile",
-        "titulo_en": "Dancing Shoes",
-        "descripcion": "Usa calzado cómodo y sujeto, evita sandalias sueltas para bailar mejor.",
-        "descripcion_en": "Wear comfortable, secure shoes; avoid loose sandals to dance better.",
-        "siteId": "s46"
+        "titulo": "Calzado de barrio",
+        "titulo_en": "Neighborhood footwear",
+        "descripcion": "El Barrio Obrero es calles de asfalto y aceras estrechas. Usa zapatos planos de suela suave — si vas a dejarte llevar a bailar en algún solar o tienda de vinilos (es probable que pase), los tacones altos serán un obstáculo, no un accesorio.",
+        "descripcion_en": "Barrio Obrero is asphalt streets and narrow sidewalks. Wear flat soft-soled shoes — if you get pulled into dancing at a courtyard or vinyl shop (it will likely happen), high heels will be an obstacle, not an accessory."
+      },
+      {
+        "tipo": "Mejor Hora",
+        "titulo": "Tarde de barrio",
+        "titulo_en": "Neighborhood afternoon",
+        "descripcion": "Visita el Museo de la Salsa entre las 14:00 y las 18:00, cuando Carlos Molina o sus herederos suelen estar atendiendo y colocando vinilos en el equipo de sonido. Esa es la experiencia completa: ver las fotos mientras suena la música original.",
+        "descripcion_en": "Visit the Salsa Museum between 2:00 PM and 6:00 PM, when Carlos Molina or his successors are usually there putting records on the sound system. That's the full experience: seeing the photos while the original music plays."
       },
       {
         "tipo": "Bebida",
-        "tipo_en": "Drink",
-        "titulo": "Hidratación Local",
-        "titulo_en": "Local Hydration",
-        "descripcion": "Prueba una 'Lulada' bien fría en el intermedio de los sitios.",
-        "descripcion_en": "Try a cold 'Lulada' in between sites.",
-        "siteId": "s27"
+        "titulo": "Aguapanela con limón",
+        "titulo_en": "Panela water with lemon",
+        "descripcion": "En el Barrio Obrero encontrarás tiendas de barrio tradicionales donde sirven aguapanela fría con limón — la bebida de los ensayos y los bailaderos populares de toda la vida. Es la hidratación auténtica de la ruta, no la lulada turística.",
+        "descripcion_en": "In Barrio Obrero you will find traditional corner stores serving cold panela water with lemon — the drink of rehearsals and popular dance venues for generations. It's the authentic hydration of this route, not the tourist lulada."
+      },
+      {
+        "tipo": "Foto",
+        "titulo": "Foto de la foto",
+        "titulo_en": "Photo of the photo",
+        "descripcion": "En el Museo de la Salsa, pregunta a Carlos Molina por las fotos de Celia Cruz en Cali (existen varias). La imagen dentro de la imagen — tú fotografiando esa historia — es una de las mejores que te llevarás de la ruta.",
+        "descripcion_en": "At the Salsa Museum, ask Carlos Molina for the photos of Celia Cruz in Cali (several exist). The image within the image — you photographing that history — is one of the best shots you'll take on this route."
       }
     ],
     "gamificacion": [
       {
-        "id": "chal-ruta1-0",
+        "id": "chal-salsa-1",
         "type": "TRIVIA",
-        "title": "Desafío de Conocimiento",
-        "title_en": "Knowledge Challenge",
-        "instruction": "Responde correctamente para ganar puntos.",
-        "instruction_en": "Answer correctly to earn points.",
-        "points_reward": 50,
-        "completed_message": "¡Excelente! Has demostrado que conoces Cali.",
-        "completed_message_en": "Excellent! You proved you know Cali.",
+        "title": "El Origen Fotográfico",
+        "title_en": "The Photographic Origin",
+        "instruction": "Encuentra la fotografía más antigua de la sala principal del Museo de la Salsa y lee la fecha en la esquina inferior.",
+        "instruction_en": "Find the oldest photograph in the main hall of the Salsa Museum and read the date in the lower corner.",
+        "points_reward": 150,
+        "completed_message": "¡Has conectado con el origen visual de la salsa caleña!",
+        "completed_message_en": "You have connected with the visual origin of Cali salsa!",
+        "connection_story": "Estás en el Barrio Obrero, cuna del estilo caleño. Entra al Museo de la Salsa, fundado en 1968 por el fotógrafo Carlos Molina. Sus paredes guardan más de 40,000 fotografías analógicas de orquestas, bailadores y leyendas del sonido antillano que pasaron por Cali.",
+        "connection_story_en": "You are in Barrio Obrero, the cradle of the Cali style. Enter the Salsa Museum, founded in 1968 by photographer Carlos Molina. Its walls hold over 40,000 analog photographs of orchestras, dancers, and legends of the Antillean sound that passed through Cali.",
         "quiz_data": {
-          "question": "¿Cómo se llama el fundador del Museo de la Salsa?",
-          "question_en": "What is the name of the founder of the Salsa Museum?",
+          "question": "¿En qué año fundó Carlos Molina el Museo de la Salsa del Barrio Obrero?",
+          "question_en": "In what year did Carlos Molina found the Salsa Museum of Barrio Obrero?",
           "options": [
-            "Jairo Varela",
-            "Carlos Molina",
-            "Piper Pimienta",
-            "El Mulato"
+            "1955",
+            "1968",
+            "1975",
+            "1980"
           ],
           "options_en": [
-            "Jairo Varela",
-            "Carlos Molina",
-            "Piper Pimienta",
-            "El Mulato"
+            "1955",
+            "1968",
+            "1975",
+            "1980"
           ],
-          "correct_answer": "Carlos Molina",
-          "correct_answer_en": "Carlos Molina",
-          "fun_fact": "Carlos Molina tiene una de las colecciones de fotos de salsa más grandes del mundo.",
-          "fun_fact_en": "Carlos Molina has one of the largest salsa photo collections in the world."
-        },
-        "connection_story": "Bienvenido a la Ruta de la Salsa y el Sabor. Iniciamos en el Barrio Obrero, cuna de la salsa tradicional caleña. Camina por sus calles cuadriculadas y entra al Museo de la Salsa, un templo fotográfico fundado en 1968 por Carlos Molina.",
-        "connection_story_en": "Welcome to the Salsa and Flavor Route. We start in Barrio Obrero, the cradle of traditional salsa in Cali. Walk through its grid streets and enter the Salsa Museum, a photographic temple founded in 1968 by Carlos Molina."
+          "correct_answer": "1968",
+          "correct_answer_en": "1968",
+          "fun_fact": "Carlos Molina inició la colección en su propia casa, guardando fotos y recortes de los espectáculos de salsa que llegaban a Juanchito y al Barrio Obrero.",
+          "fun_fact_en": "Carlos Molina started the collection in his own home, saving photos and press clippings of salsa shows that came to Juanchito and Barrio Obrero."
+        }
       },
       {
-        "id": "chal-ruta1-checkin-1",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "allow_manual_trivia": true,
-        "manual_trivia_data": {
-          "question": "Mirando hacia la entrada principal, ¿De qué color es el letrero?",
-          "question_en": "Looking at the main entrance, what color is the sign?",
+        "id": "chal-salsa-2",
+        "type": "TRIVIA",
+        "title": "El Sonido de Niche en el Bronce",
+        "title_en": "The Sound of Niche in Bronze",
+        "instruction": "Párate dentro de una de las letras de la escultura N-I-C-H-E y escucha el sonido que produce el viento al pasar por las campanas. Luego responde.",
+        "instruction_en": "Stand inside one of the letters of the N-I-C-H-E sculpture and listen to the sound the wind makes as it passes through the bells. Then answer.",
+        "points_reward": 150,
+        "completed_message": "¡Has sentido la vibración del maestro Jairo Varela!",
+        "completed_message_en": "You have felt the vibration of maestro Jairo Varela!",
+        "connection_story": "Desde el Barrio Obrero, camina hacia el norte cruzando la Calle Quinta — el eje histórico de la Cali vieja — hasta la Plazoleta Jairo Varela frente al CAM. La escultura \"Niche\" de 8 metros de bronce fue diseñada para que el viento caleño la convierta en un instrumento de viento monumental.",
+        "connection_story_en": "From Barrio Obrero, walk north crossing Calle Quinta — the historic axis of old Cali — to the Plazoleta Jairo Varela in front of the CAM. The 8-meter bronze \"Niche\" sculpture was designed so the Cali breeze turns it into a monumental wind instrument.",
+        "quiz_data": {
+          "question": "¿En qué año fue grabada \"Cali Pachanguero\", el himno más famoso del Grupo Niche?",
+          "question_en": "In what year was \"Cali Pachanguero\" recorded, Grupo Niche's most famous anthem?",
           "options": [
-            "Rojo",
-            "Azul",
-            "Amarillo"
+            "1979",
+            "1984",
+            "1988",
+            "1992"
           ],
           "options_en": [
-            "Red",
-            "Blue",
-            "Yellow"
+            "1979",
+            "1984",
+            "1988",
+            "1992"
           ],
-          "correct_answer": "Rojo",
-          "correct_answer_en": "Red"
-        },
-        "connection_story": "Al dejar el Obrero, avanza hacia el norte buscando el río Cali. Cruzarás la Calle Quinta, el eje histórico de la Cali vieja, y pasarás cerca de la antigua Estación del Ferrocarril, hito republicano por donde ingresaron los primeros vinilos y pianos mecánicos a la ciudad. En la plaza, frente al moderno edificio del CAM, busca las trompetas metálicas gigantes de Niche.",
-        "connection_story_en": "Leaving Obrero, head north towards the Cali River. You will cross Calle Quinta, the historic axis of old Cali, and pass near the old Railway Station, a Republican landmark through which the first vinyl records and player pianos entered the city. In the square, opposite the modern CAM building, look for Niche's giant metal trumpets."
+          "correct_answer": "1988",
+          "correct_answer_en": "1988",
+          "fun_fact": "\"Cali Pachanguero\" fue seleccionada por la FIFA como canción oficial del Mundial de Brasil 2014, llevando el nombre de Cali al planeta.",
+          "fun_fact_en": "\"Cali Pachanguero\" was selected by FIFA as an official song for the 2014 Brazil World Cup, carrying Cali's name across the planet."
+        }
       },
       {
-        "id": "chal-ruta1-checkin-2",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Cruza el Paseo de la Avenida Colombia, construido sobre un túnel subterráneo para recuperar el espacio peatonal junto al río. Pasarás al lado del Puente Ortiz (1845), primer puente de ladrillo y cal de la ciudad. Dirígete hacia el Centro Cultural de Cali, edificación de ladrillo limpio diseñada por Rogelio Salmona que emula las formas prehispánicas.",
-        "connection_story_en": "Cross the Avenida Colombia Boulevard, built over an underground tunnel to reclaim pedestrian space along the river. You will pass the Ortiz Bridge (1845), the city's first brick and lime bridge. Head towards the Cali Cultural Center, a clean brick building designed by Rogelio Salmona that emulates pre-Hispanic shapes."
-      },
-      {
-        "id": "chal-ruta1-checkin-3",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Adéntrate de nuevo al centro histórico por la carrera 5, pasando cerca de la Iglesia de la Ermita y el Teatro Jorge Isaacs. Te dirigirás al barrio San Nicolás, caracterizado por su pasado tipográfico y sus iglesias neogóticas. Aquí se encuentra La Matraca, un bailadero tradicional fundado en la época dorada del tango y el vinilo.",
-        "connection_story_en": "Venture back into the historic center via Carrera 5, passing near the Ermita Church and the Jorge Isaacs Theater. You will head to the San Nicolas neighborhood, characterized by its typographical past and Neo-Gothic churches. Here lies La Matraca, a traditional dance venue founded during the golden era of tango and vinyl."
-      },
-      {
-        "id": "chal-ruta1-checkin-4",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Nos desplazamos hacia el sur bordeando la emblemática Calle Quinta. Pasarás cerca del histórico Parque de los Estudiantes y del Hospital Universitario. La Calle Quinta conecta la Cali colonial con el ensanche moderno, convirtiéndose en el gran corredor de la rumba en los años 80 y 90. Busca la carrera 22 para llegar a Tin Tin Deo.",
-        "connection_story_en": "We move towards the south bordering the emblematic Calle Quinta. You will pass near the historic Students Park and the University Hospital. Calle Quinta connects colonial Cali with the modern expansion, becoming the main rumba corridor of the 80s and 90s. Look for Carrera 22 to reach Tin Tin Deo."
-      },
-      {
-        "id": "chal-ruta1-checkin-5",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Continúa hacia el tradicional Barrio San Fernando, pasando cerca del Parque del Perro y del Estadio Pascual Guerrero. San Fernando conserva hermosas mansiones de estilo californiano de mediados del siglo XX que hoy conviven con restaurantes. Avanza hacia Swing Latino, la escuela de los campeones mundiales de salsa.",
-        "connection_story_en": "Continue towards the traditional San Fernando neighborhood, passing near Parque del Perro and the Pascual Guerrero Stadium. San Fernando preserves beautiful mid-20th century California-style mansions that today coexist with restaurants. Head towards Swing Latino, the school of world salsa champions."
+        "id": "chal-salsa-3",
+        "type": "TRIVIA",
+        "title": "Memoria Sonora del Pacífico",
+        "title_en": "Pacific Sound Memory",
+        "instruction": "En la Audioteca Municipal, pide a un orientador que te muestre la colección de grabaciones de campo del Pacífico. Escucha al menos un fragmento de una grabación de los años 50 o 60.",
+        "instruction_en": "At the Municipal Audioteca, ask an advisor to show you the Pacific field recording collection. Listen to at least one excerpt from a 1950s or 60s recording.",
+        "points_reward": 150,
+        "completed_message": "¡Has preservado la memoria auditiva de un pueblo!",
+        "completed_message_en": "You have preserved the auditory memory of a people!",
+        "connection_story": "Cruza el Bulevar del Río y entra al Centro Cultural de Cali, la joya arquitectónica diseñada por Rogelio Salmona. En la planta baja encontrarás la Audioteca Municipal, un repositorio sonoro único que guarda grabaciones del Pacífico colombiano que no existen en ningún otro archivo del mundo.",
+        "connection_story_en": "Cross the River Boulevard and enter the Cali Cultural Center, the architectural jewel designed by Rogelio Salmona. On the ground floor you will find the Municipal Audioteca, a unique sound repository holding Colombian Pacific recordings that exist in no other archive in the world.",
+        "quiz_data": {
+          "question": "¿Qué instrumento es el símbolo musical central de las comunidades afrocolombianas del Pacífico y fue declarado Patrimonio Inmaterial por la UNESCO en 2015?",
+          "question_en": "What instrument is the central musical symbol of Afro-Colombian Pacific communities and was declared Intangible Heritage by UNESCO in 2015?",
+          "options": [
+            "El Bongó",
+            "La Marimba de Chonta",
+            "El Tiple",
+            "La Guitarra Clásica"
+          ],
+          "options_en": [
+            "The Bongo",
+            "The Chonta Marimba",
+            "The Tiple",
+            "The Classical Guitar"
+          ],
+          "correct_answer": "La Marimba de Chonta",
+          "correct_answer_en": "The Chonta Marimba",
+          "fun_fact": "La marimba de chonta es fabricada con madera de palma de chonta y calabazas secas como resonadores. Cada marimba es única y lleva semanas construirla.",
+          "fun_fact_en": "The chonta marimba is made from chonta palm wood and dried gourds as resonators. Each marimba is unique and takes weeks to build."
+        }
       }
     ]
   },
@@ -391,177 +361,166 @@
   },
   {
     "id": "ruta3",
-    "nombre": "Ruta del Arte y la Bohemia",
-    "nombre_en": "Art and Bohemian Route",
-    "puntos": [
-      "s1",
-      "s8",
-      "s23",
-      "s4",
-      "s55",
-      "s61"
-    ],
-    "duracionMin": 200,
-    "descripcion": "Esta ruta es mucho más que un paseo; es una inmersión sensorial en la faceta más cosmopolita y vibrante de la ciudad. 'La Ruta del Arte y la Bohemia' te invita a descubrir cómo el Oeste de Cali ha tejido una identidad única donde la brisa del río Cali dialoga con la vanguardia artística, la arquitectura histórica y una escena gastronómica de primer nivel. Es el recorrido esencial para entender por qué Cali es un epicentro cultural que va más allá de la salsa, revelando un espíritu intelectual y relajado que seduce al caminante.\n\nTu viaje comienza explorando los pilares del arte moderno y contemporáneo. Desde el icónico Museo La Tertulia, joya arquitectónica que respira cine y artes plásticas, el camino te lleva por un corredor visual a orillas del río, custodiado por el famoso Gato de Tejada y sus novias. Pero la ruta profundiza más: descubrirás espacios de pensamiento crítico como 'Lugar a Dudas' y la transformación de la arquitectura doméstica en recintos culturales como la Casa Obeso Mejía, demostrando cómo el arte en Cali se vive tanto en los museos como en las calles y casas.\n\nLa experiencia culmina fusionando la estética con el estilo de vida. La influencia internacional de la Alianza Francesa sirve de puente hacia el efervescente Barrio Granada. Aquí, la 'bohemia' cobra vida entre mansiones restauradas que hoy albergan lo mejor de la moda, el diseño y, sobre todo, la alta gastronomía caleña. Esta ruta es una invitación a caminar sin prisa, a contemplar la belleza urbana y a conectar íntimamente con una ciudad que se reinventa constantemente a través de su creatividad.",
-    "descripcion_en": "This route is much more than a walk; it is a sensory immersion into the city's most cosmopolitan and vibrant facet. 'The Art and Bohemian Route' invites you to discover how Western Cali has woven a unique identity where the Cali River breeze dialogues with artistic avant-garde, historic architecture, and a top-tier gastronomic scene. It is the essential tour to understand why Cali is a cultural epicenter going beyond salsa, revealing an intellectual and relaxed spirit that seduces the walker.\n\nYour journey begins exploring the pillars of modern and contemporary art. From the iconic La Tertulia Museum, an architectural jewel breathing cinema and visual arts, the path takes you along a visual corridor by the riverbanks, guarded by the famous Tejada's Cat and his girlfriends. But the route goes deeper: you will discover critical thinking spaces like 'Lugar a Dudas' and the transformation of domestic architecture into cultural venues like Casa Obeso Mejía, demonstrating how art in Cali is lived both in museums and on streets and houses.\n\nThe experience culminates by fusing aesthetics with lifestyle. The international influence of the Alliance Française serves as a bridge to the effervescent Granada Neighborhood. Here, 'bohemia' comes to life among restored mansions that today house the best of fashion, design, and, above all, Caleño haute cuisine. This route is an invitation to walk without haste, to contemplate urban beauty, and to intimately connect with a city that constantly reinvents itself through its creativity.",
+    "nombre": "Pinceles de la Calle",
+    "nombre_en": "Brushes of the Street",
+    "duracionMin": 150,
+    "descripcion": "Las paredes de Cali no callan: gritan verdades a todo color. Desde el circuito de más de 2 km de murales sobre los muros de contención del río Cali en el Bulevar, pasando bajo el Puente de la Cervecería —cuyas columnas son lienzos monumentales de la historia industrial de la ciudad—, hasta los murales de la ladera de Siloé donde el arte comunitario transformó la narrativa de un barrio históricamente estigmatizado. Esta ruta es una lectura visual de la ciudad que no está en ningún libro: está pintada en sus muros.",
+    "descripcion_en": "Cali's walls don't fall silent — they scream truths in full color. From the 2 km+ mural circuit on the flood control walls of the Cali River in the Bulevar, beneath the Puente de la Cervecería — whose columns are monumental canvases of the city's industrial history — to the murals on Siloé's hillside where community art transformed the narrative of a historically stigmatized neighborhood. This route is a visual reading of the city that appears in no book: it's painted on its walls.",
+    "intro_story": "Si las paredes hablaran, gritarían revolución. Pero aquí no hablan — pintan. El muralismo caleño no es decoración: es denuncia, memoria y orgullo. Antes de arrancar, mira el primer muro a tu izquierda cuando entres al Bulevar y pregúntate: ¿qué historia te está contando?",
+    "intro_story_en": "If walls could talk, they would scream revolution. But here they don't talk — they paint. Cali muralism is not decoration: it is denunciation, memory, and pride. Before starting, look at the first wall to your left when you enter the Bulevar and ask yourself: what story is it telling you?",
     "justificaciones": [
-      "Referente del arte moderno y el cine.",
-      "Galería de arte público a orillas del río.",
-      "Arquitectura doméstica convertida en arte.",
-      "Centro de pensamiento artístico contemporáneo.",
-      "Foco de cultura francesa y exposiciones.",
-      "Arquitectura, moda y gastronomía en un solo lugar."
+      "El circuito de murales del Bulevar es uno de los más largos de América Latina: más de 2 km continuos.",
+      "El Puente de la Cervecería recuerda la primera industria moderna de Cali: la Cervecería Bavaria (1904).",
+      "Los murales de Siloé son un modelo internacional de arte comunitario que transformó la narrativa de un barrio."
     ],
     "justificaciones_en": [
-      "Benchmark of modern art and cinema.",
-      "Public art gallery on the riverbanks.",
-      "Domestic architecture turned into art.",
-      "Center for contemporary artistic thought.",
-      "Focus of French culture and exhibitions.",
-      "Architecture, fashion, and gastronomy in one place."
+      "The Bulevar mural circuit is one of the longest in Latin America: over 2 continuous km.",
+      "The Cervecería Bridge recalls Cali's first modern industry: Bavaria Brewery (1904).",
+      "The Siloé murals are an international model of community art that transformed a neighborhood's narrative."
     ],
+    "puntos": [
+      "muros-bulevar",
+      "puente-cerveceria",
+      "murales-siloe"
+    ],
+    "reward_badge_id": "badge-art",
+    "publico": true,
     "recomendaciones": [
       {
-        "tipo": "Sabor",
-        "tipo_en": "Flavor",
-        "titulo": "Café de Origen",
-        "titulo_en": "Single Origin Coffee",
-        "descripcion": "El barrio Granada y Peñón tienen los mejores cafés de especialidad.",
-        "descripcion_en": "The Granada and Peñón neighborhoods have the best specialty coffees.",
-        "siteId": "s61"
-      },
-      {
-        "tipo": "Foto",
-        "tipo_en": "Photo",
-        "titulo": "Las Gatas",
-        "titulo_en": "The Cats",
-        "descripcion": "Elige tu 'Gata' favorita en el río y tómate una selfie artística.",
-        "descripcion_en": "Choose your favorite 'Gata' by the river and take an artistic selfie.",
-        "siteId": "s8"
+        "tipo": "Mejor Hora",
+        "titulo": "Luz de la tarde para fotografiar",
+        "titulo_en": "Afternoon light for photography",
+        "descripcion": "Los murales del Bulevar y el Puente de la Cervecería tienen su mejor luz entre las 15:00 y las 17:30, cuando el sol del occidente ilumina de frente las paredes orientales. Los colores saturados y las sombras largas hacen fotos excepcionales en ese rango horario.",
+        "descripcion_en": "The Bulevar murals and Cervecería Bridge have their best light between 3:00 PM and 5:30 PM, when the western sun directly illuminates the eastern walls. Saturated colors and long shadows make exceptional photos in that time range."
       },
       {
         "tipo": "Transporte",
-        "tipo_en": "Transport",
-        "titulo": "Caminata",
-        "titulo_en": "Walking",
-        "descripcion": "Es una ruta 100% caminable y segura para disfrutar el paisaje.",
-        "descripcion_en": "It is a 100% walkable and safe route to enjoy the scenery.",
-        "siteId": "s1"
+        "titulo": "Bicicleta para el Bulevar, a pie para Siloé",
+        "titulo_en": "Bike for the Bulevar, on foot for Siloé",
+        "descripcion": "Para el Bulevar del Río, alquila una bicicleta de las estaciones de MiO Bici o Tembici — el circuito de murales se disfruta mejor en dos ruedas. Para Siloé, sube únicamente con un guía comunitario local (se consigue fácil por redes sociales de Ladera Cultura Viva) — ellos conocen los caminos seguros y la historia de cada mural.",
+        "descripcion_en": "For the Bulevar del Río, rent a bicycle from the MiO Bici or Tembici stations — the mural circuit is best enjoyed on two wheels. For Siloé, go only with a local community guide (easily found through Ladera Cultura Viva's social media) — they know the safe paths and the story behind each mural."
+      },
+      {
+        "tipo": "Experiencia",
+        "titulo": "Pregunta por el artista de cada mural",
+        "titulo_en": "Ask about the artist of each mural",
+        "descripcion": "En Siloé, los guías comunitarios saben quién pintó cada mural, cuándo lo hizo y qué historia quiso contar. Esa narrativa oral que acompaña a las imágenes es el 80% del valor del recorrido. Sin ella, son solo pinturas bonitas en una pared.",
+        "descripcion_en": "In Siloé, the community guides know who painted each mural, when they painted it, and what story they wanted to tell. That oral narrative accompanying the images is 80% of the tour's value. Without it, they're just pretty paintings on a wall."
+      },
+      {
+        "tipo": "Foto",
+        "titulo": "El mural de las especies endémicas",
+        "titulo_en": "The endemic species mural",
+        "descripcion": "En el Bulevar del Río busca el mural de gran formato que representa al cóndor de los Andes y al pato careto — dos especies endémicas amenazadas del Valle del Cauca. El contraste entre la megafauna silvestre pintada y el río urbano detrás es visualmente poderoso.",
+        "descripcion_en": "On the Bulevar del Río look for the large-format mural representing the Andean condor and the pato careto — two threatened endemic species of Valle del Cauca. The contrast between the painted megafauna and the urban river behind is visually powerful."
+      },
+      {
+        "tipo": "Seguridad",
+        "titulo": "Siloé: siempre con guía local",
+        "titulo_en": "Siloé: always with a local guide",
+        "descripcion": "El barrio Siloé tiene una comunidad vibrante y un programa de turismo comunitario sólido, pero es un barrio de ladera popular y el visitante que sube sin guía local puede desorientarse fácilmente. Contacta a Ladera Cultura Viva antes del recorrido: @laderacultureviva en Instagram.",
+        "descripcion_en": "Siloé has a vibrant community and a solid community tourism program, but it's a popular hillside neighborhood and a visitor going up without a local guide can easily get disoriented. Contact Ladera Cultura Viva before the tour: @laderacultureviva on Instagram."
       }
     ],
     "gamificacion": [
       {
-        "id": "chal-ruta3-checkin-0",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "allow_manual_trivia": true,
-        "manual_trivia_data": {
-          "question": "¿Qué río pasa justo al lado del Museo La Tertulia?",
-          "question_en": "Which river flows right next to La Tertulia Museum?",
+        "id": "chal-art-1",
+        "type": "TRIVIA",
+        "title": "El Río como Lienzo",
+        "title_en": "The River as Canvas",
+        "instruction": "Encuentra en los murales del Bulevar uno que represente fauna colombiana en peligro de extinción. Fotografíalo e identifica la especie retratada.",
+        "instruction_en": "Find in the Bulevar murals one representing endangered Colombian fauna. Photograph it and identify the species portrayed.",
+        "points_reward": 150,
+        "completed_message": "¡Has leído el primer capítulo del libro de paredes más largo de Cali!",
+        "completed_message_en": "You have read the first chapter of Cali's longest wall book!",
+        "connection_story": "Estás ante el circuito de murales del Bulevar del Río Cali: más de 2 km de arte público continuo sobre los muros de contención del río. Las primeras intervenciones fueron ilegales, realizadas por colectivos de grafiti en los años 90. Hoy es una galería de arte oficial que renueva sus piezas cada año con el Festival de Arte Urbano de Cali (FAUC).",
+        "connection_story_en": "You are before the Bulevar del Río Cali mural circuit: over 2 km of continuous public art on the river's retaining walls. The first interventions were illegal, made by graffiti collectives in the 1990s. Today it's an official art gallery that renews its pieces annually with the Cali Urban Art Festival (FAUC).",
+        "quiz_data": {
+          "question": "¿Cuántos kilómetros de extensión tiene el circuito de murales del Bulevar del Río Cali, convirtiéndolo en uno de los más largos de América Latina?",
+          "question_en": "How many kilometers long is the Bulevar del Río Cali mural circuit, making it one of the longest in Latin America?",
           "options": [
-            "Río Cauca",
-            "Río Cali",
-            "Río Pance"
+            "0.5 km",
+            "1 km",
+            "Más de 2 km",
+            "5 km"
           ],
           "options_en": [
-            "Cauca River",
-            "Cali River",
-            "Pance River"
+            "0.5 km",
+            "1 km",
+            "More than 2 km",
+            "5 km"
           ],
-          "correct_answer": "Río Cali",
-          "correct_answer_en": "Cali River"
-        },
-        "connection_story": "Bienvenido a la Ruta del Arte y la Bohemia. Iniciamos en el Museo La Tertulia, el primer museo de arte moderno del país, rodeado de jardines y ubicado junto al charco donde los caleños se bañaban en el siglo XIX. Explora sus salas de exposición y su cinemateca.",
-        "connection_story_en": "Welcome to the Art and Bohemian Route. We start at La Tertulia Museum, the country's first modern art museum, surrounded by gardens and located next to the pool where Caleños bathed in the 19th century. Explore its exhibition halls and cinematheque."
+          "correct_answer": "Más de 2 km",
+          "correct_answer_en": "More than 2 km",
+          "fun_fact": "Durante el Festival FAUC, artistas de más de 20 países intervienen simultáneamente los muros de la ciudad durante una semana completa.",
+          "fun_fact_en": "During the FAUC Festival, artists from over 20 countries simultaneously work on the city's walls for a full week."
+        }
       },
       {
-        "id": "chal-ruta3-checkin-1",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Sal del museo y toma el sendero peatonal que bordea el río Cali bajo la sombra de los árboles. Cruzarás el Puente del Gato para llegar a la galería de arte público al aire libre donde reposa El Gato del Río, obra monumental en bronce de Hernando Tejada, custodiado por sus 'novias', pintadas por diversos artistas nacionales.",
-        "connection_story_en": "Leave the museum and take the pedestrian path bordering the Cali River under the shade of trees. You will cross the Cat Bridge to reach the open-air public art gallery where El Gato del Rio rests, a monumental bronze work by Hernando Tejada, guarded by his 'girlfriends', painted by various national artists."
+        "id": "chal-art-2",
+        "type": "TRIVIA",
+        "title": "Memoria Industrial en el Puente",
+        "title_en": "Industrial Memory on the Bridge",
+        "instruction": "Desde el Puente de la Cervecería, mira las garzas que anidan en los árboles del río Cali. Fotografíalas e identifica de qué especie se trata.",
+        "instruction_en": "From the Puente de la Cervecería, watch the herons nesting in the trees along the Cali River. Photograph them and identify the species.",
+        "points_reward": 150,
+        "completed_message": "¡Has visto la historia industrial de Cali desde el mejor mirador posible!",
+        "completed_message_en": "You have seen Cali's industrial history from the best possible viewpoint!",
+        "connection_story": "El Puente de la Cervecería toma su nombre de la Cervecería Bavaria, fundada en este sector en 1904 — la primera industria moderna de Cali. Los galpones de ladrillo de Bavaria fueron demolidos en los años 80. Pero el nombre del puente permaneció como memoria popular, y sus columnas se convirtieron en lienzos monumentales del Festival FAUC.",
+        "connection_story_en": "The Puente de la Cervecería takes its name from the Bavaria Brewery, founded in this sector in 1904 — Cali's first modern industry. The Bavaria brick buildings were demolished in the 1980s. But the bridge's name remained as popular memory, and its columns became monumental canvases for the FAUC Festival.",
+        "quiz_data": {
+          "question": "¿En qué año fue fundada la Cervecería Bavaria en Cali, la primera empresa en Colombia en producir cerveza industrial y refrigerada?",
+          "question_en": "In what year was the Bavaria Brewery founded in Cali, the first company in Colombia to produce industrial refrigerated beer?",
+          "options": [
+            "1880",
+            "1904",
+            "1920",
+            "1935"
+          ],
+          "options_en": [
+            "1880",
+            "1904",
+            "1920",
+            "1935"
+          ],
+          "correct_answer": "1904",
+          "correct_answer_en": "1904",
+          "fun_fact": "El mural más grande del Puente de la Cervecería mide 45 metros y fue pintado en una sola noche por un colectivo de artistas durante el FAUC 2019.",
+          "fun_fact_en": "The largest mural on the Cervecería Bridge is 45 meters long and was painted in a single night by an artist collective during FAUC 2019."
+        }
       },
       {
-        "id": "chal-ruta3-checkin-2",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Continúa bordeando el río por la Avenida Belalcázar hacia el oeste. Cruzarás el puente de la carrera 4 para llegar a la Casa Obeso Mejía. Esta joya de la arquitectura doméstica de mediados del siglo XX fue restaurada y donada para convertirse en un centro cultural que fusiona arte, diseño y talleres creativos.",
-        "connection_story_en": "Continue bordering the river along Avenida Belalcázar to the west. You will cross the Carrera 4 bridge to reach Casa Obeso Mejía. This jewel of domestic architecture from the mid-20th century was restored and donated to become a cultural center fusing art, design, and creative workshops."
-      },
-      {
-        "id": "chal-ruta3-checkin-3",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Adéntrate en el tradicional barrio El Peñón por la carrera 4A. Este sector, conocido hoy por sus boutiques y restaurantes, alberga Lugar a Dudas, un centro de pensamiento y residencias de arte contemporáneo fundado por el artista Oscar Muñoz que fomenta el debate y la investigación artística.",
-        "connection_story_en": "Venture into the traditional El Peñón neighborhood along Carrera 4A. This sector, known today for its boutiques and restaurants, houses Lugar a Dudas, a contemporary art residency and thinking center founded by artist Oscar Muñoz that encourages debate and artistic research."
-      },
-      {
-        "id": "chal-ruta3-checkin-4",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Camina hacia el norte cruzando el río Cali por el Puente de Granada. Llegarás al Centro Cultural Alianza Francesa, ubicado en una hermosa casona del tradicional Barrio Granada. Este espacio actúa como puente cultural ofreciendo exposiciones de fotografía, artes plásticas y ciclos de cine independiente.",
-        "connection_story_en": "Walk north crossing the Cali River via the Granada Bridge. You will reach the Alliance Française Cultural Center, located in a beautiful house in the traditional Granada neighborhood. This space acts as a cultural bridge offering photography exhibitions, visual arts, and independent cinema cycles."
-      },
-      {
-        "id": "chal-ruta3-checkin-5",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Recorre las avenidas del Barrio Granada (Avenida 9N y carrera 9). Granada fue el primer barrio residencial de élite fuera del centro histórico a principios del siglo XX, caracterizado por sus mansiones de estilo neoclásico y español. Hoy es el epicentro de la alta costura, el diseño y la zona gastronómica de la ciudad.",
-        "connection_story_en": "Walk along the avenues of the Granada neighborhood (Avenida 9N and Carrera 9). Granada was the first elite residential neighborhood outside the historic center in the early 20th century, characterized by its neoclassical and Spanish-style mansions. Today it is the epicenter of fashion, design, and the city's culinary zone."
+        "id": "chal-art-3",
+        "type": "TRIVIA",
+        "title": "El Color que Transforma un Barrio",
+        "title_en": "The Color That Transforms a Neighborhood",
+        "instruction": "En los murales de Siloé, encuentra el mural que homenajea a los mineros de carbón y fotografíate junto a él.",
+        "instruction_en": "In the Siloé murals, find the mural honoring the coal miners and take a photo next to it.",
+        "points_reward": 200,
+        "completed_message": "¡Has subido a uno de los miradores de arte más poderosos de Cali!",
+        "completed_message_en": "You have climbed to one of Cali's most powerful art viewpoints!",
+        "connection_story": "Siloé fue fundado en los años 20 por familias mineras que extraían carbón de la ladera occidental de Cali. Hasta los años 90, era considerado el barrio más peligroso de la ciudad. La organización Ladera Cultura Viva inició el proceso de transformación en 2010 a través de los murales y el turismo comunitario. Hoy es un destino cultural reconocido internacionalmente.",
+        "connection_story_en": "Siloé was founded in the 1920s by mining families who extracted coal from Cali's western hillside. Until the 1990s, it was considered the city's most dangerous neighborhood. The organization Ladera Cultura Viva began the transformation process in 2010 through murals and community tourism. Today it's an internationally recognized cultural destination.",
+        "quiz_data": {
+          "question": "¿En qué año comenzó el proceso de transformación cultural de Siloé a través del arte y el turismo comunitario impulsado por Ladera Cultura Viva?",
+          "question_en": "In what year did Siloé's cultural transformation process through art and community tourism, driven by Ladera Cultura Viva, begin?",
+          "options": [
+            "1995",
+            "2003",
+            "2010",
+            "2018"
+          ],
+          "options_en": [
+            "1995",
+            "2003",
+            "2010",
+            "2018"
+          ],
+          "correct_answer": "2010",
+          "correct_answer_en": "2010",
+          "fun_fact": "Varios de los murales de Siloé fueron pintados por jóvenes que nunca habían tomado un pincel antes de ingresar al programa de arte de Ladera Cultura Viva.",
+          "fun_fact_en": "Several of Siloé's murals were painted by young people who had never picked up a brush before joining the Ladera Cultura Viva art program."
+        }
       }
     ]
   },
@@ -705,335 +664,319 @@
   },
   {
     "id": "ruta5",
-    "nombre": "Ruta de los Teatros y la Escena Viva",
-    "nombre_en": "Route of Theaters and Living Scene",
-    "puntos": [
-      "s2",
-      "s22",
-      "s96",
-      "s69",
-      "s14",
-      "s67"
-    ],
-    "duracionMin": 180,
-    "descripcion": "Cali respira dramaturgia y pasión escénica. 'La Ruta de los Teatros y la Escena Viva' es un homenaje a las tablas que han narrado la historia de la ciudad y del país. Este recorrido te invita a descubrir la magia que ocurre cuando se apagan las luces y se levanta el telón. Es una inmersión en la tradición teatral caleña, reconocida por su vanguardia, su compromiso social y su capacidad de conmover hasta la fibra más profunda.\n\nEl viaje te llevará por un espectro fascinante de escenarios: desde la majestuosidad neoclásica del Teatro Municipal Enrique Buenaventura, donde resuenan óperas y conciertos, hasta la intimidad creativa de las salas independientes en el barrio San Antonio, como el Teatro La Máscara y la Casa de los Títeres. Conocerás el legado del TEC (Teatro Experimental de Cali) y cómo estos espacios han sido trincheras de resistencia cultural y creatividad desbordante durante décadas.\n\nAl caer la tarde, entenderás que el teatro en Cali no es solo entretenimiento, es un espejo de su sociedad. Finalizar esta ruta es una invitación a la bohemia intelectual, a debatir sobre la obra vista con una copa de vino y a celebrar el talento de dramaturgos y actores locales. Te llevarás la certeza de que en Cali, la vida misma es una puesta en escena maravillosa.",
-    "descripcion_en": "Cali breathes dramaturgy and scenic passion. 'The Route of Theaters and Living Scene' is a tribute to the stages that have narrated the city's and country's history. This tour invites you to discover the magic that happens when the lights go down and the curtain goes up. It is an immersion into the Caleño theatrical tradition, recognized for its avant-garde, social commitment, and ability to move to the deepest fiber.\n\nThe journey will take you through a fascinating spectrum of stages: from the neoclassical majesty of the Enrique Buenaventura Municipal Theater, where operas and concerts resonate, to the creative intimacy of independent halls in the San Antonio neighborhood, like Teatro La Máscara and Casa de los Títeres. You will learn about the legacy of the TEC (Experimental Theater of Cali) and how these spaces have been trenches of cultural resistance and overflowing creativity for decades.\n\nAt dusk, you will understand that theater in Cali is not just entertainment, it is a mirror of its society. Finishing this route is an invitation to intellectual bohemia, to debate the play seen over a glass of wine, and to celebrate the talent of local playwrights and actors. You will take away the certainty that in Cali, life itself is a wonderful performance.",
+    "nombre": "Cali de Papel",
+    "nombre_en": "Cali on Paper",
+    "duracionMin": 120,
+    "descripcion": "Adéntrate en las páginas vivas de la Cali de los años 70, la época del movimiento \"Caliwood\" y la efervescencia literaria de Andrés Caicedo. Siguiendo los pasos de una generación de escritores, directores y soñadores que hicieron de la ciudad su musa y su campo de batalla, esta ruta explora los rincones del centro histórico que inspiraron historias de cine, locura y juventud. El Teatro Municipal donde Buenaventura inventó un nuevo teatro latinoamericano. El Edificio Otero que vio pasar a García Márquez. La Biblioteca Centenario donde reposan los manuscritos de Jorge Isaacs. Cali no se escribe, se vive — pero aquí aprenderás a leerla.",
+    "descripcion_en": "Venture into the living pages of 1970s Cali, the era of the \"Caliwood\" movement and the literary fervor of Andrés Caicedo. Following the footsteps of a generation of writers, directors, and dreamers who made the city their muse and battlefield, this route explores the corners of the historic center that inspired stories of film, madness, and youth. The Municipal Theater where Buenaventura invented a new Latin American theater. The Otero Building that saw García Márquez pass through. The Centenario Library where Jorge Isaacs' manuscripts rest.",
+    "intro_story": "Cali es una ciudad que espera, pero que no le abre la puerta a los desesperados. Lo escribió Andrés Caicedo antes de morir a los 25 años, con \"¡Qué viva la música!\" recién publicada. Hoy caminarás por la ciudad que él amó y odió en partes iguales, y entenderás por qué esa tensión la convirtió en literatura.",
+    "intro_story_en": "Cali is a city that waits, but doesn't open its door to the desperate. Andrés Caicedo wrote this before dying at 25, with \"¡Qué viva la música!\" just published. Today you will walk through the city he loved and hated in equal parts, and understand why that tension turned it into literature.",
     "justificaciones": [
-      "El máximo escenario cultural, joya arquitectónica.",
-      "Teatro clásico de estilo neoclásico francés.",
-      "Cuna del teatro moderno colombiano (TEC).",
-      "Espacio íntimo de creación en San Antonio.",
-      "Teatro de larga trayectoria y formación.",
-      "Un mundo mágico dedicado a los títeres."
+      "Enrique Buenaventura y el TEC inventaron el teatro moderno colombiano en el Teatro Municipal.",
+      "\"Caliwood\" fue uno de los movimientos cinematográficos más influyentes de América Latina del siglo XX.",
+      "La Biblioteca Centenario guarda los únicos manuscritos originales de Jorge Isaacs en Colombia."
     ],
-    "justificaciones_en": [
-      "The ultimate cultural venue, an architectural jewel.",
-      "Classic theater in French Neoclassical style.",
-      "Cradle of modern Colombian theater (TEC).",
-      "Intimate creation space in San Antonio.",
-      "Theater with a long trajectory and training.",
-      "A magical world dedicated to puppets."
+    "puntos": [
+      "teatro-municipal",
+      "edificio-otero",
+      "biblioteca-centenario"
     ],
+    "reward_badge_id": "badge-lit",
+    "publico": true,
     "recomendaciones": [
       {
-        "tipo": "Planificación",
-        "tipo_en": "Planning",
-        "titulo": "Cartelera",
-        "titulo_en": "Billboard",
-        "descripcion": "Revisa la programación de las obras antes de ir.",
-        "descripcion_en": "Check the play schedule before going.",
-        "siteId": "s2"
+        "tipo": "Experiencia",
+        "titulo": "Lee antes de caminar",
+        "titulo_en": "Read before walking",
+        "descripcion": "Si no has leído \"¡Qué viva la música!\" de Andrés Caicedo, lee aunque sea el primer capítulo antes de esta ruta. El libro está ambientado en los mismos sectores que vas a caminar y lo convierte en una experiencia de lectura viva.",
+        "descripcion_en": "If you haven't read Andrés Caicedo's \"¡Qué viva la música!\", read at least the first chapter before this route. The book is set in the same sectors you'll walk and turns it into a living reading experience."
       },
       {
-        "tipo": "Ubicación",
-        "tipo_en": "Location",
-        "titulo": "San Antonio",
-        "titulo_en": "San Antonio",
-        "descripcion": "Aprovecha para cenar en San Antonio tras la función.",
-        "descripcion_en": "Take the opportunity to dine in San Antonio after the show.",
-        "siteId": "s22"
+        "tipo": "Mejor Hora",
+        "titulo": "Mañana para leer, tarde para el teatro",
+        "titulo_en": "Morning for reading, afternoon for theater",
+        "descripcion": "La Biblioteca Centenario y sus archivos históricos son más accesibles en la mañana, cuando hay personal que puede orientar la consulta. Deja el Teatro Municipal para la tarde — si hay ensayo o visita guiada programada, podrás entrar a la sala principal.",
+        "descripcion_en": "Centenario Library and its historical archives are more accessible in the morning, when staff are available to guide consultations. Leave the Municipal Theater for the afternoon — if there's a rehearsal or scheduled guided tour, you can enter the main hall."
+      },
+      {
+        "tipo": "Foto",
+        "titulo": "La sala de la ópera",
+        "titulo_en": "The opera hall",
+        "descripcion": "Si logras entrar al Teatro Municipal Enrique Buenaventura, fotografía el plafón central: los frescos al temple del italiano Mauricio Ramelli con escenas de la Divina Comedia son los únicos de autoría italiana republicana en Colombia.",
+        "descripcion_en": "If you manage to enter the Enrique Buenaventura Municipal Theater, photograph the central ceiling: the tempera frescoes by Italian artist Mauricio Ramelli with scenes from the Divine Comedy are the only ones of Italian Republican authorship in Colombia."
+      },
+      {
+        "tipo": "Planificación",
+        "titulo": "Consulta la cartelera del Teatro Municipal",
+        "titulo_en": "Check the Municipal Theater schedule",
+        "descripcion": "Revisa en redes sociales del Teatro Municipal (@teatromunicipalcali) si hay función ese día. Ver una obra en ese escenario — aunque sea un ensayo de la Escuela de Bellas Artes — es el cierre perfecto para esta ruta literaria.",
+        "descripcion_en": "Check the Municipal Theater's social media (@teatromunicipalcali) if there's a show that day. Seeing a performance at that venue — even a rehearsal from the Bellas Artes school — is the perfect close for this literary route."
       }
     ],
     "gamificacion": [
       {
-        "id": "chal-ruta5-checkin-0",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "allow_manual_trivia": true,
-        "manual_trivia_data": {
-          "question": "¿De qué estilo arquitectónico es la fachada del Teatro Municipal?",
-          "question_en": "What architectural style is the Municipal Theater's facade?",
+        "id": "chal-lit-1",
+        "type": "TRIVIA",
+        "title": "El Teatro que Inventó un Método",
+        "title_en": "The Theater That Invented a Method",
+        "instruction": "Frente al Teatro Municipal Enrique Buenaventura, fotografía la fachada neoclásica y cuenta los pisos y las columnas que la componen.",
+        "instruction_en": "In front of the Enrique Buenaventura Municipal Theater, photograph the neoclassical facade and count the floors and columns that compose it.",
+        "points_reward": 150,
+        "completed_message": "¡Estás parado frente a la joya máxima de la escena colombiana!",
+        "completed_message_en": "You are standing in front of the crown jewel of Colombian theater!",
+        "connection_story": "El Teatro Municipal Enrique Buenaventura fue inaugurado en 1927 con la ópera \"Aida\" de Verdi, interpretada por una compañía italiana traída exclusivamente para la ocasión. Su fachada neoclásica y su sala en herradura lo convierten en el único teatro de la región con capacidad técnica para producir ópera completa.",
+        "connection_story_en": "The Enrique Buenaventura Municipal Theater was inaugurated in 1927 with Verdi's opera \"Aida\", performed by an Italian company brought exclusively for the occasion. Its neoclassical facade and horseshoe hall make it the only theater in the region technically capable of producing full opera.",
+        "quiz_data": {
+          "question": "¿En qué año fue inaugurado el Teatro Municipal Enrique Buenaventura de Cali y con qué ópera?",
+          "question_en": "In what year was the Enrique Buenaventura Municipal Theater of Cali inaugurated and with what opera?",
           "options": [
-            "Gótico",
-            "Neoclásico Francés",
-            "Colonial"
+            "1910 con Carmen",
+            "1927 con Aida",
+            "1935 con La Traviata",
+            "1945 con Madama Butterfly"
           ],
           "options_en": [
-            "Gothic",
-            "French Neoclassical",
-            "Colonial"
+            "1910 with Carmen",
+            "1927 with Aida",
+            "1935 with La Traviata",
+            "1945 with Madama Butterfly"
           ],
-          "correct_answer": "Neoclásico Francés",
-          "correct_answer_en": "French Neoclassical"
-        },
-        "connection_story": "Bienvenido a la Ruta de los Teatros y la Escena Viva. Iniciamos en el Teatro Municipal Enrique Buenaventura, inaugurado en 1927. Admira su fachada neoclásica de estilo italiano y la majestuosidad de su sala principal.",
-        "connection_story_en": "Welcome to the Route of Theaters and Living Scene. We start at the Enrique Buenaventura Municipal Theater, opened in 1927. Admire its Italian-style neoclassical facade and the majesty of its main hall."
+          "correct_answer": "1927 con Aida",
+          "correct_answer_en": "1927 with Aida",
+          "fun_fact": "Los frescos del plafón del teatro son obra del pintor italiano Mauricio Ramelli y representan escenas de la Divina Comedia de Dante. Son los únicos de ese tipo en Colombia.",
+          "fun_fact_en": "The theater's ceiling frescoes are by Italian painter Mauricio Ramelli and represent scenes from Dante's Divine Comedy. They are the only ones of that type in Colombia."
+        }
       },
       {
-        "id": "chal-ruta5-checkin-1",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Camina tres cuadras al norte por la carrera 3, cruzando la calle 10. Pasarás frente a la Plaza de Cayzedo y llegarás al Teatro Jorge Isaacs. Construido en 1931 en honor al escritor de la novela 'María', este monumento nacional destaca por su fachada neoclásica francesa y su imponente acústica diseñada para ópera y zarzuela.",
-        "connection_story_en": "Walk three blocks north along Carrera 3, crossing Calle 10. You will pass in front of Plaza de Cayzedo and reach the Jorge Isaacs Theater. Built in 1931 in honor of the writer of the novel 'María', this national monument stands out for its French neoclassical facade and its imposing acoustics designed for opera and zarzuela."
+        "id": "chal-lit-2",
+        "type": "TRIVIA",
+        "title": "El Hotel de los Famosos",
+        "title_en": "The Hotel of the Famous",
+        "instruction": "Observa con detención la fachada del Edificio Otero sobre la Plaza de Cayzedo. Cuenta los detalles ornamentales de yeso: guirnaldas, pilastras, medallones.",
+        "instruction_en": "Carefully observe the facade of the Otero Building on Plaza de Cayzedo. Count the plaster ornamental details: garlands, pilasters, medallions.",
+        "points_reward": 150,
+        "completed_message": "¡Has leído la fachada más elegante del centro histórico de Cali!",
+        "completed_message_en": "You have read the most elegant facade in Cali's historic center!",
+        "connection_story": "El Edificio Otero, construido en 1926 sobre una esquina de la Plaza de Cayzedo, albergó en su época dorada el Hotel Europa — el más lujoso de Cali. Por sus habitaciones pasaron figuras como García Márquez en sus visitas a la ciudad en los años 50. Hoy es uno de los pocos inmuebles republicanos del centro que conserva su volumetría original intacta.",
+        "connection_story_en": "The Otero Building, built in 1926 on a corner of Plaza de Cayzedo, housed in its golden era the Hotel Europa — the most luxurious in Cali. Figures like García Márquez passed through its rooms during his city visits in the 1950s. Today it's one of the few Republican buildings in the center preserving its original volume intact.",
+        "quiz_data": {
+          "question": "¿Qué importante escritor colombiano fue uno de los huéspedes del Hotel Europa, que funcionó en el Edificio Otero?",
+          "question_en": "What important Colombian writer was one of the guests at Hotel Europa, which operated in the Otero Building?",
+          "options": [
+            "Jorge Isaacs",
+            "Gabriel García Márquez",
+            "Tomás González",
+            "Álvaro Mutis"
+          ],
+          "options_en": [
+            "Jorge Isaacs",
+            "Gabriel García Márquez",
+            "Tomás González",
+            "Álvaro Mutis"
+          ],
+          "correct_answer": "Gabriel García Márquez",
+          "correct_answer_en": "Gabriel García Márquez",
+          "fun_fact": "La Plaza de Cayzedo, frente al Edificio Otero, es el kilómetro cero de Cali: todas las distancias de la ciudad se miden desde este punto.",
+          "fun_fact_en": "Plaza de Cayzedo, in front of the Otero Building, is Cali's kilometer zero: all distances in the city are measured from this point."
+        }
       },
       {
-        "id": "chal-ruta5-checkin-2",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Dirígete hacia la calle 7 con carrera 5 en el centro histórico. Aquí se encuentra la sede del Teatro Experimental de Cali (TEC), fundado en 1955 por el maestro Enrique Buenaventura. El TEC es la cuna del teatro moderno colombiano y de la 'creación colectiva', un método que transformó las artes escénicas en América Latina.",
-        "connection_story_en": "Head towards Calle 7 and Carrera 5 in the historic center. Here lies the headquarters of the Experimental Theater of Cali (TEC), founded in 1955 by maestro Enrique Buenaventura. The TEC is the cradle of modern Colombian theater and 'collective creation', a method that transformed the performing arts in Latin America."
-      },
-      {
-        "id": "chal-ruta5-checkin-3",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Cruza el río Cali hacia el oeste y adéntrate en el barrio San Antonio por la carrera 10. Llegarás al Teatro La Máscara. Fundado en 1972, es uno de los primeros teatros de corte feminista y de género del país. Ubicado en una casona de arquitectura tradicional, es un espacio dedicado a la dramaturgia contemporánea y la investigación escénica.",
-        "connection_story_en": "Cross the Cali River to the west and venture into the San Antonio neighborhood along Carrera 10. You will reach Teatro La Máscara. Founded in 1972, it is one of the country's first feminist and gender-focused theaters. Located in a traditional house, it is a space dedicated to contemporary playwriting and scenic research."
-      },
-      {
-        "id": "chal-ruta5-checkin-4",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Nos desplazamos unas cuadras al sur buscando el barrio San Fernando. Pasarás cerca de la Calle Quinta. Llegarás al Teatro Salamandra, gestionado por el Barco Ebrio. Este teatro es un foco de creación interdisciplinar que combina teatro, música y artes visuales en una sala íntima de gran calidez.",
-        "connection_story_en": "We move a few blocks south towards the San Fernando neighborhood. You will pass near Calle Quinta. You will reach Teatro Salamandra, managed by Barco Ebrio. This theater is a focus of interdisciplinary creation combining theater, music, and visual arts in an intimate and warm hall."
-      },
-      {
-        "id": "chal-ruta5-checkin-5",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Sube hacia la colina de San Antonio por la carrera 9, bordeando talleres de artesanos y cafeterías. Llegarás a la Casa de los Títeres. Fundada por el grupo Hilos Mágicos, esta hermosa casona colonial con su teatro interior es un universo de fantasía dedicado por completo al arte de la marioneta y el teatro infantil.",
-        "connection_story_en": "Climb towards the San Antonio hill along Carrera 9, bordering artisan workshops and coffee shops. You will reach the House of Puppets (Casa de los Títeres). Founded by the Hilos Mágicos group, this beautiful colonial house with its indoor theater is a fantasy universe completely dedicated to the art of puppetry and children's theater."
+        "id": "chal-lit-3",
+        "type": "TRIVIA",
+        "title": "El Manuscrito del Valle",
+        "title_en": "The Manuscript of the Valley",
+        "instruction": "En la Biblioteca Centenario, pide al personal que te muestre la sección de fondos históricos o el archivo de Jorge Isaacs. Fotografía un documento histórico (con permiso del personal).",
+        "instruction_en": "At Centenario Library, ask the staff to show you the historical collections section or the Jorge Isaacs archive. Photograph a historical document (with staff permission).",
+        "points_reward": 200,
+        "completed_message": "¡Has tocado la memoria literaria escrita más antigua de Cali!",
+        "completed_message_en": "You have touched Cali's oldest written literary memory!",
+        "connection_story": "La Biblioteca Centenario fue inaugurada en 1910 para conmemorar el primer siglo de la Independencia de Colombia. En sus fondos históricos reposan manuscritos originales de Jorge Isaacs — el autor de \"María\", la novela más importante del romanticismo latinoamericano — junto con documentos que datan de 1875.",
+        "connection_story_en": "Centenario Library was inaugurated in 1910 to commemorate the first century of Colombia's Independence. In its historical collections rest original manuscripts by Jorge Isaacs — author of \"María\", the most important novel of Latin American Romanticism — along with documents dating from 1875.",
+        "quiz_data": {
+          "question": "¿En qué año fue publicada \"María\" de Jorge Isaacs, la novela más importante del romanticismo latinoamericano, ambientada en las haciendas del Valle del Cauca?",
+          "question_en": "In what year was Jorge Isaacs' \"María\" published, the most important novel of Latin American Romanticism, set in the Valle del Cauca haciendas?",
+          "options": [
+            "1845",
+            "1867",
+            "1890",
+            "1910"
+          ],
+          "options_en": [
+            "1845",
+            "1867",
+            "1890",
+            "1910"
+          ],
+          "correct_answer": "1867",
+          "correct_answer_en": "1867",
+          "fun_fact": "\"María\" fue el primer best-seller latinoamericano: se agotó en pocas semanas en Colombia y fue traducida al francés en 1876, convirtiéndose en una de las primeras novelas latinoamericanas publicadas en Europa.",
+          "fun_fact_en": "\"María\" was Latin America's first best-seller: it sold out in weeks in Colombia and was translated into French in 1876, becoming one of the first Latin American novels published in Europe."
+        }
       }
     ]
   },
   {
     "id": "ruta6",
-    "nombre": "Ruta de Monumentos y Postales Caleñas",
-    "nombre_en": "Route of Monuments and Caleño Postcards",
-    "puntos": [
-      "s17",
-      "s5",
-      "s16",
-      "s40",
-      "s52",
-      "s59"
-    ],
-    "duracionMin": 220,
-    "descripcion": "Prepara tu cámara y tu sentido de la maravilla para inmortalizar los gigantes que definen el horizonte de Cali. 'La Ruta de Monumentos y Postales Caleñas' es un recorrido visual por los íconos que dan identidad a la ciudad ante el mundo. Esta ruta conecta los puntos cardinales de la fe, la historia y la modernidad, ofreciéndote una comprensión geográfica y simbólica completa de la urbe. Es el tour definitivo para llevarse a Cali en el corazón y en la memoria fotográfica.\n\nTu lente capturará contrastes impresionantes: desde la serenidad protectora de Cristo Rey, que domina todo el valle con sus brazos abiertos, hasta la aguja gótica de la Iglesia La Ermita, que se refleja poéticamente en el río. Visitarás a Sebastián de Belalcázar señalando el camino al mar y te sentirás diminuto ante la Torre de Cali, símbolo de nuestra aspiración moderna. Cada parada es un hito, una historia petrificada en bronce o concreto que explica nuestros mitos fundacionales.\n\nAl finalizar, tendrás mucho más que un álbum de fotos perfecto para tus redes sociales; tendrás un mapa mental claro de la ciudad y sus referentes. Entenderás cómo la topografía y el arte urbano se unen para crear la atmósfera única de Cali. Es una ruta para mirar hacia arriba, para admirar la grandeza y para sentirse parte del paisaje caleño.",
-    "descripcion_en": "Prepare your camera and your sense of wonder to immortalize the giants that define Cali's skyline. 'The Route of Monuments and Caleño Postcards' is a visual tour of the icons that give the city its identity to the world. This route connects the cardinal points of faith, history, and modernity, offering you a complete geographic and symbolic understanding of the city. It is the definitive tour to take Cali in your heart and in your photographic memory.\n\nYour lens will capture impressive contrasts: from the protective serenity of Cristo Rey, dominating the entire valley with open arms, to the Gothic spire of La Ermita Church, rising poetically by the river. You will visit Sebastián de Belalcázar pointing the way to the sea and feel tiny before the Cali Tower, symbol of our modern aspiration. Each stop is a landmark, a story petrified in bronze or concrete explaining our foundational myths.\n\nBy the end, you will have much more than a perfect photo album for your social networks; you will have a clear mental map of the city and its references. You will understand how topography and urban art come together to create Cali's unique atmosphere. It is a route to look up, to admire greatness, and to feel part of the Caleño landscape.",
+    "nombre": "Fogones de la Memoria",
+    "nombre_en": "Stoves of Memory",
+    "duracionMin": 180,
+    "descripcion": "Esta andanza es un festín para los sentidos que recorre los aromas y sabores que definen la identidad vallecaucana. Desde las manos curtidas que despachan borojo y lulo en la Galería Alameda —la más antigua de la ciudad— hasta el pandebono recién salido del horno de leña de las panaderías del centro, esta ruta celebra a las portadoras de tradición que han preservado el legado culinario del Pacífico y del Valle con una tenacidad silenciosa y poderosa. Aquí, la comida no es solo sustento: es un acto profundo de soberanía y resistencia cultural.",
+    "descripcion_en": "This journey is a feast for the senses traversing the aromas and flavors that define Valle del Cauca identity. From the weathered hands dispatching borojo and lulo at the Alameda Market — the city's oldest — to freshly oven-baked pandebono at the downtown bakeries, this route celebrates the tradition-bearers who have preserved the culinary legacy of the Pacific and the Valley with silent, powerful tenacity. Here, food is not just sustenance: it is a profound act of sovereignty and cultural resistance.",
+    "intro_story": "La historia de un pueblo se cocina a fuego lento. Antes de entrar a la Galería Alameda, detente un momento en el umbral y aspira: ese aroma complejo de panela, cilantro, maíz húmedo y canela es el aroma de cuatro siglos de cocina mestiza, indígena y afro. Hoy vas a comer historia.",
+    "intro_story_en": "The history of a people is cooked over low heat. Before entering the Alameda Market, pause a moment at the threshold and breathe: that complex aroma of panela, cilantro, damp corn, and cinnamon is the fragrance of four centuries of mestizo, indigenous, and Afro cuisine. Today you will eat history.",
     "justificaciones": [
-      "El guardián de la ciudad con vista panorámica 360°.",
-      "El fundador señalando el camino al mar.",
-      "Ícono gótico imprescindible de la fotografía caleña.",
-      "El edificio más alto, símbolo de modernidad.",
-      "La reina infinita de la simpatía caleña.",
-      "El puente histórico que unió a la ciudad."
+      "La Galería Alameda es el mercado más antiguo de Cali y repositorio vivo de frutas del Pacífico que no se consiguen en ninguna otra parte de la ciudad.",
+      "El champús y la lulada son patrimonio gastronómico inmaterial declarado de Cali.",
+      "El pandebono auténtico de las panaderías del centro es irreproducible industrialmente."
     ],
     "justificaciones_en": [
-      "The city guardian with a 360° panoramic view.",
-      "The founder pointing the way to the sea.",
-      "Essential Gothic icon of Caleño photography.",
-      "The tallest building, symbol of modernity.",
-      "The infinite queen of Caleño sympathy.",
-      "The historic bridge that united the city."
+      "Galería Alameda is Cali's oldest market and a living repository of Pacific fruits found nowhere else in the city.",
+      "Champús and lulada are declared intangible gastronomic heritage of Cali.",
+      "Authentic pandebono from downtown bakeries is industrially irreproducible."
     ],
+    "puntos": [
+      "galeria-alameda",
+      "bebidas-san-antonio",
+      "panaderias-centro"
+    ],
+    "reward_badge_id": "badge-food",
+    "publico": true,
     "recomendaciones": [
       {
-        "tipo": "Foto",
-        "tipo_en": "Photo",
-        "titulo": "Hora Dorada",
-        "titulo_en": "Golden Hour",
-        "descripcion": "Visita Cristo Rey al atardecer para fotos increíbles.",
-        "descripcion_en": "Visit Cristo Rey at sunset for incredible photos.",
-        "siteId": "s17"
+        "tipo": "Sabores",
+        "titulo": "Come antes de explorar",
+        "titulo_en": "Eat before exploring",
+        "descripcion": "No desayunes antes de la ruta. La Galería Alameda tiene restaurantes campesinos desde las 6:00 AM donde sirven sancocho de gallina criolla, sudado de bagre y hogao desde $8,000 COP. Ese debe ser tu primer plato del día.",
+        "descripcion_en": "Don't have breakfast before the route. Galería Alameda has rustic restaurants from 6:00 AM serving creole hen stew, bagre fish stew, and hogao from $8,000 COP. That should be your first meal of the day."
       },
       {
-        "tipo": "Transporte",
-        "tipo_en": "Transport",
-        "titulo": "Vehículo",
-        "titulo_en": "Vehicle",
-        "descripcion": "Necesitarás transporte para subir a los miradores.",
-        "descripcion_en": "You will need transport to go up to the viewpoints.",
-        "siteId": "s16"
+        "tipo": "Experiencia",
+        "titulo": "Háblale a los tenderos",
+        "titulo_en": "Talk to the market vendors",
+        "descripcion": "En la Galería Alameda, pregunta a los tenderos de frutas por el \"borojo\": una fruta oscura de olor intenso que crece solo en el Pacífico colombiano y es casi desconocida fuera de él. Pide que te expliquen cómo se come. Esa conversación vale más que cualquier guía turística.",
+        "descripcion_en": "At Galería Alameda, ask the fruit vendors about \"borojo\": a dark, intensely fragrant fruit that grows only in the Colombian Pacific and is virtually unknown outside it. Ask them to explain how it's eaten. That conversation is worth more than any tourist guide."
+      },
+      {
+        "tipo": "Bebida",
+        "titulo": "El champús frío vs. el caliente",
+        "titulo_en": "Cold champús vs. warm champús",
+        "descripcion": "En los puestos de San Antonio, pide champús. Pero pregunta si lo tienen también caliente — en diciembre sirven champús tibio como bebida reconfortante. Si coincides con esa temporada, pide una de cada: la diferencia entre los dos es una experiencia gastronómica completa en sí misma.",
+        "descripcion_en": "At the San Antonio stalls, order champús. But ask if they also have it warm — in December they serve warm champús as a comforting drink. If you visit during that season, order one of each: the difference between the two is itself a complete gastronomic experience."
+      },
+      {
+        "tipo": "Snack",
+        "titulo": "El pandebono en los primeros 15 minutos",
+        "titulo_en": "Pandebono within the first 15 minutes",
+        "descripcion": "El pandebono auténtico debe comerse en los primeros 15 minutos después de salir del horno — esa es la ventana de textura perfecta. Pregunta en la panadería a qué hora es la próxima hornada y planifica tu llegada para ese momento exacto.",
+        "descripcion_en": "Authentic pandebono must be eaten within the first 15 minutes after leaving the oven — that's the window of perfect texture. Ask the bakery what time the next batch is baked and plan your arrival for that exact moment."
+      },
+      {
+        "tipo": "Planificación",
+        "titulo": "Lleva efectivo en billetes pequeños",
+        "titulo_en": "Bring small bills in cash",
+        "descripcion": "La Galería Alameda, los puestos de San Antonio y las panaderías del centro operan casi exclusivamente en efectivo. Lleva billetes de $5,000 y $10,000 COP — los tenderos difícilmente tienen cambio para billetes grandes.",
+        "descripcion_en": "Galería Alameda, the San Antonio stalls, and downtown bakeries operate almost exclusively in cash. Bring $5,000 and $10,000 COP bills — vendors rarely have change for large bills."
       }
     ],
     "gamificacion": [
       {
-        "id": "chal-ruta6-checkin-0",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "allow_manual_trivia": true,
-        "manual_trivia_data": {
-          "question": "¿Cuántos metros, aproximadamente, mide la estatua de Cristo Rey?",
-          "question_en": "Approximately how many meters tall is the Cristo Rey statue?",
+        "id": "chal-food-1",
+        "type": "TRIVIA",
+        "title": "La Fruta del Pacífico",
+        "title_en": "The Pacific Fruit",
+        "instruction": "Encuentra en la Galería Alameda un puesto que venda borojo o chontaduro. Compra una unidad y pregúntale al tendero de dónde viene.",
+        "instruction_en": "Find a stall in Galería Alameda selling borojo or chontaduro. Buy one and ask the vendor where it comes from.",
+        "points_reward": 150,
+        "completed_message": "¡Has descubierto el sabor del Pacífico colombiano!",
+        "completed_message_en": "You have discovered the flavor of the Colombian Pacific!",
+        "connection_story": "Estás en la Galería Alameda, fundada en 1926. Este mercado es el corazón agrícola de Cali: aquí llegan los campesinos del Valle del Cauca y los comerciantes del Pacífico con frutas, verduras y proteínas que no se encuentran en ningún supermercado de la ciudad.",
+        "connection_story_en": "You are at Galería Alameda, founded in 1926. This market is Cali's agricultural heart: here come farmers from Valle del Cauca and Pacific merchants with fruits, vegetables, and proteins found in no city supermarket.",
+        "quiz_data": {
+          "question": "¿En qué año fue construida la Galería Alameda, el mercado de alimentos más antiguo de Cali?",
+          "question_en": "In what year was Galería Alameda built, Cali's oldest food market?",
           "options": [
-            "15 metros",
-            "26 metros",
-            "40 metros"
+            "1910",
+            "1926",
+            "1945",
+            "1960"
           ],
           "options_en": [
-            "15 meters",
-            "26 meters",
-            "40 meters"
+            "1910",
+            "1926",
+            "1945",
+            "1960"
           ],
-          "correct_answer": "26 metros",
-          "correct_answer_en": "26 meters"
-        },
-        "connection_story": "Bienvenido a la Ruta de Monumentos y Postales Caleñas. Iniciamos en la Colina de Belalcázar, al oeste de la ciudad. Aquí se alza la estatua en bronce de Sebastián de Belalcázar, fundador de la ciudad, erigida en 1936 para el cuarto centenario de Cali. Disfruta de la brisa y de una de las postales más famosas de la ciudad.",
-        "connection_story_en": "Welcome to the Route of Monuments and Caleño Postcards. We start at the Belalcázar Hill, west of the city. Here stands the bronze statue of Sebastián de Belalcázar, founder of the city, erected in 1936 for Cali's fourth centenary. Enjoy the breeze and one of the city's most famous postcards."
+          "correct_answer": "1926",
+          "correct_answer_en": "1926",
+          "fun_fact": "Algunos puestos de frutas de la Galería llevan más de 60 años atendidos por la misma familia. La memoria comercial del mercado es, en sí misma, patrimonio cultural de Cali.",
+          "fun_fact_en": "Some fruit stalls at the Galería have been run by the same family for over 60 years. The market's commercial memory is itself cultural heritage of Cali."
+        }
       },
       {
-        "id": "chal-ruta6-checkin-1",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Cruza hacia el norte buscando la colina de Normandía. Ascenderás al Cerro de las Tres Cruces, hito geográfico y deportivo que corona la ciudad. Las tres cruces gigantes, construidas en 1937 para proteger a la ciudad del supuesto demonio 'Buziraco', son hoy el punto de encuentro de deportistas y un mirador excepcional.",
-        "connection_story_en": "Cross to the north seeking the Normandía hill. You will ascend to the Hill of the Three Crosses, a geographical and sporting landmark crowning the city. The three giant crosses, built in 1937 to protect the city from the alleged demon 'Buziraco', are today a meeting point for athletes and an exceptional viewpoint."
+        "id": "chal-food-2",
+        "type": "TRIVIA",
+        "title": "La Bebida Prehispánica",
+        "title_en": "The Pre-Hispanic Drink",
+        "instruction": "Pide un champús en los puestos de bebidas de la Colina de San Antonio. Pregunta a quien lo prepare cuáles son sus ingredientes exactos.",
+        "instruction_en": "Order a champús at the beverage stalls on San Antonio Hill. Ask whoever prepares it what the exact ingredients are.",
+        "points_reward": 150,
+        "completed_message": "¡Has tomado cuatro siglos de historia en un vaso!",
+        "completed_message_en": "You have drunk four centuries of history in a glass!",
+        "connection_story": "Sube la Colina de San Antonio, el cerro colonial que corona el barrio bohemio de Cali. Los puestos de bebidas que rodean la capilla son atendidos por mujeres de familias que llevan generaciones en este punto. El ritual de tomar una bebida fría mientras cae el sol es uno de los más auténticamente caleños que existen.",
+        "connection_story_en": "Climb San Antonio Hill, the colonial hill crowning Cali's bohemian neighborhood. The beverage stalls surrounding the chapel are run by women from families with generations in this spot. The ritual of having a cold drink as the sun sets is one of the most authentically Caleño experiences that exists.",
+        "quiz_data": {
+          "question": "¿Qué grano es la base del champús, la bebida tradicional del Valle del Cauca con raíces prehispánicas?",
+          "question_en": "What grain is the base of champús, the traditional Valle del Cauca drink with pre-Hispanic roots?",
+          "options": [
+            "Arroz",
+            "Maíz Quebrado",
+            "Cebada",
+            "Trigo"
+          ],
+          "options_en": [
+            "Rice",
+            "Broken Corn",
+            "Barley",
+            "Wheat"
+          ],
+          "correct_answer": "Maíz Quebrado",
+          "correct_answer_en": "Broken Corn",
+          "fun_fact": "El champús se ha preparado en el Valle del Cauca desde antes de la llegada de los españoles. La receta original indígena fue adaptada con canela, panela y lulo — ingredientes coloniales — dando lugar a la versión que se toma hoy.",
+          "fun_fact_en": "Champús has been prepared in Valle del Cauca since before the arrival of the Spanish. The original indigenous recipe was adapted with cinnamon, panela, and lulo — colonial ingredients — giving rise to the version drunk today."
+        }
       },
       {
-        "id": "chal-ruta6-checkin-2",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Nos desplazamos hacia el sur de la ciudad subiendo por la colina de Los Cristales. Llegarás al monumento de Cristo Rey, una imponente escultura de hierro y concreto de 26 metros de altura inaugurada en 1953 en conmemoración de los 50 años de paz en Colombia. Su imponente presencia abraza visualmente a toda la ciudad.",
-        "connection_story_en": "We move towards the south of the city climbing up the Los Cristales hill. You will reach the Cristo Rey monument, an imposing iron and concrete sculpture 26 meters high, opened in 1953 in commemoration of 50 years of peace in Colombia. Its imposing presence visually embraces the entire city."
-      },
-      {
-        "id": "chal-ruta6-checkin-3",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Cruza la ciudad hacia el norte por la autopista o la Avenida 3N. Llegarás al Monumento a la Solidaridad. Esta escultura cinética de bronce y acero, diseñada por el maestro Héctor Lombana, representa una familia caleña empujando una esfera metálica, simbolizando la unión y el apoyo colectivo de la sociedad tras desastres naturales.",
-        "connection_story_en": "Cross the city northwards via the highway or Avenida 3N. You will reach the Monument to Solidarity. This kinetic bronze and steel sculpture, designed by master Héctor Lombana, represents a Caleño family pushing a metal sphere, symbolizing unity and collective support of society after natural disasters."
-      },
-      {
-        "id": "chal-ruta6-checkin-4",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Regresa al centro histórico, en la Plaza de Cayzedo. Frente a la Catedral, ubica el Monumento a Joaquín de Cayzedo y Cuero, prócer de la independencia de la región. La estatua de bronce oscuro rinde homenaje al líder de las Ciudades Confederadas del Valle en la Plaza Mayor de la ciudad.",
-        "connection_story_en": "Return to the historic center at Plaza de Cayzedo. In front of the Cathedral, locate the Monument to Joaquín de Cayzedo y Cuero, an independence hero of the region. The dark bronze statue pays tribute to the leader of the Confederated Cities of the Valley in the city's Plaza Mayor."
-      },
-      {
-        "id": "chal-ruta6-checkin-5",
-        "type": "CHECKIN",
-        "title": "Llegada al Sitio",
-        "title_en": "Site Arrival",
-        "instruction": "Acércate al punto para registrar tu visita.",
-        "instruction_en": "Get closer to the point to register your visit.",
-        "points_reward": 30,
-        "completed_message": "¡Has llegado! Visita registrada.",
-        "completed_message_en": "You arrived! Visit registered.",
-        "checkin_data": {
-          "radius_meters": 50
-        },
-        "connection_story": "Camina dos cuadras al norte por la carrera 3, cruzando la calle 12, hasta llegar al Paseo Bolívar junto al río Cali. En el Parque de los Poetas descubrirás el grupo escultórico en bronce de los poetas Jorge Isaacs, Antonio Llanos, Ricardo Nieto, Octavio Gamboa y Mario Carvajal, testigos mudos de la tradición lírica caleña.",
-        "connection_story_en": "Walk two blocks north along Carrera 3, crossing Calle 12, until you reach Paseo Bolívar next to the Cali River. In the Poets Park, you will discover the bronze sculptural group of poets Jorge Isaacs, Antonio Llanos, Ricardo Nieto, Octavio Gamboa, and Mario Carvajal, silent witnesses of Cali's lyrical tradition."
+        "id": "chal-food-3",
+        "type": "TRIVIA",
+        "title": "El Almidón y el Secreto del Pandebono",
+        "title_en": "The Starch and the Pandebono Secret",
+        "instruction": "Entra a una panadería tradicional del centro y pide que te muestren (o te expliquen) de qué está hecho el pandebono. Pide uno recién sacado del horno.",
+        "instruction_en": "Enter a traditional downtown bakery and ask them to show you (or explain) what pandebono is made of. Order one fresh from the oven.",
+        "points_reward": 150,
+        "completed_message": "¡Ahora eres un experto en el bocado más vallecaucano que existe!",
+        "completed_message_en": "You are now an expert in the most Valle del Cauca bite that exists!",
+        "connection_story": "Las panaderías tradicionales del centro de Cali horneaban desde antes del amanecer cuando el centro aún no despertaba. El pandebono es la pieza más representativa de la repostería vallecaucana, y su receta auténtica — almidón de yuca agria fermentado + queso costeño — es incompatible con la producción industrial.",
+        "connection_story_en": "The traditional downtown bakeries were baking before dawn when the center had not yet awakened. Pandebono is the most representative piece of Valle del Cauca baking, and its authentic recipe — fermented sour cassava starch + coastal cheese — is incompatible with industrial production.",
+        "quiz_data": {
+          "question": "¿Cuántos días de fermentación necesita el almidón de yuca agria para poder usarse en la elaboración de un pandebono auténtico?",
+          "question_en": "How many days of fermentation does sour cassava starch need to be used in making an authentic pandebono?",
+          "options": [
+            "2 días",
+            "5 días",
+            "Hasta 15 días",
+            "30 días"
+          ],
+          "options_en": [
+            "2 days",
+            "5 days",
+            "Up to 15 days",
+            "30 days"
+          ],
+          "correct_answer": "Hasta 15 días",
+          "correct_answer_en": "Up to 15 days",
+          "fun_fact": "Existen más de 30 variedades de pandebono en el Valle del Cauca. Cada subregión — Palmira, Tuluá, Buga, Cartago — tiene su propia receta familiar con proporciones ligeramente distintas.",
+          "fun_fact_en": "There are over 30 varieties of pandebono in Valle del Cauca. Each sub-region — Palmira, Tuluá, Buga, Cartago — has its own family recipe with slightly different proportions."
+        }
       }
     ]
   }
