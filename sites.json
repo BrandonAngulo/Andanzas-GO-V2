@@ -224,7 +224,37 @@
       "It houses more than 40,000 photographs of musicians, orchestras and dancers.",
       "There are only a handful of museums like this in the world: the others are in New York and Puerto Rico, and this is the oldest.",
       "It also offers dance classes and supports children and young people of the Obrero."
-    ]
+    ],
+    "gancho_emocional": "Un viaje en el tiempo a través de 40.000 fotografías donde respira la historia mundial de la salsa.",
+    "gancho_emocional_en": "A journey through time across 40,000 photographs where the world history of salsa breathes.",
+    "por_que_ir": [
+      "Es el museo de salsa más antiguo del mundo (fundado en 1968)",
+      "Alberga la memoria fotográfica de las leyendas de la salsa",
+      "El ambiente de barrio (Obrero) lo hace auténtico"
+    ],
+    "por_que_ir_en": [
+      "It is the oldest salsa museum in the world (founded in 1968)",
+      "Houses the photographic memory of salsa legends",
+      "The neighborhood vibe (Obrero) makes it authentic"
+    ],
+    "que_hacer": "Hacer el recorrido guiado, buscar las fotos de Celia Cruz y Héctor Lavoe, y tomarte un chorrito de aguardiente mientras escuchas anécdotas.",
+    "que_hacer_en": "Take the guided tour, look for photos of Celia Cruz and Héctor Lavoe, and have a shot of aguardiente while listening to anecdotes.",
+    "mejor_momento": "Por la tarde (2:30 p. m. o 5:00 p. m.) para empatar con la brisa de la tarde.",
+    "mejor_momento_en": "In the afternoon (2:30 p.m. or 5:00 p.m.) to catch the evening breeze.",
+    "ideal_para": [
+      "Amantes de la salsa",
+      "Buscadores de historia",
+      "Fotógrafos"
+    ],
+    "ideal_para_en": [
+      "Salsa lovers",
+      "History seekers",
+      "Photographers"
+    ],
+    "duracion_sugerida": "1 a 2 horas",
+    "duracion_sugerida_en": "1 to 2 hours",
+    "micro_reto": "Tómate una foto recreando la pose de tu cantante de salsa favorito junto a su fotografía histórica.",
+    "micro_reto_en": "Take a photo recreating the pose of your favorite salsa singer next to their historical photograph."
   },
   {
     "id": "s30",

@@ -23,6 +23,21 @@ export interface Site {
   reconocimientos_en?: string[];
   datosCuriosos?: string[];
   datosCuriosos_en?: string[];
+  // Capa Breve de Decisión (Activación de Experiencia)
+  gancho_emocional?: string;
+  gancho_emocional_en?: string;
+  por_que_ir?: string[];
+  por_que_ir_en?: string[];
+  que_hacer?: string;
+  que_hacer_en?: string;
+  mejor_momento?: string;
+  mejor_momento_en?: string;
+  ideal_para?: string[];
+  ideal_para_en?: string[];
+  duracion_sugerida?: string;
+  duracion_sugerida_en?: string;
+  micro_reto?: string;
+  micro_reto_en?: string;
   image_credit?: string;
   accessibility_features?: string[]; // e.g. ['wheelchair', 'audio_guide']
   horario?: string;

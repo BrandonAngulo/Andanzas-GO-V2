@@ -28,8 +28,10 @@ export const sitesService = {
 
         const dbSites = data?.map(mapSite) || [];
 
-        // Combine DB sites and purely local sites
-        const allSites = [...dbSites, ...CULTURAL_SITES];
+        // Combine DB sites and purely local sites avoiding duplicates by ID
+        const dbSiteIds = new Set(dbSites.map(s => s.id));
+        const uniqueLocalSites = CULTURAL_SITES.filter(s => !dbSiteIds.has(s.id));
+        const allSites = [...dbSites, ...uniqueLocalSites];
 
         // Save successfully fetched sites to cache for offline support
         if (allSites.length > 0) {

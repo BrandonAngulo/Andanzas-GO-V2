@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { APIProvider, Map, AdvancedMarker, useMap, InfoWindow } from '@vis.gl/react-google-maps';
 import { toast } from 'sonner';
-import { Filter, Loader2, Navigation, MapPin, AlertTriangle, X, Info, Star } from 'lucide-react';
+import { Layers, Loader2, Navigation, MapPin, AlertTriangle, X, Info, Star } from 'lucide-react';
 import { Site, Ruta } from '../../types';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -444,25 +444,28 @@ const MapWrapper = (props: MapaGoogleProps) => {
 
                     <div className="relative">
                         <Button
-                            variant={props.selectedCategories.length > 0 ? "default" : "outline"}
+                            variant={props.selectedCategories.length > 0 ? "default" : "secondary"}
                             size="sm"
-                            className={cn("bg-background/90 backdrop-blur shadow-md h-10 w-10 p-0 md:h-9 md:w-auto md:px-3 rounded-full md:rounded-md")}
+                            className={cn("bg-white/95 backdrop-blur shadow-lg h-10 w-10 p-0 md:h-10 md:w-auto md:px-4 rounded-full md:rounded-xl border border-border/50 text-foreground hover:bg-white")}
                             onClick={() => setShowFilterPanel(s => !s)}
                         >
-                            <Filter className="h-5 w-5 md:h-4 md:w-4 md:mr-2" />
-                            <span className="hidden md:inline">{t('filter')}</span>
+                            <Layers className="h-5 w-5 md:h-4 md:w-4 md:mr-2 text-primary" />
+                            <span className="hidden md:inline font-semibold">{language === 'es' ? 'Capas' : 'Layers'}</span>
                             {props.selectedCategories.length > 0 && (
-                                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground md:static md:ml-1 ring-2 ring-background md:ring-0">
+                                <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground md:static md:ml-1.5 ring-2 ring-white">
                                     {props.selectedCategories.length}
                                 </span>
                             )}
                         </Button>
 
                         {showFilterPanel && (
-                            <Card className="absolute top-full right-0 mt-2 w-64 shadow-xl border-input z-[1000] animate-in fade-in zoom-in-95 origin-top-right">
-                                <CardHeader className="p-3 border-b flex-row items-center justify-between">
-                                    <CardTitle className="text-sm font-medium">{t('filterBy')}</CardTitle>
-                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setShowFilterPanel(false)}><X className="h-3 w-3" /></Button>
+                            <Card className="absolute top-full right-0 mt-3 w-64 shadow-2xl border-border/50 bg-white/95 backdrop-blur z-[1000] animate-in fade-in slide-in-from-top-2 rounded-2xl overflow-hidden">
+                                <CardHeader className="p-4 border-b bg-muted/20 flex-row items-center justify-between">
+                                    <CardTitle className="text-sm font-bold text-foreground flex items-center gap-2">
+                                        <Layers className="h-4 w-4 text-primary" />
+                                        {language === 'es' ? 'Capas del Mapa' : 'Map Layers'}
+                                    </CardTitle>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-white shadow-sm border hover:bg-muted" onClick={() => setShowFilterPanel(false)}><X className="h-3.5 w-3.5" /></Button>
                                 </CardHeader>
                                 <CardContent className="p-0 max-h-[300px]">
                                     <ScrollArea className="h-[250px] p-2">

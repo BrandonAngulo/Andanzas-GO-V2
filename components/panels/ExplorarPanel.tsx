@@ -7,7 +7,7 @@ import { useI18n } from '../../i18n';
 import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { Badge } from '../ui/badge';
-import { Accessibility, Ear, Eye } from 'lucide-react';
+import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles } from 'lucide-react';
 
 // --- Reusable Card Components for the Feed ---
 
@@ -57,9 +57,43 @@ interface ExplorarPanelProps {
   sites: Site[];
   query: string;
   onOpenSite: (site: Site) => void;
+  onNavigateToRoutes?: () => void;
 }
 
-const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite }) => {
+const ROUTE_TAGS = [
+  { id: 'salsa', label: 'Salsa', icon: Music, color: 'bg-orange-500/10 text-orange-600 border-orange-200' },
+  { id: 'sabores', label: 'Sabores', icon: Utensils, color: 'bg-red-500/10 text-red-600 border-red-200' },
+  { id: 'arte', label: 'Arte urbano', icon: Paintbrush, color: 'bg-purple-500/10 text-purple-600 border-purple-200' },
+  { id: 'naturaleza', label: 'Naturaleza', icon: Trees, color: 'bg-green-500/10 text-green-600 border-green-200' },
+  { id: 'literatura', label: 'Literatura', icon: BookOpen, color: 'bg-blue-500/10 text-blue-600 border-blue-200' },
+  { id: 'memoria', label: 'Memoria e Historia', icon: Landmark, color: 'bg-amber-500/10 text-amber-600 border-amber-200' },
+];
+
+const IMPERDIBLES = [
+  {
+    id: 'salsa-route',
+    title: 'Ruta de la Salsa: Obrero',
+    subtitle: 'Historia y ritmo en el corazón de Cali',
+    image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banner3.png',
+    tag: 'Ruta Recomendada'
+  },
+  {
+    id: 'petronio',
+    title: 'Pacífico en su Salsa',
+    subtitle: 'El talento de los semilleros',
+    image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banners-01.jpg',
+    tag: 'Evento Especial'
+  },
+  {
+    id: 'centro-historico',
+    title: 'Joyas del Centro Histórico',
+    subtitle: 'Patrimonio y arquitectura',
+    image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banner0003.png',
+    tag: 'Colección'
+  }
+];
+
+const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes }) => {
   const { language } = useI18n();
 
   // Show sites in a feed and shuffle it for variety
@@ -97,7 +131,94 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite 
 
   return (
     <ScrollArea className="h-[72vh]">
-      <div className="p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {!query && (
+        <div className="p-5 md:p-8 bg-gradient-to-br from-primary/10 via-background to-background mb-4 border-b">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-primary/20 p-2 rounded-full">
+              <Compass className="h-6 w-6 text-primary" />
+            </div>
+            <h2 className="text-2xl font-bold tracking-tight">
+              {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
+            </h2>
+          </div>
+          <p className="text-muted-foreground mb-6 max-w-2xl">
+            {language === 'es' 
+              ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
+              : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {ROUTE_TAGS.map(tag => {
+              const Icon = tag.icon;
+              return (
+                <button
+                  key={tag.id}
+                  onClick={onNavigateToRoutes}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border font-medium transition-all hover:scale-105 active:scale-95 ${tag.color} hover:shadow-md bg-background`}
+                >
+                  <Icon className="w-5 h-5" />
+                  {tag.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Carrusel de Imperdibles */}
+      {!query && (
+        <div className="mb-8 overflow-hidden">
+          <div className="px-5 md:px-8 mb-4 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-yellow-500" />
+            <h3 className="font-semibold text-lg text-foreground">
+              {language === 'es' ? 'Imperdibles esta semana' : 'Must-sees this week'}
+            </h3>
+          </div>
+          
+          <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4 px-5 md:px-8 gap-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {IMPERDIBLES.map(item => (
+              <div 
+                key={item.id} 
+                className="snap-center shrink-0 w-[85vw] md:w-[600px] h-[250px] relative rounded-2xl overflow-hidden cursor-pointer group shadow-md"
+                onClick={onNavigateToRoutes}
+              >
+                <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                
+                <div className="absolute top-4 left-4">
+                  <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider shadow-sm">
+                    {item.tag}
+                  </span>
+                </div>
+                
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <h4 className="text-2xl font-extrabold leading-tight mb-1">{item.title}</h4>
+                  <p className="text-white/80 text-sm mb-3">{item.subtitle}</p>
+                  <Button variant="secondary" size="sm" className="rounded-full bg-white/20 hover:bg-white text-white hover:text-black backdrop-blur-sm border-0 transition-colors">
+                    Descubrir <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+            {/* Pseudo-element to ensure padding at the end of the scroll container */}
+            <div className="snap-center shrink-0 w-4 h-full" />
+          </div>
+          
+          <style>{`
+            .hide-scrollbar::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
+        </div>
+      )}
+      
+      <div className="px-4 md:px-8 pb-4">
+        {query && (
+          <h3 className="font-semibold text-lg mb-3 ml-1 text-muted-foreground">Resultados de búsqueda</h3>
+        )}
+        {!query && (
+          <h3 className="font-semibold text-lg mb-4 ml-1">Lugares Destacados</h3>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {feedItems.length > 0 ? (
           feedItems.map((item) => {
             if (item.type === 'site') {
@@ -110,6 +231,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite 
             No se encontraron resultados para "{query}"
           </div>
         )}
+        </div>
       </div>
     </ScrollArea>
   );

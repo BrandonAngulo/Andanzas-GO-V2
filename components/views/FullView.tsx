@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle } from 'lucide-react';
+import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle, Target } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Site, Evento, Ruta, RecomendacionRuta, RecomendacionTipo } from '../../types';
@@ -196,6 +196,59 @@ const SiteDetail: React.FC<{ data: Site, sites: Site[], addReview: any, addToRou
                     <Badge variant="secondary"><MapPin className="h-3 w-3 mr-1" /> Cali</Badge>
                     <Badge><Star className="h-3 w-3 mr-1" /> {data.rating}</Badge>
                 </div>
+            </div>
+
+            {/* Capa Breve de Decisión */}
+            {data.gancho_emocional && (
+                <div className="bg-primary/10 border-l-4 border-primary p-4 rounded-r-lg my-4">
+                    <p className="text-lg font-medium italic text-foreground/90">
+                        "{getTranslated(data, 'gancho_emocional', language)}"
+                    </p>
+                </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                {(data.por_que_ir && data.por_que_ir.length > 0) && (
+                    <div className="bg-muted/30 p-4 rounded-xl border">
+                        <h4 className="font-semibold text-primary flex items-center gap-2 mb-2"><Heart className="w-4 h-4" /> Por qué ir</h4>
+                        <ul className="space-y-1">
+                            {(getTranslated(data, 'por_que_ir', language) as string[]).map((razon: string, i: number) => (
+                                <li key={i} className="text-sm flex items-start gap-2"><CheckCircle className="w-3.5 h-3.5 mt-0.5 text-green-500 shrink-0" /> <span>{razon}</span></li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                
+                {data.que_hacer && (
+                    <div className="bg-muted/30 p-4 rounded-xl border">
+                        <h4 className="font-semibold text-primary flex items-center gap-2 mb-2"><Activity className="w-4 h-4" /> Qué hacer allí</h4>
+                        <p className="text-sm text-muted-foreground">{getTranslated(data, 'que_hacer', language)}</p>
+                    </div>
+                )}
+
+                {(data.mejor_momento || data.ideal_para || data.duracion_sugerida) && (
+                    <div className="bg-muted/30 p-4 rounded-xl border sm:col-span-2 flex flex-wrap gap-4 text-sm justify-between">
+                        {data.mejor_momento && (
+                            <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-primary" /> <b>Cuándo ir:</b> <span className="text-muted-foreground">{getTranslated(data, 'mejor_momento', language)}</span></div>
+                        )}
+                        {data.duracion_sugerida && (
+                            <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-primary" /> <b>Tiempo:</b> <span className="text-muted-foreground">{getTranslated(data, 'duracion_sugerida', language)}</span></div>
+                        )}
+                        {data.ideal_para && data.ideal_para.length > 0 && (
+                            <div className="flex items-center gap-2"><Users className="w-4 h-4 text-primary" /> <b>Ideal para:</b> <span className="text-muted-foreground">{(getTranslated(data, 'ideal_para', language) as string[]).join(', ')}</span></div>
+                        )}
+                    </div>
+                )}
+
+                {data.micro_reto && (
+                    <div className="bg-orange-500/10 border border-orange-200 p-4 rounded-xl sm:col-span-2 flex items-start gap-3">
+                        <div className="bg-orange-500 text-white p-2 rounded-full shrink-0"><Target className="w-5 h-5" /></div>
+                        <div>
+                            <h4 className="font-bold text-orange-700 dark:text-orange-400">Micro-Reto</h4>
+                            <p className="text-sm text-orange-800/80 dark:text-orange-200/80">{getTranslated(data, 'micro_reto', language)}</p>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <ExpandableText text={getTranslated(data, 'descripcion', language) as string} sites={sites} currentSiteId={data.id} currentSiteName={getTranslated(data, 'nombre', language) as string} />

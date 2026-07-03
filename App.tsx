@@ -147,7 +147,7 @@ export default function App() {
 
   // --- Local UI State ---
   const [openMenu, setOpenMenu] = useState(false);
-  const [activePanel, setActivePanel] = useState<ActivePanelType>("mapa");
+  const [activePanel, setActivePanel] = useState<ActivePanelType>("explorar");
   const [showNotifications, setShowNotifications] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -468,7 +468,7 @@ export default function App() {
                   plannedRoutePoints={newRoutePoints}
                 />
               )}
-              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} />}
+              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onNavigateToRoutes={() => setActivePanel('rutas')} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}

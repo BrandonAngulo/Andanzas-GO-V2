@@ -6,13 +6,16 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useI18n } from '../../i18n';
 import { getTranslated, cn, getCategoryIcon, getMacroCategory } from '../../lib/utils';
-import { Calendar, MapPin, Clock } from 'lucide-react';
+import { Calendar, MapPin, Clock, Search, Filter, ArrowRight } from 'lucide-react';
+import { Input } from '../ui/input';
+import { LazyImage } from '../ui/lazy-image';
 
 interface EventosPanelProps {
   eventos: Evento[];
   query: string;
   sites: Site[];
   onOpenEvent: (event: Evento) => void;
+  onQueryChange?: (q: string) => void;
 }
 
 const getEventCategory = (event: Evento, sites: Site[], language: 'es' | 'en'): string => {
@@ -27,102 +30,73 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
   const { t, language } = useI18n();
   const dateObj = new Date(event.fecha);
 
-  // Format: "14 Ene", "18:00"
-  const dayStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { day: 'numeric' });
+  const dayStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { day: '2-digit' });
   const monthStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { month: 'short' }).toUpperCase();
-  const weekdayStr = dateObj.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { weekday: 'long' });
   const timeStr = dateObj.toLocaleTimeString(language === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' });
 
   const category = getEventCategory(event, sites, language);
   const isPast = dateObj.getTime() < new Date().getTime();
 
-  // Generate color based on category
-  const getCategoryColor = (cat: string) => {
-    if (!cat) return "border-l-gray-500 bg-gray-50 dark:bg-gray-950/20";
-    const colors = [
-      "border-l-indigo-500 bg-indigo-50 dark:bg-indigo-950/20",
-      "border-l-rose-500 bg-rose-50 dark:bg-rose-950/20",
-      "border-l-emerald-500 bg-emerald-50 dark:bg-emerald-950/20",
-      "border-l-amber-500 bg-amber-50 dark:bg-amber-950/20",
-      "border-l-cyan-500 bg-cyan-50 dark:bg-cyan-950/20",
-      "border-l-purple-500 bg-purple-50 dark:bg-purple-950/20",
-    ];
-    let hash = 0;
-    for (let i = 0; i < cat.length; i++) hash = cat.charCodeAt(i) + ((hash << 5) - hash);
-    return colors[Math.abs(hash) % colors.length];
-  };
-
-  const colorClass = getCategoryColor(category);
-
   return (
     <Card
       className={cn(
-        "overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 group cursor-pointer border-l-4 border-t border-b border-r border-border/60 bg-gradient-to-br",
-        isPast ? "from-muted/40 via-muted/30 to-muted/20 opacity-75 grayscale-[0.3]" : "from-background via-muted/20 to-muted/40 dark:from-background dark:to-muted/10",
-        colorClass.split(' ')[0]
+        "overflow-hidden flex flex-col group cursor-pointer border shadow-sm hover:shadow-md transition-all duration-300 bg-card rounded-2xl",
+        isPast ? "opacity-75 grayscale-[0.3]" : ""
       )}
       onClick={() => onOpenEvent(event)}
     >
-      <CardHeader className={cn("p-3 pb-2 flex flex-row items-start gap-3 space-y-0 relative overflow-hidden")}>
-        {/* Subtle background int for header only if desired, or keep clean */}
-        <div className={cn("absolute inset-0 opacity-30 pointer-events-none", colorClass.split(' ')[1])} />
-
-        {/* Date Box */}
-        <div className="relative z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm border rounded-lg p-1.5 min-w-[3rem] shadow-sm text-center">
+      <div className="relative h-48 w-full bg-muted overflow-hidden">
+        {event.img ? (
+          <img src={event.img} alt={event.titulo} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary/40">
+            <Calendar className="w-12 h-12" />
+          </div>
+        )}
+        <div className="absolute top-3 left-3 bg-background/95 backdrop-blur-md px-2 py-1.5 rounded-lg shadow-sm flex flex-col items-center justify-center border leading-none">
           <span className="text-[10px] font-bold text-muted-foreground uppercase">{monthStr}</span>
-          <span className="text-lg font-extrabold leading-none">{dayStr}</span>
+          <span className="text-base font-extrabold">{dayStr}</span>
+        </div>
+      </div>
+
+      <CardContent className="p-4 flex-grow flex flex-col">
+        <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+          <span 
+            className="text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider bg-primary/10 text-primary border border-primary/20"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onCategoryClick) onCategoryClick(category);
+            }}
+          >
+            {category}
+          </span>
+          {isPast && (
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider bg-destructive/10 text-destructive border border-destructive/20">
+              Evento Pasado
+            </span>
+          )}
         </div>
 
-        <div className="relative z-10 flex-1 min-w-0">
-          {/* Category Badge */}
-          <div className="flex items-center gap-1 mb-1 flex-wrap">
-            <span 
-              className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-background/50 border shadow-sm text-foreground/80 cursor-pointer hover:bg-primary/20 hover:text-primary transition-colors")}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (onCategoryClick) onCategoryClick(category);
-              }}
-            >
-              {category}
-            </span>
-            {isPast && (
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-destructive/10 border-destructive/20 text-destructive border shadow-sm">
-                Evento Pasado
-              </span>
-            )}
-          </div>
+        <CardTitle className="text-base leading-tight line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+          {getTranslated(event, 'titulo', language)}
+        </CardTitle>
 
-          <CardTitle className="text-base leading-tight line-clamp-2 mb-1">
-            {getTranslated(event, 'titulo', language)}
-          </CardTitle>
-
-          <div className="flex items-center text-[10px] text-muted-foreground">
-            <Clock className="h-2.5 w-2.5 mr-1" />
+        <div className="space-y-1.5 mt-auto">
+          <div className="flex items-center text-xs text-muted-foreground">
+            <Clock className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
             {timeStr}
           </div>
+          <div className="flex items-start text-xs text-muted-foreground">
+            <MapPin className="h-3.5 w-3.5 mr-1.5 text-primary/70 shrink-0 mt-0.5" />
+            <span className="line-clamp-1">{getTranslated(event, 'lugar', language)}</span>
+          </div>
         </div>
-      </CardHeader>
-
-      <CardContent className="p-3 pt-1 flex-grow">
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
-          <MapPin className="h-3 w-3 flex-shrink-0 text-primary" />
-          <span className="truncate font-medium">{getTranslated(event, 'lugar', language)}</span>
-        </div>
-
-        <p className="text-xs text-muted-foreground/90 line-clamp-2 leading-relaxed">
-          {getTranslated(event, 'resumen', language) || getTranslated(event, 'descripcion', language)}
-        </p>
       </CardContent>
 
-      <CardFooter className="p-3 pt-0 mt-auto">
-        <div className="w-full pt-2 border-t border-dashed flex justify-between items-center text-[10px]">
-          <span className="text-muted-foreground capitalize font-medium">{weekdayStr}</span>
-
-          <span className="font-medium text-primary flex items-center group-hover:underline">
-            {t('seeMore')}
-            <span className="ml-1 text-[9px]">→</span>
-          </span>
-        </div>
+      <CardFooter className="p-4 pt-0">
+        <Button variant="outline" className="w-full rounded-xl group-hover:bg-primary group-hover:text-primary-foreground transition-colors border-primary/20 bg-primary/5">
+          {t('seeMore')} <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
       </CardFooter>
     </Card>
   );
@@ -226,110 +200,123 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
   }, [eventos, query, dateFilter, categoryFilter, specificDate, language, sites]);
 
   return (
-    <ScrollArea className="h-[72vh]">
-      <div className="p-2 space-y-4">
+    <ScrollArea className="h-[72vh] bg-muted/10">
+      <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+        
+        {/* Header Hero */}
+        <div className="mb-6 pb-6 border-b">
+          <h2 className="text-3xl font-bold tracking-tight mb-2">Cartelera Cultural</h2>
+          <p className="text-muted-foreground max-w-2xl text-lg">
+            Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida. Filtra, elige y disfruta.
+          </p>
+        </div>
 
-        {/* Filters Header - reduced padding */}
-        <div className="flex flex-col gap-2 bg-muted/40 p-2 rounded-xl border">
-          <div className="flex flex-wrap gap-2 items-center">
-            <Button
-              variant={dateFilter === 'all' && !specificDate ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => { setDateFilter('all'); setSpecificDate(''); }}
-              className="rounded-full h-7 text-xs"
-            >
-              {t('eventosFilters.all')}
-            </Button>
-            <Button
-              variant={dateFilter === 'today' && !specificDate ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => { setDateFilter('today'); setSpecificDate(''); }}
-              className="rounded-full h-7 text-xs"
-            >
-              {t('eventosFilters.today')}
-            </Button>
-            <Button
-              variant={dateFilter === 'week' && !specificDate ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => { setDateFilter('week'); setSpecificDate(''); }}
-              className="rounded-full h-7 text-xs"
-            >
-              {t('eventosFilters.week')}
-            </Button>
-            
-            <div className="flex items-center gap-1 ml-auto">
-              <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">Fecha:</span>
-              <input 
-                type="date" 
-                value={specificDate}
-                onChange={(e) => { setSpecificDate(e.target.value); setDateFilter('all'); }}
-                className="h-7 text-xs rounded-md border border-input bg-background px-2 py-1"
-              />
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          
+          {/* Left Sidebar - Filters */}
+          <div className="w-full lg:w-72 shrink-0 space-y-6">
+            <div className="bg-card p-5 rounded-2xl border shadow-sm">
+              <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                <Filter className="w-5 h-5 text-primary" /> Filtrado por:
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-muted-foreground">Buscar evento:</label>
+                  <Input 
+                    type="text"
+                    placeholder="Ej. Concierto, Salsa..."
+                    value={query}
+                    onChange={(e) => {
+                      if (e.target.value) {
+                         // Fallback to internal if prop not passed
+                         // We just use query prop via parent, but EventosPanel doesn't update query itself
+                         // so it relies on the top-level search bar. Let's make this read-only or pass onQueryChange
+                         if (onQueryChange) onQueryChange(e.target.value);
+                      }
+                    }}
+                    className="bg-muted/50 rounded-xl"
+                  />
+                  <div className="text-xs text-muted-foreground text-right">{filteredEvents.length} eventos</div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-muted-foreground">Fecha específica:</label>
+                  <input 
+                    type="date" 
+                    value={specificDate}
+                    onChange={(e) => { setSpecificDate(e.target.value); setDateFilter('all'); }}
+                    className="flex h-10 w-full rounded-xl border border-input bg-muted/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-muted-foreground">Rango de fechas:</label>
+                  <div className="flex flex-col gap-2">
+                    <Button variant={dateFilter === 'all' && !specificDate ? 'default' : 'outline'} className="rounded-xl justify-start" onClick={() => { setDateFilter('all'); setSpecificDate(''); }}>Todos</Button>
+                    <Button variant={dateFilter === 'today' && !specificDate ? 'default' : 'outline'} className="rounded-xl justify-start" onClick={() => { setDateFilter('today'); setSpecificDate(''); }}>Eventos de Hoy</Button>
+                    <Button variant={dateFilter === 'week' && !specificDate ? 'default' : 'outline'} className="rounded-xl justify-start" onClick={() => { setDateFilter('week'); setSpecificDate(''); }}>Esta Semana</Button>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-muted-foreground">Tipo de evento:</label>
+                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                    <SelectTrigger className="w-full bg-muted/50 rounded-xl">
+                      <SelectValue placeholder="Seleccione un tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {eventCategories.map(cat => (
+                        <SelectItem key={cat} value={cat}>
+                          {cat === 'all' ? 'Todos los tipos' : cat}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{t('eventosFilters.category')}:</span>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="h-7 max-w-[200px] text-xs">
-                <span className="truncate flex items-center gap-1.5">
-                  {categoryFilter === 'all' ? t('eventosFilters.allCategories') : (
-                    <>
-                      <span>{getCategoryIcon(categoryFilter)}</span>
-                      <span>{categoryFilter}</span>
-                    </>
-                  )}
-                </span>
-              </SelectTrigger>
-              <SelectContent>
-                {eventCategories.map(cat => (
-                  <SelectItem key={cat} value={cat} className="text-xs">
-                    {cat === 'all' ? t('eventosFilters.allCategories') : (
-                      <div className="flex items-center gap-1.5">
-                        <span>{getCategoryIcon(cat)}</span>
-                        <span>{cat}</span>
-                      </div>
-                    )}
-                  </SelectItem>
+          {/* Right Content - Event Grid */}
+          <div className="flex-1">
+            {/* Quick Pills */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {eventCategories.filter(c => c !== 'all').map(cat => (
+                <Button 
+                  key={cat}
+                  variant={categoryFilter === cat ? 'default' : 'outline'} 
+                  size="sm"
+                  className="rounded-full bg-background hover:bg-muted"
+                  onClick={() => setCategoryFilter(categoryFilter === cat ? 'all' : cat)}
+                >
+                  <span className="mr-2 text-primary">{getCategoryIcon(cat)}</span>
+                  {cat}
+                </Button>
+              ))}
+            </div>
+
+            {filteredEvents.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                {filteredEvents.map(event => (
+                  <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} sites={sites} onCategoryClick={setCategoryFilter} />
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Results Info */}
-        <div className="flex items-center justify-between px-1">
-          <h3 className="font-semibold text-base flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-primary" />
-            {t('panelTitles.eventos')}
-            <span className="text-[10px] font-normal text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
-              {filteredEvents.length}
-            </span>
-          </h3>
-        </div>
-
-        {/* Grid */}
-        {filteredEvents.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {filteredEvents.map(event => (
-              <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} sites={sites} onCategoryClick={setCategoryFilter} />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground space-y-4 border-2 border-dashed rounded-xl border-muted">
-            <Calendar className="h-12 w-12 text-muted-foreground/30" />
-            <div className="space-y-1">
-              <p className="font-medium">No se encontraron eventos</p>
-              <p className="text-sm opacity-80">Prueba ajustando los filtros o tu búsqueda.</p>
-            </div>
-            {(dateFilter !== 'all' || categoryFilter !== 'all' || query || specificDate) && (
-              <Button variant="outline" size="sm" onClick={() => { setDateFilter('all'); setCategoryFilter('all'); setSpecificDate(''); }}>
-                Limpiar filtros
-              </Button>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-20 text-center text-muted-foreground space-y-4 bg-card rounded-2xl border shadow-sm">
+                <Calendar className="h-16 w-16 text-muted-foreground/30" />
+                <div className="space-y-1">
+                  <p className="font-semibold text-lg text-foreground">No hay eventos para esta selección</p>
+                  <p className="text-sm">Intenta cambiando las fechas o categorías para descubrir más planes.</p>
+                </div>
+                <Button variant="default" className="mt-4 rounded-xl" onClick={() => { setDateFilter('all'); setCategoryFilter('all'); setSpecificDate(''); }}>
+                  Limpiar todos los filtros
+                </Button>
+              </div>
             )}
           </div>
-        )}
 
+        </div>
       </div>
     </ScrollArea>
   );
