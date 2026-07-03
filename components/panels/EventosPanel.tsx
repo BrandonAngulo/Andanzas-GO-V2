@@ -102,7 +102,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
   );
 };
 
-const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOpenEvent }) => {
+const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOpenEvent, onQueryChange }) => {
   const { t, language } = useI18n();
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'week'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
