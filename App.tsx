@@ -364,7 +364,7 @@ export default function App() {
       {/* Header */}
       <header className={cn("flex-shrink-0 pt-2 md:pt-3 z-[1000] w-full mx-auto md:max-w-7xl md:px-4 transition-all duration-300", activeGuidedRoute && "hidden")}>
         <div className="glass-panel shadow-md border-b md:border md:rounded-2xl w-full px-4 py-3 flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="md:hidden" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
+          <Button variant="ghost" size="icon" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="flex items-center gap-2 mr-2"><Logo /></div>
 
           <nav className="hidden md:flex items-center gap-1 bg-muted/50 p-1 rounded-full border border-black/5 dark:border-white/5" aria-label="Main Navigation">
@@ -437,10 +437,8 @@ export default function App() {
         </div>
       </header>
 
-      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("flex-1 min-h-0 w-full mx-auto max-w-7xl px-4 pt-4 md:pt-6 pb-4 focus:outline-none", gridClass, "gap-4 md:gap-6")}>
-        <aside className="hidden md:flex flex-col h-full overflow-y-auto pr-2 pb-2"><Sidebar onNavigate={(k) => setActivePanel(k as any)} onClose={() => { }} activePanel={activePanel} /></aside>
-
-        <section className="relative h-full flex flex-col min-h-0">
+      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("flex-1 min-h-0 w-full mx-auto max-w-7xl px-4 pt-4 md:pt-6 pb-4 focus:outline-none", "gap-4 md:gap-6")}>
+        <section className="relative h-full flex flex-col min-h-0 w-full">
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
               <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">{panelTitle}</CardTitle>

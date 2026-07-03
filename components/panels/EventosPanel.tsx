@@ -105,7 +105,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
 const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOpenEvent, onQueryChange }) => {
   const { t, language } = useI18n();
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'week'>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('Todos los tipos');
   const [specificDate, setSpecificDate] = useState<string>('');
 
   // --- 1. Extract Categories Safely ---
@@ -114,7 +114,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
     eventos.forEach(event => {
       categories.add(getEventCategory(event, sites, language));
     });
-    return ['all', ...Array.from(categories).sort()];
+    return ['Todos los tipos', ...Array.from(categories).sort()];
   }, [eventos, sites, language]);
 
   // --- 2. Filter Logic ---
@@ -169,7 +169,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
     }
 
     // D. Apply Category Filter
-    if (categoryFilter !== 'all') {
+    if (categoryFilter !== 'Todos los tipos') {
       result = result.filter(e => {
         return getEventCategory(e, sites, language) === categoryFilter;
       });
@@ -268,7 +268,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
                     <SelectContent>
                       {eventCategories.map(cat => (
                         <SelectItem key={cat} value={cat}>
-                          {cat === 'all' ? 'Todos los tipos' : cat}
+                          {cat}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -282,13 +282,13 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
           <div className="flex-1">
             {/* Quick Pills */}
             <div className="flex flex-wrap gap-2 mb-6">
-              {eventCategories.filter(c => c !== 'all').map(cat => (
+              {eventCategories.filter(c => c !== 'Todos los tipos').map(cat => (
                 <Button 
                   key={cat}
                   variant={categoryFilter === cat ? 'default' : 'outline'} 
                   size="sm"
                   className="rounded-full bg-background hover:bg-muted"
-                  onClick={() => setCategoryFilter(categoryFilter === cat ? 'all' : cat)}
+                  onClick={() => setCategoryFilter(categoryFilter === cat ? 'Todos los tipos' : cat)}
                 >
                   <span className="mr-2 text-primary">{getCategoryIcon(cat)}</span>
                   {cat}
@@ -309,7 +309,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
                   <p className="font-semibold text-lg text-foreground">No hay eventos para esta selección</p>
                   <p className="text-sm">Intenta cambiando las fechas o categorías para descubrir más planes.</p>
                 </div>
-                <Button variant="default" className="mt-4 rounded-xl" onClick={() => { setDateFilter('all'); setCategoryFilter('all'); setSpecificDate(''); }}>
+                <Button variant="default" className="mt-4 rounded-xl" onClick={() => { setDateFilter('all'); setCategoryFilter('Todos los tipos'); setSpecificDate(''); }}>
                   Limpiar todos los filtros
                 </Button>
               </div>
