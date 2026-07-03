@@ -75,7 +75,7 @@
     "descripcion_en": "A vault of ancestral treasures managed by the Bank of the Republic. This museum masterfully tells the story of the goldsmiths of the Calima region (Ilama, Yotoco, and Sonso cultures) through the shine of gold and the perfection of ceramics. The museography is impeccable and didactic, allowing you to appreciate the microscopic detail of nose rings, pectorals, diadems, and poporos that reflect the indigenous worldview, their social hierarchies, and their deep connection with nature and the spiritual world.",
     "importancia": "Fundamental para entender la sofisticación tecnológica y artística de las culturas prehispánicas del Valle.",
     "importancia_en": "Fundamental for understanding the technological and artistic sophistication of the pre-Hispanic cultures of the Valley.",
-    "datosHistoricos": "Inaugurado en 1991 como parte de la red de museos del oro del país.",
+    "datosHistoricos": "Inaugurado en 1991 como parte de la red de museos del oro del país. Inaugurado el 9 de mayo de 1991.",
     "datosHistoricos_en": "Inaugurated in 1991 as part of the country's gold museum network.",
     "datosCuriosos": [
       "La entrada es siempre gratuita.",
@@ -84,7 +84,10 @@
     "datosCuriosos_en": [
       "Admission is always free.",
       "Explains how gold had no commercial value, but spiritual and rank value."
-    ]
+    ],
+    "horario": "Martes a viernes, 9:00 a. m.–5:00 p. m.; sábados, 10:00 a. m.–5:00 p. m. (cerrado domingos y lunes).",
+    "precio": "Entrada libre y gratuita.",
+    "direccion": "Carrera 7 #4-69, Área Cultural del Banco de la República, centro histórico (diagonal al Teatro Municipal)."
   },
   {
     "id": "s12",
@@ -234,7 +237,7 @@
     "descripcion_en": "A monumental tribute to Cali's obsession with cinema and image. This museum houses the country's largest private collection of projectors, movie cameras, and film posters. Walking through its corridors is a journey through the technological history of the seventh art, from the Lumière brothers to the golden age of Mexican and Hollywood cinema that so influenced Cali culture. Furthermore, it offers a spectacular view of western Cali from its terrace.",
     "importancia": "Primer museo de la cinematografía en Colombia, guardián de la cultura cinéfila caleña.",
     "importancia_en": "First cinematography museum in Colombia, guardian of Cali's cinephile culture.",
-    "datosHistoricos": "Fundado en 2008 por Hugo Suárez, un apasionado coleccionista.",
+    "datosHistoricos": "Fundado en 2008 por Hugo Suárez, un apasionado coleccionista. Fundado el 22 de octubre de 2008 por Hugo Suárez Fiat.",
     "datosHistoricos_en": "Founded in 2008 by Hugo Suárez, a passionate collector.",
     "datosCuriosos": [
       "Tiene proyectores que funcionaron en los antiguos teatros de barrio de Cali.",
@@ -243,7 +246,10 @@
     "datosCuriosos_en": [
       "It has projectors that worked in the old neighborhood theaters of Cali.",
       "The name alludes to the 'Caliwood' cultural phenomenon of the 70s."
-    ]
+    ],
+    "horario": "Lunes a viernes, 8:00 a. m.–6:00 p. m.; sábados, 3:00–6:00 p. m.; domingos, 10:00 a. m.–6:00 p. m.",
+    "precio": "Entrada $20.000 (a modo de donación para su sostenimiento).",
+    "direccion": "Avenida Belalcázar (Carrera 2 Oeste) #5A-55, oeste de Cali (junto al Gato de Tejada y el Museo La Tertulia)."
   },
   {
     "id": "s35",
@@ -286,7 +292,7 @@
     "descripcion_en": "The most romantic icon of Valle del Cauca. Located in the municipality of El Cerrito, near Cali, this hacienda is world-famous for being the setting of 'María', the masterpiece by Jorge Isaacs. The house museum is restored with exquisite detail, recreating the 19th-century atmosphere with its rose gardens, airy rooms, and the unmatched landscape of the geographic valley at its feet. It is a mandatory pilgrimage for lovers of literature and romance.",
     "importancia": "Símbolo del romanticismo latinoamericano y patrimonio cultural.",
     "importancia_en": "Symbol of Latin American romanticism and cultural heritage.",
-    "datosHistoricos": "Construida entre 1816 y 1828. Fue adquirida por el padre de Jorge Isaacs en 1854.",
+    "datosHistoricos": "Construida entre 1816 y 1828. Fue adquirida por el padre de Jorge Isaacs en 1854. Casa museo administrada por INCIVA; BIC de la Nación.",
     "datosHistoricos_en": "Built between 1816 and 1828. It was acquired by Jorge Isaacs' father in 1854.",
     "datosCuriosos": [
       "La piedra donde Efraín y María se sentaban aún se conserva en el jardín.",
@@ -295,7 +301,10 @@
     "datosCuriosos_en": [
       "The stone where Efraín and María sat is still preserved in the garden.",
       "The rose bushes are meticulously cared for to evoke the novel."
-    ]
+    ],
+    "horario": "Martes a domingo y festivos, 9:30 a. m.–4:30 p. m. (cerrado el martes siguiente a un lunes festivo).",
+    "precio": "Adultos $18.000; niños $10.500; adultos mayores y PcD $9.000; extranjeros 10 USD (venta solo en taquilla).",
+    "direccion": "Corregimiento de Santa Elena, El Cerrito (Valle), a ~36 km de Cali."
   },
   {
     "id": "s50",
@@ -443,7 +452,7 @@
     "descripcion_en": "With its imposing French neoclassical facade and delicate ornamental details, the Jorge Isaacs is an architectural jewel right in downtown Cali. Its interior is even more surprising, with a classic horseshoe-shaped box layout and exquisite ornamentation evoking the Belle Époque. It is the favorite venue for intimate concerts, comedy shows, and major musical productions due to its elegant, romantic, and nostalgic atmosphere.",
     "importancia": "Monumento Nacional y homenaje al autor de 'María', la novela cumbre del romanticismo latinoamericano.",
     "importancia_en": "National Monument and tribute to the author of 'María', the pinnacle novel of Latin American romanticism.",
-    "datosHistoricos": "Abrió sus puertas en 1931. Estuvo cerrado y en ruinas durante años hasta su gloriosa restauración en los años 80, salvándolo de la demolición.",
+    "datosHistoricos": "Abrió sus puertas en 1931. Estuvo cerrado y en ruinas durante años hasta su gloriosa restauración en los años 80, salvándolo de la demolición. Sala de 1.136 sillas en cuatro localidades.",
     "datosHistoricos_en": "Opened its doors in 1931. It was closed and in ruins for years until its glorious restoration in the 80s, saving it from demolition.",
     "datosCuriosos": [
       "Su acústica y visibilidad son excelentes desde cualquier punto de la herradura.",
@@ -452,7 +461,10 @@
     "datosCuriosos_en": [
       "Its acoustics and visibility are excellent from any point of the horseshoe.",
       "It was one of the first tall buildings in the city, a symbol of modernity in its time."
-    ]
+    ],
+    "horario": "Abierto en días de función; taquilla y venta en línea según cartelera.",
+    "precio": "Boletería según evento.",
+    "direccion": "Carrera 3 #12-28, centro."
   },
   {
     "id": "s41",
@@ -711,7 +723,7 @@
     "rating": 4.6,
     "visitas": 1520,
     "logoUrl": "https://images.unsplash.com/photo-1626127027476-3392eedd9427?auto=format&fit=crop&w=800",
-    "descripcion": "Es la 'sala de recibo' moderna de Cali. Un extenso y ventilado paseo peatonal a orillas del río que transformó el centro de la ciudad. Aquí la brisa de la tarde es la protagonista. Es el lugar democrático donde convergen caleños de todas las edades y clases sociales para caminar, tomar un café, escuchar música espontánea o simplemente ver pasar la vida. Conecta la arquitectura histórica del Puente Ortiz y la Ermita con la modernidad del centro administrativo.",
+    "descripcion": "Es la 'sala de recibo' moderna de Cali. Un extenso y ventilado paseo peatonal a orillas del río que transformó el centro de la ciudad. Aquí la brisa de la tarde es la protagonista. Es el lugar democrático donde convergen caleños de todas las edades y clases sociales para caminar, tomar un café, escuchar música espontánea o simplemente ver pasar la vida. Conecta la arquitectura histórica del Puente Ortiz y la Ermita con la modernidad del centro administrativo. Inaugurado en 2013, tras peatonalizar el antiguo tramo de la Avenida Colombia a orillas del río Cali.",
     "descripcion_en": "It is Cali's modern 'living room'. An extensive and breezy pedestrian promenade along the riverbanks that transformed the city center. Here, the afternoon breeze is the protagonist. It is the democratic place where Cali residents of all ages and social classes converge to walk, have a coffee, listen to spontaneous music, or simply watch life go by. It connects the historical architecture of the Ortiz Bridge and La Ermita with the modernity of the administrative center.",
     "importancia": "La obra de renovación urbana más importante del siglo XXI en Cali, recuperando el espacio público para el peatón.",
     "importancia_en": "The most important urban renewal project of the 21st century in Cali, reclaiming public space for pedestrians.",
@@ -724,7 +736,9 @@
     "datosCuriosos_en": [
       "It is the epicenter of Christmas lighting every December.",
       "Along the boulevard, you will find sculptures and visible remains of the old Ortiz Bridge."
-    ]
+    ],
+    "horario": "Espacio público abierto.",
+    "precio": "Libre."
   },
   {
     "id": "s5",
@@ -763,7 +777,7 @@
     "rating": 4.6,
     "visitas": 1600,
     "logoUrl": "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800",
-    "descripcion": "Una deliciosa galería de arte a cielo abierto a orillas del río Cali. Presidida por el monumental 'Gato del Río', una obra en bronce del maestro Hernando Tejada, esta zona verde se convirtió en el hogar de sus 'novias': una colección de más de 15 gatas esculpidas e intervenidas pictóricamente por reconocidos artistas colombianos (como Maripaz Jaramillo, Omar Rayo, etc.). Cada gata tiene una personalidad, historia y diseño único. Es un paseo colorido, artístico y refrescante.",
+    "descripcion": "Una deliciosa galería de arte a cielo abierto a orillas del río Cali. Presidida por el monumental 'Gato del Río', una obra en bronce del maestro Hernando Tejada, esta zona verde se convirtió en el hogar de sus 'novias': una colección de más de 15 gatas esculpidas e intervenidas pictóricamente por reconocidos artistas colombianos (como Maripaz Jaramillo, Omar Rayo, etc.). Cada gata tiene una personalidad, historia y diseño único. Es un paseo colorido, artístico y refrescante. El Gato del Río, de Hernando Tejada, se instaló el 3 de julio de 1996; 'Las Gatas del Río' (esculturas intervenidas por distintos artistas) se sumaron en 2006.",
     "descripcion_en": "A delightful open-air art gallery on the banks of the Cali River. Presided over by the monumental 'River Cat', a bronze work by master Hernando Tejada, this green area became the home of his 'girlfriends': a collection of over 15 female cats sculpted and pictorially intervened by renowned Colombian artists (such as Maripaz Jaramillo, Omar Rayo, etc.). Each cat has a unique personality, history, and design. It is a colorful, artistic, and refreshing walk.",
     "importancia": "Recuperación exitosa de la ribera del río a través del arte público masivo y de calidad.",
     "importancia_en": "Successful recovery of the riverbank through massive and high-quality public art.",
@@ -776,7 +790,9 @@
     "datosCuriosos_en": [
       "The Cat weighs 3.5 tons and is cast in bronze.",
       "The female cats are periodically painted or restored, so the park always offers something new."
-    ]
+    ],
+    "horario": "Parque abierto todo el día.",
+    "precio": "Gratuita."
   },
   {
     "id": "s11",
@@ -789,7 +805,7 @@
     "rating": 4.5,
     "visitas": 1300,
     "logoUrl": "https://images.unsplash.com/photo-1590059533324-5d2f62b6048c?auto=format&fit=crop&w=800",
-    "descripcion": "El corazón de la artesanía y la cultura bohemia en Cali. Este parque artesanal, construido arquitectónicamente en niveles sobre una colina, está lleno de casetas donde artesanos locales fabrican y venden joyas, trabajos en cuero, madera e instrumentos musicales. Pero más que un mercado, es un centro cultural vivo: los jueves son noches de narración oral (cuenteros), y los fines de semana hay danzas folclóricas y música andina en vivo. Un espacio de resistencia cultural.",
+    "descripcion": "El corazón de la artesanía y la cultura bohemia en Cali. Este parque artesanal, construido arquitectónicamente en niveles sobre una colina, está lleno de casetas donde artesanos locales fabrican y venden joyas, trabajos en cuero, madera e instrumentos musicales. Pero más que un mercado, es un centro cultural vivo: los jueves son noches de narración oral (cuenteros), y los fines de semana hay danzas folclóricas y música andina en vivo. Un espacio de resistencia cultural. Se consolidó como parque y mercado artesanal en las últimas décadas del siglo XX; es punto de referencia del comercio artesanal caleño.",
     "descripcion_en": "The heart of craftsmanship and bohemian culture in Cali. This artisan park, architecturally built in tiers on a hill, is full of stalls where local artisans make and sell jewelry, leather work, wood, and musical instruments. But more than a market, it is a living cultural center: Thursdays are storytelling nights, and weekends feature folk dances and live Andean music. A space of cultural resistance.",
     "importancia": "Espacio vital para la economía de los artesanos y la preservación de tradiciones orales y manuales.",
     "importancia_en": "Vital space for the artisans' economy and the preservation of oral and manual traditions.",
@@ -802,7 +818,9 @@
     "datosCuriosos_en": [
       "It is one of the few parks architecturally designed specifically for selling crafts.",
       "Here you can get the best Andean musical instruments in the city."
-    ]
+    ],
+    "horario": "Abierto a diario, con más ambiente en la tarde-noche.",
+    "precio": "Ingreso libre (las artesanías y la comida se pagan aparte)."
   },
   {
     "id": "s16",
@@ -819,16 +837,20 @@
     "descripcion_en": "A Gothic fantasy in the tropics. La Ermita is perhaps Cali's most recognized postcard. Its neo-Gothic architecture, inspired by Ulm Cathedral (Germany), contrasts with the modernity of the River Boulevard. Its white spires rise towards the sky, and its interior houses Dutch stained glass, French bells, and a German organ. It is a symbol of faith and resilience, rebuilt after the earthquake that destroyed the original chapel.",
     "importancia": "Hito arquitectónico y religioso más fotografiado de la ciudad.",
     "importancia_en": "Most photographed architectural and religious landmark of the city.",
-    "datosHistoricos": "La construcción actual se inició en 1930 y finalizó en 1942, reemplazando una capilla del siglo XVII.",
+    "datosHistoricos": "La construcción actual se inició en 1930 y finalizó en 1942, reemplazando una capilla del siglo XVII. El templo neogótico actual se construyó en la primera mitad del siglo XX (décadas de 1930–1940), en reemplazo de la ermita colonial arruinada por los terremotos; su estilo se inspira en las catedrales góticas europeas.",
     "datosHistoricos_en": "The current construction began in 1930 and finished in 1942, replacing a 17th-century chapel.",
     "datosCuriosos": [
       "Guarda la imagen del 'Señor de la Caña', única sobreviviente del terremoto de 1787.",
-      "Su reloj musical suena cada hora, alegrando el centro."
+      "Su reloj musical suena cada hora, alegrando el centro.",
+      "Conserva la imagen colonial del Señor de la Caña (o Señor de los Milagros), sobreviviente de los sismos."
     ],
     "datosCuriosos_en": [
       "It keeps the image of the 'Lord of the Sugarcane', the only survivor of the 1787 earthquake.",
       "Its musical clock chimes every hour, cheering up the downtown area."
-    ]
+    ],
+    "horario": "Abierta al público en horarios de culto (misas).",
+    "precio": "Entrada gratuita.",
+    "direccion": "Carrera 1ª con Calle 13, a orillas del río Cali."
   },
   {
     "id": "s17",
@@ -871,7 +893,7 @@
     "descripcion_en": "A secret green lung in the west of the city. This space is dedicated to the conservation of the tropical dry forest, one of the most threatened ecosystems. Walking its trails is disconnecting from urban noise and entering a world of butterflies, birds, and native vegetation. It features natural viewpoints towards the city and an experimental plant station. It is ideal for gentle hiking and environmental education.",
     "importancia": "Reserva vital del ecosistema de Bosque Seco Tropical dentro del área urbana.",
     "importancia_en": "Vital reserve of the Tropical Dry Forest ecosystem within the urban area.",
-    "datosHistoricos": "Promovido por la Fundación Zoológica de Cali para expandir la conservación vegetal.",
+    "datosHistoricos": "Promovido por la Fundación Zoológica de Cali para expandir la conservación vegetal. Reabierto al público en septiembre de 2024; administrado por la Fundación Zoológico de Cali.",
     "datosHistoricos_en": "Promoted by the Cali Zoological Foundation to expand plant conservation.",
     "datosCuriosos": [
       "Tiene un sendero sensorial para conectar con la naturaleza a través del tacto y el olfato.",
@@ -880,7 +902,10 @@
     "datosCuriosos_en": [
       "It has a sensory trail to connect with nature through touch and smell.",
       "It is home to many migratory bird species."
-    ]
+    ],
+    "horario": "Jueves a domingo, 9:00 a. m.–3:00 p. m. (último ingreso hacia las 2:00 p. m.).",
+    "precio": "Adultos (13+) $17.000; niños (2–12) $15.000; combo con el Zoológico $40.000 / $30.000. Boletas en las taquillas del Zoológico o en TuBoleta.",
+    "direccion": "Oeste de Cali, sobre la cuenca del río Cali (contiguo al Zoológico de Cali), en terrenos de Celsia."
   },
   {
     "id": "s19",
@@ -919,7 +944,7 @@
     "rating": 4.8,
     "visitas": 3000,
     "logoUrl": "https://images.unsplash.com/photo-1447752875253-b791008657a7?auto=format&fit=crop&w=800",
-    "descripcion": "Si quieres saber qué hace un caleño auténtico el domingo, ve a Pance. Este río de aguas frías y cristalinas que baja directamente de los Farallones es el balneario natural y democrático de la ciudad. El ecoparque ofrece senderos para caminar, zonas de picnic, lagos y acceso directo al río. Es un ritual sagrado sumergirse en sus aguas para 'sacarse el calor' y luego disfrutar de un sancocho de gallina en leña en los restaurantes aledaños.",
+    "descripcion": "Si quieres saber qué hace un caleño auténtico el domingo, ve a Pance. Este río de aguas frías y cristalinas que baja directamente de los Farallones es el balneario natural y democrático de la ciudad. El ecoparque ofrece senderos para caminar, zonas de picnic, lagos y acceso directo al río. Es un ritual sagrado sumergirse en sus aguas para 'sacarse el calor' y luego disfrutar de un sancocho de gallina en leña en los restaurantes aledaños. El río Pance nace en el Parque Nacional Natural Farallones de Cali; su ribera se consolidó como zona de recreación y ecoparque de la ciudad.",
     "descripcion_en": "If you want to know what an authentic Caleño does on Sunday, go to Pance. This river of cold, crystalline waters coming directly down from the Farallones is the city's natural and democratic spa. The ecopark offers walking trails, picnic areas, lakes, and direct river access. It is a sacred ritual to immerse yourself in its waters to 'beat the heat' and then enjoy a chicken sancocho cooked on firewood in the nearby restaurants.",
     "importancia": "Principal fuente hídrica recreativa y corredor ecológico vital de la ciudad.",
     "importancia_en": "Main recreational water source and vital ecological corridor of the city.",
@@ -932,7 +957,9 @@
     "datosCuriosos_en": [
       "The water is remarkably cold, which contrasts deliciously with Cali's warm climate.",
       "It is an excellent place for birdwatching at sunrise."
-    ]
+    ],
+    "horario": "Abierto; zona de baño en el río y senderos (mayor afluencia los fines de semana).",
+    "precio": "Ingreso libre (algunos servicios y parqueaderos privados aparte)."
   },
   {
     "id": "s21",
@@ -1053,7 +1080,7 @@
     "rating": 4.4,
     "visitas": 2000,
     "logoUrl": "https://images.unsplash.com/photo-1584464431052-1629857d34d3?auto=format&fit=crop&w=800",
-    "descripcion": "El kilómetro cero de Cali. Esta plaza, rodeada de palmeras altísimas 'Roystonea regia', es el corazón cívico y comercial histórico de la ciudad. A su alrededor se erigen edificios emblemáticos de arquitectura republicana y neoclásica como la Catedral de San Pedro, el Palacio Nacional y el Edificio Otero. Es un lugar vibrante, lleno de vendedores de tinto, lustrabotas y transeúntes, donde se siente el pulso diario de la ciudad y se cruzan todas las historias.",
+    "descripcion": "El kilómetro cero de Cali. Esta plaza, rodeada de palmeras altísimas 'Roystonea regia', es el corazón cívico y comercial histórico de la ciudad. A su alrededor se erigen edificios emblemáticos de arquitectura republicana y neoclásica como la Catedral de San Pedro, el Palacio Nacional y el Edificio Otero. Es un lugar vibrante, lleno de vendedores de tinto, lustrabotas y transeúntes, donde se siente el pulso diario de la ciudad y se cruzan todas las historias. La antigua Plaza Mayor colonial (luego Plaza de la Constitución) fue rebautizada Plaza de Caycedo en 1813, en honor al prócer Joaquín de Caycedo y Cuero; el monumento central se erigió en 1913.",
     "descripcion_en": "Cali's kilometer zero. This square, surrounded by towering 'Roystonea regia' palms, is the historical civic and commercial heart of the city. Around it stand emblematic buildings of Republican and neoclassical architecture such as St. Peter's Cathedral, the National Palace, and the Otero Building. It is a vibrant place, full of coffee sellers, shoeshine boys, and passersby, where you feel the city's daily pulse and all stories cross paths.",
     "importancia": "Centro del poder político, religioso y comercial desde la época colonial.",
     "importancia_en": "Center of political, religious, and commercial power since colonial times.",
@@ -1066,7 +1093,9 @@
     "datosCuriosos_en": [
       "The 'royal' palms are the hallmark of the square and some are centennial.",
       "It has been the scene of the most important political and social events in Cali's history."
-    ]
+    ],
+    "horario": "Plaza pública, abierta.",
+    "precio": "Libre."
   },
   {
     "id": "s40",
@@ -1345,7 +1374,7 @@
     "descripcion_en": "The jewel in the crown of the San Antonio neighborhood. This small Baroque chapel, located at the top of the hill, is one of the oldest and most beloved monuments in Cali. Its white facade and stone steps are the perfect setting for weddings and photos. Inside rest carved wooden altars and colonial-era saints. It is a haven of peace with an unmatched view.",
     "importancia": "Hito fundacional y arquitectónico del barrio más tradicional de Cali.",
     "importancia_en": "Foundational and architectural landmark of Cali's most traditional neighborhood.",
-    "datosHistoricos": "Construida en 1747 en honor a San Antonio de Padua.",
+    "datosHistoricos": "Construida en 1747 en honor a San Antonio de Padua. La capilla data de 1747 (construcción iniciada en 1746); es uno de los templos más antiguos de la ciudad (BIC).",
     "datosHistoricos_en": "Built in 1747 in honor of Saint Anthony of Padua.",
     "datosCuriosos": [
       "Las gradas frente a la iglesia son un punto de encuentro social espontáneo.",
@@ -1354,7 +1383,9 @@
     "datosCuriosos_en": [
       "The steps in front of the church are a spontaneous social meeting point.",
       "It houses a valuable collection of religious art from Quito."
-    ]
+    ],
+    "horario": "Colina y parque abiertos todo el día; la capilla abre en horarios de misa.",
+    "precio": "Gratuita."
   },
   {
     "id": "s64",
@@ -1393,7 +1424,7 @@
     "rating": 4.8,
     "visitas": 2800,
     "logoUrl": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800",
-    "descripcion": "El reto físico por excelencia de los caleños. Subir a las Tres Cruces es un ritual matutino de fin de semana para miles de personas. El sendero es empinado y exige esfuerzo físico, pero la recompensa es una vista inigualable de la ciudad y un jugo de naranja fresco en la cima. Las tres grandes cruces de concreto dominan el paisaje y protegen, según la leyenda, a la ciudad del demonio 'Buziraco'.",
+    "descripcion": "El reto físico por excelencia de los caleños. Subir a las Tres Cruces es un ritual matutino de fin de semana para miles de personas. El sendero es empinado y exige esfuerzo físico, pero la recompensa es una vista inigualable de la ciudad y un jugo de naranja fresco en la cima. Las tres grandes cruces de concreto dominan el paisaje y protegen, según la leyenda, a la ciudad del demonio 'Buziraco'. Según la tradición, se erigió una cruz en el cerro para 'conjurar' al diablo Buziraco; las tres cruces actuales, en concreto, datan de finales de los años treinta del siglo XX.",
     "descripcion_en": "The physical challenge par excellence for Caleños. Climbing Las Tres Cruces is a weekend morning ritual for thousands of people. The trail is steep and demands physical effort, but the reward is an unmatched view of the city and fresh orange juice at the top. The three large concrete crosses dominate the landscape and protect, according to legend, the city from the demon 'Buziraco'.",
     "importancia": "Principal escenario de deporte al aire libre y senderismo urbano masivo.",
     "importancia_en": "Main setting for outdoor sports and massive urban hiking.",
@@ -1406,7 +1437,9 @@
     "datosCuriosos_en": [
       "It is said that the devil (Buziraco) is trapped under the crosses.",
       "There are improvised outdoor gyms at the top."
-    ]
+    ],
+    "horario": "Se recomienda el ascenso de madrugada o en la mañana (por seguridad y clima); funciona como ecoparque (Bataclán).",
+    "precio": "Gratuita."
   },
   {
     "id": "s76",
@@ -2092,7 +2125,7 @@
     "descripcion_en": "The most 'hipster', authentic, and colorful place in San Antonio. La Linterna is a traditional letterpress printing workshop that refused to die in the face of digital technology. Its huge 19th-century Heidelberg machines keep roaring, printing posters that define Cali's graphic aesthetic. What was a commercial printing press in crisis became a temple of graphic design and street art, collaborating with modern artists.",
     "importancia": "Patrimonio vivo de las artes gráficas en Colombia y ejemplo de reinvención.",
     "importancia_en": "Living heritage of graphic arts in Colombia and an example of reinvention.",
-    "datosHistoricos": "Fundada en 1934. Fue salvada de la quiebra en 2017 gracias a la unión de sus trabajadores veteranos y diseñadores jóvenes.",
+    "datosHistoricos": "Fundada en 1934. Fue salvada de la quiebra en 2017 gracias a la unión de sus trabajadores veteranos y diseñadores jóvenes. Funciona desde 1934; en San Antonio desde 1987.",
     "datosHistoricos_en": "Founded in 1934. It was saved from bankruptcy in 2017 thanks to the union of its veteran workers and young designers.",
     "datosCuriosos": [
       "Sus carteles de conciertos de rock y salsa son icónicos y objetos de colección.",
@@ -2101,7 +2134,10 @@
     "datosCuriosos_en": [
       "Its rock and salsa concert posters are iconic and collectibles.",
       "You can see the master printers working live and buy original art."
-    ]
+    ],
+    "horario": "Lunes a viernes, 9:00 a. m.–12:30 p. m. y 2:00–5:00 p. m.",
+    "precio": "Visita libre al taller-tienda (los carteles y productos se venden aparte).",
+    "direccion": "Carrera 5 #2-70, barrio San Antonio."
   },
   {
     "id": "s45",
