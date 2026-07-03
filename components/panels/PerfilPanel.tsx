@@ -129,7 +129,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         try {
             if (user?.id === 'audit-user-id') {
                 // Mock user bypass
-                setUserProfile(prev => prev ? { ...prev, avatar_url: url } : null);
+                setUserProfile(prev => prev ? { ...prev, avatar_url: url } : { 
+                    id: 'audit-user-id', 
+                    email: 'audit@andanzas.com',
+                    avatar_url: url, 
+                    full_name: 'Auditor Andanzas', 
+                    points: 0, 
+                    interests: [] 
+                } as UserProfile);
                 toast.success("¡Avatar actualizado! (Modo de prueba)");
                 setShowAvatarModal(false);
                 setLoading(false);
@@ -158,7 +165,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         try {
             if (user?.id === 'audit-user-id') {
                 // Mock user bypass
-                setUserProfile(prev => prev ? { ...prev, full_name: editName, city: editCity } : null);
+                setUserProfile(prev => prev ? { ...prev, full_name: editName, city: editCity } : { 
+                    id: 'audit-user-id', 
+                    email: 'audit@andanzas.com',
+                    full_name: editName, 
+                    city: editCity, 
+                    points: 0, 
+                    interests: [] 
+                } as UserProfile);
                 toast.success("¡Datos actualizados! (Modo de prueba)");
                 setIsEditingProfile(false);
                 setLoading(false);
@@ -737,6 +751,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     <div className="space-y-1">
                                         <label className="text-xs font-medium">Ciudad</label>
                                         <Input value={editCity} onChange={e => setEditCity(e.target.value)} className="h-9" placeholder="Ej: Cali" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-medium text-muted-foreground">Correo Electrónico (Solo Lectura)</label>
+                                        <Input value={userProfile?.email || user?.email || ""} disabled className="h-9 bg-muted/50 cursor-not-allowed" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-medium text-muted-foreground">Fecha de Nacimiento (Solo Lectura)</label>
+                                        <Input value={user?.user_metadata?.birth_date || "No registrada"} disabled className="h-9 bg-muted/50 cursor-not-allowed" />
                                     </div>
                                     <div className="flex gap-2 pt-2">
                                         <Button variant="outline" size="sm" className="flex-1" onClick={() => setIsEditingProfile(false)}>Cancelar</Button>
