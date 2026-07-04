@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Site, Evento } from '../../types';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
@@ -60,15 +60,7 @@ interface ExplorarPanelProps {
   onNavigateToRoutes?: () => void;
 }
 
-const ROUTE_TAGS = [
-  { id: 'salsa', label: 'Salsa', icon: Music, color: 'bg-orange-500/10 text-orange-600 border-orange-200' },
-  { id: 'sabores', label: 'Sabores', icon: Utensils, color: 'bg-red-500/10 text-red-600 border-red-200' },
-  { id: 'arte', label: 'Arte urbano', icon: Paintbrush, color: 'bg-purple-500/10 text-purple-600 border-purple-200' },
-  { id: 'naturaleza', label: 'Naturaleza', icon: Trees, color: 'bg-green-500/10 text-green-600 border-green-200' },
-  { id: 'literatura', label: 'Literatura', icon: BookOpen, color: 'bg-blue-500/10 text-blue-600 border-blue-200' },
-  { id: 'memoria', label: 'Memoria e Historia', icon: Landmark, color: 'bg-amber-500/10 text-amber-600 border-amber-200' },
-];
-
+// Removed ROUTE_TAGS from global scope
 const IMPERDIBLES = [
   {
     id: 'salsa-route',
@@ -96,6 +88,17 @@ const IMPERDIBLES = [
 const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes }) => {
   const { language } = useI18n();
 
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+
+  const CATEGORY_TAGS = useMemo(() => [
+    { id: 'salsa', filter: 'Salsa y Música', label: language === 'es' ? 'Salsa y Música' : 'Salsa & Music', icon: Music, color: 'bg-orange-500/10 text-orange-600 border-orange-200' },
+    { id: 'sabores', filter: 'Gastronomía', label: language === 'es' ? 'Gastronomía' : 'Gastronomy', icon: Utensils, color: 'bg-red-500/10 text-red-600 border-red-200' },
+    { id: 'arte', filter: 'Arte y Teatro', label: language === 'es' ? 'Arte y Teatro' : 'Art & Theater', icon: Paintbrush, color: 'bg-purple-500/10 text-purple-600 border-purple-200' },
+    { id: 'naturaleza', filter: 'Parques y Naturaleza', label: language === 'es' ? 'Naturaleza' : 'Nature', icon: Trees, color: 'bg-green-500/10 text-green-600 border-green-200' },
+    { id: 'cultura', filter: 'Museos y Cultura', label: language === 'es' ? 'Cultura' : 'Culture', icon: BookOpen, color: 'bg-blue-500/10 text-blue-600 border-blue-200' },
+    { id: 'historicos', filter: 'Sitios Históricos / Otros', label: language === 'es' ? 'Históricos' : 'Historic', icon: Landmark, color: 'bg-amber-500/10 text-amber-600 border-amber-200' },
+  ], [language]);
+
   // Show sites in a feed and shuffle it for variety
   const feedItems = useMemo(() => {
     // Filter by query if present
@@ -103,8 +106,12 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
 
     let filteredSites = sites;
 
+    if (categoryFilter) {
+      filteredSites = filteredSites.filter(s => getMacroCategory(getTranslated(s, 'tipo', 'es') as string, 'es') === categoryFilter);
+    }
+
     if (normalizedQuery) {
-      filteredSites = sites.filter(s => {
+      filteredSites = filteredSites.filter(s => {
         const name = (getTranslated(s, 'nombre', language) as string).toLowerCase();
         const type = getMacroCategory(getTranslated(s, 'tipo', language) as string, language).toLowerCase();
         const desc = (getTranslated(s, 'descripcion', language) as string).toLowerCase();
@@ -147,13 +154,14 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
           </p>
           <div className="flex flex-wrap gap-3">
-            {ROUTE_TAGS.map(tag => {
+            {CATEGORY_TAGS.map(tag => {
               const Icon = tag.icon;
+              const isActive = categoryFilter === tag.filter;
               return (
                 <button
                   key={tag.id}
-                  onClick={onNavigateToRoutes}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border font-medium transition-all hover:scale-105 active:scale-95 ${tag.color} hover:shadow-md bg-background`}
+                  onClick={() => setCategoryFilter(isActive ? null : tag.filter)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border font-medium transition-all hover:scale-105 active:scale-95 hover:shadow-md ${isActive ? 'bg-primary text-primary-foreground border-primary shadow-md' : tag.color + ' bg-background'}`}
                 >
                   <Icon className="w-5 h-5" />
                   {tag.label}
@@ -165,7 +173,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
       )}
 
       {/* Carrusel de Imperdibles */}
-      {!query && (
+      {!query && !categoryFilter && (
         <div className="mb-8 overflow-hidden">
           <div className="px-5 md:px-8 mb-4 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-yellow-500" />
@@ -212,10 +220,15 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
       )}
       
       <div className="px-4 md:px-8 pb-4">
-        {query && (
-          <h3 className="font-semibold text-lg mb-3 ml-1 text-muted-foreground">Resultados de búsqueda</h3>
+        {(query || categoryFilter) && (
+          <div className="flex items-center justify-between mb-3 ml-1">
+            <h3 className="font-semibold text-lg text-muted-foreground">Resultados de búsqueda</h3>
+            {categoryFilter && (
+               <Button variant="ghost" size="sm" onClick={() => setCategoryFilter(null)} className="h-8 text-xs text-muted-foreground">Limpiar filtro</Button>
+            )}
+          </div>
         )}
-        {!query && (
+        {!query && !categoryFilter && (
           <h3 className="font-semibold text-lg mb-4 ml-1">Lugares Destacados</h3>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
