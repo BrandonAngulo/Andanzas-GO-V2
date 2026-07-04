@@ -118,7 +118,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     {entries.map(entry => (
                         <Card 
                             key={entry.id} 
-                            className="cursor-pointer group relative overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 border border-border/40 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md rounded-3xl"
+                            className="cursor-pointer group relative overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:-translate-y-1 border border-black/5 dark:border-white/5 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-[2rem] shadow-sm"
                             onClick={() => setSelectedEntry(entry)}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

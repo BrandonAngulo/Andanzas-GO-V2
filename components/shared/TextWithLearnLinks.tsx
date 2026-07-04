@@ -25,6 +25,10 @@ const getKeywordsForEntry = (title: string): string[] => {
 export const TextWithLearnLinks: React.FC<TextWithLearnLinksProps> = ({ text, entries, onNavigate, currentEntryId }) => {
   if (!text) return null;
 
+  const currentKeywords = currentEntryId 
+    ? getKeywordsForEntry(entries.find(e => e.id === currentEntryId)?.title || '') 
+    : [];
+
   const validEntries = entries.filter(e => e.id !== currentEntryId);
   
   // Build a list of matchers: { keyword: string, entry: LearnEntry }
@@ -33,7 +37,9 @@ export const TextWithLearnLinks: React.FC<TextWithLearnLinksProps> = ({ text, en
   validEntries.forEach(entry => {
       const keywords = getKeywordsForEntry(entry.title);
       keywords.forEach(kw => {
-          matchers.push({ keyword: kw, entry });
+          if (!currentKeywords.includes(kw)) {
+              matchers.push({ keyword: kw, entry });
+          }
       });
   });
 
