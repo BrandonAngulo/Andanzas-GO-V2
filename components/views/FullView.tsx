@@ -437,7 +437,7 @@ const RouteDetail: React.FC<{ data: Ruta, goToPlaceInMap: (placeName: string) =>
             {/* Actions */}
             <div className="flex flex-wrap items-center gap-2 border-t pt-6 mt-2">
                 <ActionButton />
-                <Button variant="outline" size="lg">{t('fullView.viewRouteOnMap')}</Button>
+                <Button variant="outline" size="lg" onClick={() => onStartRoute(data)}>{t('fullView.viewRouteOnMap')}</Button>
             </div>
         </div>
     );

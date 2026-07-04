@@ -58,34 +58,34 @@ interface ExplorarPanelProps {
   query: string;
   onOpenSite: (site: Site) => void;
   onNavigateToRoutes?: () => void;
+  onOpenRoute?: (route: any) => void;
 }
 
-// Removed ROUTE_TAGS from global scope
 const IMPERDIBLES = [
   {
-    id: 'salsa-route',
+    id: 'route-salsa',
     title: 'Ruta de la Salsa: Obrero',
     subtitle: 'Historia y ritmo en el corazón de Cali',
     image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banner3.png',
     tag: 'Ruta Recomendada'
   },
   {
-    id: 'petronio',
-    title: 'Pacífico en su Salsa',
-    subtitle: 'El talento de los semilleros',
+    id: 'route-food',
+    title: 'Fogones de la Memoria',
+    subtitle: 'El talento de los sabores vallecaucanos',
     image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banners-01.jpg',
-    tag: 'Evento Especial'
+    tag: 'Ruta Gastronómica'
   },
   {
-    id: 'centro-historico',
-    title: 'Joyas del Centro Histórico',
-    subtitle: 'Patrimonio y arquitectura',
+    id: 'route-art',
+    title: 'Pinceles de la Calle',
+    subtitle: 'Arte urbano y memoria viva',
     image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banner0003.png',
-    tag: 'Colección'
+    tag: 'Ruta Visual'
   }
 ];
 
-const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes }) => {
+const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute }) => {
   const { language } = useI18n();
 
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -187,7 +187,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               <div 
                 key={item.id} 
                 className="snap-center shrink-0 w-[85vw] md:w-[45vw] lg:w-[400px] max-w-[500px] h-[250px] relative rounded-2xl overflow-hidden cursor-pointer group shadow-md"
-                onClick={onNavigateToRoutes}
+                onClick={() => onOpenRoute?.({ id: item.id })}
               >
                 <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />

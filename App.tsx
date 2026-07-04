@@ -466,7 +466,7 @@ export default function App() {
                   plannedRoutePoints={newRoutePoints}
                 />
               )}
-              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onNavigateToRoutes={() => setActivePanel('rutas')} />}
+              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}
