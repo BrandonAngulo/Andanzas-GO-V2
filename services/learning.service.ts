@@ -1,6 +1,6 @@
 import { LearnEntry } from '../types';
 import { learningData } from '../data/learning';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabaseClient';
 
 class LearningService {
     async getAll(): Promise<LearnEntry[]> {

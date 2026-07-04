@@ -1,6 +1,6 @@
 import { supabase } from '../lib/supabaseClient';
 import { Site } from '../types';
-import { CULTURAL_SITES } from '../data/sites';
+import { sitesData } from '../data/sites';
 
 export const sitesService = {
     async getAll(): Promise<Site[]> {
@@ -23,14 +23,14 @@ export const sitesService = {
                     console.error('Failed to parse sites from cache', e);
                 }
             }
-            return CULTURAL_SITES;
+            return sitesData;
         }
 
         const dbSites = data?.map(mapSite) || [];
 
         // Combine DB sites and purely local sites avoiding duplicates by ID
         const dbSiteIds = new Set(dbSites.map(s => s.id));
-        const uniqueLocalSites = CULTURAL_SITES.filter(s => !dbSiteIds.has(s.id));
+        const uniqueLocalSites = sitesData.filter((s: Site) => !dbSiteIds.has(s.id));
         const allSites = [...dbSites, ...uniqueLocalSites];
 
         // Save successfully fetched sites to cache for offline support

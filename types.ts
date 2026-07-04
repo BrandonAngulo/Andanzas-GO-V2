@@ -14,7 +14,7 @@ export interface LearnEntry {
   site_ids?: string[];
   route_ids?: string[];
   image_url?: string;
-  created_at: string;
+  created_at?: string;
   // Legacy fields kept for a smooth transition if needed:
   content_simple?: string;
   content_deep?: string;
@@ -240,7 +240,8 @@ export type ActivePanelType =
   | 'configuracion'
   | 'sobre'
   | 'soporte'
-  | 'noticias';
+  | 'noticias'
+  | 'paquesepas';
 
 export interface UserProfile {
   id: string;

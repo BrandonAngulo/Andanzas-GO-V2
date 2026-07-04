@@ -69,14 +69,14 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite }
                         </div>
                     )}
 
-                    {(selectedEntry.site_ids?.length || selectedEntry.site_id) && onOpenSite && (
+                    {(selectedEntry.site_ids?.length) && onOpenSite && (
                         <div className="mt-10 p-5 bg-card border rounded-2xl shadow-sm text-center">
                             <h4 className="font-semibold mb-2">Vívelo tú mismo</h4>
                             <p className="text-sm text-muted-foreground mb-4">
                                 {selectedEntry.cta || "Esta historia cobra vida en uno de nuestros sitios recomendados."}
                             </p>
                             <Button onClick={() => {
-                                const targetId = selectedEntry.site_ids?.[0] || selectedEntry.site_id;
+                                const targetId = selectedEntry.site_ids?.[0];
                                 if (targetId) onOpenSite(targetId);
                             }}>
                                 Ver lugar relacionado <ChevronRight className="w-4 h-4 ml-1" />

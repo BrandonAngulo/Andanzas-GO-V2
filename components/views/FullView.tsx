@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle, Target } from 'lucide-react';
+import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle, Target, BookOpen, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Site, Evento, Ruta, RecomendacionRuta, RecomendacionTipo } from '../../types';
@@ -81,7 +81,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
                         </div>
                     )}
 
-                    {type === 'site' && <SiteDetail data={data} sites={sites} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} activeRoute={activeRoute} visitedPoints={visitedPoints} onVisitPoint={onVisitPoint ? () => handleAuthAction(onVisitPoint) : undefined} />}
+                    {type === 'site' && <SiteDetail data={data} sites={sites} addReview={(id: string, txt: string, rat: number, fotos: File[]) => handleAuthAction(() => addReview(id, txt, rat, fotos))} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} activeRoute={activeRoute} visitedPoints={visitedPoints} onVisitPoint={onVisitPoint ? () => handleAuthAction(onVisitPoint) : undefined} onClose={onClose} onNavigateToAprende={onNavigateToAprende} />}
                     {type === 'event' && <EventDetail data={data} sites={sites} addToRoute={(s: Site) => handleAuthAction(() => addToRoute(s))} goToPlaceInMap={goToPlaceInMap} />}
                     {type === 'route' && <RouteDetail data={data} goToPlaceInMap={goToPlaceInMap} onStartRoute={onStartRoute} onCompleteRoute={onCompleteRoute} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} />}
 
@@ -161,7 +161,7 @@ const RecomendacionCard: React.FC<{ recomendacion: RecomendacionRuta }> = ({ rec
 
 
 // Site Detail Component
-const SiteDetail: React.FC<{ data: Site, sites: Site[], addReview: any, addToRoute: any, goToPlaceInMap: any, activeRoute?: Ruta | null, visitedPoints?: string[], onVisitPoint?: () => void }> = ({ data, sites, addReview, addToRoute, goToPlaceInMap, activeRoute, visitedPoints, onVisitPoint }) => {
+const SiteDetail: React.FC<{ data: Site, sites: Site[], addReview: any, addToRoute: any, goToPlaceInMap: any, activeRoute?: Ruta | null, visitedPoints?: string[], onVisitPoint?: () => void, onClose: () => void, onNavigateToAprende?: () => void }> = ({ data, sites, addReview, addToRoute, goToPlaceInMap, activeRoute, visitedPoints, onVisitPoint, onClose, onNavigateToAprende }) => {
     const { t, language } = useI18n();
     const isInRoute = activeRoute?.puntos.includes(data.id);
     const isVisited = visitedPoints?.includes(data.id);

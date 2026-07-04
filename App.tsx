@@ -101,7 +101,7 @@ export default function App() {
   const { isAuthenticated, user, signIn } = useAuth();
 
   // --- Global State via Contexts ---
-  const { sites, eventos, rutasTematicas, feed, allInsignias, isLoading } = useAppData();
+  const { sites, eventos, rutasTematicas, feed, allInsignias, learnEntries, isLoading } = useAppData();
   const {
     favIds,
     reviews,

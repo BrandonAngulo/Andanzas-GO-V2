@@ -34,7 +34,7 @@ export const sitesData: Site[] = [
       "His collection of works on paper is one of the most important in Latin America.",
       "The Cinemateca is the only room in the city dedicated exclusively to art cinema."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "$15,000 COP (Estudiantes/Adulto mayor $10,000 COP).",
     "tarifa_en": "$15,000 COP (Students/Seniors $10,000 COP)."
   },
@@ -55,8 +55,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Main window to the pre-Hispanic legacy of Valle del Cauca and key piece of the Valle del Cauca identity; part of the network of gold museums of the Banco de la República.",
     "datosHistoricos": "Inaugurado el 9 de mayo de 1991 con el fin de conservar, investigar y difundir el patrimonio arqueológico de la región. Está integrado al Centro Cultural del Banco de la República en Cali, que suma biblioteca y salas de exposición.",
     "datosHistoricos_en": "Inaugurated on May 9, 1991 with the aim of preserving, researching and disseminating the archaeological heritage of the region. It is integrated into the Cultural Center of the Banco de la República in Cali, which includes a library and exhibition rooms.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su colección incluye piezas de orfebreía y alfarería de hasta 2.000 años de antigüedad de las culturas Ilama, Yotoco y Sonso.",
       "En el área Calima, al noroeste de Cali, la arqueología ha recuperado más de 9.000 años de historia humana.",
@@ -67,9 +67,9 @@ export const sitesData: Site[] = [
       "In the Calima area, northwest of Cali, archeology has recovered more than 9,000 years of human history.",
       "It lends “teaching suitcases” to educational institutions to set up small exhibitions in the classroom."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Entrada gratuita.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s102",
@@ -88,8 +88,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Unique sound repository in Colombia that preserves irreplaceable recordings of Pacific music and classical Cali salsa, many of them made in natural environments that no longer exist as they were captured.",
     "datosHistoricos": "La colección fue iniciada en los años 60 por investigadores de la Universidad del Valle y la Biblioteca Departamental, que comenzaron a grabar comunidades del Pacífico antes de que la modernización afectara sus tradiciones orales. La FES (Fundación para la Educación Superior) financió la digitalización de gran parte del archivo en los años 90.",
     "datosHistoricos_en": "The collection was started in the 1960s by researchers from the Universidad del Valle and the Departmental Library, who began recording Pacific communities before modernization affected their oral traditions. The FES (Foundation for Higher Education) financed the digitization of much of the archive in the 1990s.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Conserva grabaciones únicas de rituales fúnebres del Pacífico realizadas en los años 50 que no existen en ningún otro archivo del mundo.",
       "El catálogo incluye la primera grabación comercial de una orquesta de salsa caleña, de 1968.",
@@ -100,7 +100,7 @@ export const sitesData: Site[] = [
       "The catalog includes the first commercial recording of a Cali salsa orchestra, from 1968.",
       "Researchers from the Smithsonian Institution have collaborated with the Audio Library to digitize its collection of indigenous music."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Entrada libre.",
     "tarifa_en": "Free entry."
   },
@@ -121,8 +121,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The beverage stalls of San Antonio preserve recipes and techniques for preparing pre-Hispanic and Hispanic-American refreshing drinks that are part of the intangible gastronomic heritage of Cali and Valle del Cauca.",
     "datosHistoricos": "El champús es una bebida de origen prehispánico que fue adoptada y modificada durante la colonia española. La preparación caleña con maíz, lulo y panela se consolidó como tradición a finales del siglo XIX. Los puestos de la Colina de San Antonio existen desde al menos los años 40, cuando el barrio era el centro bohemio y artístico de la ciudad.",
     "datosHistoricos_en": "Shampoos is a drink of pre-Hispanic origin that was adopted and modified during the Spanish colony. The Cali preparation with corn, lulo and panela was consolidated as a tradition at the end of the 19th century. The San Antonio Hill stalls have existed since at least the 1940s, when the neighborhood was the bohemian and artistic center of the city.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La lulada caleña es considerada patrimonio cultural gastronómico de Cali por el Ministerio de Cultura de Colombia.",
       "El champús se sirve frío o caliente: en las mañanas frías de diciembre se ofrece caliente como bebida reconfortante.",
@@ -133,7 +133,7 @@ export const sitesData: Site[] = [
       "The shampoo is served hot or cold: on cold December mornings it is offered hot as a comforting drink.",
       "The lulo or naranjilla grows only in temperate climates of the Colombian and Ecuadorian Andes."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Consumo libre (precios desde $4,000 COP).",
     "tarifa_en": "Pay for consumption (prices starting at $4,000 COP)."
   },
@@ -154,8 +154,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Pandebono is the most representative traditional snack of Valle del Cauca and Cali. The downtown bakeries are the guardians of the authentic recipe, in the face of the proliferation of industrial versions that alter the original ingredients and techniques.",
     "datosHistoricos": "El pandebono tiene origen en las comunidades afrocolombianas del litoral Pacífico, que preparaban bollos de maíz y yuca. Su versión actual con queso fue perfeccionada en el Valle del Cauca a finales del siglo XIX. Las primeras panaderías del centro de Cali datan de la década de 1910, cuando la ciudad vivía el auge del comercio algodonero y cafetero.",
     "datosHistoricos_en": "Pandebono has its origins in the Afro-Colombian communities of the Pacific coast, who prepared corn and yucca buns. Its current version with cheese was perfected in Valle del Cauca at the end of the 19th century. The first bakeries in the center of Cali date back to the 1910s, when the city was experiencing the boom of the cotton and coffee trade.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Un pandebono auténtico debe consumirse en los primeros 15 minutos después de salir del horno para disfrutar de su textura ideal.",
       "El almidón de yuca agria que se usa para el pandebono tarda hasta 15 días en prepararse mediante un proceso de fermentación.",
@@ -166,7 +166,7 @@ export const sitesData: Site[] = [
       "The sour cassava starch used for pandebono takes up to 15 days to prepare through a fermentation process.",
       "There are more than 30 varieties of pandebono in Valle del Cauca, each subregion with its own family recipe."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Consumo libre (precios desde $2,000 COP).",
     "tarifa_en": "Pay for consumption (prices starting at $2,000 COP)."
   },
@@ -187,8 +187,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The Bulevar mural circuit is the most visited art gallery in Cali and one of the most relevant public art projects in southwestern Colombia, converting the functional flood containment walls into a space for aesthetic and political reflection.",
     "datosHistoricos": "Las primeras intervenciones en los muros del río Cali fueron realizadas de manera informal por colectivos de grafiti en los años 90. A partir de 2010, la Alcaldía de Cali institucionalizó el proceso a través del FAUC (Festival de Arte Urbano de Cali), convirtiendo las intervenciones en encargos oficiales a artistas reconocidos.",
     "datosHistoricos_en": "The first interventions on the walls of the Cali River were carried out informally by graffiti collectives in the 90s. Starting in 2010, the Cali Mayor's Office institutionalized the process through the FAUC (Cali Urban Art Festival), converting the interventions into official commissions from recognized artists.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El circuito de murales del Bulevar tiene más de 2 km de extensión continua, convirtiéndolo en uno de los más largos de América Latina.",
       "Varios murales retratan especies endémicas en peligro de extinción del Valle del Cauca como el pato careto y el cóndor de los Andes.",
@@ -199,7 +199,7 @@ export const sitesData: Site[] = [
       "Several murals portray endangered endemic species of the Cauca Valley such as the black-faced duck and the Andean condor.",
       "During the FAUC Festival, artists from more than 20 countries simultaneously intervene on the city walls."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Sin costo.",
     "tarifa_en": "Free."
   },
@@ -220,8 +220,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The bridge is a symbolic connector between colonial Cali and modern Cali, and its artistic intervention turned it into a visual landmark of the river's pedestrian circuit, revitalizing foot traffic between areas of the city that were previously traveled only by vehicle.",
     "datosHistoricos": "La Cervecería Bavaria fue fundada en Cali en 1904 y fue una de las primeras industrias modernas de la ciudad. Los galpones originales de la fábrica fueron demolidos en los años 80 para dar paso a desarrollos residenciales. El nombre del puente ha permanecido como memoria popular de esa presencia industrial.",
     "datosHistoricos_en": "The Bavaria Brewery was founded in Cali in 1904 and was one of the first modern industries in the city. The factory's original warehouses were demolished in the 1980s to make way for residential developments. The name of the bridge has remained a popular memory of that industrial presence.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Desde el puente se puede ver el vuelo de las garzas blancas que anidan en los árboles de las márgenes del río Cali.",
       "Bavaria Cali fue la primera empresa en Colombia en producir cerveza de manera industrial y en frío.",
@@ -232,7 +232,7 @@ export const sitesData: Site[] = [
       "Bavaria Cali was the first company in Colombia to produce beer industrially and cold.",
       "The largest mural on the bridge measures 45 meters and was painted in a single night by a collective of artists during FAUC 2019."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Sin costo.",
     "tarifa_en": "Free."
   },
@@ -253,8 +253,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The Siloam murals are a model of how art can transform the public narrative of historically stigmatized neighborhoods. The project has turned Siloé into an internationally recognized cultural tourism destination, generating direct income for families in the sector.",
     "datosHistoricos": "Siloé fue fundado en los años 20 por familias mineras que extraían carbón de las vetas de la ladera occidental de Cali. Hasta los años 90, era considerado uno de los barrios más peligrosos de la ciudad. A partir de 2010, la organización juvenil \"Ladera Cultura Viva\" inició el proceso de transformación a través del arte, los murales y el turismo comunitario.",
     "datosHistoricos_en": "Siloé was founded in the 1920s by mining families who extracted coal from the veins of Cali's western slope. Until the 90s, it was considered one of the most dangerous neighborhoods in the city. Starting in 2010, the youth organization \"Ladera Cultura Viva\" began the transformation process through art, murals and community tourism.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Desde los puntos más altos de los murales de Siloé se tiene una de las vistas panorámicas más completas de la ciudad de Cali y el Valle del Cauca.",
       "Varios de los murales fueron pintados por jóvenes que nunca habían tomado un pincel antes de ingresar al programa de arte de Ladera Cultura Viva.",
@@ -265,7 +265,7 @@ export const sitesData: Site[] = [
       "Several of the murals were painted by young people who had never picked up a paintbrush before entering Ladera Cultura Viva's art program.",
       "The Siloé neighborhood had the first urban coal mine in Colombia, operated until the 1960s."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Aporte voluntario sugerido: $10,000 - $20,000 COP por persona.",
     "tarifa_en": "Suggested voluntary tip: $10,000 - $20,000 COP per person."
   },
@@ -281,12 +281,12 @@ export const sitesData: Site[] = [
     "visitas": 1100,
     "logoUrl": "https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=1000",
     "descripcion": "En una esquina de la Plaza de Cayzedo, frente al corazón fundacional de Cali, se alza el Edificio Otero: una mole ecléctica de inspiración republicana francesa que cambió para siempre el paisaje del centro. Su historia empieza con un sueño europeo. El empresario Emiliano Otero, deslumbrado por la arquitectura que había visto en sus viajes, decidió traer a Cali un edificio a la altura de los que admiraba en el viejo continente. En 1916 compró la casa del coronel Ocampo, la mandó demoler y encargó la obra a la firma Borrero y Ospina, que la levantó entre 1922 y 1926.\n\nEl Otero fue el primer edificio de Cali construido con estructura en hormigón armado, dejando a los muros el papel de simple cerramiento: una innovación técnica que permitía más altura, más ligereza y más libertad decorativa. Con él prácticamente arrancó la sustitución de la vieja arquitectura colonial por el eclecticismo académico europeo y las técnicas modernas. Su fachada mezcla elementos renacentistas y barrocos, y en la esquina una cúpula con óculos corona un volumen ochavado que le da verticalidad y rompe la simetría.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Junto con el Palacio Nacional que tiene enfrente, el Edificio Otero conforma el llamado \"costado republicano\" de la Plaza de Cayzedo, y es uno de los hitos del paseo patrimonial de la Calle 12. Está declarado Monumento Nacional.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "1916: Emiliano Otero compra y demuele la casa del coronel Ocampo. 1922–1926: construcción por la firma Borrero y Ospina. Durante sus primeros años fue epicentro de la vida social caleña. 25 de julio de 1977: declarado Monumento Nacional.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El actor de Hollywood Tyrone Power se hospedó en el Hotel Europa en 1939.",
       "La firma Borrero y Ospina se consolidó, prácticamente con este edificio, como la más importante casa de constructores de Cali.",
@@ -313,8 +313,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Piper Pimienta was the first artist to record salsa with a specifically Cali vocal and dance style, distancing himself from the New York model. \"Las Caleñas son como las Flores\" became the identity anthem of the city, recognized throughout the world of salsa.",
     "datosHistoricos": "Edulfamid Molina Díaz nació en Cali en 1948 y se inició en la música como bailador antes de convertirse en cantante. Grabó su primer disco en 1971 con la Orquesta de Roberto Castillo. \"Las Caleñas son como las Flores\" fue grabada en 1979 y se convirtió en el sencillo de salsa caleña más difundido de la historia. Falleció en Cali en 2002.",
     "datosHistoricos_en": "Edulfamid Molina Díaz was born in Cali in 1948 and started in music as a dancer before becoming a singer. He recorded his first album in 1971 with the Roberto Castillo Orchestra. \"Las Caleñas son como las Flores\" was recorded in 1979 and became the most distributed Cali salsa single in history. He died in Cali in 2002.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "\"Las Caleñas son como las Flores\" ha sido grabada por más de 40 artistas diferentes en todo el mundo, siendo una de las canciones de salsa más versionadas de la historia.",
       "Piper Pimienta era conocido por su estilo de baile: movía los hombros y los pies de forma independiente, un rasgo característico del baile caleño.",
@@ -325,7 +325,7 @@ export const sitesData: Site[] = [
       "Piper Pimienta was known for his dance style: he moved his shoulders and feet independently, a characteristic feature of Cali dancing.",
       "The sculpture was financed by the residents of the Barrio Obrero through a popular collection."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Sin costo.",
     "tarifa_en": "Free."
   },
@@ -346,8 +346,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Cali's main craft center and popular culture space; meeting point for artisans of the country.",
     "datosHistoricos": "El proyecto se inició en 1987 por iniciativa de Artesanías de Colombia (impulsado por María Cristina Palau Londoño) y se inauguró oficialmente el 12 de julio de 1990. En 1993 pasó a administración municipal.",
     "datosHistoricos_en": "The project began in 1987 at the initiative of Artesanías de Colombia (promoted by María Cristina Palau Londoño) and was officially inaugurated on July 12, 1990. In 1993 it passed to municipal administration.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Debe su nombre a la cruz de la colina, envuelta en leyendas caleñas del siglo XVI.",
       "Reúne a cerca de 120 familias artesanas en sus cuatro niveles.",
@@ -360,7 +360,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 5 con Carrera 14 (aprox.), centro-occidente, Cali.",
     "tarifa": "Entrada libre.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s110",
@@ -379,8 +379,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The plaza is the only public space in Cali dedicated specifically to honoring Afro-descendant heritage, in a city where more than 25% of the population has African roots. It is a symbol of the political and cultural recognition of black communities in the urban space.",
     "datosHistoricos": "La plaza fue inaugurada el 21 de mayo de 2001, coincidiendo con el Día de la Afrocolombianidad, establecido en Colombia por la Ley 725 de 2001. El emplazamiento fue elegido por su proximidad al antiguo barrio de El Calvario, uno de los primeros barrios de asentamiento de comunidades negras llegadas del Pacífico al centro de Cali.",
     "datosHistoricos_en": "The plaza was inaugurated on May 21, 2001, coinciding with Afro-Colombian Day, established in Colombia by Law 725 of 2001. The location was chosen for its proximity to the old neighborhood of El Calvario, one of the first neighborhoods to settle black communities arriving from the Pacific in the center of Cali.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Cali tiene la mayor concentración de población afrodescendiente de América del Sur en una sola ciudad, después de Salvador de Bahía en Brasil.",
       "La marimba de chonta, instrumento estrella de la música del Pacífico, fue declarada por la UNESCO Patrimonio Inmaterial de la Humanidad en 2015.",
@@ -391,7 +391,7 @@ export const sitesData: Site[] = [
       "The chonta marimba, the star instrument of Pacific music, was declared Intangible Heritage of Humanity by UNESCO in 2015.",
       "Shrimp encocado and rice with coconut, Pacific dishes served in the plaza during festivals, have their origins in the kitchens of the Afro-Colombian communities on the coast."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Sin costo.",
     "tarifa_en": "Free."
   },
@@ -412,8 +412,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The San Francisco complex — which includes the Governor's Office, the Church of San Francisco, the Plazoleta and the Convent of La Merced — is the core of Cali's religious and civil architectural heritage, concentrating buildings from the 17th, 18th and 20th centuries in less than one block.",
     "datosHistoricos": "El Convento de San Francisco, edificado en el mismo sector en el siglo XVII, fue la institución religiosa y educativa más importante de la Cali colonial. En sus patios se formaron las élites intelectuales y políticas de la ciudad durante casi tres siglos. La sede actual de la Gobernación fue construida demoliendo parte de las instalaciones conventuales en los años 60.",
     "datosHistoricos_en": "The Convent of San Francisco, built in the same area in the 17th century, was the most important religious and educational institution in colonial Cali. In its patios the intellectual and political elites of the city were formed for almost three centuries. The current headquarters of the Government was built by demolishing part of the conventual facilities in the 60s.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Los murales de mosaico de la fachada de la Gobernación son obra de Pedro Nel Gómez, el mismo muralista del Palacio Municipal de Medellín.",
       "La Iglesia de San Francisco, al lado de la Gobernación, conserva una de las torres barrocas más bellas de toda Colombia, declarada Monumento Nacional.",
@@ -424,7 +424,7 @@ export const sitesData: Site[] = [
       "The Church of San Francisco, next to the Governor's Office, preserves one of the most beautiful baroque towers in all of Colombia, declared a National Monument.",
       "In the small square of San Francisco, craft fairs are held every week where you can find products from the Nasa and Misak indigenous communities of Cauca."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Sin costo.",
     "tarifa_en": "Free."
   },
@@ -445,8 +445,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Casa Comedia is the only concert hall specialized in humor in southwestern Colombia and one of the few spaces in the country where humor is treated with the same artistic seriousness as dramatic theater or dance.",
     "datosHistoricos": "La sala fue fundada en 2005 por el actor y director caleño Tato Torres, quien dedicó su carrera a dignificar el humor como expresión artística plena. En 2012 fue reconocida por el Ministerio de Cultura como Sala de Teatro Concertada, obteniendo financiación pública estable por primera vez en su historia.",
     "datosHistoricos_en": "The room was founded in 2005 by the Cali actor and director Tato Torres, who dedicated his career to dignifying humor as a full artistic expression. In 2012 it was recognized by the Ministry of Culture as a Concerted Theater Hall, obtaining stable public financing for the first time in its history.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Casa Comedia ha sido el primer escenario de más de 30 comediantes colombianos que hoy tienen proyección nacional e internacional.",
       "Los viernes de \"Open Mic\" son completamente gratuitos y cualquier persona puede subir al escenario a contar sus chistes durante 5 minutos.",
@@ -457,7 +457,7 @@ export const sitesData: Site[] = [
       "\"Open Mic\" Fridays are completely free and anyone can come up on stage to tell their jokes for 5 minutes.",
       "The theater has a \"guaranteed laughter\" policy: if the viewer does not laugh at any time, the ticket is returned."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Precios desde $25,000 COP según la obra.",
     "tarifa_en": "Prices starting at $25,000 COP depending on the show."
   },
@@ -473,12 +473,12 @@ export const sitesData: Site[] = [
     "visitas": 400,
     "logoUrl": "https://images.unsplash.com/photo-1524312814349-166255d645f7?q=80&w=1000",
     "descripcion": "En el segundo piso del Centro Cultural de Cali se guarda, tomo a tomo, la memoria escrita de la ciudad. El Archivo Histórico de Cali es la entidad encargada de custodiar, organizar y difundir el patrimonio documental de los caleños, siguiendo los lineamientos del Archivo General de la Nación. En sus estantes reposan cerca de 9.000 tomos —unos 800 metros lineales— de documentación producida por las distintas figuras de gobierno que ha tenido la ciudad: el cabildo colonial, el municipio y hoy el distrito. Es uno de los lugares más importantes para investigar la historia de Cali, y también uno de los mejor guardados: su documento más antiguo es un acta del Cabildo de 1564.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Es la principal institución archivística de Cali y una ventana única al pasado colonial y republicano de la ciudad y la región. Sus documentos permiten reconstruir cómo Cali pasó de ser una pequeña localidad a una metrópoli.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Fue creado mediante el Decreto Municipal N.º 378 del 24 de junio de 1958. Desde febrero del año 2000 se ubica de manera definitiva en el Centro Cultural de la ciudad. Organiza su acervo en cinco fondos documentales.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Cali se anticipó diez años a la Real Cédula de 1573 que ordenaba a los cabildos llevar Libros de Actas.",
       "Entre sus documentos hay cartas de libertad de personas esclavizadas.",
@@ -505,8 +505,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The Ladera Museums are an internationally recognized model of how communities can appropriate their own historical memory without the intermediation of state institutions or universities. They have received visits from delegations of museologists from Argentina, Brazil and Spain who have adopted them as a reference.",
     "datosHistoricos": "El primer Museo de Ladera fue inaugurado en 2008 en el barrio Siloé, como parte de un proceso de memoria histórica liderado por la Organización Ladera Cultura Viva. El proyecto se expandió a otros barrios de la ladera entre 2012 y 2018, con apoyo de la Alcaldía de Cali y el Ministerio de Cultura. Cada museo tiene un comité de vecinos que decide qué objetos y relatos se exhiben.",
     "datosHistoricos_en": "The first Ladera Museum was inaugurated in 2008 in the Siloé neighborhood, as part of a historical memory process led by the Ladera Cultura Viva Organization. The project expanded to other hillside neighborhoods between 2012 and 2018, with support from the Cali Mayor's Office and the Ministry of Culture. Each museum has a neighborhood committee that decides which objects and stories are exhibited.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Uno de los museos exhibe más de 200 herramientas de minería artesanal de carbón que datan de los años 40, donadas por familias de mineros.",
       "Los guías de los museos son vecinos del barrio que han recibido formación en historia oral y museología comunitaria.",
@@ -517,7 +517,7 @@ export const sitesData: Site[] = [
       "The museum guides are neighborhood residents who have received training in oral history and community museology.",
       "The project was a finalist for the Ibero-American Intangible Heritage Award in 2019."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Aporte voluntario sugerido: $10,000 COP por persona.",
     "tarifa_en": "Suggested voluntary tip: $10,000 COP per person."
   },
@@ -538,8 +538,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Cali is recognized as the \"Sports Capital of America\" ​​for having hosted the Pan American Games and for consistently producing world champions in disciplines such as cycling, boxing, weightlifting and athletics. The Pan American Courts are the physical epicenter of that sporting identity.",
     "datosHistoricos": "Los VII Juegos Panamericanos se realizaron en Cali en agosto de 1971, siendo los primeros en celebrarse en una ciudad de habla shorta hispana. Se construyeron 14 escenarios deportivos en toda la ciudad. Campeones olímpicos como el ciclista Mauricio Soler y el boxeador Antonio Cervantes \"Kid Pambelé\" se iniciaron en estos escenarios. En 2021 Cali fue sede de los Juegos Panamericanos Junior.",
     "datosHistoricos_en": "The VII Pan American Games were held in Cali in August 1971, being the first to be held in a short Spanish-speaking city. 14 sports venues were built throughout the city. Olympic champions such as the cyclist Mauricio Soler and the boxer Antonio Cervantes \"Kid Pambelé\" got their start in these settings. In 2021 Cali hosted the Junior Pan American Games.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El velódromo de las Canchas Panamericanas es considerado uno de los tres mejores del mundo para ciclismo de pista, por sus curvas de peralte y condiciones de altitud.",
       "Cali ha ganado más medallas de oro en los Juegos Panamericanos que cualquier otra ciudad colombiana.",
@@ -550,7 +550,7 @@ export const sitesData: Site[] = [
       "Cali has won more gold medals at the Pan American Games than any other Colombian city.",
       "The 1971 Pan American Games were the first televised in color in all of Latin America."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Acceso libre a zonas comunes. Escenarios específicos: desde $5,000 COP.",
     "tarifa_en": "Free access to common areas. Specific venues: from $5,000 COP."
   },
@@ -571,8 +571,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Neighborhood sports centers are the most successful public sports and coexistence policy in Cali. Research from the Universidad del Valle has shown that in neighborhoods with active sports centers, rates of youth violence are up to 40% lower than in those without sports infrastructure.",
     "datosHistoricos": "El programa de polideportivos barriales fue iniciado en Cali en los años 80 como parte de la política de recuperación de espacios públicos y prevención de violencia juvenil. En los años 2000, bajo la administración municipal, se hizo la mayor inversión en infraestructura deportiva barrial de la historia de la ciudad, construyendo o renovando más de 80 polideportivos en todas las comunas.",
     "datosHistoricos_en": "The neighborhood sports center program was initiated in Cali in the 1980s as part of the policy to recover public spaces and prevent youth violence. In the 2000s, under the municipal administration, the largest investment was made in neighborhood sports infrastructure in the history of the city, building or renovating more than 80 sports centers in all the communities.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Varios campeones mundiales de boxeo y ciclismo caleños comenzaron su formación en los polideportivos barriales de sus comunas.",
       "Los torneos de microfútbol del sábado en los polideportivos convocan hasta 500 espectadores y son el principal evento social de muchos barrios populares de Cali.",
@@ -583,80 +583,80 @@ export const sitesData: Site[] = [
       "Saturday micro-soccer tournaments in sports centers attract up to 500 spectators and are the main social event in many popular neighborhoods of Cali.",
       "Cali's sports center network is the densest in Colombia: there is one for every 8,000 inhabitants on average."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Acceso libre.",
     "tarifa_en": "Free access."
   },
   {
     "id": "s117",
     "nombre": "Colegio de Santa Librada",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Institucional",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "En el centro de Cali, el Colegio de Santa Librada es el más antiguo de la ciudad y una de las primeras instituciones de educación pública del suroccidente colombiano. Fue fundado el 29 de enero de 1823 por decreto del general Francisco de Paula Santander, entonces vicepresidente de la Gran Colombia, aprovechando la ley que suprimía conventos menores para financiar la educación republicana. Su nombre honra a Santa Librada, mártir portuguesa cuya festividad cae el 20 de julio, día de la independencia. Su edificación conserva rasgos coloniales, republicanos y modernos que lo hacen parte del interés patrimonial de Cali.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Santa Librada es un pilar de la memoria caleña: por sus aulas pasaron los intelectuales que moldearon la ciudad y la región durante dos siglos, y su historia está entretejida con la política nacional —participó, de una u otra forma, en las guerras del siglo XIX, sirvió de cuartel y fue foco del movimiento estudiantil—. Su hito más importante para la ciudad: en 1945 fue la primera sede de la recién creada Universidad Industrial del Valle, que años después sería la Universidad del Valle. Es, literalmente, la cuna de Univalle.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "29 de enero de 1823: fundación por decreto de Santander; instalación solemne el 18 de octubre de 1823, con los primeros 27 estudiantes.\nDécadas de 1940: el colegio se traslada de su antigua sede (el Convento de San Agustín, Carrera 4 con Calle 13) a su ubicación actual en el barrio San Bosco.\n2023: celebra su bicentenario; ese mismo año el Distrito obtuvo el título que lo reconoce como patrimonio público de los caleños.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Entre sus egresados está el poeta nadaísta Jotamario Arbeláez.",
       "Se eligió el nombre de la santa por coincidir su fiesta (20 de julio) con la fecha del grito de independencia nacional."
     ],
     "direccion": "Carrera 15 con Calle 7ª, barrio San Bosco.",
     "tarifa": "No aplica.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s118",
     "nombre": "Teatro La Concha",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Arte y Teatro",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "En una casa declarada Patrimonio Arquitectónico-Urbano de Cali, en pleno barrio San Antonio, funciona el Teatro La Concha: un espacio escénico al servicio de la comunidad artística iberoamericana. Fundado en 2007, hace parte de la Fundación de Teatro y Artes \"Yolanda García Reina\" y cuenta con una sala de mediano formato, una sala de exposición y un salón alterno para ensayos y montajes de pequeño formato. La casa guarda, además, una capa de memoria caleña: alberga de manera permanente la exposición del artista plástico Carlos Zuluaga sobre Jovita Feijóo, uno de los personajes populares más entrañables de la ciudad.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "La Concha es una de las salas que sostienen el tejido teatral independiente de Cali. Su programación mezcla obras propias y coproducciones con otros grupos de la ciudad y del país, muchas de ellas de fuerte carga contemporánea: memoria, identidad, salud mental, género. Su sede patrimonial en San Antonio la integra al circuito de salas de la colina —junto a Cali Teatro y otras— que ha convertido al barrio en uno de los corazones escénicos de la ciudad.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "2007: fundación del Teatro La Concha, dentro de la Fundación de Teatro y Artes \"Yolanda García Reina\".\nSu sede es una casa del centro histórico catalogada como Patrimonio Arquitectónico-Urbano de Cali.\nHa desarrollado coproducciones (por ejemplo, con Entropía Teatro) y participa activamente en la Red de Teatro Independiente de Cali.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "En la misma casa se puede visitar la exposición permanente sobre Jovita Feijóo, figura mítica del \"Cali viejo\".",
       "Durante la pandemia fue una de las primeras salas de Cali en habilitar una plataforma web para transmitir sus obras."
     ],
     "direccion": "Calle 4 #10-48, barrio San Antonio.",
     "tarifa": "Boletería según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s119",
     "nombre": "Museo Popular de Siloé",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Museo",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4243,
     "lng": -76.5492,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "En una casa de fachada pintada a mano en el barrio El Cortijo, comuna 20, funciona uno de los museos más singulares de Colombia: un lugar donde está prohibido hacer silencio. El Museo Popular de Siloé no se parece a ningún otro. Aquí se puede gritar, tocar los objetos, tomar fotos, cantar y dejar la propia huella. Sus creadores lo llaman \"contramuseo\": una apuesta política y estética que le devuelve al barrio el poder de contar su propia historia, contra la lógica del museo tradicional —silencioso, de vitrinas intocables y curaduría de expertos—. Fue fundado en agosto del año 2000 por David Gómez, líder comunitario, guía voluntario e historiador empírico nacido y criado en la ladera, y lo sostiene la misma comunidad: las piezas son donadas por los vecinos y la curaduría nace del diálogo, la memoria y hasta el conflicto.\n\nEs la casa de David, y también es Siloé entero. Zapatos que cuelgan del techo, una bicicleta quemada en la entrada, violines en la pared, fotos de los años 50, máscaras, cascos, un trozo de carbón, disfraces de diablo. Todo aparente caos que se ordena cuando David narra: cada objeto tiene una historia, y esa historia es memoria del territorio. El museo entiende que el barrio mismo es el museo, y por eso su equipo ofrece desde 1998 la Ruta Turística por Siloé y las \"caminatas de memoria\" por las empinadas calles, gradas y callejones de la comuna. Practican lo que llaman \"museología viva\": dar la palabra a quienes históricamente fueron silenciados.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Una de las experiencias de memoria comunitaria autogestionada más importantes del país, y un referente de cómo un territorio estigmatizado puede reescribir su propio relato. Frente a la imagen que los grandes medios han fijado de Siloé, el museo custodia y visibiliza las múltiples memorias del barrio.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "El museo narra a Siloé desde sus raíces más hondas: los indígenas yanaconas, los africanos esclavizados y los mineros de Marmato (Caldas) que llegaron atraídos por el carbón —Siloé está literalmente construido sobre socavones—. Guarda una sala dedicada al conflicto armado y a la memoria del M-19.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El lema que recibe al visitante: \"Prohibido hacer silencio. Att. La Memoria de Siloé\".",
       "El único requisito para que un objeto entre al museo es que cuente algo, que sea memoria del territorio.",
@@ -664,7 +664,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 9 Oeste #50-18, barrio El Cortijo, Siloé, Comuna 20",
     "tarifa": "Entrada gratuita.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s12",
@@ -683,8 +683,8 @@ export const sitesData: Site[] = [
     "importancia_en": "It preserves the oldest archaeological and architectural heritage of the city.",
     "datosHistoricos": "El complejo religioso data de la fundación de la ciudad en el siglo XVI. El museo se estableció en 1979.",
     "datosHistoricos_en": "The religious complex dates back to the founding of the city in the 16th century. The museum was established in 1979.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "En este lugar se ofició la primera misa de fundación de Cali.",
       "Posee urnas funerarias y rodillos de imprenta precolombinos."
@@ -693,28 +693,28 @@ export const sitesData: Site[] = [
       "The first founding mass of Cali was celebrated in this place.",
       "It has funerary urns and pre-Columbian printing rollers."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s120",
     "nombre": "Barrio Obrero",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Sitio de Interés",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4475,
     "lng": -76.516,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "Si Cali es la capital mundial de la salsa, el barrio Obrero es su corazón. En este sector tradicional del centro, fundado hacia 1919, nació buena parte de la identidad musical de la ciudad. Desde finales de los años 30, el Obrero fue de los primeros en sintonizar la música cubana que llegaba por las frecuencias de onda corta de la radio, y en enamorarse del cine mexicano de rumberas. En las décadas del 50 y 60 se volvió punto de encuentro de melómanos, bailadores y coleccionistas de vinilos, y ese caldo terminó dando forma a lo que hoy conocemos como salsa caleña.\n\nCaminar el Obrero es caminar entre salsotecas, viejotecas y templos del long play, con la música a todo pulmón saliendo de lugares como Nelly Teka, El Chorrito Antillano, La Matraca o Melassa. Es también el barrio de las agua'e lulo, de los melómanos que discuten a gritos por qué un acetato suena mejor que lo digital, y del parque Eloy Alfaro, donde —cuentan los vecinos— empezaron a reunirse los aficionados que fundarían el América de Cali.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "El Obrero es uno de los símbolos más entrañables de la caleñidad y cuna reconocida de la salsa en la ciudad. Aquí se formó la Sonora Juventud en 1952, considerada la primera orquesta reconocida de Cali.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Fundación del barrio hacia 1919. En 1952 nace la Sonora Juventud. Entre 2025 y 2026, la Alcaldía adelanta una renovación urbana histórica para consolidar el barrio como meca cultural y turística.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su personaje más emblemático es Edulfamid Molina Díaz, \"Piper Pimienta\", quien hoy tiene su propia estatua.",
       "La renovación arrancó por iniciativa de los propios vecinos.",
@@ -722,26 +722,26 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Sector central de Cali; eje aprox. carrera 11B con calle 24 (zona del Museo de la Salsa)",
     "tarifa": "Recorrido libre; consumos y entradas a salsotecas por aparte.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s121",
     "nombre": "Teatro al Aire Libre Los Cristales",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Teatro",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4468,
     "lng": -76.5451,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "Trepado en la ladera occidental de Cali, muy cerca de San Antonio, Los Cristales es uno de los escenarios más queridos de la ciudad: un gran anfiteatro al aire libre cuya concha acústica y graderías en terraza forman el marco perfecto para conciertos, cine bajo las estrellas y festivales. Además del escenario, el complejo tiene camerinos, oficinas y, en su parte alta, un amplio parque con nacimiento de agua, flora y una fauna especialmente rica en aves. Por sus tablas han pasado la salsa, el rock, la música clásica, la andina, el jazz y la chirimía.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Su concha acústica fue la primera de su tipo en toda Colombia, lo que convierte a Los Cristales en un referente de la infraestructura cultural al aire libre del país.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "La famosa concha acústica se construyó en 1986, por gestión de Hernando Botero O'Byrne. Diseñada por el arquitecto Sigifredo Rojas y calculada por el ingeniero Camilo Niño Vélez. En 2025 se logró la titulación del predio a favor del Distrito.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El área construida del teatro ronda los 3.920 m²; el aforo teórico se cifra en 15.000 personas.",
       "El escenario mide 10 metros de ancho por dentro y se abre a 25 metros hacia el exterior.",
@@ -749,26 +749,26 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 14A Oeste #6-00 (noroccidente / ladera occidental)",
     "tarifa": "Los eventos públicos suelen ser gratuitos.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s122",
     "nombre": "Universidad del Valle (Ciudad Universitaria Meléndez)",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Sitio de Interés",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.3745,
     "lng": -76.5323,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "Al sur de Cali, entre la avenida Pasoancho y las colinas de Pance, se extiende uno de los campus universitarios más grandes y hermosos de Colombia: la Ciudad Universitaria Meléndez de la Universidad del Valle. Sobre un millón de metros cuadrados que antes fueron cañaduzal, la \"Univalle\" levantó una ciudad-parque con lago artificial, arboledas y vista a los Farallones. Es la principal institución de educación superior del suroccidente colombiano, pública y de investigación, con más de 30.000 estudiantes, y su emblema —el búho— preside una vida académica y cultural que ha marcado la historia de la ciudad.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Fundada en 1945, Univalle \"partió en dos la historia del departamento\". Su campus de Meléndez es un hito arquitectónico y paisajístico, ganador del Premio Nacional de Arquitectura en 1972.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Creada el 11 de junio de 1945 mediante la Ordenanza 12. En 1954 cambia su nombre a Universidad del Valle. Desde 1965 se construye la Ciudad Universitaria de Meléndez. En 1971 sirvió de villa olímpica para los Juegos Panamericanos.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El diseño arquitectónico fue coordinado por los arquitectos Jaime Cruz y Diego Peñalosa.",
       "El símbolo de la universidad es el búho, y su biblioteca central lleva el nombre de Mario Carvajal.",
@@ -776,26 +776,26 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Ciudad Universitaria Meléndez, Calle 13 #100-00, sur de Cali",
     "tarifa": "No aplica.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s123",
     "nombre": "Espacio T",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Arte y Teatro",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "Espacio T le trajo a Cali un formato que no existía en la ciudad: el microteatro. En una hermosa casa antigua del barrio San Antonio, sus alcobas se convirtieron en salas mínimas donde se presentan tres piezas de unos 15 minutos, en espacios de 15 m², para apenas 15 espectadores cada una. Las obras rotan cada media hora entre las 8 y las 11 de la noche, y la experiencia se completa con restaurante y bar de bebidas artesanales: teatro y sobremesa en un mismo plan. Lo inauguraron el 3 de diciembre de 2015 Leandro Fernández —actor y director caleño radicado en Miami— y su esposa Ángela María Osorio, que trajeron el concepto desde su sala en esa ciudad.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Espacio T es la única sala de Cali dedicada al microteatro, un formato nacido en Madrid, y se ha vuelto un referente de teatro alternativo e íntimo. Al no exigir la profesionalización previa, se ha convertido en plataforma para nuevos actores y directores de la ciudad. Desde 2023 sumó \"La Carpa T\", un escenario en su patio para 100 personas donde caben montajes de largo formato, conciertos, conversatorios y ensayos de grupos sin sala propia. Es Sala Concertada del Ministerio de Cultura y la Secretaría de Cultura.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "3 de diciembre de 2015: inauguración de Espacio T en el centro histórico.\n2023: apertura de La Carpa T, su escenario de patio para largo formato.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La fórmula que lo define: obras de 15 minutos, para 15 personas, en salas de 15 metros cuadrados.",
       "Leandro Fernández, su fundador, es hermano de algunos de los creadores del TEC (Teatro Experimental de Cali).",
@@ -803,33 +803,33 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 6 #4-80, barrio San Antonio.",
     "tarifa": "Boletería por función; consumos de comida y bebida por aparte.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s124",
     "nombre": "Fundación AESCENA",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Arte y Teatro",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "AESCENA (Arte Escénico Nacional) es una fundación artística profesional que, desde hace más de dos décadas, funciona a la vez como escuela y como sala independiente. En su \"Casa Aescena\" ofrece programación permanente de teatro para adultos, jóvenes y niños —comedia, drama, experimental—, y una línea de formación integral en interpretación, dramaturgia y expresión corporal a cargo de docentes reconocidos de la escena local. Su equipo es interdisciplinario: al arte suma la sociología, el derecho, la comunicación social y la pedagogía.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "AESCENA es un referente cultural de la escena caleña y parte de la Red de Teatro Independiente de Cali. Su apuesta va más allá del escenario: tiene un fuerte componente social —entiende el arte como agente de transformación y de descentralización cultural— y organiza festivales, encuentros y actividades comunitarias que fortalecen la identidad caleña.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Lleva más de dos décadas de trabajo continuo como escuela y sala independiente.\nSu Casa Aescena cuenta con una sala para unas 50 personas y un escenario de 4,80 × 5,60 m, además de espacios para talleres y ensayos.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Organiza espacios abiertos como la \"Jam Actoral\", para actores y no actores que quieran subirse a improvisar sin guion.",
       "Su trabajo articula varias disciplinas del conocimiento en torno a la escena."
     ],
     "direccion": "Carrera 37A #5E-07, San Fernando / El Templete.",
     "tarifa": "Boletería según función; talleres con inscripción.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s125",
@@ -862,7 +862,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 8 # 39-01, barrio El Troncal, Cali.",
     "tarifa": "Entrada con tarifa popular.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s126",
@@ -895,26 +895,26 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida 2 Norte # 48-10, barrio La Merced (norte), Cali.",
     "tarifa": "Entrada con costo.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s127",
     "nombre": "Cementerio Central de Cali",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Sitios Históricos / Otros",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "En el centro-norte de la ciudad, el Cementerio Central es mucho más que un camposanto: es un archivo vivo donde reposa buena parte de la memoria de Cali. Instalado oficialmente en este punto hacia 1852, fue el tercer emplazamiento del cementerio católico de la ciudad —el primero estuvo donde hoy está la Plaza de Cayzedo y el segundo en el actual Parque de San Nicolás—. Y el terreno tiene raíces aún más hondas: fue el antiguo asentamiento indígena de San Diego de Alcalá de Yanaconas, de donde los yanaconas fueron trasladados en 1778. Entre su arquitectura funeraria republicana y su capilla, una de las más antiguas de la ciudad, se recorre como una alameda de la historia caleña.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Administrado por la Arquidiócesis de Cali (\"Camposanto Metropolitano Central\"), con más de un siglo al servicio de la ciudad, el Cementerio Central guarda un valioso patrimonio material e inmaterial: mausoleos de arte funerario de distintas épocas, tumbas de personajes ilustres y también las prácticas culturales populares alrededor de la muerte. Allí descansan figuras como Jovita Feijóo —ícono del \"Cali viejo\"— y Adolfo Aristizábal, el empresario que trajo los primeros carros a Cali y fundó el Hotel Aristi, entre familias que ayudaron a construir la ciudad.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Hacia 1852 se adjudicó el terreno actual y se instaló allí el cementerio (tercera ubicación del camposanto católico de Cali).\nEl sitio fue, en tiempos coloniales, el asentamiento indígena de San Diego de Alcalá de Yanaconas.\nHa sido investigado por especialistas en patrimonio funerario, como el arquitecto Ricardo Hincapié (Universidad del Valle).",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Junto a los mausoleos de mármol conviven \"santos populares\": tumbas convertidas en lugar de devoción, adornadas con flores, cartas, fotos y ofrendas.",
       "La tumba de Jovita Feijóo enlaza este lugar con el Teatro La Concha (que le dedica una exposición) y con los muñecos del Cali viejo de Casa Naranja.",
@@ -922,7 +922,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 30 con Carrera 1, centro-norte (Camposanto Metropolitano Central, Arquidiócesis de Cali).",
     "tarifa": "Ingreso libre.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s128",
@@ -955,7 +955,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Sector La Estrella, comuna 20 (Siloé), ladera occidental de Cali.",
     "tarifa": "Acceso al mirador libre; recorridos guiados con aporte a los colectivos comunitarios.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s129",
@@ -988,7 +988,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Km 17, vía Cali–Jamundí, corregimiento de Pance, sur de Cali.",
     "tarifa": "Entrada con costo; subsidiada para afiliados a Comfandi.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s13",
@@ -1007,8 +1007,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Continental leader in the breeding and preservation of threatened species.",
     "datosHistoricos": "Fundado en 1969. Ha transformado el concepto de zoológico clásico hacia uno de inmersión y respeto.",
     "datosHistoricos_en": "Founded in 1969. It has transformed the concept of the classic zoo into one of immersion and respect.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El río Cali atraviesa el zoológico, creando un microclima fresco.",
       "Tienen un programa exitoso de reproducción de nutrias gigantes."
@@ -1017,35 +1017,35 @@ export const sitesData: Site[] = [
       "The Cali River runs through the zoo, creating a cool microclimate.",
       "They have a successful giant otter breeding program."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Adultos: $28,000 COP | Niños: $19,000 COP.",
     "tarifa_en": "Adultos: $28,000 COP | Children: $19,000 COP."
   },
   {
     "id": "s130",
     "nombre": "Iglesia de San Antonio",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Sitios Históricos / Otros",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "Coronando la colina que lleva su nombre, al occidente del centro, la Capilla de San Antonio es una de las reliquias coloniales más queridas de Cali. Su fachada blanca de adobe contrasta con el verde de la loma, y desde su atrio se abre una de las mejores panorámicas de la ciudad. Construida entre 1746 y 1747 con la técnica del calicanto, reúne tres estilos: barroco en el altar interior, mudéjar en el frente —con su arco de medio punto— y colonial en el techo de teja. En su interior guarda un altar mayor barroco y valiosas tallas de madera del siglo XVII, de estilo quiteño, presididas por San Antonio de Padua.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Es una de las iglesias más antiguas de Cali y un Bien de Interés Cultural (BIC N-20). La colina, la capilla y el parque que la rodea forman uno de los rincones más entrañables de la caleñidad: allí sube la gente al atardecer a comer obleas, tumbarse en el césped, escuchar cuenteros los fines de semana y contemplar la ciudad. La capilla dio nombre a la colina y al barrio San Antonio, hoy corazón bohemio y patrimonial de Cali.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "1742: el párroco José de Alegría y Cayzedo impulsa una viceparroquia en la colina para facilitar la misa a los fieles de San Fernando, La Chanca y El Peñón.\n1746: Juan Francisco Garcés de Aguilar dona el terreno; se inicia la construcción, erigida en 1747.\n1944: al cumplir 200 años se restaura; ese mismo año la venta de la colina generó tal rechazo comunitario que el municipio debió comprarla y convertirla en parque público.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "A San Antonio se le pide pareja con la frase popular \"San Antonio, dame novio\", además de ayudar a encontrar objetos perdidos y proteger a los hijos.",
       "La colina detrás de la iglesia conecta con el parque del acueducto que baja hacia el Zoológico."
     ],
     "direccion": "Cima de la Colina de San Antonio, barrio San Antonio.",
     "tarifa": "Entrada gratuita.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s131",
@@ -1078,26 +1078,26 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Km 3, vía Jauja, Callejón Valle del Lili, sur de Cali.",
     "tarifa": "Subsidiada para afiliados a Comfenalco; público general con costo.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s132",
     "nombre": "Teatro Casa Naranja",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Arte y Teatro",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "En una casa de tres pisos pintada de naranja, en el barrio El Poblado I, en pleno Distrito de Aguablanca, está el único teatro del oriente de Cali. Casa Naranja es una historia de terquedad y de amor por el arte: la levantó, ladrillo a ladrillo, John Jairo Perdomo, líder comunitario y artista escénico, para que los niños y jóvenes de una de las zonas más golpeadas de la ciudad tuvieran un lugar donde descubrir su talento. Aquí la entrada tiene un precio insólito y hermoso: se paga con comida. Un huevo es una entrada; dos huevos, dos; media libra de arroz o de azúcar, o una panela, valen por tres; un atún, por cuatro. Lo que se recoge alimenta a los artistas y a la comunidad.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Casa Naranja es mucho más que una sala: es un proyecto de transformación social a través del arte, en un territorio donde el teatro casi no tenía presencia. Cada sábado ofrece talleres gratuitos de teatro, danza, música, zancos y técnicas de circo para los niños del sector, y presenta funciones abiertas a todos. Es Sala Concertada del Ministerio de Cultura y trabaja con la estrategia de \"lo bello como ejercicio de transformación social\": la convicción de que el oriente de Cali también merece espacios dignos y hermosos.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Sus raíces están en el \"Colectivo Teatral Espejos\", hacia 1998; la sala como tal funciona desde 2004.\nSe estima que por sus tablas han pasado más de 7.600 niños y jóvenes formados de manera gratuita; cada año pasan más de 400.\nCuenta con el respaldo de Compromiso Valle, la Fundación Fanalca, Bolívar Davivienda, la Cámara de Comercio, ProPacífico y la Alcaldía, entre otros.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su filosofía es la \"vitamina C\": Cristo, confianza, cultura, carnaval, cariño, convivencia, comunidad y celebración. De ahí el nombre.",
       "Su lema es \"Todos somos los otros\".",
@@ -1106,52 +1106,52 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 29A #45-72, barrio El Poblado I (Distrito de Aguablanca).",
     "tarifa": "La entrada se paga con alimentos (un huevo, arroz, panela, atún…).",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s133",
     "nombre": "Instituto Popular de Cultura (IPC)",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Museos y Cultura",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "El Instituto Popular de Cultura —el IPC— es una de las instituciones que más ha marcado la vida artística de Cali. Nació por iniciativa del Concejo Municipal el 18 de diciembre de 1947, en pleno contexto de la \"República Liberal\", con una misión pionera: dar formación artístico-cultural a los sectores populares de la ciudad, entendiendo el arte como herramienta para educar y transformar la realidad social. Con el tiempo consolidó cuatro escuelas —Artes Plásticas, Danza, Música y Teatro— por donde han pasado generaciones de artistas, docentes y gestores culturales caleños.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "El IPC es patrimonio artístico de Cali y del Valle del Cauca. Además de sus escuelas, tiene un departamento de extensión cultural que ha formado a más de 12.000 personas en talleres por toda la ciudad, y un departamento de investigación del folclor considerado uno de los más completos en su especialidad. De sus aulas salieron figuras que luego fundaron buena parte del circuito escénico de la ciudad: directores como Harold Molina (Colectivo Teatral Infinito) o Reynel Osorio (Castillo Sol y Luna) se formaron aquí. Está profundamente ligado a las culturas del Pacífico y al Festival Petronio Álvarez.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "18 de diciembre de 1947: creación mediante el Acuerdo No. 450 del Concejo Municipal.\n2011: se transforma en Establecimiento Público Descentralizado, vinculado a la Secretaría de Educación (Acuerdo 0313), con autonomía y patrimonio propios.\n2023: al cumplir 76 años, el Ministerio de Educación aprueba la creación de la Institución Universitaria de las Culturas y las Artes Populares IPC (IUIPC), la primera de su tipo en el país, en el rehabilitado Edificio Coltabaco.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "En sus inicios enseñaba también historia patria, educación cívica, geografía, higiene y urbanidad a las clases obreras.",
       "Su publicación y sus encuentros han documentado, entre otras memorias, la de la ladera (\"Siloé resiste\"), enlazando con el Museo Popular de Siloé."
     ],
     "direccion": "Sede histórica en San Fernando (Calle 4 #27-140); nueva sede IUIPC en el Edificio Coltabaco (Calle 12 #1-12).",
     "tarifa": "Formación pública; programas con matrícula según la institución.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s134",
     "nombre": "Teatro de Títeres Castillo Sol y Luna",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Arte y Teatro",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "A veinte minutos de la ciudad, en la vereda Los Limones del corregimiento La Castilla, al oeste de Cali, hay un castillo de verdad: dos torres de aire medieval, zona verde y cielo abierto, hechas para que los niños tengan su teatro de títeres. Es el Castillo Sol y Luna, la única sala en forma de castillo y en zona rural de la ciudad. Lo soñó y lo construyó el maestro Reynel Osorio Torres —titiritero, actor y docente con más de 45 años de oficio— cuando se jubiló del Instituto Popular de Cultura e invirtió sus ahorros en levantar, con su familia, este espacio para la primera infancia.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Castillo Sol y Luna es un centro pedagógico, cultural y recreativo rural, sin ánimo de lucro, dedicado en especial al teatro de títeres para niños y familias de las zonas urbana y rural. Su valor es doble: por un lado, un repertorio de más de 23 montajes —adaptaciones de la narrativa popular y de autores argentinos, checos y españoles, junto a obras propias—; por otro, un profundo trabajo social. Los Limones y las veredas vecinas están habitadas por campesinos, familias desplazadas por la violencia y madres trabajadoras, y el Castillo les ofrece a esos niños un lugar para jugar, imaginar y sanar. Es Sala Concertada del Ministerio de Cultura.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Fundado en 2002 por el maestro Reynel Osorio, junto a su esposa Luz Myriam García Franco y su hija Melisa Osorio García.\nHa participado en festivales de títeres departamentales, nacionales e internacionales.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Tiene programas de inclusión (\"Somos diversos con derechos\") para niños en situación de discapacidad, riesgo social o enfermedad: con niños ciegos, por ejemplo, dejan tocar los muñecos antes de la función para reconocerlos por la voz.",
       "En el campus viven patos, gallinas, conejos, palomos y hasta una oveja llamada Cornelia, que pide guayabas.",
@@ -1159,111 +1159,111 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Vereda Los Limones, corregimiento La Castilla (occidente rural de Cali).",
     "tarifa": "Boletería para público general; gratuito para los niños de la vereda.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s135",
     "nombre": "Colectivo Teatral Infinito",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Arte y Teatro",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "El Colectivo Teatral Infinito es uno de los proyectos más conmovedores de la escena caleña: la primera —y durante mucho tiempo única— escuela de formación teatral para personas con discapacidad del país. Fundado en 2005 por el maestro Harold Molina (egresado del IPC) y Paula Macía, el CTI integra a niños, jóvenes y adultos, y muy especialmente a actores y actrices con Síndrome de Down, en producciones de nivel profesional. Su apuesta es demostrar, sobre las tablas, que lejos de la idea de \"discapacidad\" hay un talento enorme por mostrar.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "El CTI le dio a Cali —y a Colombia— una de las poquísimas salas del país con actores con Síndrome de Down como protagonistas. Nació de la investigación de Harold Molina sobre el trabajo corporal, que aplicó a la formación de población en situación de discapacidad, proponiendo un teatro con dimensión terapéutica y procesos reales de inclusión. Su trabajo, reconocido por la Secretaría de Cultura, celebra la diferencia y transforma vidas a través del arte.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "2 de diciembre de 2005: constitución de la Fundación Artística y Cultural Colectivo Teatral Infinito.\nHa construido un repertorio de obras propias (como *Mío Amor*) que han representado a la ciudad dentro y fuera de Cali.\n2023: gracias a la Ley de Espectáculos Públicos (LEP) y la gestión de la Secretaría de Cultura, estrenó por fin su propia sala.\n2025: celebración de 20 años de trabajo.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es reconocida como la primera y única escuela de formación teatral para población con discapacidad en el país.",
       "Su director, Harold Molina, se formó en el IPC —otro hilo que enlaza a esta institución con el circuito escénico de la ciudad."
     ],
     "direccion": "Calle 5B #26-46, barrio San Fernando.",
     "tarifa": "Boletería según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s136",
     "nombre": "Iglesia de San Nicolás",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Sitios Históricos / Otros",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "En el centro de Cali, frente al parque de San Nicolás (o Parque 20 de Julio), se levanta la iglesia que le dio nombre a uno de los barrios fundacionales de la ciudad. La antigua capilla de adobe, dedicada a San Nicolás de Bari, se comenzó hacia 1770 frente a la plaza; el barrio, que primero se llamó \"El Vallano\", fue adoptando poco a poco el nombre del templo. El edificio que hoy vemos, más amplio, se empezó a construir en 1880 y se terminó en 1926, tras demoler la vieja capilla averiada por el terremoto de 1925.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "San Nicolás es uno de los barrios más antiguos y con más historia de Cali, y su iglesia es su corazón simbólico. El sector se convirtió con el tiempo en la cuna de la industria de las artes gráficas de la ciudad —allí se consolidó, entre otras, la Carvajal S.A.—, y fue escenario de una de las mayores tragedias de la historia de Cali: la explosión del 7 de agosto de 1956, cuando estallaron unos camiones cargados de dinamita cerca de la estación del ferrocarril, arrasando buena parte del sector.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Hacia 1770: se inicia la capilla de adobe dedicada a San Nicolás de Bari.\n4 de enero de 1848: es erigida como parroquia, segregada del curato de San Pedro.\n1880–1926: se construye el templo actual, tras el terremoto de 1925.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "En el parque contiguo se levanta la estatua del prócer caleño Ignacio de Herrera y Vergara.",
       "Junto a la iglesia se encuentra también el histórico Teatro San Nicolás."
     ],
     "direccion": "Carreras 5ª–6ª con Calles 19–20, barrio San Nicolás.",
     "tarifa": "Entrada gratuita.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s137",
     "nombre": "Estadio Olímpico Pascual Guerrero",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Deportes y Recreación",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "En el barrio San Fernando, entre la Calle 5ª y la Avenida Roosevelt, late uno de los templos deportivos más históricos de América Latina: el estadio Olímpico Pascual Guerrero, \"El Pascual\". Inaugurado el 20 de julio de 1937 —el mismo año en que Cali celebraba su IV Centenario—, lleva el nombre del poeta y dirigente deportivo palmireño Pascual Guerrero, que donó los terrenos de su finca e impulsó la obra. Nació con capacidad para 6.500 espectadores bajo el nombre de \"Estadio Departamental\"; hoy, tras sucesivas remodelaciones, alberga cerca de 38.000.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Es la casa del América de Cali y corazón de la Unidad Deportiva San Fernando, el complejo que le valió a la ciudad el título de \"Capital Deportiva de América\". El Pascual ha sido sede de los tres eventos deportivos más importantes celebrados en Colombia: los VI Juegos Panamericanos (1971), la Copa Mundial Sub-20 (2011) y los Juegos Mundiales (2013), además de la Copa América 2001 y la Copa América Femenina 2022. Su peso en la identidad caleña es tal que aparece nombrado en \"Cali Pachanguero\", el himno salsero del Grupo Niche.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "20 de julio de 1937: inauguración, con un Torneo Panamericano de Fútbol por los 400 años de Cali; el primer partido, Colombia 3 - México 1.\n1971: gran ampliación para los Juegos Panamericanos; allí se encendió el pebetero y se realizó la ceremonia inaugural.\n2009–2011: remodelación integral para el Mundial Sub-20.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Curiosamente, las hinchadas de América y Deportivo Cali ocupan la misma tribuna (la parte alta del sur), al revés de la costumbre mundial.",
       "El 17 de noviembre de 1982, durante un Clásico Vallecaucano, una trágica estampida en los minutos finales dejó una veintena de muertos: uno de los episodios más dolorosos de su historia."
     ],
     "direccion": "Barrio San Fernando, entre la Calle 5ª y la Avenida Roosevelt.",
     "tarifa": "Boletería según el evento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s138",
     "nombre": "Coliseo El Pueblo",
-    "nombre_en": null,
+    "nombre_en": undefined,
     "tipo": "Deportes y Recreación",
-    "tipo_en": null,
+    "tipo_en": undefined,
     "lat": 3.4516,
     "lng": -76.532,
     "rating": 5,
     "visitas": 0,
     "logoUrl": "https://via.placeholder.com/150",
     "descripcion": "Con su silueta que parece una nave espacial posada en el sur de Cali, el Coliseo El Pueblo es uno de los íconos de la arquitectura moderna de la ciudad. Fue diseñado por los arquitectos Enrique Richardson y Libia Yusti —pioneros de la modernidad caleña, formados en Francia—, con el cálculo estructural del ingeniero Guillermo González Zuleta. Se inauguró en julio de 1971 para los VI Juegos Panamericanos y tiene capacidad para unos 12.000 espectadores.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "El Coliseo El Pueblo es parte del legado de los Juegos Panamericanos de 1971, el evento que \"partió en dos la historia de Cali\": modernizó la ciudad con su aeropuerto, la villa panamericana, las piscinas Alberto Galindo, el velódromo y las grandes avenidas, y la consagró como Capital Deportiva de América. En sus graderías se han vivido eventos de talla mundial, como los Campeonatos Mundiales de Baloncesto de 1975 y 1982, los Juegos Mundiales de 2013 y el Mundial de Fútbol de Salón de la FIFA.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "22 de julio de 1967: Cali es elegida sede de los Panamericanos en Winnipeg (Canadá), superando a Santiago de Chile.\n6 de noviembre de 1968: para organizar los Juegos, el gobierno crea Coldeportes (hoy Ministerio del Deporte).\nJulio de 1971: inauguración del coliseo, dentro del complejo de la Unidad Deportiva Alberto Galindo.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El emblema de aquellos Juegos se inspiró en una figura de la orfebrería de la cultura Calima, y sus colores (rojo, blanco y negro) vinieron del América de Cali.",
       "El campus de la Universidad del Valle sirvió de villa olímpica para varias delegaciones."
     ],
     "direccion": "Unidad Deportiva Alberto Galindo, sur de Cali.",
     "tarifa": "Boletería según el evento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s139",
@@ -1282,8 +1282,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The oldest construction in Cali and the symbolic place of its founding; first National Monument of the city and temple of its patron saint.",
     "datosHistoricos": "En su atrio se ofició la misa de fundación de Santiago de Cali en 1536. En febrero de 1975 el conjunto conventual recibió la declaratoria oficial como Monumento Nacional, siendo el primer inmueble de la ciudad con ese reconocimiento. Está a cargo de la comunidad de Hermanas Agustinas Recoletas.",
     "datosHistoricos_en": "The founding mass of Santiago de Cali was celebrated in its atrium in 1536. In February 1975 the convent complex received the official declaration as a National Monument, being the first property in the city with that recognition. It is in charge of the community of Augustinian Recollect Sisters.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El rosario que adorna a la Virgen fue un obsequio del papa Juan Pablo II durante su visita a Cali en 1986.",
       "La Virgen de la Merced recibió el bastón de mando de Joaquín de Caycedo y Cuero en 1811 y es considerada, simbólicamente, gobernadora de la ciudad.",
@@ -1296,7 +1296,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 3 # 6-62, centro histórico, Cali",
     "tarifa": "Entrada libre a la iglesia.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s14",
@@ -1310,12 +1310,12 @@ export const sitesData: Site[] = [
     "visitas": 300,
     "logoUrl": "https://images.unsplash.com/photo-1503095392237-73621391a0a1?auto=format&fit=crop&w=800",
     "descripcion": "Teatro La Máscara es uno de los grupos de teatro más longevos de Cali y un referente del teatro de mujeres en Colombia. Nació en 1972 alrededor del Teatro Experimental de Cali (TEC), como un colectivo mixto. Pero a comienzos de los años ochenta, en medio de la persecución política que golpeó a artistas y activistas, el grupo quedó conformado por sus mujeres, y bajo la dirección de Lucy Bolaños tomó una decisión pionera: convertirse en un teatro de género, poniendo en escena temas hasta entonces silenciados —el aborto, la prostitución, la violencia contra las mujeres—.\n\nSu compromiso les costó caro: en 1988 debieron exiliarse cerca de año y medio, con giras forzadas por Costa Rica, Nicaragua, México y Cuba, donde se encontraron con la artista Patricia Ariza y montaron Mujeres en trance de viaje, sobre su propia experiencia de destierro. Desde 1994 tienen sala propia en el barrio San Antonio, con aforo para 103 personas. Integran la red internacional Magdalena Project y son parte del programa de Salas Concertadas: medio siglo largo de teatro hecho desde el cuerpo, la palabra y la resistencia.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Grupo pionero del teatro de género y feminista en Colombia; sala emblemática de San Antonio con más de cincuenta años de trayectoria.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Fundado en 1972 alrededor del TEC. A comienzos de los ochenta, Lucy Bolaños lo transformó en colectivo de teatro de género. En 1988 sufrió un exilio forzado de año y medio por amenazas políticas. Abrió su sala propia en San Antonio en 1994.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es uno de los primeros grupos de teatro feminista de Colombia.",
       "Durante su exilio en Cuba conocieron a la artista Patricia Ariza.",
@@ -1323,7 +1323,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Barrio San Antonio, Cali.",
     "tarifa": "Entrada con costo según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s140",
@@ -1342,8 +1342,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Franciscan heritage complex and headquarters of the Mudéjar Tower, considered the most beautiful in America; symbol of the architectural fusion of Cali.",
     "datosHistoricos": "El convento se construyó desde 1757, con la Capilla de la Inmaculada terminada hacia 1764. La Torre Mudéjar data de alrededor de 1772. La iglesia neoclásica actual se levantó entre 1803 y 1827, sobre diseños del presbítero Andrés Marcelino Pérez de Arroyo. Fue postulado a Monumento Nacional en 1982.",
     "datosHistoricos_en": "The convent was built in 1757, with the Chapel of the Immaculate Conception completed around 1764. The Mudéjar Tower dates from around 1772. The current neoclassical church was built between 1803 and 1827, based on designs by the priest Andrés Marcelino Pérez de Arroyo. It was nominated for National Monument status in 1982.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La Torre Mudéjar se compara con la Giralda de Sevilla por sus geometrías en ladrillo.",
       "La iglesia sobrevivió a los terremotos de 1885, 1896 y 1925 conservando su fisonomía.",
@@ -1356,7 +1356,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 6 # 9-03, centro histórico, Cali",
     "tarifa": "Entrada libre a la iglesia.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s15",
@@ -1375,8 +1375,8 @@ export const sitesData: Site[] = [
     "importancia_en": "First departmental library in Colombia and one of the most active cultural spaces in the southwest; Asset of Cultural Interest.",
     "datosHistoricos": "Creada en 1953 por decreto del gobernador Diego Garcés Giraldo e inaugurada el 13 de junio de 1954, a partir de la biblioteca personal de Jorge Garcés Borrero. Su sede actual, de 15.000 m², se concluyó en 1990.",
     "datosHistoricos_en": "Created in 1953 by decree of Governor Diego Garcés Giraldo and inaugurated on June 13, 1954, from the personal library of Jorge Garcés Borrero. Its current headquarters, measuring 15,000 m², was completed in 1990.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Nació con los ~7.000 libros de la biblioteca personal de la familia Garcés.",
       "Cada septiembre acoge el Festival Internacional de Literatura \"Oiga, Mire, Lea\".",
@@ -1389,7 +1389,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 5 # 24A-91, junto a la Avenida Roosevelt, Cali.",
     "tarifa": "Entrada y consulta gratuitas.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s16",
@@ -1408,8 +1408,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Emblematic temple and one of the main architectural postcards of Cali; jewel of the neo-Gothic style in Colombia and Asset of Cultural Interest.",
     "datosHistoricos": "La ermita primitiva, de comienzos del siglo XVII, fue destruida por el terremoto de 1925. El templo neogótico actual, impulsado por las hermanas Castro Borrero y construido bajo la dirección del ingeniero Pablo Emilio Páez, se inauguró el 21 de abril de 1942, dedicado a Nuestra Señora de los Dolores.",
     "datosHistoricos_en": "The primitive hermitage, from the beginning of the 17th century, was destroyed by the earthquake of 1925. The current neo-Gothic temple, promoted by the Castro Borrero sisters and built under the direction of the engineer Pablo Emilio Páez, was inaugurated on April 21, 1942, dedicated to Our Lady of Sorrows.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su diseño se inspiró en la catedral de Ulm (Alemania).",
       "El reloj musical y los vitrales de los doce apóstoles se trajeron de Ámsterdam; las campanas, de Francia.",
@@ -1441,8 +1441,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Maximum icon of the Cali landscape and symbol of peace; viewpoint and pilgrimage point that receives hundreds of thousands of visitors a year. One of the most visited religious monuments in Colombia.",
     "datosHistoricos": "Inaugurado el 25 de octubre de 1953 por iniciativa del jesuita José María Arteaga, para conmemorar los cincuenta años del fin de la Guerra de los Mil Días (1902). Esculpido por el italiano Alideo Tazzioli Fontanini, de Pietrasanta, tras el abandono del proyecto por su primer autor Gerardo Navia. A su bendición asistieron cerca de 30.000 personas.",
     "datosHistoricos_en": "Inaugurated on October 25, 1953 at the initiative of the Jesuit José María Arteaga, to commemorate the fifty years since the end of the Thousand Days War (1902). Sculpted by the Italian Alideo Tazzioli Fontanini, from Pietrasanta, after the abandonment of the project by its first author Gerardo Navia. Nearly 30,000 people attended his blessing.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es la segunda estatua de Cristo más alta de Colombia, después del Cristo Rey de Belalcázar.",
       "Pesa 464 toneladas; solo cada uno de sus brazos pesa unas 25.",
@@ -1455,9 +1455,9 @@ export const sitesData: Site[] = [
       "Their scaffolding was made with guadua, the native bamboo of the region.",
       "Along the ascent route, the artist Carlos Andrés Gómez has been sculpting geoglyphs on the ravines since 2011."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Gratuita, sin inscripción previa (desde nov. 2025). *Nota: la Alcaldía ha anticipado que a futuro podría cobrarse el ingreso a alguno de los tramos.*",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s18",
@@ -1476,8 +1476,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Tropical dry forest urban refuge and environmental education space; It connects the city with the natural heritage of the valley and helps regulate the basin from which Cali takes much of its water.",
     "datosHistoricos": "Fundado en 2001 por la Fundación Jardín Botánico de Cali, liderada por el biólogo Jorge Enrique Orejuela, sobre un predio cedido por EPSA. En 2017 la Fundación Zoológica de Cali asumió su renovación; reabrió al público renovado en años recientes.",
     "datosHistoricos_en": "Founded in 2001 by the Cali Botanical Garden Foundation, led by biologist Jorge Enrique Orejuela, on land donated by EPSA. In 2017 the Cali Zoological Foundation undertook its renovation; reopened to the renewed public in recent years.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Alberga más de 190 especies de plantas, un centenar de mariposas y unas 120 especies de aves.",
       "Su mirador-torre fue diseñado por Simón Vélez, maestro mundial de la arquitectura en guadua.",
@@ -1488,9 +1488,9 @@ export const sitesData: Site[] = [
       "Its viewpoint-tower was designed by Simón Vélez, world master of guadua architecture.",
       "The forest it protects helps regulate the basin from which Cali takes much of its water."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Entrada con boleto (~$15.000); se adquiere en el Zoológico o por venta en línea.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s19",
@@ -1509,8 +1509,8 @@ export const sitesData: Site[] = [
     "importancia_en": "One of the most emblematic colonial complexes and traditional neighborhoods of Cali; bohemian epicenter and National Monument.",
     "datosHistoricos": "La capilla se erigió en 1747, sobre terreno donado por Juan Francisco Garcés de Aguilar. La capilla y su colina fueron declaradas Monumento Nacional en 1993, y el barrio reconocido como área de interés patrimonial en el año 2000.",
     "datosHistoricos_en": "The chapel was erected in 1747, on land donated by Juan Francisco Garcés de Aguilar. The chapel and its hill were declared a National Monument in 1993, and the neighborhood recognized as an area of ​​heritage interest in 2000.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es escenario tradicional de cuenteros y de la bohemia caleña.",
       "En agosto, la colina se llena de personas elevando cometas.",
@@ -1523,7 +1523,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 2 Oeste con Carrera 10, barrio San Antonio, Cali.",
     "tarifa": "Entrada libre.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s2",
@@ -1542,8 +1542,8 @@ export const sitesData: Site[] = [
     "importancia_en": "It is the most prestigious and oldest cultural scene in the city in operation.",
     "datosHistoricos": "Inaugurado en 1927. Fue rebautizado en honor al gran dramaturgo caleño Enrique Buenaventura, padre del Nuevo Teatro Colombiano.",
     "datosHistoricos_en": "Inaugurated in 1927. It was renamed in honor of the great Cali playwright Enrique Buenaventura, father of the New Colombian Theater.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El telón de boca fue pintado por el artista italiano Ricardo Richinimy y es una obra de arte en sí mismo.",
       "Tiene capacidad para más de 1.000 espectadores en sus diversas localidades."
@@ -1552,7 +1552,7 @@ export const sitesData: Site[] = [
       "The mouth curtain was painted by the Italian artist Ricardo Richinimy and is a work of art in itself.",
       "It has capacity for more than 1,000 spectators in its various locations."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Boletería según evento. **Visita guiada**: $10.000 por persona; $8.000 estudiantes con carné vigente.",
     "tarifa_en": "Free lobby entry (Guided tour $5,000 COP)."
   },
@@ -1573,8 +1573,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Main recreation space in nature for the people of Cali and symbol of the city's link with its rivers.",
     "datosHistoricos": "La Gobernación del Valle adquirió los predios hacia 1970 para crear el Balneario Popular y Recreativo del Río Pance. Desde 1985 lo administra la Corporación para la Recreación Popular, que consolidó el \"Parque de la Salud\".",
     "datosHistoricos_en": "The Government of the Valley acquired the properties around 1970 to create the Popular and Recreational Spa of the Pance River. Since 1985 it has been administered by the Corporation for Popular Recreation, which consolidated the \"Health Park\".",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El río Pance nace en el Parque Nacional Natural Farallones de Cali, a unos 4.000 m s. n. m.",
       "Los fines de semana soleados puede recibir decenas de miles de visitantes.",
@@ -1587,7 +1587,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Corregimiento de Pance, km 12-15 vía a La Vorágine, sur de Cali.",
     "tarifa": "Acceso al ecoparque libre; algunos servicios tienen costo.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s21",
@@ -1606,8 +1606,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Urban tribute to Jairo Varela and Grupo Niche; recognition of salsa as heritage and identity of the city.",
     "datosHistoricos": "Plazoleta dedicada a Jairo Varela, en el centro de Cali frente al CAM. Su escultura sonora \"Niche\", del arquitecto Freddy Pantoja, ganó un concurso público (con jurado que incluyó a la hija del maestro, Cristina Varela, y al escritor Umberto Valverde) y se inauguró en diciembre de 2015.",
     "datosHistoricos_en": "Small square dedicated to Jairo Varela, in the center of Cali in front of the CAM. His sound sculpture \"Niche\", by architect Freddy Pantoja, won a public competition (with a jury that included the maestro's daughter, Cristina Varela, and the writer Umberto Valverde) and was inaugurated in December 2015.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La escultura, de unos 8 metros, forma la palabra \"NICHE\" con trompetas y trombones.",
       "Por sus campanas suena música grabada por el propio Grupo Niche.",
@@ -1639,8 +1639,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Architectural jewel and National Monument; one of the rooms with the greatest heritage value and best acoustics in southwestern Colombia.",
     "datosHistoricos": "Construido entre 1930 y 1931 por iniciativa de Hermann S. Bohmer, sobre el terreno del antiguo Teatro Salón Moderno. Inaugurado el 26 de diciembre de 1931. Declarado Monumento Nacional el 26 de noviembre de 1984 y adquirido por el Estado en 1986, cuando comenzó su restauración.",
     "datosHistoricos_en": "Built between 1930 and 1931 at the initiative of Hermann S. Bohmer, on the land of the old Salón Moderno Theater. Inaugurated on December 26, 1931. Declared a National Monument on November 26, 1984 and acquired by the State in 1986, when its restoration began.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Un incendio en sus primeros años motivó la creación del cuerpo de bomberos voluntarios de Cali.",
       "Su caja acústica es una de las de mayor tamaño de Latinoamérica.",
@@ -1651,9 +1651,9 @@ export const sitesData: Site[] = [
       "Its acoustic box is one of the largest in Latin America.",
       "Its name honors the author of María, Colombia's most famous romantic novel."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Boletería según evento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s23",
@@ -1672,8 +1672,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Example of domestic architecture from the beginning of the 20th century, today democratized for art.",
     "datosHistoricos": "Construida por la familia Obeso Mejía, fue adquirida y restaurada por el Museo La Tertulia.",
     "datosHistoricos_en": "Built by the Obeso Mejía family, it was acquired and restored by the La Tertulia Museum.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Conserva los pisos, baños y cocina originales de la época.",
       "Su arquitectura dialoga con el Hotel Obelisco cruzando el río."
@@ -1682,9 +1682,9 @@ export const sitesData: Site[] = [
       "It preserves the original floors, bathrooms and kitchen from the period.",
       "Its architecture dialogues with the Obelisco Hotel across the river."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s24",
@@ -1703,8 +1703,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Bohemian and gastronomic epicenter of San Fernando; emblematic night meeting point of the city.",
     "datosHistoricos": "La estatua del perro Teddy fue instalada en 1970 por Víctor Alberto Delgado Mallarino, en un parque tradicional del barrio San Fernando que, con el tiempo, se convirtió en zona de gastronomía y vida nocturna.",
     "datosHistoricos_en": "The statue of Teddy the dog was installed in 1970 by Víctor Alberto Delgado Mallarino, in a traditional park in the San Fernando neighborhood that, over time, became a gastronomy and nightlife area.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El parque se llamaba antes \"Parque del Corazón\" por su forma.",
       "Bajo la estatua reposan los restos del perro Teddy.",
@@ -1717,7 +1717,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Barrio San Fernando, Calle 3A con Carrera 36 (aprox.), Cali.",
     "tarifa": "Acceso libre; consumo según establecimiento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s25",
@@ -1736,8 +1736,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The oldest salsa museum in the world and guardian of the genre's photographic memory; heart of the neighborhood recognized as the cradle of Cali salsa.",
     "datosHistoricos": "Nació en 1968 del trabajo del fotógrafo Carlos Alfredo Molina, quien empezó a documentar la escena salsera de Cali. Su legado lo mantienen vivo hijo y nieto, tres generaciones de la familia Molina.",
     "datosHistoricos_en": "It was born in 1968 from the work of photographer Carlos Alfredo Molina, who began documenting Cali's salsa scene. His legacy is kept alive by his son and grandson, three generations of the Molina family.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Custodia más de 40.000 fotografías de músicos, orquestas y bailadores.",
       "En el mundo existen apenas un puñado de museos así: los otros están en Nueva York y Puerto Rico, y este es el más longevo.",
@@ -1769,8 +1769,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Built for the 1971 Pan American Games, an event that transformed Cali.",
     "datosHistoricos": "Marcó el inicio de la modernización urbana de Cali hacia el sur.",
     "datosHistoricos_en": "It marked the beginning of the urban modernization of Cali towards the south.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es el punto de encuentro tradicional para celebrar los triunfos de los equipos de fútbol locales.",
       "Bajo las banderas hay fuentes que refrescan el ambiente."
@@ -1779,9 +1779,9 @@ export const sitesData: Site[] = [
       "It is the traditional meeting point to celebrate the triumphs of local soccer teams.",
       "Under the flags there are fountains that refresh the atmosphere."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s27",
@@ -1795,12 +1795,12 @@ export const sitesData: Site[] = [
     "visitas": 400,
     "logoUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800",
     "descripcion": "Swing Latino es la escuela de baile que llevó el estilo caleño de la salsa a los escenarios más grandes del mundo. Su fundador y alma, Luis Eduardo Hernández \"El Mulato\" —nacido en 1968 y llegado a Cali a los cinco años—, empezó su vida artística en 1982 dentro del Programa El Diamante, dirigido por Orlando Cajamarca, el mismo del grupo Teatro Esquina Latina. De esa semilla comunitaria, en un barrio popular del oriente, creció a lo largo de los años noventa una de las compañías de salsa más premiadas del planeta.\n\nLo que distingue a Swing Latino es el \"estilo caleño\": pies vertiginosos, swing y acrobacias imposibles que la escuela ayudó a consolidar como una categoría propia del baile de salsa. Sus bailarines han sido campeones mundiales en múltiples ocasiones, han recorrido más de 120 países y bailaron en el show central del Super Bowl 2020 junto a Jennifer López y Shakira. Pero detrás del brillo hay una misión social intacta: la fundación sigue formando a niñas, niños y jóvenes de sectores vulnerables, usando el baile como herramienta de cambio.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Una de las escuelas de salsa más premiadas del mundo y gran embajadora del \"estilo caleño\"; proyecto artístico y social nacido en un barrio popular de Cali.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "El Mulato inició su camino artístico en 1982 en el Programa El Diamante (dirigido por Orlando Cajamarca, de Esquina Latina), y a lo largo de los años noventa consolidó la Fundación Escuela de Baile Swing Latino. Ganó el Mundial de la Federación de Baile de Salsa (Miami, 2005) y el Campeonato de Salsa de Las Vegas (2006 y 2007, transmitido por ESPN).",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Bailaron en el show central del Super Bowl 2020 junto a Jennifer López y Shakira.",
       "El Mulato fue nombrado primer \"Embajador Naranja\" del país por el Ministerio de Cultura (2020).",
@@ -1808,7 +1808,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Cali (sede vinculada al centro de danzas del proyecto).",
     "tarifa": "Clases y espectáculos con costo según programación.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s28",
@@ -1827,8 +1827,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Historic Salsoteca and Cali live salsa platform; hotbed of new orchestras in the city.",
     "datosHistoricos": "Fundada en 1993 por un trío de amigos en la Avenida 5 Norte; años después la familia Levy Cote asumió su dirección y la consolidó como templo de la salsa.",
     "datosHistoricos_en": "Founded in 1993 by a trio of friends on Avenida 5 Norte; Years later the Levy Cote family took over its management and consolidated it as a temple of salsa.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Sus \"Descargas Zaperoco\" de los jueves nacieron junto al escritor Umberto Valverde.",
       "Por su tarima pasó Herencia de Timbiquí en sus inicios.",
@@ -1841,7 +1841,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida 5 Norte # 16-46, Cali. [confirmar dirección vigente]",
     "tarifa": "Consumo / cover según noche. [verificar]",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s29",
@@ -1860,8 +1860,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Cult salsa club and historical reference of Cali salsa; emblematic scene of the city's nightlife.",
     "datosHistoricos": "Salsoteca de larga trayectoria en Cali, reconocida como uno de los \"templos\" del género. [verificar año de fundación y dirección exacta]",
     "datosHistoricos_en": "Salsoteca with a long history in Cali, recognized as one of the \"temples\" of the genre. [verify year of foundation and exact address]",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su nombre proviene de una composición del trompetista de jazz Dizzy Gillespie.",
       "Es habitualmente citada entre las salsotecas más emblemáticas de la ciudad."
@@ -1872,7 +1872,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Cali (zona de la Calle 5 / centro). [confirmar dirección exacta]",
     "tarifa": "Consumo / cover según noche. [verificar]",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s3",
@@ -1891,8 +1891,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The most important pedestrian public space in Cali; connecting axis of the historic center on the banks of the river.",
     "datosHistoricos": "Construido a partir de 2012 dentro del programa \"Megaobras\" de la administración del alcalde Rodrigo Guerrero, se inauguró el 16 de mayo de 2013, sobre el túnel urbano más largo del país.",
     "datosHistoricos_en": "Built starting in 2012 within the \"Megaobras\" program of the administration of Mayor Rodrigo Guerrero, it was inaugurated on May 16, 2013, on the longest urban tunnel in the country.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El paseo peatonal se extiende cerca de 980 metros sobre el \"Túnel Mundialista\".",
       "Por él caminan a diario entre 6.000 y 7.000 personas.",
@@ -1919,12 +1919,12 @@ export const sitesData: Site[] = [
     "visitas": 850,
     "logoUrl": "https://images.unsplash.com/photo-1563804807963-7186a51cc247?auto=format&fit=crop&w=800",
     "descripcion": "El Museo de Ciencias Naturales es la gran ventana de Cali a la biodiversidad del Valle del Cauca, y un lugar entrañable en la memoria de varias generaciones de caleños que lo visitaron en salidas escolares. Sus raíces van a 1942, cuando la Gobernación contrató al ictiólogo Cecil Miles para estudiar los peces de la región; de allí creció una colección que en 1963 se formalizó como museo, por iniciativa del biólogo y ornitólogo Federico Carlos Lehmann Valencia, cuyo nombre lleva desde su muerte en los años setenta. Pertenece al INCIVA y desde 2003 ocupa la Manzana del Saber, junto a la Biblioteca Departamental y el Museo Abrakadabra.\n\nQuien creció en Cali recuerda sus piezas icónicas: el esqueleto de ballena jorobada colgado del techo, \"Truncho\" el tigre de Bengala, \"Rina\" la rinoceronte, \"Carlitos\" la tortuga galápago, el águila harpía y el cóndor de los Andes. Importante: el museo cerró sus puertas en 2021 para una renovación completa (proyecto MALVA / Manzana del Saber fase II, con Parque Explora), así que conviene verificar su reapertura antes de programar una visita.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Principal museo de historia natural del suroccidente colombiano; espacio de divulgación científica y memoria pedagógica de la ciudad.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Con origen en una colección de 1942, fue fundado en 1963 (Decreto 0510 del 20 de agosto) por iniciativa de Federico Carlos Lehmann Valencia, y abrió el 16 de diciembre de ese año como Museo de Historia Natural. Del INCIVA, se trasladó en 2003 a la Manzana del Saber (Av. Roosevelt #24-80).",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Un esqueleto de ballena jorobada cuelga del techo del área de ingreso.",
       "\"Truncho\", un tigre de Bengala, ha sido su pieza más icónica.",
@@ -1932,7 +1932,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida Roosevelt #24-80, Manzana del Saber, Cali.",
     "tarifa": "(Cuando abierto) Adultos $10.000; niños/estudiantes $7.500; adultos mayores y PcD $5.000; extranjeros 10 USD.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s31",
@@ -1951,8 +1951,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Rescue, research and elevation of local gastronomic heritage.",
     "datosHistoricos": "Fundado por la chef Martha Jaramillo con la misión de dignificar la cocina criolla y sus ingredientes.",
     "datosHistoricos_en": "Founded by chef Martha Jaramillo with the mission of dignifying Creole cuisine and its ingredients.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Sus meseros están capacitados para explicar el origen y los ingredientes de cada plato.",
       "El dulce de brevas con manjar blanco es legendario y se sirve de forma tradicional."
@@ -1961,9 +1961,9 @@ export const sitesData: Site[] = [
       "Their waiters are trained to explain the origin and ingredients of each dish.",
       "The sweet figs with manjar blanco is legendary and is served in a traditional way."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s32",
@@ -1982,8 +1982,8 @@ export const sitesData: Site[] = [
     "importancia_en": "First professional artistic training school in southwestern Colombia; quarry of artists who have shaped Cali culture.",
     "datosHistoricos": "Fundado a comienzos de los años treinta (Conservatorio de Música de Cali, 1932–1933) por iniciativa del maestro Antonio María Valencia. En 1936 se departamentalizó como Conservatorio de Cali–Escuela Departamental de Bellas Artes.",
     "datosHistoricos_en": "Founded in the early 1930s (Cali Conservatory of Music, 1932–1933) on the initiative of maestro Antonio María Valencia. In 1936 it was departmentalized as the Cali Conservatory–Departmental School of Fine Arts.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El Festival Internacional de Arte de Cali surgió de una idea de Fanny Mickey en el entonces \"Palacio de Bellas Artes\".",
       "Su conservatorio de música lleva el nombre de su fundador, Antonio María Valencia."
@@ -1994,7 +1994,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida 2 Norte # 7-49 / sede central, Cali.",
     "tarifa": "Programas académicos con matrícula; muchas muestras y conciertos son de acceso libre.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s33",
@@ -2013,8 +2013,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The largest space for culture, technology and coexistence in eastern Cali; model of social transformation through art in a territory marked by violence.",
     "datosHistoricos": "El proyecto nació hacia 2009 por iniciativa de la hermana Alba Stella Barreto (Fundación Paz y Bien); su construcción comenzó en 2010 y se inauguró alrededor de 2013, como alianza público-privada liderada junto a la Fundación Alvaralice.",
     "datosHistoricos_en": "The project was born around 2009 at the initiative of Sister Alba Stella Barreto (Peace and Good Foundation); Its construction began in 2010 and it was inaugurated around 2013, as a public-private alliance led together with the Alvaralice Foundation.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su orquesta sinfónica se formó con la Fundación Batuta; varios de sus jóvenes llegaron a becas en el Conservatorio de Bellas Artes.",
       "Su Computer Clubhouse se articuló con el MIT de Boston.",
@@ -2027,7 +2027,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Barrio Potrero Grande, comuna 21, Distrito de Aguablanca, Cali. [confirmar dirección exacta]",
     "tarifa": "Programas comunitarios gratuitos o de bajo costo. [verificar]",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s34",
@@ -2046,8 +2046,8 @@ export const sitesData: Site[] = [
     "importancia_en": "First museum of cinematography in Colombia and guardian of Caliwood's film memory; unique collection in the country.",
     "datosHistoricos": "Fundado legalmente el 22 de octubre de 2008 por Hugo Suárez Fiat y abierto al público en 2012, tras años de adecuación. Es una fundación privada sin ánimo de lucro. Se ubica en la Avenida Belalcázar, barrio Arboleda, cerca del Gato de Tejada y de La Tertulia.",
     "datosHistoricos_en": "Legally founded on October 22, 2008 by Hugo Suárez Fiat and opened to the public in 2012, after years of adaptation. It is a private non-profit foundation. It is located on Avenida Belalcázar, Arboleda neighborhood, near Gato de Tejada and La Tertulia.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Guarda 30 fotos fijas originales de la filmación de María (1922), la primera película colombiana.",
       "Fue la primera institución museológica del país en ofrecer audioguías por códigos QR.",
@@ -2058,9 +2058,9 @@ export const sitesData: Site[] = [
       "It was the first museum institution in the country to offer audio guides via QR codes.",
       "His collection started with two projectors used at the inauguration of the Jorge Isaacs Theater."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Entrada ~$20.000 (a modo de donación para su sostenimiento).",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s35",
@@ -2074,12 +2074,12 @@ export const sitesData: Site[] = [
     "visitas": 600,
     "logoUrl": "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800",
     "descripcion": "En el sur de la ciudad, frente a la Universidad Autónoma de Occidente, la Hacienda Cañasgordas es una de las joyas coloniales más importantes del suroccidente colombiano. Su casona —antes llamada \"Casa Grande\"— data del siglo XVIII, y fue el corazón de la que llegó a ser la hacienda más grande, rica y productiva de la banda izquierda del río Cauca: un territorio de casi 50 km² trabajado por cientos de personas esclavizadas, cuya memoria afro es parte esencial del lugar.\n\nPerteneció por más de dos siglos a la familia Caicedo, que ostentó durante seis generaciones el título de Alférez Real. Allí vivió Joaquín de Cayzedo y Cuero, quien impulsó la firma del Acta del Cabildo del 3 de julio de 1810 —el Grito de Independencia de Cali, diecisiete días antes del florero de Llorente en Bogotá—. La hacienda es, además, el escenario de la célebre novela El Alférez Real de Eustaquio Palacios (1886). Restaurada entre 2010 y 2018, con excavaciones arqueológicas del ICANH que sacaron a la luz viviendas de esclavizados y un cementerio colonial, hoy es un polo de memoria e historia del sur de Cali.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Casa del último Alférez Real y cuna del Grito de Independencia de Cali (1810); escenario de la novela El Alférez Real y sitio de memoria colonial y afro.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Casona del siglo XVIII, residencia de Joaquín de Cayzedo y Cuero, donde se firmó el Acta del Cabildo del 3 de julio de 1810. Declarada Bien de Interés Cultural Nacional (decreto 191 del 31 de enero de 1980). El ICANH adelantó investigación arqueológica (2010–2017) y fue restaurada entre 2010 y 2018.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Fue construida con la técnica del \"embutido de barro\", hoy casi extinta.",
       "Su cementerio colonial tuvo tumbas en uso hasta 1862.",
@@ -2087,7 +2087,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Vía Cali–Jamundí (Panamericana), frente a la Universidad Autónoma de Occidente, sur de Cali.",
     "tarifa": "Consultar con la Fundación Cañasgordas.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s36",
@@ -2106,8 +2106,8 @@ export const sitesData: Site[] = [
     "importancia_en": "María Scenario and main Asset of Cultural Interest in Valle del Cauca; literary icon of Latin American romanticism and pilgrimage destination for readers and lovers from around the world.",
     "datosHistoricos": "La casa fue construida entre 1816 y 1828 por Víctor Cabal, ganadero de Buga y exalcalde de Cali. Pasó a manos de Jorge Enrique Isaacs, padre del poeta, donde este vivió parte de su infancia. Adquirida por el departamento del Valle en 1953 y restaurada por el maestro Luis Alberto Acuña en 1954. Desde 2001 está a cargo del INCIVA.",
     "datosHistoricos_en": "The house was built between 1816 and 1828 by Víctor Cabal, a rancher from Buga and former mayor of Cali. It passed into the hands of Jorge Enrique Isaacs, the poet's father, where he lived part of his childhood. Acquired by the department of Valle in 1953 and restored by master Luis Alberto Acuña in 1954. Since 2001 it has been in charge of INCIVA.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "María se publicó en 1867; en 2017 se conmemoraron sus 150 años con el Año Jorge Isaacs.",
       "En el cuarto de Efraín se renuevan cada día rosas frescas, en recuerdo de las que María le llevaba.",
@@ -2118,9 +2118,9 @@ export const sitesData: Site[] = [
       "In Efraín's room, fresh roses are renewed every day, in memory of the ones María brought him.",
       "Jorge Isaacs was the face of the old 50,000 Colombian peso bill."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Adultos ~$18.000; niños ~$10.500; extranjeros ~10 USD.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s37",
@@ -2139,8 +2139,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Traditional neighborhood and cultural-gastronomic circuit next to the river; gateway to the western museum hub.",
     "datosHistoricos": "Uno de los primeros barrios de Cali, surgido a comienzos del siglo XX en la ribera del río Cali, históricamente ligado al desarrollo residencial y cultural del sector de La Tertulia.",
     "datosHistoricos_en": "One of the first neighborhoods in Cali, emerged at the beginning of the 20th century on the banks of the Cali River, historically linked to the residential and cultural development of the La Tertulia sector.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es tradicional zona de anticuarios y galerías de arte de la ciudad.",
       "Su cercanía a La Tertulia y al Gato del Río lo integra al circuito cultural del oeste."
@@ -2151,7 +2151,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Barrio El Peñón, centro-oeste de Cali.",
     "tarifa": "Acceso libre; consumo según establecimiento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s38",
@@ -2165,12 +2165,12 @@ export const sitesData: Site[] = [
     "visitas": 900,
     "logoUrl": "https://images.unsplash.com/photo-1447752875253-b791008657a7?auto=format&fit=crop&w=800",
     "descripcion": "En plena comuna 22, al sur de la ciudad, el Ecoparque Lago de las Garzas es un oasis inesperado: un humedal y uno de los pocos remanentes de bosque seco tropical que le quedan a Cali, alimentado por las aguas del río Pance. Alrededor de su espejo de agua conviven garzas, tinguas, tortugas, ardillas, iguanas, mariposas y decenas de especies de aves residentes y migratorias, que llegan a descansar en su viaje entre continentes. Hay un muelle de madera para el avistamiento, senderos ecológicos y un ambiente pensado para la \"recreación pasiva\": observar, respirar y desconectarse sin alterar el ecosistema.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Más allá de su valor ambiental, el Lago de las Garzas es un lugar de memoria, refugio de biodiversidad y aula viva de educación ambiental.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Nació de una tragedia: el accidente del vuelo 965 de American Airlines en 1995. En 1996 comenzaron los trabajos de recuperación y se sembraron 400 árboles en memoria de las víctimas. En 2002 fue incluido en el Plan de Ordenamiento Territorial.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Tiene una extensión aproximada de 4,7 hectáreas, con un lago de cerca de 0,8 hectáreas.",
       "Alberga más de 80 especies de aves y más de 70 de mariposas.",
@@ -2178,7 +2178,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 127 #16A-100, comuna 22 (Ciudad Jardín / Pance).",
     "tarifa": "Entrada gratuita.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s39",
@@ -2197,8 +2197,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Main square and historic center of Cali; set of national monuments around its perimeter.",
     "datosHistoricos": "Antigua Plaza Mayor colonial, fue rebautizada en 1913 como Plaza de Cayzedo en honor al prócer Joaquín de Cayzedo y Cuero, cuya estatua se erigió ese mismo año. Funcionó como mercado público hasta finales del siglo XIX y fue remodelada en 1986, con motivo de los 450 años de la ciudad.",
     "datosHistoricos_en": "The former colonial Plaza Mayor was renamed Plaza de Cayzedo in 1913 in honor of the hero Joaquín de Cayzedo y Cuero, whose statue was erected that same year. It functioned as a public market until the end of the 19th century and was remodeled in 1986, to mark the 450th anniversary of the city.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Sus palmas reales son parte inseparable de su imagen.",
       "Está rodeada por el Palacio Nacional, el Edificio Otero y la Catedral de San Pedro.",
@@ -2230,8 +2230,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Founded by the teacher Oscar Muñoz, it is an international reference for contemporary and conceptual art.",
     "datosHistoricos": "Abrió sus puertas en 2005 para llenar el vacío de espacios independientes en la ciudad.",
     "datosHistoricos_en": "It opened its doors in 2005 to fill the void of independent spaces in the city.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su nombre invita a 'dudar' como método de conocimiento.",
       "Ofrece 'Cine Sin Autor', proyecciones gratuitas y debates en la calle."
@@ -2240,9 +2240,9 @@ export const sitesData: Site[] = [
       "Its name invites 'doubt' as a method of knowledge.",
       "It offers 'Cinema Without an Author', free screenings and debates in the street."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s40",
@@ -2256,12 +2256,12 @@ export const sitesData: Site[] = [
     "visitas": 1000,
     "logoUrl": "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800",
     "descripcion": "Con 45 pisos y unos 186 metros de altura (211 con la antena), la Torre de Cali es el edificio más alto de la ciudad y uno de los más altos de Colombia. Se levanta a orillas del río Cali, en la Avenida de las Américas, barrio Versalles, en pleno centro financiero. Fue construida entre 1978 y 1984, con diseño del arquitecto Jaime Vélez y la colaboración de Julián Echeverri, y en su base incorpora un sistema antisísmico que fue tecnología de punta para la época. Alberga oficinas de bancos y corporaciones, y un hotel cinco estrellas —el Torre de Cali Plaza Hotel, abierto en 1988—, cuyo mirador y bar en la cima ofrecen una de las mejores vistas de la ciudad.\n\nSu historia también carga capítulos duros que conviene no olvidar: durante la construcción murieron alrededor de veinte obreros al caer un andamio desde el piso 37, y el 5 de mayo de 2001 un carro bomba —atribuido al ELN— explotó frente a la torre, dejando decenas de heridos. La Torre resume, en su silueta, tanto la ambición modernizadora de Cali como las cicatrices de una época violenta.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Edificio más alto de Cali e ícono del skyline y del centro financiero de la ciudad; mirador urbano de referencia.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Construida entre 1978 y 1984 (arquitecto Jaime Vélez con Julián Echeverri). Su hotel cinco estrellas abrió en 1988. El 5 de mayo de 2001 sufrió un atentado con carro bomba atribuido al ELN.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Cuenta con un sistema antisísmico en la base, pionero para su época.",
       "Su mirador, en los pisos más altos, permite ver casi toda la ciudad.",
@@ -2269,7 +2269,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida de las Américas 18N-26, barrio Versalles, norte-centro, Cali.",
     "tarifa": "Acceso al mirador/bar sujeto a consumo.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s41",
@@ -2288,8 +2288,8 @@ export const sitesData: Site[] = [
     "importancia_en": "It is one of the most important Assets of Cultural Interest in the north of Cali and a benchmark of modern architecture.",
     "datosHistoricos": "27 de noviembre de 1963: inauguración, bajo la dirección de Galindo Buenaventura.\nAños 70: sede de cineclubes decisivos, entre ellos el Cineclub de Cali de Andrés Caicedo.\n9 de julio de 1999: última proyección y cierre.\nOctubre de 2016 – julio de 2017: restauración completa y reapertura (con una obra del grupo Bambazú).",
     "datosHistoricos_en": "Opened in 1963, it was for decades the most elegant and technological cinema in the city.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La restauración recuperó detalles originales como la silletería, la fuente y las puertas de bronce de la entrada, según el Plan Especial de Protección del Patrimonio.",
       "Tiene una localidad especial para 20 personas con movilidad reducida, con una \"oruga\" importada de Italia para facilitar el acceso."
@@ -2300,7 +2300,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida Sexta (Calle 12 Nte #4-20).",
     "tarifa": "Boletería según evento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s42",
@@ -2319,8 +2319,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Reference for independent and community theater in the southwest; Historical Room recognized by the Ministry of Culture and Place of Memory of the city.",
     "datosHistoricos": "Surgió en 1973 como grupo estudiantil de la Universidad del Valle, liderado por Orlando Cajamarca; se constituyó como entidad autónoma sin ánimo de lucro entre 1977 y 1978. Cuenta con sede y sala propias desde 1980. En 2023 fue reconocido como \"Lugar de Memoria\" por el Centro Nacional de Memoria Histórica.",
     "datosHistoricos_en": "It emerged in 1973 as a student group at the Universidad del Valle, led by Orlando Cajamarca; It was established as an autonomous non-profit entity between 1977 and 1978. It has had its own headquarters and hall since 1980. In 2023 it was recognized as a \"Place of Memory\" by the National Center for Historical Memory.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su programa \"Jóvenes, Teatro y Comunidad\" trabaja desde 1987 en comunas vulnerables y municipios del Valle y el norte del Cauca.",
       "Miles de personas de sectores populares han subido por primera vez a un escenario gracias a su Red Popular de Teatro.",
@@ -2333,7 +2333,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Barrio Tejares de San Fernando, Cali. [confirmar dirección exacta]",
     "tarifa": "Boletería según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s43",
@@ -2352,8 +2352,8 @@ export const sitesData: Site[] = [
     "importancia_en": "One of the last mobile typography workshops in Latin America and emblem of popular Colombian graphics; living heritage of the printed craft.",
     "datosHistoricos": "Fundado en 1934, empezó imprimiendo en el barrio Santa Rosa y hacia 1987 se trasladó a San Antonio, su sede hasta hoy. Tras una crisis que casi lo cierra en 2016, renació en 2017 como taller-galería intergeneracional, de la mano de los maestros Olmedo Franco, Jaime García y Héctor Otálvaro.",
     "datosHistoricos_en": "Founded in 1934, it began printing in the Santa Rosa neighborhood and around 1987 it moved to San Antonio, its headquarters until today. After a crisis that almost closed it in 2016, it was reborn in 2017 as an intergenerational workshop-gallery, led by teachers Olmedo Franco, Jaime García and Héctor Otálvaro.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Editorial Planeta la eligió para ilustrar las portadas de las reediciones de Andrés Caicedo, cliente histórico del taller.",
       "Sus máquinas son reliquias: una prensa Marinoni de París de 1870, una Reliance de Nueva York de 1890, y una Rápida di Lusso de Turín de 1934.",
@@ -2364,9 +2364,9 @@ export const sitesData: Site[] = [
       "His machines are relics: a Marinoni press from Paris from 1870, a Reliance from New York from 1890, and a Rápida di Lusso from Turin from 1934.",
       "His posters have already gone around the world in exhibitions in Europe and America."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Entrada libre al taller-tienda; los carteles se venden.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s44",
@@ -2385,8 +2385,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Vital platform for the circulation of small format works, monologues and experimentation.",
     "datosHistoricos": "Creado por artistas locales con la necesidad de descentralizar la oferta teatral.",
     "datosHistoricos_en": "Created by local artists with the need to decentralize the theatrical offer.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Funciona también como una 'tienda' real de servicios artísticos y libros.",
       "El café del lugar es punto de encuentro frecuente de actores y directores."
@@ -2395,9 +2395,9 @@ export const sitesData: Site[] = [
       "It also functions as a real 'store' for artistic services and books.",
       "The local café is a frequent meeting point for actors and directors."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s45",
@@ -2416,8 +2416,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Vital space for the formation of audiences and the dissemination of Colombian and independent cinema.",
     "datosHistoricos": "Fundada en 1975, ha sido sede de festivales internacionales de cine por décadas.",
     "datosHistoricos_en": "Founded in 1975, it has hosted international film festivals for decades.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es la sede principal del Festival Internacional de Cine de Cali (FICCALI).",
       "Ofrece funciones al aire libre en los jardines del museo ('Cine al Río')."
@@ -2426,9 +2426,9 @@ export const sitesData: Site[] = [
       "It is the main venue of the Cali International Film Festival (FICCALI).",
       "It offers outdoor performances in the museum gardens ('Cine al Río')."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s46",
@@ -2442,12 +2442,12 @@ export const sitesData: Site[] = [
     "visitas": 1000,
     "logoUrl": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800",
     "descripcion": "El Mulato Cabaret es el primer cabaret latino de Colombia: un espectáculo de salsa de gran formato creado por Luis Eduardo Hernández \"El Mulato\" y la compañía Swing Latino. Nacido hacia 2017, lleva la salsa caleña al terreno del show teatral —vestuario, luces, coreografía de alto vuelo—, construido, en palabras de la propia compañía, \"desde y para el baile\", con la ambición de volverse un referente internacional del espectáculo latino.\n\nEs la cara escénica y nocturna del universo Swing Latino: donde la escuela forma y compite, el cabaret celebra y muestra. Un plan pensado para vivir la salsa de Cali como espectáculo, con la factura de una compañía que ha pisado los escenarios más exigentes del mundo.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Primer cabaret latino de Colombia y vitrina escénica del estilo caleño de la salsa, de la mano de Swing Latino.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Fue inaugurado hacia 2017 por El Mulato y Swing Latino, como espectáculo insignia con el que se abrió su propio cabaret.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es reconocido como el primer cabaret latino del país.",
       "Forma parte del mismo proyecto de la escuela Swing Latino, campeona mundial de salsa.",
@@ -2455,7 +2455,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Cali.",
     "tarifa": "Entrada con costo según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s47",
@@ -2474,8 +2474,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Example of urban recovery of an old industrial area for cultural and recreational use.",
     "datosHistoricos": "Construido sobre los antiguos predios de una fábrica de licores abandonada.",
     "datosHistoricos_en": "Built on the old grounds of an abandoned liquor factory.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Suele ser sede de festivales de rock, hip hop y música del Pacífico.",
       "Las fuentes se iluminan de noche, creando un espectáculo visual."
@@ -2484,9 +2484,9 @@ export const sitesData: Site[] = [
       "It is often home to rock, hip hop and Pacific music festivals.",
       "The fountains are illuminated at night, creating a visual spectacle."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s48",
@@ -2505,8 +2505,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Vital space for active recreation and public health of Cali residents.",
     "datosHistoricos": "Surgió de la donación de terrenos del antiguo ingenio azucarero Meléndez.",
     "datosHistoricos_en": "It arose from the donation of land from the old Meléndez sugar mill.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es famoso por sus puestos de jugos de naranja y caña recién exprimidos.",
       "Los fines de semana se llena de familias con mascotas."
@@ -2515,9 +2515,9 @@ export const sitesData: Site[] = [
       "It is famous for its freshly squeezed orange and cane juice stands.",
       "On weekends it is filled with families with pets."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s49",
@@ -2536,8 +2536,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Area of ​​global importance for bird watching and gastronomic tourism.",
     "datosHistoricos": "Históricamente fue el paso obligado de arrieros entre el Valle y el Pacífico.",
     "datosHistoricos_en": "Historically it was the obligatory passage for muleteers between the Valley and the Pacific.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Aquí se encuentra el 'Bosque de Niebla de San Antonio', un ecosistema único.",
       "Es famoso por el chocolate caliente con queso."
@@ -2546,9 +2546,9 @@ export const sitesData: Site[] = [
       "Here is the 'San Antonio Fog Forest', a unique ecosystem.",
       "It is famous for hot chocolate with cheese."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s5",
@@ -2567,8 +2567,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Monument to the founder of the city and historical viewpoint; Today also a space for debate on the memory of the conquest.",
     "datosHistoricos": "Estatua en bronce del escultor español Victorio Macho, inaugurada el 25 de julio de 1937 en el marco de los 400 años de Cali. El 28 de abril de 2021 fue derribada por la comunidad Misak durante el Paro Nacional, y reinstalada el 4 de noviembre de 2022 con una nueva placa que reconoce a los pueblos indígenas.",
     "datosHistoricos_en": "Bronze statue of the Spanish sculptor Victorio Macho, inaugurated on July 25, 1937 within the framework of the 400 years of Cali. On April 28, 2021, it was demolished by the Misak community during the National Strike, and reinstalled on November 4, 2022 with a new plaque that recognizes indigenous peoples.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La escultura se elaboró en España y llegó a Cali a lomo de mula desde Buenaventura.",
       "Belalcázar aparece señalando al Pacífico, con la mano izquierda sobre su espada Tizona.",
@@ -2581,7 +2581,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Barrio Arboleda, Carrera 2 Oeste con Calle 9 Oeste (aprox.), oeste de Cali.",
     "tarifa": "Gratis.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s50",
@@ -2600,8 +2600,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Only museum in Colombia with historical aircraft in flight condition.",
     "datosHistoricos": "Fundado por el capitán Raymond Lee, quien recuperó muchas de las aeronaves.",
     "datosHistoricos_en": "Founded by Captain Raymond Lee, who recovered many of the aircraft.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El avión Douglas DC-3 está impecable y puedes entrar en él.",
       "La maqueta de trenes es una de las más grandes y detalladas de Latinoamérica."
@@ -2610,9 +2610,9 @@ export const sitesData: Site[] = [
       "The Douglas DC-3 aircraft is immaculate and you can enter it.",
       "The train model is one of the largest and most detailed in Latin America."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s52",
@@ -2631,8 +2631,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Symbol of Cali popular culture and the acceptance of madness as part of identity.",
     "datosHistoricos": "Jovita fue nombrada 'Reina de la Simpatía' en un acto público masivo en los años 70.",
     "datosHistoricos_en": "Jovita was named 'Queen of Sympathy' in a massive public event in the 70s.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La estatua siempre tiene flores frescas que le dejan los estudiantes.",
       "Es el punto de encuentro para marchas estudiantiles y carnaval."
@@ -2641,9 +2641,9 @@ export const sitesData: Site[] = [
       "The statue always has fresh flowers left by the students.",
       "It is the meeting point for student marches and carnival."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s53",
@@ -2662,8 +2662,8 @@ export const sitesData: Site[] = [
     "importancia_en": "First municipal public library of Cali and architectural heritage.",
     "datosHistoricos": "20 de julio de 1910: fundación, en el marco del centenario de la independencia; es la primera biblioteca pública del país.\n1985: la biblioteca llega a su sede actual, en El Peñón.\n2010–2013: con motivo de sus 100 años, se emprende un proyecto de recuperación de su memoria histórica y de mejoramiento de la casa, que dio como resultado sus salas y terrazas actuales.",
     "datosHistoricos_en": "Founded on July 20, 1910 to commemorate the centenary of Colombia's independence.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Junto con la Biblioteca Departamental Jorge Garcés Borrero, conforma el par de grandes bibliotecas históricas de la ciudad.",
       "Su ubicación en El Peñón la integra al circuito patrimonial y gastronómico de ese barrio."
@@ -2674,7 +2674,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 4 Oeste No. 1-16, barrio El Peñón.",
     "tarifa": "Gratuito.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s54",
@@ -2693,8 +2693,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Pioneer and persevering: seven decades promoting jazz, blues and visual arts in Cali, and one of the few city centers with a continuous cultural agenda and free access.",
     "datosHistoricos": "Fundado en 1954 como fundación sin ánimo de lucro y centro binacional reconocido por la Embajada de EE. UU. Desde su sede madre en Granada creció hasta sumar sedes en el sur de Cali, Buga (1985) y Palmira (2005), con más de 5.000 estudiantes. En 2024 cumplió 70 años.",
     "datosHistoricos_en": "Founded in 1954 as a non-profit foundation and binational center recognized by the US Embassy. From its mother headquarters in Granada it grew to add offices in the south of Cali, Buga (1985) and Palmira (2005), with more than 5,000 students. In 2024 he turned 70 years old.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su Cali Blues & Folk Festival (desde 2006) ganó en 2020 el premio internacional Keeping the Blues Alive Award de The Blues Foundation (Memphis): es el primer y único festival latinoamericano en recibirlo.",
       "En 2023 el Ministerio de las Culturas lo reconoció entre los 100 proyectos de la Lista Bienal de Proyectos de Interés Nacional.",
@@ -2709,7 +2709,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Sede principal en el barrio Granada (fundada en 1954); segunda sede (sur) en la Carrera 53 #10-56.",
     "tarifa": "Las exposiciones de la galería y buena parte de la agenda cultural (cine, charlas) son de **entrada libre**; los cursos de inglés tienen costo.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s55",
@@ -2728,8 +2728,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Main promoter of French-speaking and European culture in the region.",
     "datosHistoricos": "Mediados de los años cuarenta: se funda la Alianza Francesa de Cali, la segunda del país.\nCon el tiempo abrió sedes adicionales en la ciudad (sede norte y sede alterna) y consolidó su mediateca y su programación cultural.",
     "datosHistoricos_en": "It has had an active presence in Cali for more than 50 years.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Hace parte de la red mundial de Alianzas Francesas, presente en más de 130 países.",
       "Su agenda cultural (cine, exposiciones, conciertos, conferencias) suele articularse con otros espacios culturales de la ciudad."
@@ -2740,7 +2740,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida 6 Norte #21-34 (sede principal).",
     "tarifa": "Muchas actividades culturales son de entrada libre; los cursos y certificaciones tienen costo.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s56",
@@ -2759,8 +2759,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Urban landmark of the north of the city and historical curiosity.",
     "datosHistoricos": "El avión llegó en los años 90 y se convirtió en biblioteca infantil por un tiempo.",
     "datosHistoricos_en": "The plane arrived in the 90s and became a children's library for a time.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es un punto de referencia geográfico muy usado: 'Nos vemos en el Parque del Avión'.",
       "El avión perteneció a una aerolínea comercial antes de ser donado."
@@ -2769,9 +2769,9 @@ export const sitesData: Site[] = [
       "It is a widely used geographical reference point: 'See you at the Airplane Park'.",
       "The plane belonged to a commercial airline before being donated."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s57",
@@ -2790,8 +2790,8 @@ export const sitesData: Site[] = [
     "importancia_en": "It houses the Mudéjar Tower, considered the most valuable and unique architectural jewel of the city.",
     "datosHistoricos": "La plazoleta ha sido remodelada varias veces, sirviendo históricamente de atrio al templo franciscano.",
     "datosHistoricos_en": "The small square has been remodeled several times, historically serving as an atrium to the Franciscan temple.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Las palomas son habitantes permanentes de la plaza y los turistas suelen alimentarlas.",
       "Desde aquí se tiene la mejor vista completa de la Torre Mudéjar y sus ladrillos decorativos."
@@ -2800,9 +2800,9 @@ export const sitesData: Site[] = [
       "Pigeons are permanent inhabitants of the square and tourists often feed them.",
       "From here you have the best complete view of the Mudéjar Tower and its decorative bricks."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s58",
@@ -2816,12 +2816,12 @@ export const sitesData: Site[] = [
     "visitas": 800,
     "logoUrl": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800",
     "descripcion": "A un costado de La Ermita y frente al Teatro Jorge Isaacs, el Parque de los Poetas es un homenaje en bronce a la palabra vallecaucana. Inaugurado en 1995, reúne las esculturas de cinco grandes poetas del Valle —Jorge Isaacs, Carlos Villafañe, Ricardo Nieto, Antonio Llanos y Octavio Gamboa—, obra del maestro José Antonio Moreno. Las figuras, de tamaño real, invitan a sentarse junto a ellas: los visitantes se toman fotos con \"su\" poeta preferido mientras se refrescan con un cholao.\n\nEl parque se levanta donde alguna vez estuvo el Hotel Alférez Real, en uno de los rincones más simbólicos del centro, entre el río, el Puente Ortiz y la arquitectura republicana. Acoge con frecuencia recitales y eventos literarios, y en su entorno todavía trabajan los mecanógrafos con sus máquinas de escribir: un pequeño teatro cotidiano de la memoria escrita de la ciudad.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Homenaje a la poesía del Valle del Cauca y espacio literario del centro histórico, junto a La Ermita y el Teatro Jorge Isaacs.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Inaugurado en 1995 como homenaje a la poesía vallecaucana, con cinco esculturas en bronce del maestro José Antonio Moreno. Se construyó donde antes se levantaba el Hotel Alférez Real.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Las esculturas, originalmente en bronce, fueron pintadas de verde años después.",
       "Rinde homenaje a Jorge Isaacs, autor de María, la gran novela del romanticismo colombiano.",
@@ -2829,7 +2829,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Entre carreras 1ª y 3ª con calle 12, junto a La Ermita, centro, Cali.",
     "tarifa": "Gratis.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s59",
@@ -2843,12 +2843,12 @@ export const sitesData: Site[] = [
     "visitas": 1500,
     "logoUrl": "https://images.unsplash.com/photo-1549643276-8e50b691079d?auto=format&fit=crop&w=800",
     "descripcion": "El Puente Ortiz fue el primer puente construido sobre el río Cali, y sigue siendo uno de los cruces más cargados de historia de la ciudad. La necesidad de un puente firme venía desde el siglo XVIII —los de guadua se deterioraban rápido—, y la obra definitiva la dirigió primero José Montehermoso y la terminó el fraile franciscano Fray José Ignacio Ortiz, oriundo de Candelaria e ingeniero aficionado, que trabajó entre 1842 y 1845 y entregó el puente en calicanto (ladrillo y piedra) en octubre de ese último año. Por él terminó llevando el nombre.\n\nConecta el centro —con La Ermita, el Teatro Jorge Isaacs y el Parque de los Poetas al sur— con la zona del CAM al norte. A lo largo de los años se amplió y hasta llegó a ser vehicular en 1950, para el paso de las \"berlinas\", antes de volver a ser peatonal. En 2011, durante las obras del hundimiento de la Avenida Colombia, aparecieron secciones originales de la estructura de 1840, hoy visibles bajo vidrio: una ventana literal al pasado de Cali bajo los pies de quien lo cruza.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Primer puente sobre el río Cali e ícono patrimonial del centro histórico; nexo entre la ciudad vieja y la moderna.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Construido en su fase definitiva por Fray José Ignacio Ortiz entre 1842 y 1845, tras el trabajo inicial de José Montehermoso. Declarado Bien de Interés Cultural Nacional (Res. 0109 del 9 de febrero de 2005). En 2011 se hallaron y expusieron secciones originales de 1840.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Fray Ortiz, además de ingeniero aficionado, fundó la primera escuela para mujeres de Cali y trajo la primera imprenta.",
       "En 1950 dejó de ser peatonal para dar paso a las \"berlinas\" (autos de la época).",
@@ -2856,7 +2856,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Sobre el río Cali, entre La Ermita y el CAM, centro, Cali.",
     "tarifa": "Gratis.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s6",
@@ -2875,8 +2875,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Architectural landmark and administrative headquarters of municipal cultural management.",
     "datosHistoricos": "Inaugurado en 1990. Su diseño reinterpreta la arquitectura islámica y precolombina.",
     "datosHistoricos_en": "Inaugurated in 1990. Its design reinterprets Islamic and pre-Columbian architecture.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Tiene una acústica especial: el sonido del agua te aísla del ruido de la calle.",
       "Desde sus terrazas se tienen vistas únicas de la ciudad y los cerros."
@@ -2885,9 +2885,9 @@ export const sitesData: Site[] = [
       "It has a special acoustic: the sound of the water isolates you from the noise of the street.",
       "From its terraces you have unique views of the city and the hills."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s60",
@@ -2906,8 +2906,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The most important informal artistic exhibition space in the city every Sunday.",
     "datosHistoricos": "El barrio El Peñón se desarrolló a principios del siglo XX como zona residencial de clase alta.",
     "datosHistoricos_en": "The El Peñón neighborhood was developed at the beginning of the 20th century as an upper-class residential area.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Alberga una estatua de Benito Juárez donada por México.",
       "Es conocido por sus grandes árboles que dan sombra fresca todo el día."
@@ -2916,9 +2916,9 @@ export const sitesData: Site[] = [
       "It houses a statue of Benito Juárez donated by Mexico.",
       "It is known for its large trees that provide cool shade all day."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s61",
@@ -2937,8 +2937,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The city's main haute cuisine gastronomic area and the scene of its contemporary culinary scene.",
     "datosHistoricos": "Barrio residencial tradicional del norte de Cali, surgido a comienzos del siglo XX, que con el tiempo se consolidó como epicentro gastronómico y de vida nocturna.",
     "datosHistoricos_en": "Traditional residential neighborhood in the north of Cali, emerged at the beginning of the 20th century, which over time consolidated itself as a gastronomic and nightlife epicenter.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Concentra buena parte de los restaurantes de alta cocina de Cali.",
       "Alberga el espacio de arte contemporáneo Lugar a Dudas.",
@@ -2951,7 +2951,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Barrio Granada, norte de Cali.",
     "tarifa": "Acceso libre; consumo según establecimiento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s62",
@@ -2965,12 +2965,12 @@ export const sitesData: Site[] = [
     "visitas": 1500,
     "logoUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800",
     "descripcion": "Ciudad Jardín es hoy una de las grandes zonas gastronómicas y de vida nocturna de Cali, en el sur de la ciudad (Comuna 22). Lo que empezó en septiembre de 1962 como una urbanización de lujo sobre potreros y cañaduzales —\"Ciudad Jardín San Joaquín\", diseñada por la firma Cuéllar Serrano Gómez, con lotes que no podían medir menos de 1.500 m²— se transformó, con las décadas, en un sector exclusivo y arborizado que combina residencias, universidades y una densa oferta de restaurantes y bares.\n\nAlrededor de la Carrera 105 y sus calles se despliega alta cocina, cocina internacional, parrillas, terrazas al aire libre y algunas de las discotecas más reconocidas de la ciudad. Está rodeado de universidades (Javeriana, San Buenaventura, ICESI, Libre), grandes centros comerciales como Jardín Plaza y Unicentro, y reservas naturales como el Humedal La Babilla y el Zanjón del Burro, que le dan un respiro verde. Es la puerta natural hacia Pance y Jamundí, y punto de encuentro nocturno del sur caleño.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Principal zona gastronómica y de vida nocturna del sur de Cali; sector residencial exclusivo con fuerte oferta de restaurantes, bares y comercio.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "La urbanización se originó en septiembre de 1962 como \"Ciudad Jardín San Joaquín\" (firma Cuéllar Serrano Gómez), sobre antiguos potreros y cañaduzales del sur. Con el tiempo se consolidó como zona gastronómica y de entretenimiento de la Comuna 22.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Sus lotes originales no podían medir menos de 1.500 m².",
       "Colinda con las reservas naturales del Humedal La Babilla y el Zanjón del Burro.",
@@ -2978,7 +2978,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Comuna 22, sur de Cali (eje Carrera 105 / Avenida Cañasgordas).",
     "tarifa": "Acceso libre; consumo según cada establecimiento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s64",
@@ -2992,12 +2992,12 @@ export const sitesData: Site[] = [
     "visitas": 1800,
     "logoUrl": "https://images.unsplash.com/photo-1584464431052-1629857d34d3?auto=format&fit=crop&w=800",
     "descripcion": "Frente a la Plaza de Cayzedo, en pleno corazón del centro histórico, la Catedral de San Pedro Apóstol es el principal templo de Cali y sede de su arquidiócesis. Su historia es la de una obra paciente: la primera piedra se puso el 1 de septiembre de 1772, con diseño barroco del arquitecto Antonio García y —dato que la ata a la dura historia colonial— mano de obra de presos de las cárceles caleñas. Los retrasos políticos hicieron que solo se terminara en 1841, ya bajo cánones neoclásicos, y los terremotos de 1885, 1906 y 1925 la golpearon una y otra vez: la fachada que hoy vemos data de 1930.\n\nAdentro guarda tesoros: pinturas de la escuela quiteña, altares en pan de oro, la venerada imagen del Amo Caído y un imponente órgano tubular alemán de la casa Walcker —fabricado hacia 1925, de unas diez toneladas—, uno de los más grandes de Latinoamérica. Y bajo el altar mayor reposan los restos de Joaquín de Caicedo y Cuero, prócer de la independencia caleña. Más que un templo, es un testigo de piedra de casi toda la historia de la ciudad.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Principal templo católico de Cali, sede de la arquidiócesis y uno de los grandes hitos patrimoniales del centro histórico.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "La primera piedra se puso el 1 de septiembre de 1772 (párroco José Rivera; diseño de Antonio García); la obra se concluyó en 1841 en estilo neoclásico. Fue elevada a catedral en 1911 y a catedral metropolitana en 1964. Declarada Monumento Nacional (Res. 002 del 12 de marzo de 1982) y Bien de Interés Cultural Nacional (1 de diciembre de 2004).",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Bajo el altar mayor reposan los restos de Joaquín de Caicedo y Cuero.",
       "Su órgano tubular alemán Walcker pesa cerca de diez toneladas.",
@@ -3005,7 +3005,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 5 con Calle 11, Plaza de Cayzedo, centro, Cali.",
     "tarifa": "Entrada libre.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s65",
@@ -3024,8 +3024,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Tutelary hill and emblematic viewpoint of Cali; place of popular sport and religious tradition.",
     "datosHistoricos": "Según la tradición, en 1837 frailes franciscanos colocaron tres cruces de guadua para conjurar la leyenda del \"Buziraco\". Las cruces de concreto que hoy coronan el cerro se erigieron hacia 1937-1938, tras la caída de las anteriores en el terremoto de 1925.",
     "datosHistoricos_en": "According to tradition, in 1837 Franciscan friars placed three guadua crosses to conjure the legend of \"Buziraco.\" The concrete crosses that today crown the hill were erected around 1937-1938, after the previous ones fell in the 1925 earthquake.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "La cruz central mide unos 26 metros de altura.",
       "Cada 3 de mayo, Día de la Cruz, y en Semana Santa se realizan peregrinaciones.",
@@ -3038,7 +3038,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Corregimiento de Montebello; ascenso habitual desde Altos de Normandía, Cali.",
     "tarifa": "Gratis.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s66",
@@ -3057,8 +3057,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Epicenter of independent theater and organizer of international cultural events.",
     "datosHistoricos": "4 de marzo de 1994: apertura del teatro, en la casona que el abuelo de Diego Pombo compró en 1929.\nFinales de los 90: nace Ajazzgo en la pequeña sala; al crecer, se trasladó al Teatro al Aire Libre Los Cristales y al Teatro Municipal.\nSu obra *Krápula Mácula* ganó un premio nacional de teatro y los llevó al Festival Iberoamericano de Cádiz.",
     "datosHistoricos_en": "The Barco Drunken Foundation was established in 1994, consolidating the Salamandra as its permanent headquarters.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Una vez un vecino molesto por el ruido pidió cerrarlo; los demás vecinos fueron a las audiencias a defenderlo, y el que terminó mudándose fue el vecino.",
       "Tiene un ciclo de cine llamado \"Cinemandra\" con entrada libre."
@@ -3069,7 +3069,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 36 #4A-31, barrio San Fernando Viejo.",
     "tarifa": "Boletería (aprox. $30.000 según cartelera); algunos eventos de cine y poesía son de entrada libre.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s67",
@@ -3088,8 +3088,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Main promoter of animation and object theater in western Colombia.",
     "datosHistoricos": "1982: Leonor Amelia Pérez y Gerardo Potes fundan el Pequeño Teatro de Muñecos, inspirados por el maestro Juan Enrique Acuña, del Moderno Teatro de Muñecos de Costa Rica.\n27 de marzo de 1998: inauguración de la Casa de los Títeres en San Antonio.\n2001: obtiene la condición de Sala Concertada del Ministerio de Cultura.",
     "datosHistoricos_en": "Founded in 1998, they have kept the oral and visual tradition alive for decades, forming new generations of audiences.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El Festival Internacional de Títeres de Cali (\"Cali, un sueño con títeres\") llega en 2026 a su edición número 25.",
       "Durante el festival, las funciones se extienden al Teatrino del Teatro Municipal, al parque de San Antonio y a corregimientos como Pichindé o La Castilla."
@@ -3100,7 +3100,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 9 #4-55, barrio San Antonio.",
     "tarifa": "Entrada aprox. $10.000 por función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s68",
@@ -3114,12 +3114,12 @@ export const sitesData: Site[] = [
     "visitas": 300,
     "logoUrl": "https://images.unsplash.com/photo-1507924538820-ede94a04019d?auto=format&fit=crop&w=800",
     "descripcion": "En una vieja casona del barrio San Fernando, adaptada como casa-teatro, late Domus Teatro: una sala-estudio íntima, de esas pensadas no para llenar grandes aforos sino para formar público. Nacida en 1994 de la mano de Manuel Sierra y Luz Stella Gil, la Fundación Domus Teatro ofrece desde entonces una programación cultural permanente que abarca teatro, música, danza, exposiciones pictóricas y conversatorios. Sus salas son pequeñas —para 50 o 70 espectadores—, con la idea de cultivar, función a función, los espectadores que Cali necesita.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Con más de tres décadas de actividad ininterrumpida, Domus es una de las salas independientes que sostienen el rico tejido escénico caleño y forma parte de la Red de Teatro Independiente de Cali. Su papel fue decisivo en un momento clave: a finales de los años 90.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "1994: fundación de Domus Teatro por Manuel Sierra y Luz Stella Gil. Finales de los 90: la sala impulsa un Festival de Salas en concierto. Ha mantenido repertorio propio y programación continua durante más de 31 años (dato a 2025).",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Domus se define como \"sala-estudio\": la formación y la creación son tan importantes como la exhibición.",
       "Ha invitado a grupos de peso como Ditirambo (Bogotá).",
@@ -3127,7 +3127,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 25 #2-72, barrio San Fernando.",
     "tarifa": "Boletería con descuento para estudiantes.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s69",
@@ -3141,19 +3141,19 @@ export const sitesData: Site[] = [
     "visitas": 400,
     "logoUrl": "https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?auto=format&fit=crop&w=800",
     "descripcion": "En una casa del tradicional barrio San Antonio funciona Cali Teatro, una de las salas independientes más amplias y mejor equipadas de la ciudad. La Fundación Escénica Cali Teatro nació en 1989 y, desde su sede propia, ha construido un espacio con capacidad para unos 150 espectadores en platea y palco, con antesala, cafetería y una exhibición permanente de material gráfico que da testimonio de su trayectoria. Durante cerca de diez meses al año programa temporadas de teatro con su elenco de planta y grupos invitados de la ciudad, el país y el exterior.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "Con más de tres décadas de trabajo, Cali Teatro es un patrimonio vivo de las artes escénicas caleñas. Es reconocida como Sala Concertada con el Ministerio de Cultura y la Alcaldía.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "Fundación de la Fundación Escénica Cali Teatro en 1989. Ha realizado más de 38 montajes a lo largo de su historia. En 2021 se crea el festival \"Muestra Alternativa de Teatro pero del Bueno Bueno\".",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su sala de 150 sillas es de tipo cine, y el escenario cuenta con foso o trampa escénica.",
       "Buena parte de su programación reciente aborda temas sensibles y contemporáneos: salud mental, trastornos alimentarios, población LGBTIQ+."
     ],
     "direccion": "Carrera 12 #4-51, barrio San Antonio.",
     "tarifa": "Boletería según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s7",
@@ -3172,8 +3172,8 @@ export const sitesData: Site[] = [
     "importancia_en": "One of the contemporary temples of salsa in Cali; meeting point between the salsa tradition and the new generations.",
     "datosHistoricos": "Abrió sus puertas en 2011 como un pequeño bar improvisado y se consolidó como una de las salsotecas de referencia de la ciudad.",
     "datosHistoricos_en": "It opened its doors in 2011 as a small improvised bar and established itself as one of the city's leading salsa bars.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Está sobre la Calle 5, la misma que menciona el Grupo Niche en \"Cali Ají\".",
       "Muchos visitantes dan aquí sus primeros pasos de baile, en clases previas a la fiesta.",
@@ -3186,7 +3186,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 5 # 13-27, Cali.",
     "tarifa": "Consumo / cover según noche. [verificar]",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s70",
@@ -3205,8 +3205,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Fundamental bridge between experimental academic theater and the general public.",
     "datosHistoricos": "2005: se conforma el grupo, con dramaturgia y dirección de Diego Fernando Montoya.\nNoviembre de 2014: inaugura su sede propia en el barrio Granada.\nDesde 2019: realiza el Encuentro de Arte Queer, con una nutrida agenda artística y académica.",
     "datosHistoricos_en": "The group was founded in 2000, consolidating its own room years later to have creative freedom.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su programación habitual es viernes y sábado a las 7:30 p. m., con temporada familiar los domingos a las 4:00 p. m.",
       "Tiene un programa dedicado a formar nuevos públicos entre niños y jóvenes de instituciones educativas."
@@ -3217,7 +3217,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Avenida 9AN #10N-50, barrio Granada.",
     "tarifa": "Boletería según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s71",
@@ -3236,8 +3236,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Preserves vinyl culture and freestyle dancing in a countercultural environment.",
     "datosHistoricos": "Nació como una alternativa a las discotecas crossover, buscando recuperar la esencia del barrio.",
     "datosHistoricos_en": "It was born as an alternative to crossover nightclubs, seeking to recover the essence of the neighborhood.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "No se piden canciones, se confía ciegamente en la selección del DJ.",
       "Su entrada discreta hace que solo lleguen los verdaderos conocedores."
@@ -3246,9 +3246,9 @@ export const sitesData: Site[] = [
       "No songs are requested, you blindly trust the DJ's selection.",
       "Its discreet entrance means that only true connoisseurs arrive."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s72",
@@ -3267,8 +3267,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Vital to the quality live music and jazz scene in Cali.",
     "datosHistoricos": "Fundado por amantes de la música que querían un espacio con acústica impecable para escuchar en vivo.",
     "datosHistoricos_en": "Founded by music lovers who wanted a space with impeccable acoustics to listen to live.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es habitual ver 'jam sessions' improvisadas con músicos visitantes.",
       "Su nombre evoca el punto de encuentro y la 'barra' (baré)."
@@ -3277,9 +3277,9 @@ export const sitesData: Site[] = [
       "It is common to see improvised 'jam sessions' with visiting musicians.",
       "Its name evokes the meeting point and the 'bar' (baré)."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s73",
@@ -3298,8 +3298,8 @@ export const sitesData: Site[] = [
     "importancia_en": "It keeps the essence of the neighborhood rumba alive in a tourist area.",
     "datosHistoricos": "Inspirado en la mitología popular caleña sobre el diablo y la fiesta eterna.",
     "datosHistoricos_en": "Inspired by popular Cali mythology about the devil and the eternal party.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Tienen cócteles con nombres 'diabólicos' y picantes.",
       "La música es curada para verdaderos salseros, evitando los éxitos comerciales."
@@ -3308,9 +3308,9 @@ export const sitesData: Site[] = [
       "They have cocktails with 'devilish' and spicy names.",
       "The music is curated for true salseros, avoiding commercial successes."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s74",
@@ -3329,8 +3329,8 @@ export const sitesData: Site[] = [
     "importancia_en": "It preserves the memory of the agribusiness that defined the region's economy.",
     "datosHistoricos": "Fundado en 1981. La casa de la hacienda data del siglo XVIII y es una joya colonial.",
     "datosHistoricos_en": "Founded in 1981. The hacienda house dates back to the 18th century and is a colonial jewel.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Puedes ver cómo se hacía la panela artesanalmente.",
       "Sus jardines son un santuario de aves y flora nativa."
@@ -3339,9 +3339,9 @@ export const sitesData: Site[] = [
       "You can see how panela was made by hand.",
       "Its gardens are a sanctuary for birds and native flora."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s75",
@@ -3360,8 +3360,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Pioneer in the massive management of urban art and muralism in the city.",
     "datosHistoricos": "Surgió en 2012 para la Cumbre de las Américas, interviniendo los espacios grises de la ciudad.",
     "datosHistoricos_en": "It emerged in 2012 for the Summit of the Americas, intervening in the gray spaces of the city.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Organizan la Bienal Internacional de Muralismo de Cali.",
       "Muchos murales incorporan materiales reciclados y técnicas de mosaico."
@@ -3370,9 +3370,9 @@ export const sitesData: Site[] = [
       "They organize the Cali International Muralism Biennial.",
       "Many murals incorporate recycled materials and mosaic techniques."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s76",
@@ -3391,8 +3391,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Symbol of civility and Cali unity.",
     "datosHistoricos": "Inaugurado en 1995, obra del escultor cartagenero Héctor Lombana.",
     "datosHistoricos_en": "Inaugurated in 1995, work of the Cartagena sculptor Héctor Lombana.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Está hecho de bronce, pizarra y cuarzo.",
       "Es uno de los monumentos más grandes y pesados de la ciudad."
@@ -3401,9 +3401,9 @@ export const sitesData: Site[] = [
       "It is made of bronze, slate and quartz.",
       "It is one of the largest and heaviest monuments in the city."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s77",
@@ -3422,8 +3422,8 @@ export const sitesData: Site[] = [
     "importancia_en": "The largest and most important cultural infrastructure in eastern Cali.",
     "datosHistoricos": "Inaugurada en 2011 como una de las 'Megaobras' de la ciudad para cerrar brechas sociales.",
     "datosHistoricos_en": "Inaugurated in 2011 as one of the city's 'Mega Works' to close social gaps.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su diseño bioclimático permite que sea fresco sin aire acondicionado.",
       "Acoge grandes conciertos de la Orquesta Filarmónica de Cali."
@@ -3432,7 +3432,7 @@ export const sitesData: Site[] = [
       "Its bioclimatic design allows it to be cool without air conditioning.",
       "It hosts major concerts by the Cali Philharmonic Orchestra."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Entrada libre.",
     "tarifa_en": "Free entry."
   },
@@ -3453,8 +3453,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Incubator for creative economy and urban culture projects.",
     "datosHistoricos": "Construido para descentralizar la oferta cultural y apoyar la profesionalización de artistas emergentes.",
     "datosHistoricos_en": "Built to decentralize the cultural offer and support the professionalization of emerging artists.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Su arquitectura geométrica y colorida destaca notablemente en el entorno.",
       "Ofrece formación en marketing y gestión para artistas."
@@ -3463,9 +3463,9 @@ export const sitesData: Site[] = [
       "Its geometric and colorful architecture stands out noticeably in its surroundings.",
       "Offers marketing and management training for artists."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s79",
@@ -3484,8 +3484,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Pioneer in social and educational work in the Aguablanca District.",
     "datosHistoricos": "Fue una de las primeras infraestructuras sociales de calidad en llegar a la zona durante su expansión.",
     "datosHistoricos_en": "It was one of the first quality social infrastructures to arrive in the area during its expansion.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Tiene una ludoteca fantástica y muy concurrida por los niños.",
       "Es el corazón de muchas iniciativas de paz y convivencia barrial."
@@ -3494,9 +3494,9 @@ export const sitesData: Site[] = [
       "It has a fantastic playroom that is very popular with children.",
       "It is the heart of many neighborhood peace and coexistence initiatives."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s8",
@@ -3515,8 +3515,8 @@ export const sitesData: Site[] = [
     "importancia_en": "One of the popular symbols of Cali and point of an open-air sculpture gallery on the banks of the river.",
     "datosHistoricos": "Escultura en bronce de Hernando Tejada, inaugurada el 3 de julio de 1996 a orillas del río Cali. En 2006 se sumaron \"las novias/gatas del gato\", esculturas intervenidas por diversos artistas, impulsadas por la familia Tejada y la Cámara de Comercio.",
     "datosHistoricos_en": "Bronze sculpture by Hernando Tejada, inaugurated on July 3, 1996 on the banks of the Cali River. In 2006, \"the cat's girlfriends/cats\" were added, sculptures made by various artists, promoted by the Tejada family and the Chamber of Commerce.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Pesa alrededor de tres toneladas y fue fundido en Bogotá.",
       "Cada una de \"las gatas\" fue decorada por un artista diferente.",
@@ -3548,8 +3548,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Brilliant example of community cultural self-management and resistance.",
     "datosHistoricos": "Fundado por líderes comunitarios para alejar a los jóvenes de las fronteras invisibles.",
     "datosHistoricos_en": "Founded by community leaders to move young people away from invisible borders.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Utilizan el 'Teatro del Oprimido' como metodología de trabajo.",
       "Sus obras se presentan en las calles del barrio, integrando al público."
@@ -3558,9 +3558,9 @@ export const sitesData: Site[] = [
       "They use the 'Theater of the Oppressed' as a work methodology.",
       "Their works are presented in the streets of the neighborhood, integrating the public."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s81",
@@ -3579,8 +3579,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Focus on culture, education and intergenerational meeting in Commune 7.",
     "datosHistoricos": "Parte integral de la Red de Bibliotecas Públicas de Cali.",
     "datosHistoricos_en": "Integral part of the Cali Public Library Network.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Sus 'Abuelos Cuentacuentos' son famosos y queridos en la zona.",
       "Tienen una colección de libros álbum ilustrados muy bonita."
@@ -3589,9 +3589,9 @@ export const sitesData: Site[] = [
       "Their 'Storytelling Grandparents' are famous and loved in the area.",
       "They have a very nice collection of illustrated album books."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s82",
@@ -3610,8 +3610,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Honors social memory and community service through education.",
     "datosHistoricos": "El Padre Daniel Guillard fue un líder social muy querido en el Distrito de Aguablanca.",
     "datosHistoricos_en": "Father Daniel Guillard was a much loved social leader in the Aguablanca District.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Tienen un programa exitoso de alfabetización digital para adultos mayores.",
       "Es un punto de encuentro seguro y neutral para los jóvenes."
@@ -3620,9 +3620,9 @@ export const sitesData: Site[] = [
       "They have a successful digital literacy program for older adults.",
       "It is a safe and neutral meeting point for young people."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s83",
@@ -3641,8 +3641,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Active promoter of the visual arts and reading in the east of the city.",
     "datosHistoricos": "Se ha consolidado como el centro cultural de facto de su barrio.",
     "datosHistoricos_en": "It has established itself as the de facto cultural center of its neighborhood.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Realizan murales comunitarios coloridos en sus paredes exteriores.",
       "Tienen un club de lectura de cómics y novelas gráficas muy activo."
@@ -3651,9 +3651,9 @@ export const sitesData: Site[] = [
       "They create colorful community murals on their exterior walls.",
       "They have a very active comic book and graphic novel reading club."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s84",
@@ -3672,8 +3672,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Social transformation and violence prevention through art and sports.",
     "datosHistoricos": "Fundada con el objetivo de dar alternativas de vida a los jóvenes del sector.",
     "datosHistoricos_en": "Founded with the aim of giving life alternatives to young people in the sector.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Sus ensayos son abiertos y la energía que se siente es contagiosa.",
       "Han representado a Colombia en competencias internacionales con gran éxito."
@@ -3682,9 +3682,9 @@ export const sitesData: Site[] = [
       "Their rehearsals are open and the energy you feel is contagious.",
       "They have represented Colombia in international competitions with great success."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s85",
@@ -3703,8 +3703,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Vital social fabric in one of the most vulnerable areas of the city.",
     "datosHistoricos": "Nació de la necesidad de ocupar el tiempo libre de los niños del barrio para alejarlos de la calle.",
     "datosHistoricos_en": "It was born from the need to occupy the free time of the neighborhood children to keep them off the street.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Sus trajes de competencia son a menudo confeccionados por las madres de los bailarines.",
       "Son protagonistas frecuentes y premiados del Salsódromo."
@@ -3713,9 +3713,9 @@ export const sitesData: Site[] = [
       "Their competition costumes are often made by the dancers' mothers.",
       "They are frequent and award-winning protagonists of the Salsódromo."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s86",
@@ -3734,8 +3734,8 @@ export const sitesData: Site[] = [
     "importancia_en": "International model of how social urbanism can reduce violence and improve quality of life.",
     "datosHistoricos": "Inaugurado recientemente como parte del proyecto '5 Parques para la Vida', transformando una zona de frontera invisible.",
     "datosHistoricos_en": "Recently inaugurated as part of the '5 Parks for Life' project, transforming an invisible border area.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Ha ganado premios internacionales de arquitectura y diseño urbano.",
       "Los propios vecinos cuidan celosamente sus jardines y equipamiento."
@@ -3744,9 +3744,9 @@ export const sitesData: Site[] = [
       "He has won international awards for architecture and urban design.",
       "The neighbors themselves jealously take care of their gardens and equipment."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s87",
@@ -3765,8 +3765,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Epicenter of major world sporting events and the largest Afro festival on the continent.",
     "datosHistoricos": "Construida para los Juegos Panamericanos de 1971, un evento que modernizó a Cali.",
     "datosHistoricos_en": "Built for the 1971 Pan American Games, an event that modernized Cali.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "El Coliseo El Pueblo es famoso por su acústica y diseño futurista.",
       "Es el lugar favorito de los skaters y bikers de la ciudad."
@@ -3775,9 +3775,9 @@ export const sitesData: Site[] = [
       "The El Pueblo Coliseum is famous for its acoustics and futuristic design.",
       "It is the favorite place for skaters and bikers in the city."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s88",
@@ -3796,8 +3796,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Jewel of Colombian engineering and National Monument for its bold structural design.",
     "datosHistoricos": "1955: se constituye la sociedad de economía mixta Plaza de Toros de Cali S.A.\n28 de diciembre de 1957: corrida inaugural, con toros de la ganadería de Clara Sierra.\n1971: a su lado crecen el Coliseo El Pueblo y el Velódromo Alcides Nieto Patiño para los Panamericanos.",
     "datosHistoricos_en": "Inaugurated in 1957. Its construction was a milestone for using innovative prefabricated elements for the time.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Antes de inaugurarla se hizo una prueba de carga llenando las graderías con recipientes de agua, para acallar el rumor de que la estructura sin columnas se vendría abajo. Resistió de sobra.",
       "Su capacidad original rondaba los 17.000 espectadores; tras las reformas quedó en unos 14.368."
@@ -3808,7 +3808,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Calle 5ª, sector Cañaveralejo, sur de Cali.",
     "tarifa": "Boletería según el evento.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s89",
@@ -3827,8 +3827,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Pioneer in linking reading and culture with public health.",
     "datosHistoricos": "Nombrada en memoria del Monseñor Isaías Duarte Cancino, Arzobispo de Cali y defensor de los derechos humanos.",
     "datosHistoricos_en": "Named in memory of Monsignor Isaías Duarte Cancino, Archbishop of Cali and defender of human rights.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Llevan carritos con libros ('Bibliocarritos') a las salas de espera del hospital.",
       "Organizan jornadas de lectura en voz alta muy emotivas."
@@ -3837,9 +3837,9 @@ export const sitesData: Site[] = [
       "They carry carts with books ('Bibliocarritos') to the hospital waiting rooms.",
       "They organize very emotional reading aloud days."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s9",
@@ -3853,12 +3853,12 @@ export const sitesData: Site[] = [
     "visitas": 1400,
     "logoUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800",
     "descripcion": "En el barrio Alameda, en el centro de Cali, hay un mercado que es mucho más que un sitio para comprar: es un viaje de los Andes al Pacífico en pocos pasos. La Galería Alameda —o Plaza de Mercado Alameda— es un laberinto de colores y aromas donde conviven frutas exóticas, verduras fresquísimas, carnes, flores y, sobre todo, la mejor cocina tradicional del Valle y del Pacífico colombiano. Aquí las cocineras venidas de Buenaventura —herederas de saberes culinarios que vienen desde los tiempos de la esclavitud— sirven sancocho de pescado con leche de coco, ceviche de camarón, sudados, rellena y tamal en platos enormes. Recorrerla es entrar en contacto con el espíritu popular, alegre y conversador de los caleños.",
-    "descripcion_en": null,
+    "descripcion_en": undefined,
     "importancia": "La Alameda es una de las primeras plazas de mercado de Cali y hoy un verdadero imán del turismo gastronómico, reconocida como guardiana de los sabores populares de la ciudad.",
-    "importancia_en": null,
+    "importancia_en": undefined,
     "datosHistoricos": "El barrio Alameda fue fundado en octubre de 1930. La Plaza de Mercado tiene su origen hacia 1947. Hacia 1970 se levantó la mayor parte del edificio actual. Desde 1994 la maneja ASOALAMEDA.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Los primeros vendedores extendían sus productos sobre el piso.",
       "Entre sus tesoros hay frutas poco conocidas: madroño, chachairú, mangostino, zapote, arazá, chirimoya.",
@@ -3866,7 +3866,7 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carrera 26 #8-37, barrio Alameda (comuna 9)",
     "tarifa": "Ingreso libre; consumos por aparte.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s90",
@@ -3885,8 +3885,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Defender of ethnic diversity and peace in Commune 15.",
     "datosHistoricos": "Inaugurada con un fuerte mensaje de inclusión social y respeto a la diferencia.",
     "datosHistoricos_en": "Inaugurated with a strong message of social inclusion and respect for difference.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Tienen una excelente colección especializada de autores afrocolombianos.",
       "Celebran el mes de la herencia africana con grandes eventos culturales."
@@ -3895,9 +3895,9 @@ export const sitesData: Site[] = [
       "They have an excellent specialized collection of Afro-Colombian authors.",
       "They celebrate African Heritage Month with great cultural events."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s91",
@@ -3916,8 +3916,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Vital point of access to information and technology in an area of ​​urban expansion.",
     "datosHistoricos": "Nació junto con el desarrollo urbanístico del proyecto Desepaz (Desarrollo, Seguridad y Paz).",
     "datosHistoricos_en": "It was born together with the urban development of the Desepaz project (Development, Security and Peace).",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Es una de las bibliotecas más visitadas por estudiantes de secundaria para hacer tareas.",
       "Tienen grupos de danza y teatro juvenil muy talentosos."
@@ -3926,9 +3926,9 @@ export const sitesData: Site[] = [
       "It is one of the most visited libraries by high school students to do homework.",
       "They have very talented youth dance and theater groups."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s92",
@@ -3947,8 +3947,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Democratization of access to books in unconventional and high-traffic spaces.",
     "datosHistoricos": "Parte de una estrategia innovadora de 'Biblioestaciones' integradas al sistema de transporte masivo.",
     "datosHistoricos_en": "Part of an innovative strategy of 'Library Stations' integrated into the mass transportation system.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Funciona con un exitoso sistema de 'confianza' para el préstamo de libros.",
       "Es pequeña en espacio pero tiene una rotación de títulos increíblemente alta."
@@ -3957,9 +3957,9 @@ export const sitesData: Site[] = [
       "It operates a successful 'trust' system for lending books.",
       "It is small in space but has an incredibly high rotation of titles."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s93",
@@ -3978,8 +3978,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Constant innovation in the acrobatic and sporting component of Cali salsa.",
     "datosHistoricos": "Han formado a bailarines que hoy trabajan en los circos y espectáculos más famosos del mundo.",
     "datosHistoricos_en": "They have trained dancers who today work in the most famous circuses and shows in the world.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Entrenan con técnicas deportivas de alto rendimiento.",
       "El nivel de exigencia física es comparable al de la gimnasia olímpica."
@@ -3988,9 +3988,9 @@ export const sitesData: Site[] = [
       "They train with high-performance sports techniques.",
       "The level of physical demand is comparable to that of Olympic gymnastics."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s94",
@@ -4009,8 +4009,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Multiple world champions and references of technical and artistic quality.",
     "datosHistoricos": "Fundada por Jefferson Benjumea y Adriana Ávila, una pareja de baile legendaria a nivel mundial.",
     "datosHistoricos_en": "Founded by Jefferson Benjumea and Adriana Ávila, a legendary dance couple worldwide.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Han participado en reality shows internacionales como 'Q'Viva! The Chosen'.",
       "Tienen grupos de todas las edades, desde 'semilleros' infantiles hasta elenco profesional."
@@ -4019,9 +4019,9 @@ export const sitesData: Site[] = [
       "They have participated in international reality shows such as 'Q'Viva! The Chosen'.",
       "They have groups of all ages, from children's 'seedbeds' to professional cast."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s95",
@@ -4040,8 +4040,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Successful integration of sport, recreation and culture in a single community space.",
     "datosHistoricos": "Surgió para optimizar los espacios públicos de la unidad recreativa.",
     "datosHistoricos_en": "It arose to optimize the public spaces of the recreational unit.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Los fines de semana es el centro de la vida social del barrio.",
       "Alberga torneos deportivos que incluyen componentes culturales."
@@ -4050,9 +4050,9 @@ export const sitesData: Site[] = [
       "On weekends it is the center of the neighborhood's social life.",
       "It hosts sports tournaments that include cultural components."
     ],
-    "direccion": null,
-    "tarifa": null,
-    "tarifa_en": null
+    "direccion": undefined,
+    "tarifa": undefined,
+    "tarifa_en": undefined
   },
   {
     "id": "s96",
@@ -4071,8 +4071,8 @@ export const sitesData: Site[] = [
     "importancia_en": "Cradle of the New Latin American Theater and collective creation; continental reference of performing arts committed to the social and political.",
     "datosHistoricos": "Fundado en 1955 por Enrique Buenaventura (1925–2003) y un grupo de estudiantes de Bellas Artes, inicialmente ligado a la Escuela Departamental de Teatro. Buenaventura —pintor, poeta y dramaturgo— desarrolló y dirigió la mayoría de sus obras y teorizzó el método que otras agrupaciones del continente adoptaron.",
     "datosHistoricos_en": "Founded in 1955 by Enrique Buenaventura (1925–2003) and a group of Fine Arts students, initially linked to the Departmental School of Theater. Buenaventura—painter, poet, and playwright—developed and directed most of his works and theorized the method that other groups on the continent adopted.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Entre sus montajes emblemáticos están Los papeles del infierno, A la diestra de Dios Padre y La denuncia.",
       "El método de creación colectiva es considerado uno de los grandes aportes de Colombia a la historia mundial del teatro.",
@@ -4083,9 +4083,9 @@ export const sitesData: Site[] = [
       "The method of collective creation is considered one of Colombia's great contributions to the world history of theater.",
       "The TEC has been in uninterrupted activity for more than 70 years: it is the oldest theater company in Colombia."
     ],
-    "direccion": null,
+    "direccion": undefined,
     "tarifa": "Boletería según función.",
-    "tarifa_en": null
+    "tarifa_en": undefined
   },
   {
     "id": "s97",
@@ -4104,8 +4104,8 @@ export const sitesData: Site[] = [
     "importancia_en": "First and largest salsa cabaret, circus and orchestra show in Colombia; ambassador of quality to the world and model of creative industry with social impact.",
     "datosHistoricos": "Fundado en mayo de 2006 por cuatro gestoras culturales caleñas, a partir de la Carpa de Circo Para Todos. Se presenta el último viernes de cada mes y ha sido reconocido como uno de los mejores shows de salsa del mundo.",
     "datosHistoricos_en": "Founded in May 2006 by four cultural managers from Cali, based on the Circus Tent for All. It is presented on the last Friday of each month and has been recognized as one of the best salsa shows in the world.",
-    "reconocimientos": null,
-    "reconocimientos_en": null,
+    "reconocimientos": undefined,
+    "reconocimientos_en": undefined,
     "datosCuriosos": [
       "Ha realizado cientos de funciones en más de 20 países y ha sido visto por más de medio millón de personas.",
       "Su música la interpreta en vivo la Orquesta Boranda; el circo lo aporta la compañía Circo Herencias.",
@@ -4118,6 +4118,6 @@ export const sitesData: Site[] = [
     ],
     "direccion": "Carpa Delirio, Cali. [confirmar sede/dirección vigente]",
     "tarifa": "Boletería por función (con opciones de cena). [verificar valores]",
-    "tarifa_en": null
+    "tarifa_en": undefined
   }
 ];
