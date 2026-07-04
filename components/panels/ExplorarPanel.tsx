@@ -95,9 +95,9 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
     { id: 'salsa', filter: 'Salsa y Música', label: language === 'es' ? 'Salsa y Música' : 'Salsa & Music', icon: Music, color: 'bg-orange-500/10 text-orange-600 border-orange-200' },
     { id: 'sabores', filter: 'Gastronomía', label: language === 'es' ? 'Gastronomía' : 'Gastronomy', icon: Utensils, color: 'bg-red-500/10 text-red-600 border-red-200' },
     { id: 'arte', filter: 'Arte y Teatro', label: language === 'es' ? 'Arte y Teatro' : 'Art & Theater', icon: Paintbrush, color: 'bg-purple-500/10 text-purple-600 border-purple-200' },
-    { id: 'naturaleza', filter: 'Parques y Naturaleza', label: language === 'es' ? 'Naturaleza' : 'Nature', icon: Trees, color: 'bg-green-500/10 text-green-600 border-green-200' },
-    { id: 'cultura', filter: 'Museos y Cultura', label: language === 'es' ? 'Cultura' : 'Culture', icon: BookOpen, color: 'bg-blue-500/10 text-blue-600 border-blue-200' },
-    { id: 'historicos', filter: 'Sitios Históricos / Otros', label: language === 'es' ? 'Históricos' : 'Historic', icon: Landmark, color: 'bg-amber-500/10 text-amber-600 border-amber-200' },
+    { id: 'naturaleza', filter: 'Parques y Naturaleza', label: language === 'es' ? 'Parques y Naturaleza' : 'Parks & Nature', icon: Trees, color: 'bg-green-500/10 text-green-600 border-green-200' },
+    { id: 'cultura', filter: 'Museos y Cultura', label: language === 'es' ? 'Museos y Cultura' : 'Museums & Culture', icon: BookOpen, color: 'bg-blue-500/10 text-blue-600 border-blue-200' },
+    { id: 'historicos', filter: 'Sitios Históricos / Otros', label: language === 'es' ? 'Sitios Históricos' : 'Historic Sites', icon: Landmark, color: 'bg-amber-500/10 text-amber-600 border-amber-200' },
   ], [language]);
 
   // Show sites in a feed and shuffle it for variety
@@ -135,7 +135,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
     }
 
     return combined;
-  }, [sites, query, language]);
+  }, [sites, query, language, categoryFilter]);
 
   return (
     <ScrollArea className="h-[72vh]">
