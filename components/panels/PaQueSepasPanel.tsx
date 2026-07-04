@@ -115,8 +115,8 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite }
                             onClick={() => setSelectedEntry(entry)}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <CardContent className="p-6 relative z-10 flex flex-col h-full">
-                                <div className="flex justify-between items-start mb-4">
+                            <CardContent className="p-7 relative z-10 flex flex-col h-full">
+                                <div className="flex justify-between items-start mb-5">
                                     <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full">
                                         <MapPin className="w-3 h-3" /> {entry.city}
                                     </div>
@@ -125,15 +125,15 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite }
                                     </div>
                                 </div>
                                 
-                                <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors leading-tight">
+                                <h3 className="text-lg md:text-xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">
                                     {getTranslated(entry, 'title', language)}
                                 </h3>
                                 
-                                <p className="text-muted-foreground text-sm line-clamp-3 mb-6 leading-relaxed flex-grow">
+                                <p className="text-muted-foreground text-[15px] line-clamp-3 mb-6 leading-relaxed flex-grow">
                                     {(getTranslated(entry, 'content_full', language) as string || getTranslated(entry, 'content_simple', language) as string || '').split('\n\n')[0]}
                                 </p>
                                 
-                                <div className="flex items-center justify-between mt-auto">
+                                <div className="flex items-center justify-between mt-auto pt-5 border-t border-border/30">
                                     <div className="flex flex-wrap gap-2">
                                         {entry.tags?.slice(0, 2).map(tag => (
                                             <Badge key={tag} variant="secondary" className="bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-foreground border-0 transition-colors">
