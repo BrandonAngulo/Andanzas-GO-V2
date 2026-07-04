@@ -460,15 +460,15 @@ const MapWrapper = (props: MapaGoogleProps) => {
 
                         {showFilterPanel && (
                             <Card className="absolute top-full right-0 mt-3 w-64 shadow-2xl border-border/50 bg-white/95 backdrop-blur z-[1000] animate-in fade-in slide-in-from-top-2 rounded-2xl overflow-hidden">
-                                <CardHeader className="p-4 border-b bg-muted/20 flex-row items-center justify-between">
-                                    <CardTitle className="text-sm font-bold text-foreground flex items-center gap-2">
+                                <div className="p-3 border-b bg-muted/20 flex items-center justify-between w-full">
+                                    <h3 className="text-sm font-bold text-foreground flex items-center gap-2 m-0">
                                         <Filter className="h-4 w-4 text-primary" />
-                                        {language === 'es' ? 'Filtros del Mapa' : 'Map Filters'}
-                                    </CardTitle>
-                                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-white shadow-sm border hover:bg-muted" onClick={() => setShowFilterPanel(false)}><X className="h-3.5 w-3.5" /></Button>
-                                </CardHeader>
-                                <CardContent className="p-0 flex flex-col">
-                                    <ScrollArea className="max-h-[250px] p-2">
+                                        {language === 'es' ? 'Filtros' : 'Filters'}
+                                    </h3>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-white shadow-sm border hover:bg-muted flex-shrink-0" onClick={() => setShowFilterPanel(false)}><X className="h-3.5 w-3.5" /></Button>
+                                </div>
+                                <div className="p-0 flex flex-col">
+                                    <ScrollArea className="h-[200px] p-2">
                                         <div className="space-y-1">
                                             {props.allCategories.map(cat => (
                                                 <label key={cat} className="flex items-center gap-2 p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-md cursor-pointer text-sm">
@@ -482,7 +482,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
                                         </div>
                                     </ScrollArea>
 
-                                    <div className="p-3 border-t space-y-3 bg-muted/10">
+                                    <div className="p-3 pb-5 border-t space-y-3 bg-muted/10">
                                         <div className="space-y-1.5">
                                             <label className="text-xs font-semibold text-muted-foreground flex items-center justify-between">
                                                 {language === 'es' ? 'Calificación Mínima' : 'Min Rating'}
@@ -519,7 +519,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
                                             <Button variant="ghost" size="sm" className="w-full h-7 text-xs text-muted-foreground hover:text-destructive" onClick={props.onClearCategories}>{t('clearFilters')}</Button>
                                         </div>
                                     )}
-                                </CardContent>
+                                </div>
                             </Card>
                         )}
                     </div>
