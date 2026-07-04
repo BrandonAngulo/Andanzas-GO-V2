@@ -479,7 +479,7 @@ export default function App() {
               {activePanel === 'sobre' && <SobrePanel />}
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
-              {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
+              {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
             </CardContent>
           </Card>
 

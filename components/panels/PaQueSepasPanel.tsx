@@ -3,7 +3,7 @@ import { LearnEntry } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { BookOpen, MapPin, ChevronRight, Hash, Sparkles } from 'lucide-react';
+import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
@@ -12,9 +12,10 @@ import { TextWithLearnLinks } from '../shared/TextWithLearnLinks';
 interface PaQueSepasPanelProps {
     entries: LearnEntry[];
     onOpenSite?: (siteId: string) => void;
+    isLoading?: boolean;
 }
 
-const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite }) => {
+const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, isLoading }) => {
     const { t, language } = useI18n();
     const [selectedEntry, setSelectedEntry] = useState<LearnEntry | null>(null);
 
@@ -156,12 +157,21 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite }
                     ))}
                 </div>
                 
-                {entries.length === 0 && (
+                {isLoading ? (
+                    <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
+                        <div className="flex gap-4 mb-6">
+                            <Footprints className="h-12 w-12 text-primary animate-[bounce_2s_infinite_-1s]" />
+                            <Footprints className="h-12 w-12 text-primary animate-[bounce_2s_infinite] scale-x-[-1] mt-8" />
+                        </div>
+                        <p className="font-bold text-lg text-foreground animate-pulse">Andando por las calles...</p>
+                        <p className="text-sm opacity-70 mt-1">Recopilando historias y saberes</p>
+                    </div>
+                ) : entries.length === 0 ? (
                     <div className="text-center py-20 text-muted-foreground">
                         <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-20" />
                         <p>No hay historias disponibles aún para esta ciudad.</p>
                     </div>
-                )}
+                ) : null}
             </div>
         </ScrollArea>
     );
