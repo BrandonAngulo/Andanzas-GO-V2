@@ -45,8 +45,9 @@ const es = {
         perfil: "Mi perfil",
         configuracion: "Configuración",
         sobre: "Sobre Andanzas GO",
-        soporte: "Soporte",
-        noticias: "Noticias",
+        soporte: "Soporte y Ayuda",
+        noticias: "Noticias y Novedades",
+        paquesepas: "Pa' que sepás"
     },
 
     // Map

@@ -46,7 +46,8 @@ const en = {
         configuracion: "Settings",
         sobre: "About Andanzas GO",
         soporte: "Support",
-        noticias: "News",
+        noticias: "News & Updates",
+        paquesepas: "Did you know?"
     },
 
     // Map

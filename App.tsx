@@ -372,6 +372,7 @@ export default function App() {
             {[
               { id: 'mapa', label: 'nav.map' },
               { id: 'explorar', label: 'nav.explore' },
+              { id: 'paquesepas', label: 'panelTitles.paquesepas' },
               { id: 'rutas', label: 'nav.routes' },
               { id: 'eventos', label: 'nav.events' },
               { id: 'noticias', label: 'nav.news' }
