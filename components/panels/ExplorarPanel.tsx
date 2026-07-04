@@ -7,7 +7,7 @@ import { useI18n } from '../../i18n';
 import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { Badge } from '../ui/badge';
-import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles } from 'lucide-react';
+import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library } from 'lucide-react';
 
 // --- Reusable Card Components for the Feed ---
 
@@ -97,6 +97,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
     { id: 'arte', filter: 'Arte y Teatro', label: language === 'es' ? 'Arte y Teatro' : 'Art & Theater', icon: Paintbrush, color: 'bg-purple-500/10 text-purple-600 border-purple-200' },
     { id: 'naturaleza', filter: 'Parques y Naturaleza', label: language === 'es' ? 'Parques y Naturaleza' : 'Parks & Nature', icon: Trees, color: 'bg-green-500/10 text-green-600 border-green-200' },
     { id: 'cultura', filter: 'Museos y Cultura', label: language === 'es' ? 'Museos y Cultura' : 'Museums & Culture', icon: BookOpen, color: 'bg-blue-500/10 text-blue-600 border-blue-200' },
+    { id: 'bibliotecas', filter: 'Bibliotecas y Librerías', label: language === 'es' ? 'Bibliotecas y Librerías' : 'Libraries & Bookstores', icon: Library, color: 'bg-indigo-500/10 text-indigo-600 border-indigo-200' },
     { id: 'historicos', filter: 'Sitios Históricos / Otros', label: language === 'es' ? 'Sitios Históricos' : 'Historic Sites', icon: Landmark, color: 'bg-amber-500/10 text-amber-600 border-amber-200' },
   ], [language]);
 

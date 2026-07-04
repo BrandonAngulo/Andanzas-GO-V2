@@ -30,7 +30,10 @@ export const getMacroCategory = (category: string | undefined | null, lang: 'es'
   if (cat.includes('parque') || cat.includes('jardín') || cat.includes('natural') || cat.includes('botánico') || cat.includes('ecoparque') || cat.includes('mirador') || cat.includes('público')) 
       return lang === 'es' ? 'Parques y Naturaleza' : 'Parks & Nature';
   
-  if (cat.includes('museo') || cat.includes('biblioteca') || cat.includes('centro cultural') || cat.includes('archivo') || cat.includes('casa') || cat.includes('monumento')) 
+  if (cat.includes('biblioteca') || cat.includes('librería') || cat.includes('libreria') || cat.includes('library') || cat.includes('bookstore'))
+      return lang === 'es' ? 'Bibliotecas y Librerías' : 'Libraries & Bookstores';
+
+  if (cat.includes('museo') || cat.includes('centro cultural') || cat.includes('archivo') || cat.includes('casa') || cat.includes('monumento')) 
       return lang === 'es' ? 'Museos y Cultura' : 'Museums & Culture';
   
   if (cat.includes('teatro') || cat.includes('arte') || cat.includes('muralismo') || cat.includes('escultura') || cat.includes('artesanías')) 
@@ -56,6 +59,7 @@ export const getCategoryIcon = (category: string) => {
   
   if (cat.includes('parque') || cat.includes('naturaleza') || cat.includes('park') || cat.includes('nature')) return "🌳";
   if (cat.includes('museo') || cat.includes('cultura') || cat.includes('museum')) return "🏛️";
+  if (cat.includes('biblioteca') || cat.includes('librería') || cat.includes('library')) return "📚";
   if (cat.includes('arte') || cat.includes('teatro') || cat.includes('art') || cat.includes('theater')) return "🎨";
   if (cat.includes('salsa') || cat.includes('música') || cat.includes('music')) return "💃";
   if (cat.includes('gastronomía') || cat.includes('gastronomy')) return "🍽️";
@@ -71,6 +75,7 @@ export const getCategoryColor = (category: string): string => {
 
   if (cat.includes('parque') || cat.includes('naturaleza') || cat.includes('park') || cat.includes('nature')) return '#10B981'; // Emerald 500
   if (cat.includes('museo') || cat.includes('cultura') || cat.includes('museum')) return '#3B82F6'; // Blue 500
+  if (cat.includes('biblioteca') || cat.includes('librería') || cat.includes('library')) return '#6366F1'; // Indigo 500
   if (cat.includes('arte') || cat.includes('teatro') || cat.includes('art') || cat.includes('theater')) return '#8B5CF6'; // Violet 500
   if (cat.includes('salsa') || cat.includes('música') || cat.includes('music')) return '#E11D48'; // Rose 600
   if (cat.includes('gastronomía') || cat.includes('gastronomy')) return '#F97316'; // Orange 500
