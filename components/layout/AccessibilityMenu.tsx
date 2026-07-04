@@ -5,6 +5,7 @@ import { Switch } from '../ui/switch';
 import { Type, Rows, Contrast, Palette, RefreshCcw, Languages } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { cn } from '../../lib/utils';
+import { useTheme } from '../../hooks/useTheme';
 
 interface AccessibilitySettings {
   fontSize: number;
@@ -21,6 +22,7 @@ interface AccessibilityMenuProps {
 
 const AccessibilityMenu: React.FC<AccessibilityMenuProps> = ({ settings, onSettingsChange, onReset }) => {
   const { language, setLanguage, t } = useI18n();
+  const { theme, setTheme } = useTheme();
 
   const handleSettingChange = <K extends keyof AccessibilitySettings>(key: K, value: AccessibilitySettings[K]) => {
     onSettingsChange(prev => ({ ...prev, [key]: value }));
@@ -106,6 +108,19 @@ const AccessibilityMenu: React.FC<AccessibilityMenuProps> = ({ settings, onSetti
                 id="grayscale-switch" 
                 checked={settings.grayscale} 
                 onChange={(e) => handleSettingChange('grayscale', e.target.checked)}
+            />
+        </div>
+
+        {/* Dark Mode */}
+        <div className="flex items-center justify-between border-t pt-4">
+             <div className="flex items-center gap-2">
+                <Contrast className="h-4 w-4 text-muted-foreground"/>
+                <label htmlFor="dark-mode-switch" className="text-sm font-medium">{language === 'es' ? 'Modo Oscuro' : 'Dark Mode'}</label>
+            </div>
+            <Switch 
+                id="dark-mode-switch" 
+                checked={theme === 'dark'} 
+                onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
             />
         </div>
 

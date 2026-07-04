@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "sonner";
 import AuthRequiredDialog from "./components/shared/AuthRequiredDialog";
-import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Map, X, Accessibility } from "lucide-react";
+import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Map, X, Settings2 } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
@@ -264,6 +264,17 @@ export default function App() {
   const closeFull = () => clearHash();
   const goToPlaceInMap = (placeName: string) => { setActivePanel("mapa"); setQuery(placeName); closeFull(); };
 
+  const handleAiSearch = () => {
+    if (!isAuthenticated) {
+      setAuthDialogOpen(true);
+      return;
+    }
+    toast.info("La función de IA estará disponible próximamente.");
+  };
+
+  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+  const firstLetter = user?.email ? user.email.charAt(0).toUpperCase() : '?';
+
   const startNewRoute = () => {
     if (!isAuthenticated) { setAuthDialogOpen(true); return; }
     setNewRoutePoints([]); setActivePanel("rutas");
@@ -427,13 +438,23 @@ export default function App() {
 
             <div className="relative" ref={accessibilityMenuRef}>
               <Button id="accessibility-button" variant="ghost" size="icon" className="rounded-full hover:bg-muted" onClick={() => handleShowAccessibilityMenu(!showAccessibilityMenu)}>
-                <Accessibility className="h-6 w-6" />
+                <Settings2 className="h-6 w-6" />
               </Button>
               {showAccessibilityMenu && <AccessibilityMenu settings={accessibilitySettings} onSettingsChange={setAccessibilitySettings} onReset={() => setAccessibilitySettings(defaultAccessibilitySettings)} />}
             </div>
 
-            <Button variant="ghost" size="icon" className={cn("rounded-full hover:bg-muted", isAuthenticated ? "text-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? 'mapa' : 'perfil')}>
-              <User className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className={cn("rounded-full hover:bg-muted p-0 overflow-hidden", isAuthenticated ? "border-2 border-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? 'mapa' : 'perfil')}>
+              {isAuthenticated ? (
+                avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="h-full w-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-[10px]">
+                    {firstLetter}
+                  </div>
+                )
+              ) : (
+                <User className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>
@@ -444,7 +465,7 @@ export default function App() {
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
               <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">{panelTitle}</CardTitle>
-              {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {t('createRoute')}</Button>}
+              {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {language === 'es' ? 'Vivir / Crear Ruta' : 'Live / Create Route'}</Button>}
             </CardHeader>
             <CardContent className="p-0 flex-1 relative">
               {/* PANELS */}

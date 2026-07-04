@@ -145,11 +145,17 @@ const ConfiguracionPanel: React.FC<ConfiguracionPanelProps> = ({ theme, setTheme
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium">{t('config.pushNotifications')}</label>
+                            <div className="flex flex-col gap-0.5 max-w-[80%]">
+                                <label className="text-sm font-medium">{t('config.pushNotifications')}</label>
+                                <span className="text-xs text-muted-foreground">{language === 'es' ? 'Recibe alertas instantáneas en tu dispositivo sobre eventos cercanos y nuevas rutas.' : 'Get instant device alerts about nearby events and new routes.'}</span>
+                            </div>
                             <Switch defaultChecked />
                         </div>
-                        <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium">{t('config.emailNotifications')}</label>
+                        <div className="flex items-center justify-between mt-4">
+                            <div className="flex flex-col gap-0.5 max-w-[80%]">
+                                <label className="text-sm font-medium">{t('config.emailNotifications')}</label>
+                                <span className="text-xs text-muted-foreground">{language === 'es' ? 'Recibe correos periódicos con resúmenes, noticias culturales y recomendaciones.' : 'Receive periodic emails with summaries, cultural news, and recommendations.'}</span>
+                            </div>
                             <Switch />
                         </div>
                     </CardContent>
