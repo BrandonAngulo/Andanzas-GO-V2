@@ -59,6 +59,7 @@ interface ExplorarPanelProps {
   onOpenSite: (site: Site) => void;
   onNavigateToRoutes?: () => void;
   onOpenRoute?: (route: any) => void;
+  onNavigateToAprende?: () => void;
 }
 
 const IMPERDIBLES = [
@@ -85,7 +86,7 @@ const IMPERDIBLES = [
   }
 ];
 
-const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute }) => {
+const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende }) => {
   const { language } = useI18n();
 
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -216,6 +217,34 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               display: none;
             }
           `}</style>
+        </div>
+      )}
+
+      {/* Sabías que Banner */}
+      {!query && !categoryFilter && (
+        <div className="px-5 md:px-8 mb-8">
+          <div 
+            className="bg-card border border-primary/20 rounded-2xl p-5 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-4 relative overflow-hidden"
+            onClick={onNavigateToAprende}
+          >
+            <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+              <BookOpen className="w-24 h-24 text-primary" />
+            </div>
+            
+            <div className="bg-primary/10 p-3 rounded-full shrink-0">
+              <BookOpen className="w-6 h-6 text-primary" />
+            </div>
+            
+            <div className="flex-1 relative z-10">
+              <h4 className="font-bold text-lg text-primary mb-1">Pa' que sepás</h4>
+              <p className="text-sm text-foreground/80 font-medium mb-3">
+                ¿Sabías que en los años 70, los caleños aceleraban los discos de vinilo de salsa a 45 rpm para bailarla más rápido?
+              </p>
+              <div className="flex items-center text-xs font-bold text-primary group-hover:underline">
+                Aprender más sobre cultura local <ArrowRight className="w-3 h-3 ml-1" />
+              </div>
+            </div>
+          </div>
         </div>
       )}
       

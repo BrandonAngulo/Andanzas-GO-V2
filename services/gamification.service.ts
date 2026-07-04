@@ -111,6 +111,7 @@ function mapBadge(dbBadge: any): Insignia {
         descripcion: dbBadge.descripcion,
         descripcion_en: dbBadge.descripcion_en,
         icono: iconMap[dbBadge.icono_name] || Award,
+        image_url: dbBadge.image_url,
         obtenida: false
     };
 }

@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Site, Evento, Ruta, FeedItem, Insignia } from '../types';
+import { Site, Evento, Ruta, FeedItem, Insignia, LearnEntry } from '../types';
 import { sitesService } from '../services/sites.service';
 import { eventsService } from '../services/events.service';
 import { routesService } from '../services/routes.service';
 import { gamificationService } from '../services/gamification.service';
 import { newsService } from '../services/news.service';
+import { learningService } from '../services/learning.service';
 
 interface AppDataContextType {
     sites: Site[];
@@ -12,6 +13,7 @@ interface AppDataContextType {
     rutasTematicas: Ruta[];
     allInsignias: Insignia[];
     feed: FeedItem[];
+    learnEntries: LearnEntry[];
     isLoading: boolean;
     refreshData: () => Promise<void>;
 }
@@ -24,6 +26,7 @@ export const AppDataProvider: React.FC<{ children: ReactNode }> = ({ children })
     const [rutasTematicas, setRutasTematicas] = useState<Ruta[]>([]);
     const [allInsignias, setAllInsignias] = useState<Insignia[]>([]);
     const [feed, setFeed] = useState<FeedItem[]>([]);
+    const [learnEntries, setLearnEntries] = useState<LearnEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const loadStaticData = async (retryCount = 0) => {
@@ -31,17 +34,19 @@ export const AppDataProvider: React.FC<{ children: ReactNode }> = ({ children })
 
         try {
             // 1. Load critical data
-            const [s, r, i, f] = await Promise.all([
+            const [s, r, i, f, l] = await Promise.all([
                 sitesService.getAll(),
                 routesService.getAll(),
                 gamificationService.getAllBadges(),
-                newsService.getFeed()
+                newsService.getFeed(),
+                learningService.getAll()
             ]);
 
             setSites(s);
             setRutasTematicas(r);
             setAllInsignias(i);
             setFeed(f);
+            setLearnEntries(l);
 
             // Retry if we only got local sites (fallback mode) and we haven't retried yet
             if (s.length <= 40 && retryCount < 2) {
@@ -78,8 +83,9 @@ export const AppDataProvider: React.FC<{ children: ReactNode }> = ({ children })
             rutasTematicas,
             allInsignias,
             feed,
+            learnEntries,
             isLoading,
-            refreshData: loadStaticData
+            refreshData: () => loadStaticData(0)
         }}>
             {children}
         </AppDataContext.Provider>

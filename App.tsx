@@ -42,6 +42,7 @@ import { AppTutorialModal } from "./components/views/AppTutorialModal";
 import ReviewModal from "./components/views/ReviewModal";
 import { userService } from './services/user.service';
 import { routesService } from './services/routes.service'; // Kept for updateRouteDetails which might not be in hook yet
+import PaQueSepasPanel from './components/panels/PaQueSepasPanel';
 
 // New Imports
 import { useAuth } from './contexts/AuthContext';
@@ -466,7 +467,7 @@ export default function App() {
                   plannedRoutePoints={newRoutePoints}
                 />
               )}
-              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} />}
+              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}
@@ -477,6 +478,7 @@ export default function App() {
               {activePanel === 'sobre' && <SobrePanel />}
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
+              {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
             </CardContent>
           </Card>
 
@@ -522,7 +524,7 @@ export default function App() {
       </Dialog>
 
       {/* Full View */}
-      {fullView && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} />}
+      {fullView && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
 
       {/* Privacy Banner */}
       {showPrivacyBanner && (

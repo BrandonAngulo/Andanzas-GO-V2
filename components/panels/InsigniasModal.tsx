@@ -38,13 +38,24 @@ const InsigniaCard: React.FC<{ insignia: Insignia, obtenida: boolean }> = ({ ins
 
             <div className="p-4 flex flex-col items-center text-center gap-3 relative z-10 flex-1">
                 <div className={cn(
-                    "relative p-4 rounded-full transition-transform duration-500 group-hover:rotate-12 flex-shrink-0",
-                    obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted text-muted-foreground"
+                    "relative transition-transform duration-500 group-hover:rotate-12 flex-shrink-0 rounded-full",
+                    insignia.image_url 
+                        ? (obtenida ? "" : "grayscale opacity-70")
+                        : cn("p-4", obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted text-muted-foreground")
                 )}>
-                    <Icon className={cn("h-10 w-10", !obtenida && "opacity-50")} />
-                    {!obtenida && (
+                    {insignia.image_url ? (
+                        <img src={insignia.image_url} alt={insignia.nombre} className="h-20 w-20 object-contain drop-shadow-md" />
+                    ) : (
+                        <Icon className={cn("h-10 w-10", !obtenida && "opacity-50")} />
+                    )}
+                    {!obtenida && !insignia.image_url && (
                         <div className="absolute inset-0 grid place-items-center">
                             <Lock className="h-6 w-6 text-foreground/50" />
+                        </div>
+                    )}
+                    {!obtenida && insignia.image_url && (
+                         <div className="absolute inset-0 grid place-items-center bg-background/20 rounded-full backdrop-blur-[1px]">
+                            <Lock className="h-6 w-6 text-foreground/70 drop-shadow-lg" />
                         </div>
                     )}
                 </div>

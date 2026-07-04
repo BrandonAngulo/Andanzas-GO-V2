@@ -1,5 +1,25 @@
-
 import React from 'react';
+
+export interface LearnEntry {
+  id: string;
+  title: string;
+  title_en?: string;
+  content_full?: string;
+  sabias_que?: string[];
+  trivia?: { question: string, options: string[], correct_index: number, feedback_fail: string };
+  cta?: string;
+  fuentes?: string;
+  city: string;
+  tags?: string[];
+  site_ids?: string[];
+  route_ids?: string[];
+  image_url?: string;
+  created_at: string;
+  // Legacy fields kept for a smooth transition if needed:
+  content_simple?: string;
+  content_deep?: string;
+  curiosity?: string;
+}
 
 export interface Site {
   id: string;
@@ -185,7 +205,8 @@ export interface Insignia {
   nombre_en?: string;
   descripcion: string;
   descripcion_en?: string;
-  icono: React.ElementType; // Changed from string to ElementType
+  icono: React.ElementType; // Fallback
+  image_url?: string; // High quality illustration
   obtenida?: boolean;
 }
 
@@ -226,6 +247,7 @@ export interface UserProfile {
   email: string;
   full_name?: string;
   city?: string;
+  ciudades_visitadas?: string[];
   language?: string;
   avatar_url?: string;
   points: number;
@@ -234,4 +256,3 @@ export interface UserProfile {
   travel_style?: string;
   accessibility_needs?: string[];
 }
-

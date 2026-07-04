@@ -27,9 +27,10 @@ interface FullViewProps {
     visitedPoints?: string[];
     onVisitPoint?: () => void;
     onAuthRequired: () => void;
+    onNavigateToAprende?: () => void;
 }
 
-const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, addReview, addToRoute, goToPlaceInMap, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, sites, activeRoute, visitedPoints, onVisitPoint, onAuthRequired }) => {
+const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, addReview, addToRoute, goToPlaceInMap, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, sites, activeRoute, visitedPoints, onVisitPoint, onAuthRequired, onNavigateToAprende }) => {
     const { t, language } = useI18n();
     const { user } = useAuth();
     const { type, data } = view;
@@ -252,6 +253,25 @@ const SiteDetail: React.FC<{ data: Site, sites: Site[], addReview: any, addToRou
             </div>
 
             <ExpandableText text={getTranslated(data, 'descripcion', language) as string} sites={sites} currentSiteId={data.id} currentSiteName={getTranslated(data, 'nombre', language) as string} />
+
+            {/* Pa que sepas link */}
+            {onNavigateToAprende && (
+                <div 
+                    className="my-6 bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-primary/10 transition-colors"
+                    onClick={() => { onClose(); onNavigateToAprende(); }}
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="bg-primary/10 p-2 rounded-full">
+                            <BookOpen className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-sm text-primary">Conoce más en Pa' que sepás</h4>
+                            <p className="text-xs text-muted-foreground">Historias y datos curiosos de la ciudad</p>
+                        </div>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-primary" />
+                </div>
+            )}
 
             <div className="flex flex-wrap items-center gap-2 border-b pb-4">
                 <Button size="sm" onClick={() => goToPlaceInMap(data.nombre)}>{t('fullView.viewOnMap')}</Button>

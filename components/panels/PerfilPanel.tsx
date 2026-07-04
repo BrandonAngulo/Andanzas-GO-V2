@@ -522,8 +522,36 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             </Card>
                         </div>
 
+                        {/* Pasaporte de Ciudades */}
+                        <div className="space-y-3 mt-6">
+                            <h3 className="font-semibold text-sm flex items-center gap-2">
+                                <Map className="h-4 w-4 text-primary" /> Pasaporte de Ciudades
+                            </h3>
+                            <Card className="border border-border/50 bg-card/50 overflow-hidden relative">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10" />
+                                <CardContent className="p-4 flex gap-3 overflow-x-auto snap-x hide-scrollbar">
+                                    {(userProfile?.ciudades_visitadas || ['Cali']).map((ciudad, idx) => (
+                                        <div key={idx} className="flex flex-col items-center gap-2 snap-center shrink-0 w-24">
+                                            <div className="w-16 h-16 rounded-full border-2 border-primary border-dashed p-1 flex items-center justify-center bg-background/80 shadow-sm relative group">
+                                                <div className="absolute inset-1 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                                                    <span className="text-xs font-bold text-primary uppercase drop-shadow-sm rotate-[-15deg] opacity-80 group-hover:scale-110 transition-transform">Sellado</span>
+                                                </div>
+                                            </div>
+                                            <span className="text-xs font-semibold">{ciudad}</span>
+                                        </div>
+                                    ))}
+                                    <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-24 opacity-40 grayscale">
+                                        <div className="w-16 h-16 rounded-full border-2 border-muted border-dashed flex items-center justify-center bg-muted/20">
+                                            <MapPin className="h-6 w-6 text-muted-foreground" />
+                                        </div>
+                                        <span className="text-xs font-semibold">Próximamente</span>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+
                         {/* Recent Activity Feed */}
-                        <div className="space-y-3">
+                        <div className="space-y-3 mt-6">
                             <h3 className="font-semibold text-sm flex items-center gap-2">
                                 <Share2 className="h-4 w-4 text-primary" /> Actividad Reciente
                             </h3>

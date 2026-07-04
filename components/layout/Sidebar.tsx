@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Compass, TrendingUp, Calendar, Heart, Star, Route, User, Info, HelpCircle, LogOut, Wand2, X, ScrollText, Settings } from 'lucide-react';
+import { Compass, TrendingUp, Calendar, Heart, Star, Route, User, Info, HelpCircle, LogOut, Wand2, X, ScrollText, Settings, BookOpen } from 'lucide-react';
 import { Button } from '../ui/button';
 import { ActivePanelType } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
@@ -55,6 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
           </div>
           <Item id="mapa" icon={Compass} label={t('panelTitles.mapa')} />
           <Item id="explorar" icon={TrendingUp} label={t('panelTitles.explorar')} />
+          <Item id="paquesepas" icon={BookOpen} label={"Pa' que sepás"} />
           <Item id="eventos" icon={Calendar} label={t('panelTitles.eventos')} />
           <Item id="noticias" icon={ScrollText} label={t('panelTitles.noticias')} />
 
