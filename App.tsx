@@ -372,9 +372,9 @@ export default function App() {
             {[
               { id: 'mapa', label: 'nav.map' },
               { id: 'explorar', label: 'nav.explore' },
-              { id: 'paquesepas', label: 'panelTitles.paquesepas' },
               { id: 'rutas', label: 'nav.routes' },
               { id: 'eventos', label: 'nav.events' },
+              { id: 'paquesepas', label: 'panelTitles.paquesepas' },
               { id: 'noticias', label: 'nav.news' }
             ].map(item => (
               <Button key={item.id} size="sm" className="rounded-full px-4" variant={activePanel === item.id ? "default" : "ghost"} onClick={() => setActivePanel(item.id as any)}>{t(item.label)}</Button>

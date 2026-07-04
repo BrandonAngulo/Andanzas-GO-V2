@@ -7,6 +7,7 @@ import { BookOpen, MapPin, ChevronRight, Hash, Sparkles } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
+import { TextWithLearnLinks } from '../shared/TextWithLearnLinks';
 
 interface PaQueSepasPanelProps {
     entries: LearnEntry[];
@@ -47,7 +48,12 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite }
                     <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none space-y-4">
                         {(getTranslated(selectedEntry, 'content_full', language) as string || getTranslated(selectedEntry, 'content_simple', language) as string || '').split('\n\n').map((paragraph, idx) => (
                             <p key={idx} className="text-foreground/90 leading-relaxed text-[16px] whitespace-pre-wrap">
-                                {paragraph}
+                                <TextWithLearnLinks 
+                                    text={paragraph} 
+                                    entries={entries} 
+                                    onNavigate={(entry) => setSelectedEntry(entry)} 
+                                    currentEntryId={selectedEntry.id} 
+                                />
                             </p>
                         ))}
                     </div>
