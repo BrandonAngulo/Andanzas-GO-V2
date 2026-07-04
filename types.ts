@@ -156,6 +156,7 @@ export interface Ruta {
   reward_badge_id?: string;
   mensajeCierre?: string;
   mensajeCierre_en?: string;
+  coverUrl?: string;
 }
 
 export interface Review {

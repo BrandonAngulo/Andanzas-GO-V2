@@ -77,9 +77,9 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [editCity, setEditCity] = useState("");
 
     const CUSTOM_AVATARS = [
-        { id: 'gato', url: '/avatars/gato.png', name: 'Gato del Río' },
-        { id: 'bichofue', url: '/avatars/bichofue.png', name: 'El Bichofué' },
-        { id: 'salsero', url: '/avatars/salsero.png', name: 'Caleño Salsero' }
+        { id: 'gato', url: '/avatars/gato.jpg', name: 'Gato del Río' },
+        { id: 'bichofue', url: '/avatars/bichofue.jpg', name: 'El Bichofué' },
+        { id: 'salsero', url: '/avatars/salsero.jpg', name: 'Caleño Salsero' }
     ];
 
     React.useEffect(() => {

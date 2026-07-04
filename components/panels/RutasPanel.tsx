@@ -146,7 +146,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                 <div className="h-32 w-full relative overflow-hidden bg-muted">
                     <div className="w-full h-full relative">
                         <LazyImage
-                            src={routeImage || ""}
+                            src={route.coverUrl || routeImage || ""}
                             className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.3] group-hover:grayscale-0")}
                             alt="Route cover"
                             textFallback={getTranslated(route, 'nombre', language) as string}
