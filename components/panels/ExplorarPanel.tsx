@@ -67,21 +67,21 @@ const IMPERDIBLES = [
     id: 'route-salsa',
     title: 'Ruta de la Salsa: Obrero',
     subtitle: 'Historia y ritmo en el corazón de Cali',
-    image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banner3.png',
+    image: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=1000&auto=format&fit=crop',
     tag: 'Ruta Recomendada'
   },
   {
     id: 'route-food',
     title: 'Fogones de la Memoria',
     subtitle: 'El talento de los sabores vallecaucanos',
-    image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banners-01.jpg',
+    image: 'https://images.unsplash.com/photo-1628267280784-884d5df68c2e?q=80&w=1000&auto=format&fit=crop',
     tag: 'Ruta Gastronómica'
   },
   {
     id: 'route-art',
     title: 'Pinceles de la Calle',
     subtitle: 'Arte urbano y memoria viva',
-    image: 'https://calidistritocultural.cali.gov.co/wp-content/uploads/2025/05/Banner0003.png',
+    image: 'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?q=80&w=1000&auto=format&fit=crop',
     tag: 'Ruta Visual'
   }
 ];
