@@ -96,7 +96,7 @@ const MapLegend = ({ language }: { language: 'es' | 'en' }) => {
 const CustomPin = ({ color, icon, number }: { color: string, icon: string, number?: number }) => (
     <div className="relative group cursor-pointer transform transition-all duration-300 hover:scale-110 hover:-translate-y-1 origin-bottom">
         <div className="absolute top-[34px] left-1/2 -translate-x-1/2 w-3 h-1.5 bg-black/20 rounded-full blur-[1px]"></div>
-        <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-sm opacity-[0.85] group-hover:opacity-100 transition-opacity">
+        <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-sm opacity-50 group-hover:opacity-100 transition-opacity">
             <path d="M17 0C7.61116 0 0 7.61116 0 17C0 29.75 17 42.5 17 42.5C17 42.5 34 29.75 34 17C34 7.61116 26.3888 0 17 0Z" fill={color} />
             <circle cx="17" cy="17" r="13" fill="white" fillOpacity="0.4" />
         </svg>
