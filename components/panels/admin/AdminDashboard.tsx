@@ -3,6 +3,7 @@ import { ScrollArea } from '../../ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
+import { useAuth } from '../../../contexts/AuthContext';
 import { ShieldAlert, Users, Map, BookOpen, Settings } from 'lucide-react';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
@@ -44,10 +45,11 @@ const AdminOverview = () => (
 
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
+    const { user } = useAuth();
     const [activeTab, setActiveTab] = useState<'overview' | 'curiosidades' | 'rutas' | 'settings'>('overview');
 
     // Security Check: Only render if user is admin
-    if (userProfile?.role !== 'admin' && userProfile?.email !== 'gruesobrandon@gmail.com') {
+    if (userProfile?.role !== 'admin' && user?.email !== 'gruesobrandon@gmail.com') {
         return (
             <div className="flex flex-col items-center justify-center h-[70vh] text-center p-6">
                 <ShieldAlert className="h-16 w-16 text-destructive mb-4" />

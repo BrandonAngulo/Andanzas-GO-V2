@@ -17,7 +17,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) => {
   const { t } = useI18n();
-  const { logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated, user } = useAuth();
   const { userProfile } = useUserData();
 
   const handleLogout = async () => {
@@ -77,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
           <Item id="tendencias" icon={TrendingUp} label={t('panelTitles.tendencias')} />
           <Item id="configuracion" icon={Settings} label={t('panelTitles.configuracion')} />
           <Item id="soporte" icon={HelpCircle} label={t('panelTitles.soporte')} />
-          {(userProfile?.role === 'admin' || userProfile?.email === 'gruesobrandon@gmail.com') && (
+          {(userProfile?.role === 'admin' || user?.email === 'gruesobrandon@gmail.com') && (
             <>
               <div className="my-2 border-t border-border/40 mx-2" />
               <div className="text-xs font-medium text-muted-foreground px-3 py-2 uppercase tracking-wider opacity-70">
