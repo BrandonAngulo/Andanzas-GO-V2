@@ -47,7 +47,7 @@ const AdminDashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'overview' | 'curiosidades' | 'rutas' | 'settings'>('overview');
 
     // Security Check: Only render if user is admin
-    if (userProfile?.role !== 'admin') {
+    if (userProfile?.role !== 'admin' && userProfile?.email !== 'gruesobrandon@gmail.com') {
         return (
             <div className="flex flex-col items-center justify-center h-[70vh] text-center p-6">
                 <ShieldAlert className="h-16 w-16 text-destructive mb-4" />

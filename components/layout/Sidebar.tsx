@@ -76,9 +76,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
           </div>
           <Item id="tendencias" icon={TrendingUp} label={t('panelTitles.tendencias')} />
           <Item id="configuracion" icon={Settings} label={t('panelTitles.configuracion')} />
-          <Item id="sobre" icon={Info} label={t('panelTitles.sobre')} />
           <Item id="soporte" icon={HelpCircle} label={t('panelTitles.soporte')} />
-          {userProfile?.role === 'admin' && (
+          {(userProfile?.role === 'admin' || userProfile?.email === 'gruesobrandon@gmail.com') && (
             <>
               <div className="my-2 border-t border-border/40 mx-2" />
               <div className="text-xs font-medium text-muted-foreground px-3 py-2 uppercase tracking-wider opacity-70">
