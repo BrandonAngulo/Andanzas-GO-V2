@@ -5,6 +5,7 @@ import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { ShieldAlert, Users, Map, BookOpen, Settings } from 'lucide-react';
 import { useI18n } from '../../../i18n';
+import { AdminCuriosidades } from './AdminCuriosidades';
 
 // Subcomponents for the admin tabs (We'll build these later)
 const AdminOverview = () => (
@@ -104,7 +105,7 @@ const AdminDashboard: React.FC = () => {
 
                 <div className="bg-background rounded-2xl border shadow-sm p-6 min-h-[400px]">
                     {activeTab === 'overview' && <AdminOverview />}
-                    {activeTab === 'curiosidades' && <div>Módulo de Curiosidades en construcción...</div>}
+                    {activeTab === 'curiosidades' && <AdminCuriosidades />}
                     {activeTab === 'rutas' && <div>Módulo de Rutas en construcción...</div>}
                     {activeTab === 'settings' && <div>Módulo de Ajustes en construcción...</div>}
                 </div>

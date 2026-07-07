@@ -18,7 +18,13 @@ export interface LearnEntry {
   // Legacy fields kept for a smooth transition if needed:
   content_simple?: string;
   content_deep?: string;
-  curiosity?: string;
+  // Editorial status
+  status?: 'draft' | 'review' | 'ready' | 'scheduled' | 'published' | 'archived';
+  visibility_flags?: {
+    show_in_home?: boolean;
+    show_as_notification?: boolean;
+    is_premium?: boolean;
+  };
 }
 
 export interface Site {
