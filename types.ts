@@ -241,7 +241,8 @@ export type ActivePanelType =
   | 'sobre'
   | 'soporte'
   | 'noticias'
-  | 'paquesepas';
+  | 'paquesepas'
+  | 'admin';
 
 export interface UserProfile {
   id: string;

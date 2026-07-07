@@ -1,11 +1,12 @@
 
 import React from 'react';
-import { Compass, TrendingUp, Calendar, Heart, Star, Route, User, Info, HelpCircle, LogOut, Wand2, X, ScrollText, Settings, BookOpen } from 'lucide-react';
+import { Compass, TrendingUp, Calendar, Heart, Star, Route, User, Info, HelpCircle, LogOut, Wand2, X, ScrollText, Settings, BookOpen, ShieldAlert } from 'lucide-react';
 import { Button } from '../ui/button';
 import { ActivePanelType } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
+import { useUserData } from '../../contexts/UserDataContext';
 import { cn } from '../../lib/utils';
 
 interface SidebarProps {
@@ -17,6 +18,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) => {
   const { t } = useI18n();
   const { logout, isAuthenticated } = useAuth();
+  const { userProfile } = useUserData();
 
   const handleLogout = async () => {
     await logout();
@@ -76,6 +78,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
           <Item id="configuracion" icon={Settings} label={t('panelTitles.configuracion')} />
           <Item id="sobre" icon={Info} label={t('panelTitles.sobre')} />
           <Item id="soporte" icon={HelpCircle} label={t('panelTitles.soporte')} />
+          {userProfile?.role === 'admin' && (
+            <>
+              <div className="my-2 border-t border-border/40 mx-2" />
+              <div className="text-xs font-medium text-muted-foreground px-3 py-2 uppercase tracking-wider opacity-70">
+                Administración
+              </div>
+              <Item id="admin" icon={ShieldAlert} label="Panel Admin" />
+            </>
+          )}
         </div>
       </ScrollArea>
 

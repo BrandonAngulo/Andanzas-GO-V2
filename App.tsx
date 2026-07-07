@@ -43,6 +43,7 @@ import ReviewModal from "./components/views/ReviewModal";
 import { userService } from './services/user.service';
 import { routesService } from './services/routes.service'; // Kept for updateRouteDetails which might not be in hook yet
 import PaQueSepasPanel from './components/panels/PaQueSepasPanel';
+import AdminDashboard from './components/panels/admin/AdminDashboard';
 
 // New Imports
 import { useAuth } from './contexts/AuthContext';
@@ -502,6 +503,7 @@ export default function App() {
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
+              {activePanel === 'admin' && <AdminDashboard />}
             </CardContent>
           </Card>
 
