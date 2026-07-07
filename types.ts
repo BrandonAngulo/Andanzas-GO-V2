@@ -18,6 +18,7 @@ export interface LearnEntry {
   // Legacy fields kept for a smooth transition if needed:
   content_simple?: string;
   content_deep?: string;
+  curiosity?: string;
   // Editorial status
   status?: 'draft' | 'review' | 'ready' | 'scheduled' | 'published' | 'archived';
   visibility_flags?: {
@@ -253,6 +254,7 @@ export type ActivePanelType =
 export interface UserProfile {
   id: string;
   email: string;
+  role?: string;
   full_name?: string;
   city?: string;
   ciudades_visitadas?: string[];

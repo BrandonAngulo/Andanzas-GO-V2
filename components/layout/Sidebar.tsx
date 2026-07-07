@@ -107,6 +107,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
             <User className="h-4 w-4 mr-2" /> {t('loginTitle') || "Iniciar Sesión"}
           </Button>
         )}
+        <div className="mt-2 text-[10px] text-muted-foreground text-center opacity-50">
+          DBG: {user?.email || 'no-email'} | {userProfile?.role || 'no-role'}
+        </div>
       </div>
     </div>
   );

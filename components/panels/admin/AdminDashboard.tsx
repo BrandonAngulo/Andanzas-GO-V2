@@ -70,7 +70,7 @@ const AdminDashboard: React.FC = () => {
                         Panel de Administración
                     </h2>
                     <p className="text-muted-foreground">
-                        Bienvenido, {userProfile.full_name || 'Admin'}. Gestiona el contenido de Andanzas GO.
+                        Bienvenido, {userProfile?.full_name || 'Admin'}. Gestiona el contenido de Andanzas GO.
                     </p>
                 </div>
 
