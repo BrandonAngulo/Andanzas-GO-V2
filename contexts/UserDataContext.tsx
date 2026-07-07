@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
-import { Review, Notificacion, Insignia } from '../types';
+import { Review, Notificacion, Insignia, UserProfile } from '../types';
 import { userService } from '../services/user.service';
 import { reviewsService } from '../services/reviews.service';
 import { notificationsService } from '../services/notifications.service';
@@ -18,8 +18,10 @@ interface UserDataContextType {
     notifications: Notificacion[];
     routesInProgress: string[];
     routesCompleted: string[];
+    userProfile: UserProfile | null;
 
     // Actions
+    setUserProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>;
     toggleFav: (id: string, siteName: string) => Promise<void>;
     addReview: (siteId: string, text: string, rating: number, fotos: File[]) => Promise<void>;
     addNotification: (notif: Omit<Notificacion, 'id' | 'fecha'>) => void;
@@ -43,6 +45,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
     // Local state for routes progress (synced with storage in the future or DB)
     const [routesInProgress, setRoutesInProgress] = useState<string[]>([]);
     const [routesCompleted, setRoutesCompleted] = useState<string[]>([]);
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
     useEffect(() => {
         if (isAuthenticated && user) {
@@ -50,12 +53,14 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             reviewsService.getByUserId(user.id).then(setReviews);
             notificationsService.getUserNotifications(user.id).then(setNotifications);
             gamificationService.getUserBadgeIds(user.id).then(setEarnedInsignias);
+            userService.getProfile(user.id).then(setUserProfile);
             // Routes progress loading would go here if fetched from DB
         } else {
             setFavIds([]);
             setReviews([]);
             setEarnedInsignias([]);
             setNotifications([]);
+            setUserProfile(null);
         }
     }, [isAuthenticated, user]);
 
@@ -143,6 +148,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             notifications,
             routesInProgress,
             routesCompleted,
+            userProfile,
+            setUserProfile,
             toggleFav,
             addReview,
             addNotification,

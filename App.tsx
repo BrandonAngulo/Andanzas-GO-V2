@@ -113,7 +113,8 @@ export default function App() {
     addReview,
     markAsRead,
     markAllAsRead,
-    addNotification
+    addNotification,
+    userProfile
   } = useUserData();
   const { theme, setTheme } = useTheme();
 
@@ -272,7 +273,7 @@ export default function App() {
     toast.info("La función de IA estará disponible próximamente.");
   };
 
-  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+  const avatarUrl = userProfile?.avatar_url || user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
   const firstLetter = user?.email ? user.email.charAt(0).toUpperCase() : '?';
 
   const startNewRoute = () => {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { LearnEntry } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
-import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints } from 'lucide-react';
 import { useI18n } from '../../i18n';
@@ -116,13 +115,13 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {entries.map(entry => (
-                        <Card 
+                        <div 
                             key={entry.id} 
                             className="cursor-pointer group relative overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:-translate-y-1 border border-black/5 dark:border-white/5 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-[2rem] shadow-sm"
                             onClick={() => setSelectedEntry(entry)}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <CardContent className="p-7 relative z-10 flex flex-col h-full">
+                            <div className="p-7 relative z-10 flex flex-col h-full">
                                 <div className="flex justify-between items-start mb-5">
                                     <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full">
                                         <MapPin className="w-3 h-3" /> {entry.city}
@@ -152,8 +151,8 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                                         <ChevronRight className="w-5 h-5" />
                                     </div>
                                 </div>
-                            </CardContent>
-                        </Card>
+                            </div>
+                        </div>
                     ))}
                 </div>
                 
