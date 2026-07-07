@@ -1,13 +1,14 @@
-import React from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
+import React, { useState } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import { LogIn, Sparkles, LockKeyhole } from 'lucide-react';
 import { useI18n } from '../../i18n';
 
 interface AuthRequiredDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onLogin: () => void;
+    onLogin: (email: string, pass: string, isSignUp: boolean) => void;
     title?: string;
     description?: string;
 }
@@ -20,6 +21,9 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
     description
 }) => {
     const { t, language } = useI18n();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isSignUp, setIsSignUp] = useState(false);
 
     const defaultTitle = language === 'es' ? 'Descubre más' : 'Discover more';
     const defaultDesc = language === 'es'
@@ -58,18 +62,41 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
                         </DialogDescription>
                     </DialogHeader>
 
-                    <div className="flex flex-col gap-3 mt-8">
+                    <div className="flex flex-col gap-3 mt-4">
+                        <Input 
+                            placeholder="Correo electrónico" 
+                            type="email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                        />
+                        <Input 
+                            placeholder="Contraseña" 
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                        />
                         <Button
-                            onClick={() => { onOpenChange(false); onLogin(); }}
-                            className="w-full h-12 rounded-xl text-base font-medium shadow-lg shadow-primary/25 bg-gradient-to-r from-primary to-emerald-600 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02]"
+                            onClick={() => { 
+                                if (email && password) {
+                                    onLogin(email, password, isSignUp);
+                                }
+                            }}
+                            className="w-full h-12 mt-2 rounded-xl text-base font-medium shadow-lg shadow-primary/25 bg-gradient-to-r from-primary to-emerald-600 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02]"
                         >
                             <LogIn className="w-5 h-5 mr-2" />
-                            {language === 'es' ? 'Iniciar Sesión / Registrarse' : 'Login / Sign Up'}
+                            {isSignUp ? (language === 'es' ? 'Crear Cuenta' : 'Sign Up') : (language === 'es' ? 'Iniciar Sesión' : 'Login')}
+                        </Button>
+                        <Button
+                            variant="link"
+                            onClick={() => setIsSignUp(!isSignUp)}
+                            className="w-full h-8 text-sm text-primary hover:text-primary/80"
+                        >
+                            {isSignUp ? '¿Ya tienes cuenta? Inicia Sesión' : '¿No tienes cuenta? Regístrate'}
                         </Button>
                         <Button
                             variant="ghost"
                             onClick={() => onOpenChange(false)}
-                            className="w-full h-12 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                            className="w-full h-10 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
                         >
                             {language === 'es' ? 'Quizás más tarde' : 'Maybe later'}
                         </Button>

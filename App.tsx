@@ -99,7 +99,7 @@ export default function App() {
   if (path === '/terms') return <TermsOfService />;
 
   const { t, language } = useI18n();
-  const { isAuthenticated, user, signIn } = useAuth();
+  const { isAuthenticated, user, signIn, signUp } = useAuth();
 
   // --- Global State via Contexts ---
   const { sites, eventos, rutasTematicas, feed, allInsignias, learnEntries, isLoading } = useAppData();
@@ -364,8 +364,12 @@ export default function App() {
       <AuthRequiredDialog
         open={authDialogOpen}
         onOpenChange={setAuthDialogOpen}
-        onLogin={async () => {
-          await signIn('audit@andanzas.com', 'test');
+        onLogin={async (email, password, isSignUp) => {
+          if (isSignUp) {
+            await signUp(email, password, email.split('@')[0]);
+          } else {
+            await signIn(email, password);
+          }
           setAuthDialogOpen(false);
           setActivePanel("perfil");
         }}
