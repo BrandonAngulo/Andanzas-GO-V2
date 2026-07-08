@@ -98,6 +98,20 @@ export const gamificationService = {
 
     async addPoints(userId: string, amount: number) {
         return this.awardPoints(amount, 'Generic Action');
+    },
+
+    async getGlobalLeaderboard(limit: number = 10): Promise<any[]> {
+        const { data, error } = await supabase
+            .from('user_profiles')
+            .select('id, full_name, avatar_url, total_points')
+            .order('total_points', { ascending: false })
+            .limit(limit);
+
+        if (error) {
+            console.error('Error fetching leaderboard:', error);
+            return [];
+        }
+        return data;
     }
 };
 

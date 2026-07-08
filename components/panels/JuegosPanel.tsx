@@ -3,6 +3,8 @@ import { Game, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { LeaderboardPanel } from './LeaderboardPanel';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string) => void;
@@ -47,12 +49,21 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
 
     return (
         <div className="space-y-6">
-            <div className="mb-6">
-                <h2 className="text-2xl font-bold mb-2">Zona Play</h2>
-                <p className="text-muted-foreground">Demuestra cuánto sabés y gana puntos para tu perfil.</p>
+            <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold mb-2">Zona Play</h2>
+                    <p className="text-muted-foreground">Demuestra cuánto sabés, reta amigos y gana puntos para tu perfil.</p>
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Tabs defaultValue="juegos" className="w-full">
+                <TabsList className="mb-6 grid w-full grid-cols-2 max-w-[400px]">
+                    <TabsTrigger value="juegos">Trivias y Retos</TabsTrigger>
+                    <TabsTrigger value="podio">Salón de la Fama</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="juegos" className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {games.map(game => (
                     <Card key={game.id} className="overflow-hidden border border-border/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/60 backdrop-blur-sm group">
                         <div className="h-32 bg-primary/10 relative flex items-center justify-center p-6">
@@ -107,7 +118,13 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </CardContent>
                     </Card>
                 ))}
-            </div>
+                    </div>
+                </TabsContent>
+                
+                <TabsContent value="podio">
+                    <LeaderboardPanel />
+                </TabsContent>
+            </Tabs>
         </div>
     );
 };

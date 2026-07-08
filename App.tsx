@@ -46,6 +46,8 @@ import PaQueSepasPanel from './components/panels/PaQueSepasPanel';
 import AdminDashboard from './components/panels/admin/AdminDashboard';
 import { GameSessionModal } from './components/views/GameSessionModal';
 import { JuegosPanel } from './components/panels/JuegosPanel';
+import { ChallengeLobby } from './components/views/ChallengeLobby';
+import { ChallengeVerdict } from './components/views/ChallengeVerdict';
 
 // New Imports
 import { useAuth } from './contexts/AuthContext';
@@ -59,11 +61,11 @@ import { useTheme } from './hooks/useTheme';
 const parseHash = () => {
   const h = (window.location.hash || "").replace(/^#/, "");
   const parts = h.split("/").filter(Boolean);
-  if (parts.length === 2) {
-    const [type, id] = parts;
-    if (["site", "event", "route"].includes(type)) return { type, id };
+  if (parts.length >= 2) {
+    const [type, id, sub] = parts;
+    if (["site", "event", "route", "challenge"].includes(type)) return { type, id, sub };
   }
-  return { type: null, id: null };
+  return { type: null, id: null, sub: null };
 };
 
 const pushHash = (route: { type: string; id: string } | null) => {
@@ -160,6 +162,7 @@ export default function App() {
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
+  const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
 
   // Accessibility & Settings
   const [accessibilitySettings, setAccessibilitySettings] = useState(defaultAccessibilitySettings);
@@ -232,6 +235,13 @@ export default function App() {
       if (r.type === "site") setFullView({ type: "site", data: getSiteById(r.id) });
       if (r.type === "event") setFullView({ type: "event", data: getEventById(r.id) });
       if (r.type === "route") setFullView({ type: "route", data: allRutas.find(route => route.id === r.id) });
+      if (r.type === "challenge") {
+         if (r.sub === "verdict") {
+             setFullView({ type: "challenge_verdict", data: { id: r.id }});
+         } else {
+             setFullView({ type: "challenge_lobby", data: { id: r.id }});
+         }
+      }
     };
     syncFromHash();
     window.addEventListener("hashchange", syncFromHash);
@@ -575,7 +585,10 @@ export default function App() {
       </Dialog>
 
       {/* Full View */}
-      {fullView && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
+      {fullView && ["site", "event", "route"].includes(fullView.type) && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
+      
+      {fullView && fullView.type === 'challenge_lobby' && <ChallengeLobby challengeId={fullView.data.id} onClose={closeFull} onAccept={(gameId, challengeId) => { closeFull(); setActiveChallengeId(challengeId); setActiveGameId(gameId); }} />}
+      {fullView && fullView.type === 'challenge_verdict' && <ChallengeVerdict challengeId={fullView.data.id} onClose={closeFull} />}
 
       {/* Privacy Banner */}
       {showPrivacyBanner && (
@@ -615,7 +628,7 @@ export default function App() {
       {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} />}
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
-      {activeGameId && <GameSessionModal gameId={activeGameId} onClose={() => setActiveGameId(null)} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); }} />}
+      {activeGameId && <GameSessionModal gameId={activeGameId} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); setActiveChallengeId(null); }} />}
     </div>
   );
 }

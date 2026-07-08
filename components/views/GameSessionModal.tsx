@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useGameEngine } from '../../hooks/useGameEngine';
 import { Button } from '../ui/button';
-import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Flag } from 'lucide-react';
+import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Flag, Users, Copy } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { gamesService } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserData } from '../../contexts/UserDataContext';
+import { toast } from 'sonner';
+import { challengeService } from '../../services/challenge.service';
 
 interface GameSessionModalProps {
     gameId: string;
     onClose: () => void;
     onNavigate?: (panel: string) => void;
+    challengeId?: string;
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate }) => {
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, challengeId }) => {
     const { userProfile } = useUserData();
     const {
         game,
@@ -30,8 +33,42 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         nextQuestion,
         accuracyPercent,
         bestCategory,
-        worstCategory
+        worstCategory,
+        sessionId
     } = useGameEngine(gameId, userProfile?.id);
+
+    const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
+    
+    React.useEffect(() => {
+        if (isFinished && challengeId && sessionId) {
+            // It's a challenge mode, complete it
+            // We need to determine the winner, but for now we just mark it complete
+            // and the verdict screen will do the math.
+            challengeService.completeChallenge(challengeId, sessionId, null).then(() => {
+                // Redirect to challenge verdict
+                window.location.href = `/challenge/${challengeId}/verdict`;
+            });
+        }
+    }, [isFinished, challengeId, sessionId]);
+
+    const handleChallengeFriend = async () => {
+        if (!sessionId) return;
+        setIsCreatingChallenge(true);
+        try {
+            const challenge = await challengeService.createChallenge(gameId, sessionId);
+            if (challenge) {
+                const challengeUrl = `${window.location.origin}/challenge/${challenge.id}`;
+                await navigator.clipboard.writeText(`¡Te reto en Andanzas GO! ¿Puedes superar mi puntaje de ${score}?\n\nJuega aquí: ${challengeUrl}`);
+                toast.success("¡Enlace copiado al portapapeles! Compártelo con tus amigos.");
+            } else {
+                toast.error("Hubo un error al crear el reto. Debes iniciar sesión.");
+            }
+        } catch (e) {
+            toast.error("Error al generar el enlace de reto");
+        } finally {
+            setIsCreatingChallenge(false);
+        }
+    };
 
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isChecking, setIsChecking] = useState(false);
@@ -187,7 +224,15 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     )}
 
                     <div className="w-full space-y-3 mt-8">
-                        <Button className="w-full rounded-xl py-6 text-lg" onClick={onClose}>
+                        <Button 
+                            className="w-full rounded-xl py-6 text-lg font-bold bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white border-none shadow-lg shadow-purple-500/30"
+                            onClick={handleChallengeFriend}
+                            disabled={isCreatingChallenge}
+                        >
+                            <Users className="w-5 h-5 mr-2" />
+                            {isCreatingChallenge ? "Generando Reto..." : "Retar a un amigo"}
+                        </Button>
+                        <Button variant="outline" className="w-full rounded-xl py-6 text-lg" onClick={onClose}>
                             Volver
                         </Button>
                     </div>
