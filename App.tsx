@@ -405,8 +405,7 @@ export default function App() {
               { id: 'rutas', label: 'nav.routes' },
               { id: 'eventos', label: 'nav.events' },
               { id: 'juegos', label: 'nav.games' },
-              { id: 'paquesepas', label: 'panelTitles.paquesepas' },
-              { id: 'noticias', label: 'nav.news' }
+              { id: 'paquesepas', label: 'panelTitles.paquesepas' }
             ].map(item => (
               <Button key={item.id} size="sm" className="rounded-full px-4" variant={activePanel === item.id ? "default" : "ghost"} onClick={() => setActivePanel(item.id as any)}>{t(item.label)}</Button>
             ))}
@@ -453,7 +452,15 @@ export default function App() {
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && <div className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-orange-500 border border-background" />}
               </Button>
-              {showNotifications && <NotificationsPanel notifications={notifications} onMarkAsRead={markAsRead} onMarkAllAsRead={markAllAsRead} />}
+              {showNotifications && <NotificationsPanel 
+                  notifications={notifications} 
+                  onMarkAsRead={markAsRead} 
+                  onMarkAllAsRead={markAllAsRead} 
+                  onOpenNews={() => {
+                      setActivePanel('noticias');
+                      setShowNotifications(false);
+                  }}
+              />}
             </div>
 
             <div className="relative" ref={accessibilityMenuRef}>

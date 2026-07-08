@@ -16,6 +16,9 @@ export interface GameEngineState {
     sessionId: string | null;
     timeRemaining: number;
     totalTimeMs: number;
+    userAnswers: { questionId: string; isCorrect: boolean; category: string }[];
+    bestCategory: string | null;
+    worstCategory: string | null;
 }
 
 export const useGameEngine = (gameId: string, userId: string | undefined) => {
@@ -32,7 +35,10 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         error: null,
         sessionId: null,
         timeRemaining: 30,
-        totalTimeMs: 0
+        totalTimeMs: 0,
+        userAnswers: [],
+        bestCategory: null,
+        worstCategory: null
     });
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -167,7 +173,8 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
             score: prev.score + pointsEarned,
             streak: newStreak,
             maxStreak: Math.max(prev.maxStreak, newStreak),
-            totalTimeMs: prev.totalTimeMs + timeToAnswerMs
+            totalTimeMs: prev.totalTimeMs + timeToAnswerMs,
+            userAnswers: [...prev.userAnswers, { questionId: currentQ.id, isCorrect, category: currentQ.category || 'General' }]
         }));
 
         return isCorrect;
@@ -201,6 +208,36 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
 
         const accuracy = state.questions.length > 0 ? (correctCount / state.questions.length) * 100 : 0;
 
+        // Calculate categories
+        const categoryStats = state.userAnswers.reduce((acc, curr) => {
+            if (!acc[curr.category]) acc[curr.category] = { correct: 0, total: 0 };
+            acc[curr.category].total++;
+            if (curr.isCorrect) acc[curr.category].correct++;
+            return acc;
+        }, {} as Record<string, {correct: number, total: number}>);
+
+        let bestCategory: string | null = null;
+        let worstCategory: string | null = null;
+        let bestScore = -1;
+        let worstScore = 2; 
+
+        Object.entries(categoryStats).forEach(([cat, stats]) => {
+            const ratio = stats.correct / stats.total;
+            if (ratio > bestScore) {
+                bestScore = ratio;
+                bestCategory = cat;
+            }
+            if (ratio < worstScore && ratio < 1) { // Only count as worst if they actually missed something
+                worstScore = ratio;
+                worstCategory = cat;
+            }
+        });
+        
+        // Prevent showing the same category as best and worst
+        if (bestCategory === worstCategory) {
+            worstCategory = null;
+        }
+
         await supabase.from('game_sessions').update({
             status: 'completed',
             completed_at: new Date().toISOString(),
@@ -222,7 +259,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
             ...prev,
             isFinished: true,
             accuracyPercent: accuracy,
-            score: finalScore
+            score: finalScore,
+            bestCategory,
+            worstCategory
         }));
     };
 

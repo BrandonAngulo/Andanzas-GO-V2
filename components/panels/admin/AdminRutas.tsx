@@ -4,12 +4,15 @@ import { routesService } from '../../../services/routes.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Eye, EyeOff, Search } from 'lucide-react';
+import { Eye, EyeOff, Search, Edit, Plus } from 'lucide-react';
+import { RutaForm } from './RutaForm';
 
 export const AdminRutas = () => {
     const [routes, setRoutes] = useState<Ruta[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [editingRouteId, setEditingRouteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadRoutes();
@@ -30,6 +33,25 @@ export const AdminRutas = () => {
 
     const filteredRoutes = routes.filter(r => r.nombre.toLowerCase().includes(searchQuery.toLowerCase()));
 
+    const handleOpenCreate = () => {
+        setEditingRouteId(null);
+        setIsFormOpen(true);
+    };
+
+    const handleOpenEdit = (id: string) => {
+        setEditingRouteId(id);
+        setIsFormOpen(true);
+    };
+
+    const handleFormSaved = () => {
+        setIsFormOpen(false);
+        loadRoutes();
+    };
+
+    if (isFormOpen) {
+        return <RutaForm routeId={editingRouteId} onClose={() => setIsFormOpen(false)} onSaved={handleFormSaved} />;
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -42,6 +64,10 @@ export const AdminRutas = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
+                <Button onClick={handleOpenCreate}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Crear Ruta
+                </Button>
             </div>
 
             {loading ? (
@@ -71,6 +97,9 @@ export const AdminRutas = () => {
                                             title={route.publico ? "Hacer privada" : "Publicar globalmente"}
                                         >
                                             {route.publico ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                                        </Button>
+                                        <Button variant="outline" size="sm" onClick={() => handleOpenEdit(route.id)}>
+                                            <Edit className="w-4 h-4" />
                                         </Button>
                                     </div>
                                 </div>

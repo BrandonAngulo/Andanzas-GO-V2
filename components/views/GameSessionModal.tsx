@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useGameEngine } from '../../hooks/useGameEngine';
 import { Button } from '../ui/button';
-import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star } from 'lucide-react';
+import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Flag } from 'lucide-react';
+import { Textarea } from '../ui/textarea';
+import { gamesService } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserData } from '../../contexts/UserDataContext';
 
@@ -26,12 +28,18 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         timeRemaining,
         submitAnswer,
         nextQuestion,
-        accuracyPercent
+        accuracyPercent,
+        bestCategory,
+        worstCategory
     } = useGameEngine(gameId, userProfile?.id);
 
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isChecking, setIsChecking] = useState(false);
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+
+    const [isReporting, setIsReporting] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+    const [reportSubmitted, setReportSubmitted] = useState(false);
 
     const handleAnswerSelect = async (option: string) => {
         if (isChecking) return;
@@ -47,7 +55,21 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         setIsChecking(false);
         setSelectedOption(null);
         setIsCorrect(null);
+        setIsReporting(false);
+        setReportReason('');
+        setReportSubmitted(false);
         await nextQuestion();
+    };
+
+    const handleSubmitReport = async () => {
+        if (!currentQuestion || !reportReason.trim()) return;
+        const success = await gamesService.reportQuestion(currentQuestion.id, userProfile?.id, reportReason);
+        if (success) {
+            setReportSubmitted(true);
+            setTimeout(() => {
+                setIsReporting(false);
+            }, 2000);
+        }
     };
 
     if (loading) {
@@ -101,6 +123,23 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             <span className="text-xs text-muted-foreground uppercase">Precisión</span>
                         </div>
                     </div>
+
+                    {(bestCategory || worstCategory) && (
+                        <div className="w-full mt-2 grid grid-cols-2 gap-4">
+                            {bestCategory && (
+                                <div className="bg-card border border-border p-3 rounded-xl flex flex-col items-center">
+                                    <span className="text-xs text-muted-foreground uppercase mb-1">Mejor</span>
+                                    <span className="text-sm font-semibold text-green-600 dark:text-green-400 text-center">{bestCategory}</span>
+                                </div>
+                            )}
+                            {worstCategory && (
+                                <div className="bg-card border border-border p-3 rounded-xl flex flex-col items-center">
+                                    <span className="text-xs text-muted-foreground uppercase mb-1">Por Mejorar</span>
+                                    <span className="text-sm font-semibold text-orange-500 text-center">{worstCategory}</span>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     {game?.related_learn_ids && game.related_learn_ids.length > 0 && (
                         <div className="w-full mt-4 p-4 bg-muted/50 rounded-2xl text-left border border-border">
@@ -237,6 +276,43 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         </motion.div>
                     )}
                 </AnimatePresence>
+
+                {isChecking && !isReporting && !reportSubmitted && (
+                    <div className="mt-4 text-center">
+                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" onClick={() => setIsReporting(true)}>
+                            <Flag className="w-4 h-4 mr-2" /> Reportar un problema con esta pregunta
+                        </Button>
+                    </div>
+                )}
+                
+                {isReporting && (
+                    <motion.div 
+                        initial={{ opacity: 0, height: 0 }} 
+                        animate={{ opacity: 1, height: 'auto' }} 
+                        className="mt-4 p-4 border border-border rounded-xl bg-card"
+                    >
+                        <h4 className="font-semibold mb-2">Reportar Pregunta</h4>
+                        {reportSubmitted ? (
+                            <div className="text-green-600 dark:text-green-400 flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4" /> Reporte enviado con éxito. Gracias.
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                <Textarea 
+                                    placeholder="¿Qué problema encontraste? (ej. respuesta incorrecta, error ortográfico...)" 
+                                    value={reportReason}
+                                    onChange={(e) => setReportReason(e.target.value)}
+                                    className="resize-none"
+                                    rows={2}
+                                />
+                                <div className="flex justify-end gap-2">
+                                    <Button variant="outline" size="sm" onClick={() => setIsReporting(false)}>Cancelar</Button>
+                                    <Button size="sm" onClick={handleSubmitReport} disabled={!reportReason.trim()}>Enviar Reporte</Button>
+                                </div>
+                            </div>
+                        )}
+                    </motion.div>
+                )}
             </div>
         </div>
     );

@@ -3,13 +3,15 @@ import { Game, gamesService } from '../../../services/games.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Plus, Edit2, Trash2, Gamepad2, Globe, Lock, Search, PlayCircle } from 'lucide-react';
+import { Plus, Edit2, Trash2, Gamepad2, Globe, Lock, Search, PlayCircle, BarChart3, List } from 'lucide-react';
 import { JuegoForm } from './JuegoForm';
+import { JuegosAnalyticsPanel } from './JuegosAnalyticsPanel';
 
 export const AdminJuegos = () => {
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState(true);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [showAnalytics, setShowAnalytics] = useState(false);
     const [currentGame, setCurrentGame] = useState<Game | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -68,12 +70,28 @@ export const AdminJuegos = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                {!isFormOpen && (
-                    <Button onClick={handleAddNew} className="rounded-full shadow-sm whitespace-nowrap">
-                        <Plus className="w-4 h-4 mr-2" /> Nuevo Juego
+                {!isFormOpen && !showAnalytics && (
+                    <div className="flex gap-2">
+                        <Button variant="outline" onClick={() => setShowAnalytics(true)} className="rounded-full shadow-sm whitespace-nowrap">
+                            <BarChart3 className="w-4 h-4 mr-2" /> Analíticas
+                        </Button>
+                        <Button onClick={handleAddNew} className="rounded-full shadow-sm whitespace-nowrap">
+                            <Plus className="w-4 h-4 mr-2" /> Nuevo Juego
+                        </Button>
+                    </div>
+                )}
+                {showAnalytics && (
+                    <Button variant="outline" onClick={() => setShowAnalytics(false)} className="rounded-full shadow-sm whitespace-nowrap">
+                        <List className="w-4 h-4 mr-2" /> Ver Juegos
                     </Button>
                 )}
             </div>
+
+            {showAnalytics && !isFormOpen && (
+                <div className="animate-in fade-in duration-300">
+                    <JuegosAnalyticsPanel />
+                </div>
+            )}
 
             {isFormOpen && (
                 <div className="mb-6 animate-in slide-in-from-top-4 duration-300">
@@ -85,9 +103,9 @@ export const AdminJuegos = () => {
                 </div>
             )}
 
-            {!isFormOpen && loading ? (
+            {!isFormOpen && !showAnalytics && loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando juegos...</div>
-            ) : (
+            ) : !isFormOpen && !showAnalytics ? (
                 <div className="grid gap-4">
                     {filteredGames.map(game => (
                         <Card key={game.id} className="overflow-hidden">
@@ -148,7 +166,7 @@ export const AdminJuegos = () => {
                         </div>
                     )}
                 </div>
-            )}
+            ) : null}
         </div>
     );
 };

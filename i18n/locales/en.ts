@@ -26,6 +26,7 @@ const en = {
         routes: "Routes",
         news: "News",
         events: "Events",
+        games: "Play Zone",
     },
     searchPlaceholder: "Search museums, theaters, murals…",
     ai: "AI",
@@ -47,7 +48,9 @@ const en = {
         sobre: "About Andanzas GO",
         soporte: "Support",
         noticias: "News & Updates",
-        paquesepas: "Did you know?"
+        paquesepas: "Did you know?",
+        juegos: "Play Zone",
+        admin: "Admin Dashboard"
     },
 
     // Map

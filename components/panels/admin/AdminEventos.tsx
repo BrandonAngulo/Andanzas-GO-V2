@@ -4,12 +4,15 @@ import { eventsService } from '../../../services/events.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Eye, EyeOff, Search, Trash2 } from 'lucide-react';
+import { Eye, EyeOff, Search, Trash2, Edit, Plus } from 'lucide-react';
+import { EventoForm } from './EventoForm';
 
 export const AdminEventos = () => {
     const [events, setEvents] = useState<Evento[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [editingEventId, setEditingEventId] = useState<string | null>(null);
 
     useEffect(() => {
         loadEvents();
@@ -37,6 +40,25 @@ export const AdminEventos = () => {
 
     const filteredEvents = events.filter(e => e.titulo.toLowerCase().includes(searchQuery.toLowerCase()) || e.lugar.toLowerCase().includes(searchQuery.toLowerCase()));
 
+    const handleOpenCreate = () => {
+        setEditingEventId(null);
+        setIsFormOpen(true);
+    };
+
+    const handleOpenEdit = (id: string) => {
+        setEditingEventId(id);
+        setIsFormOpen(true);
+    };
+
+    const handleFormSaved = () => {
+        setIsFormOpen(false);
+        loadEvents();
+    };
+
+    if (isFormOpen) {
+        return <EventoForm eventId={editingEventId} onClose={() => setIsFormOpen(false)} onSaved={handleFormSaved} />;
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -49,6 +71,10 @@ export const AdminEventos = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
+                <Button onClick={handleOpenCreate}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Crear Evento
+                </Button>
             </div>
 
             {loading ? (
@@ -78,6 +104,9 @@ export const AdminEventos = () => {
                                             title={evento.status === 'published' ? "Ocultar evento" : "Publicar evento"}
                                         >
                                             {evento.status === 'published' ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                                        </Button>
+                                        <Button variant="outline" size="sm" onClick={() => handleOpenEdit(evento.id)}>
+                                            <Edit className="w-4 h-4" />
                                         </Button>
                                         <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => handleDelete(evento.id)}>
                                             <Trash2 className="w-4 h-4" />

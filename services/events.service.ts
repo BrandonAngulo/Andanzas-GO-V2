@@ -31,6 +31,19 @@ export const eventsService = {
         return data.map(mapEvent);
     },
 
+    async getById(id: string): Promise<Evento | null> {
+        const { data, error } = await supabase
+            .from('events')
+            .select('*')
+            .eq('id', id)
+            .single();
+        if (error) {
+            console.error('Error fetching event by id:', error);
+            return null;
+        }
+        return mapEvent(data);
+    },
+
     async create(evento: Partial<Evento>): Promise<Evento | null> {
         const { data, error } = await supabase
             .from('events')

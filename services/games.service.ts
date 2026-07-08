@@ -101,5 +101,20 @@ export const gamesService = {
     async deleteQuestion(id: string): Promise<boolean> {
         const { error } = await supabase.from('game_questions').delete().eq('id', id);
         return !error;
+    },
+
+    // ---- REPORTS ----
+    async reportQuestion(questionId: string, userId: string | undefined, reason: string): Promise<boolean> {
+        const { error } = await supabase.from('question_reports').insert({
+            question_id: questionId,
+            user_id: userId || null,
+            reason: reason,
+            status: 'pending'
+        });
+        if (error) {
+            console.error('Error reporting question:', error);
+            return false;
+        }
+        return true;
     }
 };

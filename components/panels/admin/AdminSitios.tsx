@@ -4,12 +4,15 @@ import { sitesService } from '../../../services/sites.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Eye, EyeOff, Search, Trash2 } from 'lucide-react';
+import { Eye, EyeOff, Search, Trash2, Edit, Plus } from 'lucide-react';
+import { SitioForm } from './SitioForm';
 
 export const AdminSitios = () => {
     const [sites, setSites] = useState<Site[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [editingSiteId, setEditingSiteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadSites();
@@ -37,6 +40,25 @@ export const AdminSitios = () => {
 
     const filteredSites = sites.filter(s => s.nombre.toLowerCase().includes(searchQuery.toLowerCase()) || s.tipo?.toLowerCase().includes(searchQuery.toLowerCase()));
 
+    const handleOpenCreate = () => {
+        setEditingSiteId(null);
+        setIsFormOpen(true);
+    };
+
+    const handleOpenEdit = (id: string) => {
+        setEditingSiteId(id);
+        setIsFormOpen(true);
+    };
+
+    const handleFormSaved = () => {
+        setIsFormOpen(false);
+        loadSites();
+    };
+
+    if (isFormOpen) {
+        return <SitioForm siteId={editingSiteId} onClose={() => setIsFormOpen(false)} onSaved={handleFormSaved} />;
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -49,6 +71,10 @@ export const AdminSitios = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
+                <Button onClick={handleOpenCreate}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Crear Sitio
+                </Button>
             </div>
 
             {loading ? (
@@ -78,6 +104,9 @@ export const AdminSitios = () => {
                                             title={site.status === 'published' ? "Ocultar sitio" : "Publicar sitio"}
                                         >
                                             {site.status === 'published' ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                                        </Button>
+                                        <Button variant="outline" size="sm" onClick={() => handleOpenEdit(site.id)}>
+                                            <Edit className="w-4 h-4" />
                                         </Button>
                                         <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => handleDelete(site.id)}>
                                             <Trash2 className="w-4 h-4" />

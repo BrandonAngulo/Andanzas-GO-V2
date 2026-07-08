@@ -35,6 +35,19 @@ export const newsService = {
         return data.map(mapFeedItem);
     },
 
+    async getById(id: string): Promise<FeedItem | null> {
+        const { data, error } = await supabase
+            .from('feed_items')
+            .select('*')
+            .eq('id', id)
+            .single();
+        if (error) {
+            console.error('Error fetching news by id:', error);
+            return null;
+        }
+        return mapFeedItem(data);
+    },
+
     async create(news: Partial<FeedItem>): Promise<FeedItem | null> {
         const { data, error } = await supabase
             .from('feed_items')
