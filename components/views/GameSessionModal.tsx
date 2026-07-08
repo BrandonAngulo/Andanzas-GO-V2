@@ -40,6 +40,37 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     const [isReporting, setIsReporting] = useState(false);
     const [reportReason, setReportReason] = useState('');
     const [reportSubmitted, setReportSubmitted] = useState(false);
+    
+    const [showExitConfirm, setShowExitConfirm] = useState(false);
+    const [hasTimedOut, setHasTimedOut] = useState(false);
+
+    const [isShuffling, setIsShuffling] = useState(false);
+    const [shuffledCategory, setShuffledCategory] = useState("Salsa");
+    const categories = ["Historia", "Arte", "Salsa", "Naturaleza", "Gastronomía", "Literatura", "General"];
+
+    React.useEffect(() => {
+        if (!currentQuestion || isFinished) return;
+        setIsShuffling(true);
+        let count = 0;
+        const interval = setInterval(() => {
+            setShuffledCategory(categories[Math.floor(Math.random() * categories.length)]);
+            count++;
+            if (count > 8) {
+                clearInterval(interval);
+                setShuffledCategory(currentQuestion.category || "General");
+                setTimeout(() => setIsShuffling(false), 600);
+            }
+        }, 100);
+        return () => clearInterval(interval);
+    }, [currentQuestionIndex]);
+
+    React.useEffect(() => {
+        if (timeRemaining === 0 && !isChecking && !isFinished && !isShuffling) {
+            setIsChecking(true);
+            setIsCorrect(false);
+            setHasTimedOut(true);
+        }
+    }, [timeRemaining, isChecking, isFinished, isShuffling]);
 
     const handleAnswerSelect = async (option: string) => {
         if (isChecking) return;
@@ -58,6 +89,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         setIsReporting(false);
         setReportReason('');
         setReportSubmitted(false);
+        setHasTimedOut(false);
         await nextQuestion();
     };
 
@@ -74,7 +106,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     if (loading) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
                 <div className="animate-pulse flex flex-col items-center">
                     <Trophy className="w-12 h-12 text-primary mb-4 animate-bounce" />
                     <p className="text-lg font-medium">Cargando desafío...</p>
@@ -85,7 +117,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     if (error || !game) {
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
                 <div className="bg-card p-6 rounded-2xl max-w-sm w-full text-center shadow-lg border border-border">
                     <XCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
                     <h3 className="text-xl font-bold mb-2">Error al cargar</h3>
@@ -98,7 +130,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     if (isFinished) {
         return (
-            <div className="fixed inset-0 z-50 flex flex-col bg-background p-4 sm:p-8">
+            <div className="fixed inset-0 z-[100] flex flex-col bg-background p-4 sm:p-8">
                 <div className="flex-1 max-w-lg mx-auto w-full flex flex-col justify-center items-center text-center space-y-6">
                     <motion.div 
                         initial={{ scale: 0.5, opacity: 0 }}
@@ -165,10 +197,10 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex flex-col bg-background">
+        <div className="fixed inset-0 z-[100] flex flex-col bg-background">
             {/* Header / HUD */}
             <div className="flex items-center justify-between p-4 bg-card border-b border-border shadow-sm">
-                <Button variant="ghost" size="icon" onClick={onClose}>
+                <Button variant="ghost" size="icon" onClick={() => setShowExitConfirm(true)}>
                     <X className="w-6 h-6" />
                 </Button>
                 
@@ -187,12 +219,47 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                 </div>
             </div>
 
-            <div className="w-full h-1 bg-muted">
+            {/* Progress Bar with Safe Zones */}
+            <div className="w-full h-2 bg-muted relative">
                 <div 
-                    className="h-1 bg-primary transition-all duration-500 ease-in-out" 
+                    className="absolute h-2 bg-primary transition-all duration-500 ease-in-out" 
                     style={{ width: `${(currentQuestionIndex / questions.length) * 100}%` }}
                 />
+                {questions.length > 0 && Array.from({ length: Math.floor(questions.length / 3) }).map((_, i) => {
+                    const zoneIndex = (i + 1) * 3;
+                    if (zoneIndex >= questions.length) return null;
+                    const isReached = currentQuestionIndex >= zoneIndex;
+                    return (
+                        <div 
+                            key={zoneIndex} 
+                            className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full transform -translate-x-1/2 transition-colors duration-500 z-10 
+                                ${isReached ? 'bg-primary shadow-[0_0_8px_rgba(34,197,94,0.8)]' : 'bg-muted-foreground/30'}`}
+                            style={{ left: `${(zoneIndex / questions.length) * 100}%` }}
+                        >
+                            <Flag className={`w-3 h-3 absolute -top-4 -left-0 ${isReached ? 'text-primary' : 'text-muted-foreground/30'}`} />
+                        </div>
+                    );
+                })}
             </div>
+
+            {/* Exit Confirm Modal */}
+            <AnimatePresence>
+                {showExitConfirm && (
+                    <motion.div 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-[110] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4"
+                    >
+                        <div className="bg-card p-6 rounded-2xl max-w-sm w-full border border-border shadow-xl text-center">
+                            <h3 className="text-xl font-bold mb-2">¿Abandonar juego?</h3>
+                            <p className="text-muted-foreground mb-6">Tu progreso desde la última zona segura se perderá. ¿Estás seguro que deseas salir?</p>
+                            <div className="flex flex-col gap-3">
+                                <Button variant="destructive" onClick={onClose}>Sí, abandonar</Button>
+                                <Button variant="outline" onClick={() => setShowExitConfirm(false)}>Continuar jugando</Button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Main Area */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-8 flex flex-col max-w-2xl mx-auto w-full">
@@ -206,15 +273,34 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     </div>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-8">
-                    {currentQuestion?.question_text}
-                </h2>
+                <AnimatePresence mode="wait">
+                    {isShuffling ? (
+                        <motion.div 
+                            key="shuffling"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.2 }}
+                            className="flex flex-col items-center justify-center space-y-4 py-12"
+                        >
+                            <span className="text-muted-foreground uppercase tracking-widest text-sm font-bold">Seleccionando Categoría...</span>
+                            <h2 className="text-4xl font-black text-primary animate-pulse">{shuffledCategory}</h2>
+                        </motion.div>
+                    ) : (
+                        <motion.div 
+                            key="question"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="flex flex-col flex-1"
+                        >
+                            <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-8">
+                                {currentQuestion?.question_text}
+                            </h2>
 
-                <div className="space-y-3 mt-auto">
-                    {currentQuestion?.options.map((opt: string, idx: number) => {
+                            <div className="space-y-3 mt-auto">
+                                {currentQuestion?.options.map((opt: string, idx: number) => {
                         let buttonStateClass = "bg-card border-border hover:bg-muted";
                         
-                        if (isChecking) {
+                        if (isChecking && !hasTimedOut) {
                             if (opt === currentQuestion.correct_answer) {
                                 buttonStateClass = "bg-green-500/20 border-green-500 text-green-700 dark:text-green-400";
                             } else if (opt === selectedOption) {
@@ -222,6 +308,8 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             } else {
                                 buttonStateClass = "opacity-50";
                             }
+                        } else if (isChecking && hasTimedOut) {
+                            buttonStateClass = "opacity-50";
                         }
 
                         return (
@@ -240,6 +328,9 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         );
                     })}
                 </div>
+                </motion.div>
+                )}
+                </AnimatePresence>
 
                 {/* Feedback Panel */}
                 <AnimatePresence>
@@ -250,15 +341,15 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             className={`mt-6 p-6 rounded-2xl border-2 ${isCorrect ? 'bg-green-500/10 border-green-500' : 'bg-red-500/10 border-red-500'}`}
                         >
                             <h3 className={`text-xl font-bold mb-2 flex items-center ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                                {isCorrect ? <CheckCircle2 className="mr-2" /> : <XCircle className="mr-2" />}
-                                {isCorrect ? '¡Correcto!' : 'Incorrecto'}
+                                {isCorrect ? <CheckCircle2 className="mr-2" /> : (hasTimedOut ? <Clock className="mr-2" /> : <XCircle className="mr-2" />)}
+                                {isCorrect ? '¡Correcto!' : (hasTimedOut ? 'Tiempo Agotado' : 'Incorrecto')}
                             </h3>
-                            {currentQuestion?.explanation && (
+                            {!hasTimedOut && currentQuestion?.explanation && (
                                 <p className="text-foreground text-sm leading-relaxed mb-6">
                                     {currentQuestion.explanation}
                                 </p>
                             )}
-                            {currentQuestion?.related_learn_id && (
+                            {!hasTimedOut && currentQuestion?.related_learn_id && (
                                 <Button 
                                     variant="outline"
                                     className="w-full rounded-xl py-4 font-medium mb-3 border-primary/50 text-primary"
