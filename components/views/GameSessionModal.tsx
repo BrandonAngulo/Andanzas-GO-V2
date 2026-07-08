@@ -8,9 +8,10 @@ import { useUserData } from '../../contexts/UserDataContext';
 interface GameSessionModalProps {
     gameId: string;
     onClose: () => void;
+    onNavigate?: (panel: string) => void;
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose }) => {
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate }) => {
     const { userProfile } = useUserData();
     const {
         game,
@@ -101,9 +102,22 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         </div>
                     </div>
 
+                    {game?.related_learn_ids && game.related_learn_ids.length > 0 && (
+                        <div className="w-full mt-4 p-4 bg-muted/50 rounded-2xl text-left border border-border">
+                            <p className="font-semibold mb-2">Para seguir explorando este tema:</p>
+                            <Button 
+                                variant="outline" 
+                                className="w-full justify-start border-primary/50 text-primary"
+                                onClick={() => onNavigate?.('paquesepas')}
+                            >
+                                <Star className="w-4 h-4 mr-2" /> Leer más en Pa' que sepás
+                            </Button>
+                        </div>
+                    )}
+
                     <div className="w-full space-y-3 mt-8">
                         <Button className="w-full rounded-xl py-6 text-lg" onClick={onClose}>
-                            Volver al Mapa
+                            Volver
                         </Button>
                     </div>
                 </div>
@@ -204,6 +218,15 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 <p className="text-foreground text-sm leading-relaxed mb-6">
                                     {currentQuestion.explanation}
                                 </p>
+                            )}
+                            {currentQuestion?.related_learn_id && (
+                                <Button 
+                                    variant="outline"
+                                    className="w-full rounded-xl py-4 font-medium mb-3 border-primary/50 text-primary"
+                                    onClick={() => onNavigate?.('paquesepas')}
+                                >
+                                    Leer más en Pa' que sepás
+                                </Button>
                             )}
                             <Button 
                                 className="w-full rounded-xl py-6 font-bold" 

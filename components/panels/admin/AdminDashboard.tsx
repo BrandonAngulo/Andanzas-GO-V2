@@ -4,11 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2 } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone } from 'lucide-react';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
 import { AdminRutas } from './AdminRutas';
 import { AdminJuegos } from './AdminJuegos';
+import { AdminSitios } from './AdminSitios';
+import { AdminEventos } from './AdminEventos';
+import { AdminNoticias } from './AdminNoticias';
+import { AdminUsuarios } from './AdminUsuarios';
 
 // Subcomponents for the admin tabs (We'll build these later)
 const AdminOverview = () => (
@@ -48,16 +52,16 @@ const AdminOverview = () => (
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'curiosidades' | 'rutas' | 'juegos' | 'settings'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'curiosidades' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'settings'>('overview');
 
-    // Security Check: Only render if user is admin
-    if (userProfile?.role !== 'admin' && user?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com' && userProfile?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com') {
+    // Security Check: Only render if user is admin or editor
+    if (userProfile?.role !== 'admin' && userProfile?.role !== 'editor' && user?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com' && userProfile?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com') {
         return (
             <div className="flex flex-col items-center justify-center h-[70vh] text-center p-6">
                 <ShieldAlert className="h-16 w-16 text-destructive mb-4" />
                 <h2 className="text-2xl font-bold mb-2">Acceso Denegado</h2>
                 <p className="text-muted-foreground">
-                    No tienes los permisos necesarios para ver esta página.
+                    No tienes los permisos necesarios para ver esta página. Requiere rol de Administrador o Editor.
                 </p>
             </div>
         );
@@ -96,7 +100,28 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setActiveTab('rutas')}
                         className="rounded-full"
                     >
-                        <Map className="w-4 h-4 mr-2" /> Rutas y Retos
+                        <Map className="w-4 h-4 mr-2" /> Rutas
+                    </Button>
+                    <Button 
+                        variant={activeTab === 'sitios' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('sitios')}
+                        className="rounded-full"
+                    >
+                        <Landmark className="w-4 h-4 mr-2" /> Sitios
+                    </Button>
+                    <Button 
+                        variant={activeTab === 'eventos' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('eventos')}
+                        className="rounded-full"
+                    >
+                        <Settings className="w-4 h-4 mr-2" /> Eventos
+                    </Button>
+                    <Button 
+                        variant={activeTab === 'noticias' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('noticias')}
+                        className="rounded-full"
+                    >
+                        <Megaphone className="w-4 h-4 mr-2" /> Noticias
                     </Button>
                     <Button 
                         variant={activeTab === 'juegos' ? 'default' : 'outline'} 
@@ -105,20 +130,26 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Gamepad2 className="w-4 h-4 mr-2" /> Juegos
                     </Button>
-                    <Button 
-                        variant={activeTab === 'settings' ? 'default' : 'outline'} 
-                        onClick={() => setActiveTab('settings')}
-                        className="rounded-full"
-                    >
-                        <Settings className="w-4 h-4 mr-2" /> Ajustes
-                    </Button>
+                    {(userProfile?.role === 'admin' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com') && (
+                        <Button 
+                            variant={activeTab === 'usuarios' ? 'default' : 'outline'} 
+                            onClick={() => setActiveTab('usuarios')}
+                            className="rounded-full"
+                        >
+                            <Users className="w-4 h-4 mr-2" /> Usuarios
+                        </Button>
+                    )}
                 </div>
 
-                <div className="bg-background rounded-2xl border shadow-sm p-6 min-h-[400px]">
+                <div className="bg-background rounded-xl p-4 md:p-6 shadow-sm border border-border">
                     {activeTab === 'overview' && <AdminOverview />}
                     {activeTab === 'curiosidades' && <AdminCuriosidades />}
                     {activeTab === 'rutas' && <AdminRutas />}
+                    {activeTab === 'sitios' && <AdminSitios />}
+                    {activeTab === 'eventos' && <AdminEventos />}
+                    {activeTab === 'noticias' && <AdminNoticias />}
                     {activeTab === 'juegos' && <AdminJuegos />}
+                    {activeTab === 'usuarios' && <AdminUsuarios />}
                     {activeTab === 'settings' && <div>Módulo de Ajustes en construcción...</div>}
                 </div>
             </div>

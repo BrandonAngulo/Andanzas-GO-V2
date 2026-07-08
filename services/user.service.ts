@@ -137,5 +137,30 @@ export const userService = {
             .eq('user_id', userId)
             .eq('site_id', siteId);
         if (error) throw error;
+    },
+
+    // Admin methods
+    async getAllProfilesAdmin(): Promise<UserProfile[]> {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) {
+            console.error('Error fetching admin profiles:', error);
+            return [];
+        }
+        return data as UserProfile[];
+    },
+
+    async updateRole(userId: string, role: string): Promise<boolean> {
+        const { error } = await supabase
+            .from('profiles')
+            .update({ role })
+            .eq('id', userId);
+        if (error) {
+            console.error('Error updating user role:', error);
+            return false;
+        }
+        return true;
     }
 };

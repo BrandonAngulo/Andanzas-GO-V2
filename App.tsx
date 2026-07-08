@@ -45,6 +45,7 @@ import { routesService } from './services/routes.service'; // Kept for updateRou
 import PaQueSepasPanel from './components/panels/PaQueSepasPanel';
 import AdminDashboard from './components/panels/admin/AdminDashboard';
 import { GameSessionModal } from './components/views/GameSessionModal';
+import { JuegosPanel } from './components/panels/JuegosPanel';
 
 // New Imports
 import { useAuth } from './contexts/AuthContext';
@@ -151,7 +152,7 @@ export default function App() {
 
   // --- Local UI State ---
   const [openMenu, setOpenMenu] = useState(false);
-  const [activePanel, setActivePanel] = useState<ActivePanelType>("explorar");
+  const [activePanel, setActivePanel] = useState<ActivePanelType>("mapa");
   const [showNotifications, setShowNotifications] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -403,6 +404,7 @@ export default function App() {
               { id: 'explorar', label: 'nav.explore' },
               { id: 'rutas', label: 'nav.routes' },
               { id: 'eventos', label: 'nav.events' },
+              { id: 'juegos', label: 'nav.games' },
               { id: 'paquesepas', label: 'panelTitles.paquesepas' },
               { id: 'noticias', label: 'nav.news' }
             ].map(item => (
@@ -519,6 +521,7 @@ export default function App() {
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
+              {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId } }))} />}
               {activePanel === 'admin' && <AdminDashboard />}
             </CardContent>
           </Card>
@@ -605,7 +608,7 @@ export default function App() {
       {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} />}
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
-      {activeGameId && <GameSessionModal gameId={activeGameId} onClose={() => setActiveGameId(null)} />}
+      {activeGameId && <GameSessionModal gameId={activeGameId} onClose={() => setActiveGameId(null)} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); }} />}
     </div>
   );
 }

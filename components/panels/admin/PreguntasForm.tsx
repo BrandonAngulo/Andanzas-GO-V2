@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GameQuestion, gamesService } from '../../../services/games.service';
+import { learningService } from '../../../services/learning.service';
+import { LearnEntry } from '../../../types';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -10,10 +12,17 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [questions, setQuestions] = useState<GameQuestion[]>([]);
     const [loading, setLoading] = useState(true);
     const [editingQuestion, setEditingQuestion] = useState<Partial<GameQuestion> | null>(null);
+    const [learnEntries, setLearnEntries] = useState<LearnEntry[]>([]);
 
     useEffect(() => {
         loadQuestions();
+        loadLearnEntries();
     }, [gameId]);
+
+    const loadLearnEntries = async () => {
+        const entries = await learningService.getAll();
+        setLearnEntries(entries);
+    };
 
     const loadQuestions = async () => {
         setLoading(true);
@@ -159,6 +168,24 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                             onChange={e => setEditingQuestion({ ...editingQuestion, explanation: e.target.value })}
                             placeholder="Aparecerá después de responder..."
                         />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-foreground">Contenido Relacionado (Opcional)</label>
+                        <Select 
+                            value={editingQuestion.related_learn_id || "none"} 
+                            onValueChange={(val) => setEditingQuestion({ ...editingQuestion, related_learn_id: val === "none" ? undefined : val })}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Selecciona una entrada de Pa' que sepás" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="none">Ninguno</SelectItem>
+                                {learnEntries.map(entry => (
+                                    <SelectItem key={entry.id} value={entry.id}>{entry.title}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className="flex justify-end gap-2 pt-2">

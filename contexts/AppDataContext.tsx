@@ -42,11 +42,12 @@ export const AppDataProvider: React.FC<{ children: ReactNode }> = ({ children })
                 learningService.getAll()
             ]);
 
-            setSites(s);
-            setRutasTematicas(r);
+            // Filter out unpublished content so normal users (and even admins in public view) don't see drafts
+            setSites(s.filter((item: Site) => item.status === 'published' || item.status === undefined));
+            setRutasTematicas(r.filter((item: Ruta) => item.status === 'published' || item.publico === true));
             setAllInsignias(i);
-            setFeed(f);
-            setLearnEntries(l);
+            setFeed(f.filter((item: FeedItem) => item.status === 'published' || item.status === undefined));
+            setLearnEntries(l.filter((item: LearnEntry) => item.status === 'published' || item.status === undefined));
 
             // Retry if we only got local sites (fallback mode) and we haven't retried yet
             if (s.length <= 40 && retryCount < 2) {
@@ -64,7 +65,7 @@ export const AppDataProvider: React.FC<{ children: ReactNode }> = ({ children })
             console.log("AppData: Requesting events...");
             const e = await eventsService.getAll();
             console.log("AppData: Events received:", e.length);
-            setEventos(e);
+            setEventos(e.filter((item: Evento) => item.status === 'published' || item.status === undefined));
         } catch (evError) {
             console.error("AppData: Failed to load events safely", evError);
         }

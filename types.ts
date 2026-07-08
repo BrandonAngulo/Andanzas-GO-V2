@@ -41,6 +41,7 @@ export interface Site {
   logoUrl: string;
   descripcion: string;
   descripcion_en?: string;
+  status?: 'draft' | 'published' | 'archived';
   // New rich content fields
   importancia?: string;
   importancia_en?: string;
@@ -88,6 +89,7 @@ export interface Evento {
   img: string;
   descripcion: string;
   descripcion_en?: string;
+  status?: 'draft' | 'published' | 'archived';
   siteId?: string;
   lat?: number;
   lng?: number;
@@ -181,6 +183,7 @@ export interface Ruta {
   gamificacion?: any[];
   gamification_level?: 'none' | 'light' | 'medium' | 'full'; // New field for Phase 5
   publico: boolean;
+  status?: 'draft' | 'published' | 'archived';
   reward_badge_id?: string;
   mensajeCierre?: string;
   mensajeCierre_en?: string;
@@ -224,6 +227,7 @@ export interface FeedItem {
   id: string;
   type: FeedItemType;
   fecha: string;
+  status?: 'draft' | 'published' | 'archived';
   // For 'anuncio'
   titulo?: string;
   titulo_en?: string;
@@ -250,6 +254,7 @@ export type ActivePanelType =
   | 'soporte'
   | 'noticias'
   | 'paquesepas'
+  | 'juegos'
   | 'admin';
 
 export interface UserProfile {

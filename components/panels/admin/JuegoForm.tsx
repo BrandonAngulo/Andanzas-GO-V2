@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Game } from '../../../services/games.service';
+import { learningService } from '../../../services/learning.service';
+import { LearnEntry } from '../../../types';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
@@ -25,15 +27,23 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
         base_points_reward: 100,
         allow_retries: false,
         show_feedback: true,
-        leaderboard_enabled: false
+        leaderboard_enabled: false,
+        related_learn_ids: []
     });
     const [saving, setSaving] = useState(false);
+    const [learnEntries, setLearnEntries] = useState<LearnEntry[]>([]);
 
     useEffect(() => {
         if (game) {
             setFormData({ ...game });
         }
+        loadLearnEntries();
     }, [game]);
+
+    const loadLearnEntries = async () => {
+        const entries = await learningService.getAll();
+        setLearnEntries(entries);
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -46,6 +56,17 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
 
     const handleCheckboxChange = (name: string, checked: boolean) => {
         setFormData(prev => ({ ...prev, [name]: checked }));
+    };
+
+    const handleRelatedLearnToggle = (id: string) => {
+        setFormData(prev => {
+            const current = prev.related_learn_ids || [];
+            if (current.includes(id)) {
+                return { ...prev, related_learn_ids: current.filter(x => x !== id) };
+            } else {
+                return { ...prev, related_learn_ids: [...current, id] };
+            }
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -137,9 +158,29 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
                             <SelectContent>
                                 <SelectItem value="draft">Borrador</SelectItem>
                                 <SelectItem value="published">Publicado</SelectItem>
+                                <SelectItem value="coming_soon">Próximamente</SelectItem>
+                                <SelectItem value="paused">Pausado</SelectItem>
                                 <SelectItem value="archived">Archivado</SelectItem>
                             </SelectContent>
                         </Select>
+                    </div>
+                </div>
+
+                <div className="space-y-3">
+                    <label className="text-sm font-medium leading-none text-foreground">Contenido Relacionado (Pa' que sepás)</label>
+                    <p className="text-xs text-muted-foreground">Selecciona las entradas que se relacionen transversalmente con este juego entero.</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto p-2 border border-border/50 rounded-lg">
+                        {learnEntries.map(entry => (
+                            <label key={entry.id} className="flex items-start space-x-2 text-sm cursor-pointer hover:bg-muted/50 p-1 rounded">
+                                <input 
+                                    type="checkbox" 
+                                    className="mt-1"
+                                    checked={(formData.related_learn_ids || []).includes(entry.id)}
+                                    onChange={() => handleRelatedLearnToggle(entry.id)}
+                                />
+                                <span className="line-clamp-2">{entry.title}</span>
+                            </label>
+                        ))}
                     </div>
                 </div>
 

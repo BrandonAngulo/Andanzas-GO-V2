@@ -120,6 +120,7 @@ function mapRoute(dbRoute: any): Ruta {
         recomendaciones: dbRoute.recomendaciones,
         gamificacion: dbRoute.gamificacion,
         publico: dbRoute.is_published,
+        status: dbRoute.status || (dbRoute.is_published ? 'published' : 'draft'),
         reward_badge_id: dbRoute.reward_badge_id
     };
 }

@@ -72,8 +72,92 @@ export const sitesService = {
     async incrementVisit(id: string): Promise<void> {
         const { error } = await supabase.rpc('increment_site_visit', { site_id_input: id });
         if (error) console.error('Error incrementing visits:', error);
+    },
+
+    // Admin methods
+    async getAllAdmin(): Promise<Site[]> {
+        const { data, error } = await supabase
+            .from('sites')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) {
+            console.error('Error fetching admin sites:', error);
+            return [];
+        }
+        return data.map(mapSite);
+    },
+
+    async create(site: Partial<Site>): Promise<Site | null> {
+        const { data, error } = await supabase
+            .from('sites')
+            .insert([unmapSite(site)])
+            .select()
+            .single();
+        if (error) {
+            console.error('Error creating site:', error);
+            return null;
+        }
+        return mapSite(data);
+    },
+
+    async update(id: string, updates: Partial<Site>): Promise<Site | null> {
+        const { data, error } = await supabase
+            .from('sites')
+            .update(unmapSite(updates))
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) {
+            console.error('Error updating site:', error);
+            return null;
+        }
+        return mapSite(data);
+    },
+
+    async delete(id: string): Promise<boolean> {
+        const { error } = await supabase
+            .from('sites')
+            .delete()
+            .eq('id', id);
+        if (error) {
+            console.error('Error deleting site:', error);
+            return false;
+        }
+        return true;
     }
 };
+
+function unmapSite(site: Partial<Site>): any {
+    const unmapped: any = {};
+    if (site.id !== undefined) unmapped.id = site.id;
+    if (site.nombre !== undefined) unmapped.nombre = site.nombre;
+    if (site.nombre_en !== undefined) unmapped.nombre_en = site.nombre_en;
+    if (site.tipo !== undefined) unmapped.tipo = site.tipo;
+    if (site.tipo_en !== undefined) unmapped.tipo_en = site.tipo_en;
+    if (site.lat !== undefined) unmapped.lat = site.lat;
+    if (site.lng !== undefined) unmapped.lng = site.lng;
+    if (site.rating !== undefined) unmapped.rating = site.rating;
+    if (site.visitas !== undefined) unmapped.visitas = site.visitas;
+    if (site.logoUrl !== undefined) unmapped.logo_url = site.logoUrl;
+    if (site.descripcion !== undefined) unmapped.descripcion = site.descripcion;
+    if (site.descripcion_en !== undefined) unmapped.descripcion_en = site.descripcion_en;
+    if (site.importancia !== undefined) unmapped.importancia = site.importancia;
+    if (site.importancia_en !== undefined) unmapped.importancia_en = site.importancia_en;
+    if (site.datosHistoricos !== undefined) unmapped.datos_historicos = site.datosHistoricos;
+    if (site.datosHistoricos_en !== undefined) unmapped.datos_historicos_en = site.datosHistoricos_en;
+    if (site.datosCuriosos !== undefined) unmapped.datos_curiosos = site.datosCuriosos;
+    if (site.datosCuriosos_en !== undefined) unmapped.datos_curiosos_en = site.datosCuriosos_en;
+    if (site.reconocimientos !== undefined) unmapped.reconocimientos = site.reconocimientos;
+    if (site.reconocimientos_en !== undefined) unmapped.reconocimientos_en = site.reconocimientos_en;
+    if (site.image_credit !== undefined) unmapped.image_credit = site.image_credit;
+    if (site.accessibility_features !== undefined) unmapped.accessibility_features = site.accessibility_features;
+    if (site.horario !== undefined) unmapped.horario = site.horario;
+    if (site.horario_en !== undefined) unmapped.horario_en = site.horario_en;
+    if (site.tarifa !== undefined) unmapped.tarifa = site.tarifa;
+    if (site.tarifa_en !== undefined) unmapped.tarifa_en = site.tarifa_en;
+    if (site.status !== undefined) unmapped.status = site.status;
+    return unmapped;
+}
 
 function mapSite(dbSite: any): Site {
     return {
@@ -102,6 +186,7 @@ function mapSite(dbSite: any): Site {
         horario: dbSite.horario,
         horario_en: dbSite.horario_en,
         tarifa: dbSite.tarifa,
-        tarifa_en: dbSite.tarifa_en
+        tarifa_en: dbSite.tarifa_en,
+        status: dbSite.status || (dbSite.is_published ? 'published' : 'draft')
     };
 }

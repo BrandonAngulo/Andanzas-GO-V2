@@ -7,6 +7,8 @@ import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
 import { TextWithLearnLinks } from '../shared/TextWithLearnLinks';
+import { Game, gamesService } from '../../services/games.service';
+import { Gamepad2 } from 'lucide-react';
 
 interface PaQueSepasPanelProps {
     entries: LearnEntry[];
@@ -17,6 +19,19 @@ interface PaQueSepasPanelProps {
 const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, isLoading }) => {
     const { t, language } = useI18n();
     const [selectedEntry, setSelectedEntry] = useState<LearnEntry | null>(null);
+    const [relatedGames, setRelatedGames] = useState<Game[]>([]);
+
+    React.useEffect(() => {
+        if (selectedEntry) {
+            gamesService.getAllGames().then(allGames => {
+                const published = allGames.filter(g => g.status === 'published');
+                const related = published.filter(g => g.related_learn_ids?.includes(selectedEntry.id));
+                setRelatedGames(related);
+            });
+        } else {
+            setRelatedGames([]);
+        }
+    }, [selectedEntry]);
 
     if (selectedEntry) {
         return (
@@ -75,6 +90,31 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                                     </li>
                                 ))}
                             </ul>
+                        </div>
+                    )}
+
+                    {relatedGames.length > 0 && (
+                        <div className="mt-8 p-6 relative overflow-hidden rounded-2xl bg-primary/5 border border-primary/20">
+                            <h3 className="text-xl font-bold mb-5 flex items-center gap-2 text-primary">
+                                <Gamepad2 className="w-5 h-5" />
+                                Ponete a prueba
+                            </h3>
+                            <div className="space-y-3">
+                                {relatedGames.map(g => (
+                                    <Button 
+                                        key={g.id} 
+                                        variant="outline" 
+                                        className="w-full justify-start py-6 text-left"
+                                        onClick={() => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId: g.id } }))}
+                                    >
+                                        <div>
+                                            <div className="font-bold">{g.title}</div>
+                                            <div className="text-xs text-muted-foreground">{g.description}</div>
+                                        </div>
+                                        <ChevronRight className="w-5 h-5 ml-auto opacity-50" />
+                                    </Button>
+                                ))}
+                            </div>
                         </div>
                     )}
 

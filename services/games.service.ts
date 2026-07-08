@@ -21,6 +21,8 @@ export interface Game {
     public_ranking_enabled: boolean;
     created_at?: string;
     updated_at?: string;
+    related_learn_ids?: string[];
+    related_route_ids?: string[];
 }
 
 export interface GameQuestion {
@@ -38,6 +40,8 @@ export interface GameQuestion {
     time_limit_sec: number;
     status: 'draft' | 'review' | 'published' | 'archived';
     version: number;
+    related_learn_id?: string;
+    related_news_id?: string;
 }
 
 export const gamesService = {
