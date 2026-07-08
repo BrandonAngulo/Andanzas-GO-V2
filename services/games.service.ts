@@ -26,6 +26,8 @@ export interface Game {
     mechanic_type?: 'safe_zones' | 'lives' | 'multiplier' | 'sudden_death';
     instructions?: string;
     lives_count?: number;
+    questions_per_match?: number;
+    level_distribution?: Record<string, number>;
 }
 
 export interface GameQuestion {

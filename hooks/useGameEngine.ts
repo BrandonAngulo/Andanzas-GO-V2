@@ -64,10 +64,55 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
             const game = await gamesService.getGameById(gameId);
             if (!game) throw new Error("Juego no encontrado");
 
-            const questions = await gamesService.getQuestionsByGame(gameId);
+            // Create a session in DB
+            let { data: questionsData, error: qError } = await supabase
+            .from('game_questions')
+            .select('*')
+            .eq('game_id', gameId)
+            .eq('status', 'published');
+
+        if (qError) {
+            console.error('Error cargando preguntas:', qError);
+            setState(prev => ({ ...prev, loading: false }));
+            return;
+        }
+
+        let questions: GameQuestion[] = [];
+        if (questionsData && questionsData.length > 0) {
+            let finalQuestions = questionsData;
+
+            // Apply Level Distribution logic if defined
+            if (game.level_distribution) {
+                const dist = game.level_distribution;
+                const selected: any[] = [];
+                for (let lvl = 1; lvl <= 5; lvl++) {
+                    const count = dist[lvl.toString()] || 0;
+                    if (count > 0) {
+                        const lvlQs = questionsData.filter(q => q.level === lvl);
+                        // Shuffle lvlQs
+                        const shuffled = [...lvlQs].sort(() => Math.random() - 0.5);
+                        selected.push(...shuffled.slice(0, count));
+                    }
+                }
+                // Sort the selected questions by level so it gets progressively harder
+                finalQuestions = selected.sort((a, b) => (a.level || 1) - (b.level || 1));
+            } else {
+                // Classic sort by level
+                finalQuestions = questionsData.sort((a, b) => (a.level || 1) - (b.level || 1));
+            }
+
+            questions = finalQuestions.map((q: any) => {
+                let opts = q.options;
+                if (Array.isArray(opts)) {
+                    // Randomize options for multiple choice
+                    opts = [...opts].sort(() => Math.random() - 0.5);
+                }
+                return { ...q, options: opts };
+            }) as GameQuestion[];
+        }
+
             if (questions.length === 0) throw new Error("El juego no tiene preguntas");
 
-            // Create a session in DB
             const { data: sessionData, error: sessionError } = await supabase
                 .from('game_sessions')
                 .insert({
