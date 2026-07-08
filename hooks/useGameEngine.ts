@@ -189,7 +189,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         }
     };
 
-    const finishGame = async () => {
+    const finishGame = async (isAborted: boolean = false) => {
         if (!state.sessionId) return;
         
         // Calculate final stats
@@ -200,10 +200,18 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
 
         let correctCount = 0;
         let finalScore = state.score;
+        let answeredCount = 0;
 
         if (answers) {
-            correctCount = answers.filter(a => a.is_correct).length;
-            finalScore = answers.reduce((sum, a) => sum + (a.points_earned || 0), 0);
+            let answersToCount = answers;
+            if (isAborted) {
+                const safeZoneCount = Math.floor((state.currentQuestionIndex) / 3) * 3;
+                answersToCount = answers.slice(0, safeZoneCount);
+            }
+
+            answeredCount = answersToCount.length;
+            correctCount = answersToCount.filter(a => a.is_correct).length;
+            finalScore = answersToCount.reduce((sum, a) => sum + (a.points_earned || 0), 0);
         }
 
         const accuracy = state.questions.length > 0 ? (correctCount / state.questions.length) * 100 : 0;
@@ -243,7 +251,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
             completed_at: new Date().toISOString(),
             total_score: finalScore,
             accuracy_percent: accuracy,
-            answered_questions: answers?.length || 0,
+            answered_questions: answeredCount,
             correct_answers: correctCount,
             total_time_ms: state.totalTimeMs,
             max_correct_streak: state.maxStreak

@@ -299,8 +299,14 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             <h3 className="text-xl font-bold mb-2">¿Abandonar juego?</h3>
                             <p className="text-muted-foreground mb-6">Tu progreso desde la última zona segura se perderá. ¿Estás seguro que deseas salir?</p>
                             <div className="flex flex-col gap-3">
-                                <Button variant="destructive" onClick={onClose}>Sí, abandonar</Button>
-                                <Button variant="outline" onClick={() => setShowExitConfirm(false)}>Continuar jugando</Button>
+                                <Button 
+                                    variant="destructive" 
+                                    className="w-full" 
+                                    onClick={async () => { await finishGame(true); onClose(); }}
+                                >
+                                    Sí, salir
+                                </Button>
+                                <Button variant="outline" className="w-full" onClick={() => setShowExitConfirm(false)}>Continuar jugando</Button>
                             </div>
                         </div>
                     </motion.div>
@@ -399,14 +405,14 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                     <div className="flex flex-col gap-3">
                                         <Button 
                                             className="w-full rounded-xl py-6 font-bold bg-orange-500 hover:bg-orange-600 text-white" 
-                                            onClick={() => finishGame()}
+                                            onClick={() => finishGame(true)}
                                         >
                                             Ver Resultados Finales
                                         </Button>
                                         <Button 
                                             variant="outline"
                                             className="w-full rounded-xl py-6 font-bold border-2" 
-                                            onClick={onClose}
+                                            onClick={async () => { await finishGame(true); onClose(); }}
                                         >
                                             Salir al Menú
                                         </Button>
