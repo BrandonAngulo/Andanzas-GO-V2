@@ -98,7 +98,7 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
                         {isAuthenticated ? (
                             <>Aceptar Reto <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
                         ) : (
-                            <>Crear cuenta rápida para jugar <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
+                            <>Crear cuenta para jugar <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
                         )}
                     </Button>
                     <Button variant="ghost" className="w-full h-14 rounded-xl" onClick={onClose}>
