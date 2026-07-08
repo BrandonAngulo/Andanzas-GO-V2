@@ -5,11 +5,14 @@ import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
 import { Plus, Edit2, Trash2, Eye, EyeOff, Save, X, Search } from 'lucide-react';
+import { CuriosidadForm } from './CuriosidadForm';
 
 export const AdminCuriosidades = () => {
     const [entries, setEntries] = useState<LearnEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [currentEntry, setCurrentEntry] = useState<LearnEntry | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
@@ -36,6 +39,28 @@ export const AdminCuriosidades = () => {
         }
     };
 
+    const handleSave = async (entryData: Partial<LearnEntry>) => {
+        if (currentEntry?.id) {
+            await learningService.update(currentEntry.id, entryData);
+        } else {
+            await learningService.create(entryData as any);
+        }
+        setIsFormOpen(false);
+        setCurrentEntry(undefined);
+        loadEntries();
+    };
+
+    const handleAddNew = () => {
+        setCurrentEntry(undefined);
+        setIsFormOpen(false); // To force re-render if it was already open
+        setTimeout(() => setIsFormOpen(true), 0);
+    };
+
+    const handleEdit = (entry: LearnEntry) => {
+        setCurrentEntry(entry);
+        setIsFormOpen(true);
+    };
+
     const filteredEntries = entries.filter(e => e.title.toLowerCase().includes(searchQuery.toLowerCase()) || e.city.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return (
@@ -50,12 +75,24 @@ export const AdminCuriosidades = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <Button className="rounded-full shadow-sm whitespace-nowrap">
-                    <Plus className="w-4 h-4 mr-2" /> Nueva Curiosidad
-                </Button>
+                {!isFormOpen && (
+                    <Button onClick={handleAddNew} className="rounded-full shadow-sm whitespace-nowrap">
+                        <Plus className="w-4 h-4 mr-2" /> Nueva Curiosidad
+                    </Button>
+                )}
             </div>
 
-            {loading ? (
+            {isFormOpen && (
+                <div className="mb-6 animate-in slide-in-from-top-4 duration-300">
+                    <CuriosidadForm 
+                        entry={currentEntry} 
+                        onSave={handleSave} 
+                        onCancel={() => { setIsFormOpen(false); setCurrentEntry(undefined); }} 
+                    />
+                </div>
+            )}
+
+            {!isFormOpen && loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando curiosidades...</div>
             ) : (
                 <div className="grid gap-4">
@@ -82,7 +119,7 @@ export const AdminCuriosidades = () => {
                                         >
                                             {entry.status === 'published' ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                         </Button>
-                                        <Button variant="outline" size="sm">
+                                        <Button variant="outline" size="sm" onClick={() => handleEdit(entry)}>
                                             <Edit2 className="w-4 h-4" />
                                         </Button>
                                         <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => handleDelete(entry.id)}>
