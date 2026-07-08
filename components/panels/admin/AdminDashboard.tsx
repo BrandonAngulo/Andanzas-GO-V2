@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2 } from 'lucide-react';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
 import { AdminRutas } from './AdminRutas';
+import { AdminJuegos } from './AdminJuegos';
 
 // Subcomponents for the admin tabs (We'll build these later)
 const AdminOverview = () => (
@@ -47,7 +48,7 @@ const AdminOverview = () => (
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'curiosidades' | 'rutas' | 'settings'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'curiosidades' | 'rutas' | 'juegos' | 'settings'>('overview');
 
     // Security Check: Only render if user is admin
     if (userProfile?.role !== 'admin' && user?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com' && userProfile?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com') {
@@ -98,6 +99,13 @@ const AdminDashboard: React.FC = () => {
                         <Map className="w-4 h-4 mr-2" /> Rutas y Retos
                     </Button>
                     <Button 
+                        variant={activeTab === 'juegos' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('juegos')}
+                        className="rounded-full"
+                    >
+                        <Gamepad2 className="w-4 h-4 mr-2" /> Juegos
+                    </Button>
+                    <Button 
                         variant={activeTab === 'settings' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('settings')}
                         className="rounded-full"
@@ -110,6 +118,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'overview' && <AdminOverview />}
                     {activeTab === 'curiosidades' && <AdminCuriosidades />}
                     {activeTab === 'rutas' && <AdminRutas />}
+                    {activeTab === 'juegos' && <AdminJuegos />}
                     {activeTab === 'settings' && <div>Módulo de Ajustes en construcción...</div>}
                 </div>
             </div>

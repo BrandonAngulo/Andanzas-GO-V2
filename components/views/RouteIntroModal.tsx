@@ -127,13 +127,13 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                     </p>
                                 </div>
 
-                                {route.justificaciones && route.justificaciones.length > 0 && (
+                                {route.justificaciones && Array.isArray(route.justificaciones) && route.justificaciones.length > 0 && (
                                     <div>
                                         <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3">
                                             ¿Por qué esta ruta?
                                         </h3>
                                         <ul className="space-y-3">
-                                            {route.justificaciones.map((just, idx) => (
+                                            {route.justificaciones.map((just: string, idx: number) => (
                                                 <li key={idx} className="flex gap-3 text-sm text-gray-300">
                                                     <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                                                     {just}

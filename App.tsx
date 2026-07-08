@@ -44,6 +44,7 @@ import { userService } from './services/user.service';
 import { routesService } from './services/routes.service'; // Kept for updateRouteDetails which might not be in hook yet
 import PaQueSepasPanel from './components/panels/PaQueSepasPanel';
 import AdminDashboard from './components/panels/admin/AdminDashboard';
+import { GameSessionModal } from './components/views/GameSessionModal';
 
 // New Imports
 import { useAuth } from './contexts/AuthContext';
@@ -157,6 +158,7 @@ export default function App() {
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
+  const [activeGameId, setActiveGameId] = useState<string | null>(null);
 
   // Accessibility & Settings
   const [accessibilitySettings, setAccessibilitySettings] = useState(defaultAccessibilitySettings);
@@ -247,7 +249,16 @@ export default function App() {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    const handleOpenGame = (e: CustomEvent) => {
+      if (e.detail?.gameId) setActiveGameId(e.detail.gameId);
+    };
+    window.addEventListener('open-game' as any, handleOpenGame);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener('open-game' as any, handleOpenGame);
+    };
   }, []);
 
   // --- Handlers ---
@@ -291,6 +302,7 @@ export default function App() {
       duracionMin: newRoutePoints.length * 20,
       descripcion: description || `Ruta personalizada con ${newRoutePoints.length} puntos.`,
       justificaciones: newRoutePoints.map(p => `Punto añadido: ${p.nombre}.`),
+      recomendaciones: [],
       publico: false,
     };
 
@@ -593,6 +605,7 @@ export default function App() {
       {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} />}
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
+      {activeGameId && <GameSessionModal gameId={activeGameId} onClose={() => setActiveGameId(null)} />}
     </div>
   );
 }

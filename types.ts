@@ -175,10 +175,10 @@ export interface Ruta {
   descripcion_en?: string;
   intro_story?: string;
   intro_story_en?: string;
-  justificaciones: Record<string, string>;
-  justificaciones_en?: Record<string, string>;
+  justificaciones: string[] | Record<string, string>;
+  justificaciones_en?: string[] | Record<string, string>;
   recomendaciones: RecomendacionRuta[];
-  gamificacion?: boolean;
+  gamificacion?: any[];
   gamification_level?: 'none' | 'light' | 'medium' | 'full'; // New field for Phase 5
   publico: boolean;
   reward_badge_id?: string;
