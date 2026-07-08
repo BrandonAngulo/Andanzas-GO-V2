@@ -31,6 +31,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         timeRemaining,
         submitAnswer,
         nextQuestion,
+        finishGame,
         accuracyPercent,
         bestCategory,
         worstCategory,
@@ -383,32 +384,58 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         <motion.div 
                             initial={{ y: 50, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className={`mt-6 p-6 rounded-2xl border-2 ${isCorrect ? 'bg-green-500/10 border-green-500' : 'bg-red-500/10 border-red-500'}`}
+                            className={`mt-6 p-6 rounded-2xl border-2 ${isCorrect ? 'bg-green-500/10 border-green-500' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500' : 'bg-red-500/10 border-red-500')}`}
                         >
-                            <h3 className={`text-xl font-bold mb-2 flex items-center ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                            <h3 className={`text-xl font-bold mb-2 flex items-center ${isCorrect ? 'text-green-600 dark:text-green-400' : (hasTimedOut ? 'text-orange-600 dark:text-orange-400' : 'text-red-600 dark:text-red-400')}`}>
                                 {isCorrect ? <CheckCircle2 className="mr-2" /> : (hasTimedOut ? <Clock className="mr-2" /> : <XCircle className="mr-2" />)}
-                                {isCorrect ? '¡Correcto!' : (hasTimedOut ? 'Tiempo Agotado' : 'Incorrecto')}
+                                {isCorrect ? '¡Correcto!' : (hasTimedOut ? '¡Tiempo Agotado!' : 'Incorrecto')}
                             </h3>
-                            {!hasTimedOut && currentQuestion?.explanation && (
-                                <p className="text-foreground text-sm leading-relaxed mb-6">
-                                    {currentQuestion.explanation}
-                                </p>
+                            
+                            {hasTimedOut ? (
+                                <>
+                                    <p className="text-foreground text-sm leading-relaxed mb-6 font-semibold">
+                                        Se agotó el tiempo y has perdido la partida. Tu racha se guardará hasta este punto.
+                                    </p>
+                                    <div className="flex flex-col gap-3">
+                                        <Button 
+                                            className="w-full rounded-xl py-6 font-bold bg-orange-500 hover:bg-orange-600 text-white" 
+                                            onClick={() => finishGame()}
+                                        >
+                                            Ver Resultados Finales
+                                        </Button>
+                                        <Button 
+                                            variant="outline"
+                                            className="w-full rounded-xl py-6 font-bold border-2" 
+                                            onClick={onClose}
+                                        >
+                                            Salir al Menú
+                                        </Button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    {currentQuestion?.explanation && (
+                                        <p className="text-foreground text-sm leading-relaxed mb-6">
+                                            {currentQuestion.explanation}
+                                        </p>
+                                    )}
+                                    {currentQuestion?.related_learn_id && (
+                                        <Button 
+                                            variant="outline"
+                                            className="w-full rounded-xl py-4 font-medium mb-3 border-primary/50 text-primary"
+                                            onClick={() => onNavigate?.('paquesepas')}
+                                        >
+                                            Leer más en Pa' que sepás
+                                        </Button>
+                                    )}
+                                    <Button 
+                                        className="w-full rounded-xl py-6 font-bold" 
+                                        onClick={handleNext}
+                                    >
+                                        Siguiente
+                                    </Button>
+                                </>
                             )}
-                            {!hasTimedOut && currentQuestion?.related_learn_id && (
-                                <Button 
-                                    variant="outline"
-                                    className="w-full rounded-xl py-4 font-medium mb-3 border-primary/50 text-primary"
-                                    onClick={() => onNavigate?.('paquesepas')}
-                                >
-                                    Leer más en Pa' que sepás
-                                </Button>
-                            )}
-                            <Button 
-                                className="w-full rounded-xl py-6 font-bold" 
-                                onClick={handleNext}
-                            >
-                                Siguiente
-                            </Button>
                         </motion.div>
                     )}
                 </AnimatePresence>

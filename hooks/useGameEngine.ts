@@ -269,6 +269,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         ...state,
         submitAnswer,
         nextQuestion,
+        finishGame,
         currentQuestion: state.questions[state.currentQuestionIndex]
     };
 };
