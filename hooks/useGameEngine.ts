@@ -205,7 +205,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         if (answers) {
             let answersToCount = answers;
             if (isAborted) {
-                const safeZoneCount = Math.floor((state.currentQuestionIndex) / 3) * 3;
+                const safeZoneCount = Math.floor((state.currentQuestionIndex) / 5) * 5;
                 answersToCount = answers.slice(0, safeZoneCount);
             }
 

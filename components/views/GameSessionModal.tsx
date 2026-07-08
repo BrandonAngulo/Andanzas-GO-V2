@@ -271,8 +271,8 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     className="absolute h-2 bg-primary transition-all duration-500 ease-in-out" 
                     style={{ width: `${(currentQuestionIndex / questions.length) * 100}%` }}
                 />
-                {questions.length > 0 && Array.from({ length: Math.floor(questions.length / 3) }).map((_, i) => {
-                    const zoneIndex = (i + 1) * 3;
+                {questions.length > 0 && Array.from({ length: Math.floor(questions.length / 5) }).map((_, i) => {
+                    const zoneIndex = (i + 1) * 5;
                     if (zoneIndex >= questions.length) return null;
                     const isReached = currentQuestionIndex >= zoneIndex;
                     return (
