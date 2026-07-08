@@ -16,6 +16,20 @@ export const routesService = {
         return data?.map(mapRoute) || [];
     },
 
+    async getAllAdmin(): Promise<Ruta[]> {
+        const { data, error } = await supabase
+            .from('routes')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error fetching all routes for admin:', error);
+            return [];
+        }
+
+        return data?.map(mapRoute) || [];
+    },
+
     async getUserRoutes(userId: string): Promise<Ruta[]> {
         const { data, error } = await supabase
             .from('routes')
