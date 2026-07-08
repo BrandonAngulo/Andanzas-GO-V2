@@ -76,7 +76,10 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
                 </div>
 
                 <h1 className="text-3xl font-extrabold mb-2 tracking-tight">¡Has sido retado!</h1>
-                <p className="text-muted-foreground mb-8">Un jugador te ha desafiado a superar su puntaje en una partida épica.</p>
+                <p className="text-muted-foreground mb-6">
+                    Andanzas GO es tu plataforma para explorar la historia y cultura a través de misiones y trivias. 
+                    Un jugador te ha desafiado a una batalla de conocimientos. Demuestra que sabes más, supéralo en tiempo y precisión, ¡y súmate al Salón de la Fama!
+                </p>
 
                 <div className="bg-muted/30 rounded-2xl p-5 mb-8 border border-border/50 text-left">
                     <div className="text-xs uppercase tracking-wider font-semibold text-primary mb-1">Juego a disputar</div>
@@ -86,6 +89,7 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
                     </div>
                 </div>
 
+                <div className="space-y-4 relative z-10">
                     <Button 
                         size="lg" 
                         className="w-full h-14 text-lg font-bold rounded-xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 group flex items-center justify-center"
@@ -94,11 +98,11 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
                         {isAuthenticated ? (
                             <>Aceptar Reto <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
                         ) : (
-                            <>Crear cuenta para jugar <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
+                            <>Crear cuenta rápida para jugar <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
                         )}
                     </Button>
                     <Button variant="ghost" className="w-full h-14 rounded-xl" onClick={onClose}>
-                        {isAuthenticated ? "Rechazar (Huir)" : "Explorar la app primero"}
+                        {isAuthenticated ? "Rechazar (Huir)" : "No, gracias. Quiero explorar la app primero"}
                     </Button>
                 </div>
             </motion.div>

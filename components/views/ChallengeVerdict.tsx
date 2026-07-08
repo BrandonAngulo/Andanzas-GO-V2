@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { challengeService, GameChallenge } from '../../services/challenge.service';
 import { supabase } from '../../lib/supabaseClient';
 import { Button } from '../ui/button';
-import { Swords, Trophy, Clock, XCircle, ArrowLeft, Star, Target, Share2 } from 'lucide-react';
+import { Swords, Trophy, Clock, XCircle, ArrowLeft, Star, Target, Share2, Map } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -173,12 +173,16 @@ export const ChallengeVerdict: React.FC<{ challengeId: string; onClose: () => vo
                 <div className="flex flex-col gap-3 mt-8">
                     <Button 
                         className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20" 
+                        onClick={onClose}
+                    >
+                        <Map className="w-5 h-5 mr-2" /> Explorar Andanzas GO
+                    </Button>
+                    <Button 
+                        variant="outline"
+                        className="w-full h-14 rounded-xl text-lg font-bold border-2" 
                         onClick={handleInvite}
                     >
-                        <Share2 className="w-5 h-5 mr-2" /> Invita a más amigos
-                    </Button>
-                    <Button variant="outline" className="w-full h-14 rounded-xl text-lg font-bold" onClick={onClose}>
-                        <ArrowLeft className="w-5 h-5 mr-2" /> Volver al Inicio
+                        <Share2 className="w-5 h-5 mr-2" /> Invitar a más amigos
                     </Button>
                 </div>
             </div>
