@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { challengeService, GameChallenge } from '../../services/challenge.service';
 import { gamesService } from '../../services/games.service';
 import { Button } from '../ui/button';
-import { Swords, Trophy, Clock, XCircle, ArrowRight } from 'lucide-react';
+import { Swords, Trophy, Clock, XCircle, ArrowRight, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
+import GameInstructionsDialog from '../shared/GameInstructionsDialog';
 
 export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void; onAccept: (gameId: string, challengeId: string) => void; isAuthenticated?: boolean }> = ({ challengeId, onClose, onAccept, isAuthenticated = true }) => {
     const [challenge, setChallenge] = useState<GameChallenge | null>(null);
     const [game, setGame] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [showInstructions, setShowInstructions] = useState(false);
 
     useEffect(() => {
         const load = async () => {
@@ -81,11 +83,22 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
                     Un jugador te ha desafiado a una batalla de conocimientos. Demuestra que sabes más, supéralo en tiempo y precisión, ¡y súmate al Salón de la Fama!
                 </p>
 
-                <div className="bg-muted/30 rounded-2xl p-5 mb-8 border border-border/50 text-left">
-                    <div className="text-xs uppercase tracking-wider font-semibold text-primary mb-1">Juego a disputar</div>
-                    <div className="text-lg font-bold text-foreground mb-1">{game.title}</div>
-                    <div className="flex items-center text-sm text-muted-foreground">
-                        <Clock className="w-4 h-4 mr-1" /> Partida rápida
+                <div className="bg-muted/30 rounded-2xl p-5 mb-8 border border-border/50 text-left relative">
+                    <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-primary"
+                        onClick={() => setShowInstructions(true)}
+                        title="Cómo Jugar"
+                    >
+                        <Info className="w-5 h-5" />
+                    </Button>
+                    <div className="pr-10">
+                        <div className="text-xs uppercase tracking-wider font-semibold text-primary mb-1">Juego a disputar</div>
+                        <div className="text-lg font-bold text-foreground mb-1 line-clamp-1">{game.title}</div>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                            <Clock className="w-4 h-4 mr-1" /> Partida rápida
+                        </div>
                     </div>
                 </div>
 
@@ -101,11 +114,25 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
                             <>Crear cuenta para jugar <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
                         )}
                     </Button>
-                    <Button variant="ghost" className="w-full h-14 rounded-xl" onClick={onClose}>
-                        {isAuthenticated ? "Rechazar (Huir)" : "No, gracias. Quiero explorar la app primero"}
+                    
+                    <Button 
+                        variant="outline" 
+                        size="lg" 
+                        className="w-full h-14 text-lg font-semibold rounded-xl"
+                        onClick={onClose}
+                    >
+                        No por ahora
                     </Button>
                 </div>
             </motion.div>
+
+            {showInstructions && (
+                <GameInstructionsDialog 
+                    open={showInstructions}
+                    onOpenChange={setShowInstructions}
+                    game={game}
+                />
+            )}
         </div>
     );
 };

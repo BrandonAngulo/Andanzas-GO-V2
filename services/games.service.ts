@@ -23,6 +23,9 @@ export interface Game {
     updated_at?: string;
     related_learn_ids?: string[];
     related_route_ids?: string[];
+    mechanic_type?: 'safe_zones' | 'lives' | 'multiplier' | 'sudden_death';
+    instructions?: string;
+    lives_count?: number;
 }
 
 export interface GameQuestion {

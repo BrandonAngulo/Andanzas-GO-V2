@@ -35,7 +35,8 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         accuracyPercent,
         bestCategory,
         worstCategory,
-        sessionId
+        sessionId,
+        livesRemaining
     } = useGameEngine(gameId, userProfile?.id);
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
@@ -256,8 +257,17 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             initial={{ scale: 0 }} animate={{ scale: 1 }}
                             className="flex items-center text-orange-500 bg-orange-500/10 px-3 py-1 rounded-full text-sm font-bold"
                         >
-                            <Flame className="w-4 h-4 mr-1" /> x{streak}
+                            <Flame className="w-4 h-4 mr-1" /> x{game?.mechanic_type === 'multiplier' ? Math.min(streak, 5) : streak}
                         </motion.div>
+                    )}
+                    {game?.mechanic_type === 'lives' && (
+                        <div className="flex items-center gap-1 text-red-500">
+                            {Array.from({ length: Math.max(3, game.lives_count || 3) }).map((_, i) => (
+                                <svg key={i} className={`w-5 h-5 ${i < livesRemaining ? 'fill-current' : 'fill-transparent stroke-current opacity-30'}`} viewBox="0 0 24 24" strokeWidth="2">
+                                    <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            ))}
+                        </div>
                     )}
                     <div className="flex items-center text-primary font-bold">
                         <Star className="w-5 h-5 mr-1" /> {score}
@@ -271,7 +281,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     className="absolute h-2 bg-primary transition-all duration-500 ease-in-out" 
                     style={{ width: `${(currentQuestionIndex / questions.length) * 100}%` }}
                 />
-                {questions.length > 0 && Array.from({ length: Math.floor(questions.length / 5) }).map((_, i) => {
+                {(!game?.mechanic_type || game.mechanic_type === 'safe_zones') && questions.length > 0 && Array.from({ length: Math.floor(questions.length / 5) }).map((_, i) => {
                     const zoneIndex = (i + 1) * 5;
                     if (zoneIndex >= questions.length) return null;
                     const isReached = currentQuestionIndex >= zoneIndex;
@@ -297,7 +307,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     >
                         <div className="bg-card p-6 rounded-2xl max-w-sm w-full border border-border shadow-xl text-center">
                             <h3 className="text-xl font-bold mb-2">¿Abandonar juego?</h3>
-                            <p className="text-muted-foreground mb-6">Tu progreso desde la última zona segura se perderá. ¿Estás seguro que deseas salir?</p>
+                            <p className="text-muted-foreground mb-6">
+                                {(!game?.mechanic_type || game.mechanic_type === 'safe_zones') 
+                                    ? 'Tu progreso desde la última zona segura se perderá. ¿Estás seguro que deseas salir?' 
+                                    : 'Perderás el progreso de la partida actual. ¿Estás seguro que deseas salir?'}
+                            </p>
                             <div className="flex flex-col gap-3">
                                 <Button 
                                     variant="destructive" 
@@ -397,28 +411,39 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 {isCorrect ? '¡Correcto!' : (hasTimedOut ? '¡Tiempo Agotado!' : 'Incorrecto')}
                             </h3>
                             
-                            {hasTimedOut ? (
-                                <>
-                                    <p className="text-foreground text-sm leading-relaxed mb-6 font-semibold">
-                                        Se agotó el tiempo y has perdido la partida. Tu racha se guardará hasta este punto.
-                                    </p>
-                                    <div className="flex flex-col gap-3">
-                                        <Button 
-                                            className="w-full rounded-xl py-6 font-bold bg-orange-500 hover:bg-orange-600 text-white" 
-                                            onClick={() => finishGame(true)}
-                                        >
-                                            Ver Resultados Finales
-                                        </Button>
-                                        <Button 
-                                            variant="outline"
-                                            className="w-full rounded-xl py-6 font-bold border-2" 
-                                            onClick={async () => { await finishGame(true); onClose(); }}
-                                        >
-                                            Salir al Menú
-                                        </Button>
-                                    </div>
-                                </>
-                            ) : (
+                            {(() => {
+                                const isGameEnding = (!isCorrect || hasTimedOut) && (
+                                    (!game?.mechanic_type || game.mechanic_type === 'safe_zones' || game.mechanic_type === 'sudden_death') ||
+                                    (game.mechanic_type === 'lives' && livesRemaining <= 0)
+                                );
+
+                                if (isGameEnding && (hasTimedOut || !isCorrect)) {
+                                    return (
+                                        <>
+                                            <p className="text-foreground text-sm leading-relaxed mb-6 font-semibold">
+                                                {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} Has perdido la partida. 
+                                                {(!game?.mechanic_type || game.mechanic_type === 'safe_zones') && ' Tu racha se guardará hasta la última zona segura.'}
+                                            </p>
+                                            <div className="flex flex-col gap-3">
+                                                <Button 
+                                                    className="w-full rounded-xl py-6 font-bold bg-orange-500 hover:bg-orange-600 text-white" 
+                                                    onClick={() => finishGame(true)}
+                                                >
+                                                    Ver Resultados Finales
+                                                </Button>
+                                                <Button 
+                                                    variant="outline"
+                                                    className="w-full rounded-xl py-6 font-bold border-2" 
+                                                    onClick={async () => { await finishGame(true); onClose(); }}
+                                                >
+                                                    Salir al Menú
+                                                </Button>
+                                            </div>
+                                        </>
+                                    );
+                                }
+
+                                return (
                                 <>
                                     {currentQuestion?.explanation && (
                                         <p className="text-foreground text-sm leading-relaxed mb-6">
@@ -441,7 +466,8 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                         Siguiente
                                     </Button>
                                 </>
-                            )}
+                                );
+                            })()}
                         </motion.div>
                     )}
                 </AnimatePresence>

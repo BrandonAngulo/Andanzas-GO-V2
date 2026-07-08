@@ -16,6 +16,7 @@ export interface GameEngineState {
     sessionId: string | null;
     timeRemaining: number;
     totalTimeMs: number;
+    livesRemaining: number;
     userAnswers: { questionId: string; isCorrect: boolean; category: string }[];
     bestCategory: string | null;
     worstCategory: string | null;
@@ -36,6 +37,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         sessionId: null,
         timeRemaining: 30,
         totalTimeMs: 0,
+        livesRemaining: 3,
         userAnswers: [],
         bestCategory: null,
         worstCategory: null
@@ -83,6 +85,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
                 game,
                 questions,
                 sessionId: sessionData.id,
+                livesRemaining: game.lives_count || 3,
                 loading: false
             }));
 
@@ -137,10 +140,15 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         if (isCorrect) {
             pointsEarned = currentQ.points_reward;
             
-            // Streak bonus
-            if (newStreak >= 3) {
-                streakBonus = Math.min(newStreak * 10, 50); // Cap at 50
-                pointsEarned += streakBonus;
+            if (state.game?.mechanic_type === 'multiplier') {
+                const multiplier = Math.min(newStreak, 5); // Up to 5x
+                pointsEarned = pointsEarned * multiplier;
+            } else {
+                // Classic streak bonus
+                if (newStreak >= 3) {
+                    streakBonus = Math.min(newStreak * 10, 50); // Cap at 50
+                    pointsEarned += streakBonus;
+                }
             }
 
             // Time bonus (faster = more points) if enabled
@@ -168,14 +176,33 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
             });
         }
 
+        let isGameEnding = false;
+        let finalLives = state.livesRemaining;
+
+        if (!isCorrect) {
+            if (state.game?.mechanic_type === 'sudden_death') {
+                isGameEnding = true;
+            } else if (state.game?.mechanic_type === 'lives') {
+                finalLives = state.livesRemaining - 1;
+                if (finalLives <= 0) {
+                    isGameEnding = true;
+                }
+            }
+        }
+
         setState(prev => ({
             ...prev,
             score: prev.score + pointsEarned,
             streak: newStreak,
             maxStreak: Math.max(prev.maxStreak, newStreak),
             totalTimeMs: prev.totalTimeMs + timeToAnswerMs,
+            livesRemaining: finalLives,
             userAnswers: [...prev.userAnswers, { questionId: currentQ.id, isCorrect, category: currentQ.category || 'General' }]
         }));
+
+        if (isGameEnding) {
+            // Need to save first then finish
+        }
 
         return isCorrect;
     };
@@ -204,7 +231,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
 
         if (answers) {
             let answersToCount = answers;
-            if (isAborted) {
+            if (isAborted && (!state.game?.mechanic_type || state.game?.mechanic_type === 'safe_zones')) {
                 const safeZoneCount = Math.floor((state.currentQuestionIndex) / 5) * 5;
                 answersToCount = answers.slice(0, safeZoneCount);
             }

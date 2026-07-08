@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Game, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LeaderboardPanel } from './LeaderboardPanel';
+import GameInstructionsDialog from '../shared/GameInstructionsDialog';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string) => void;
@@ -13,6 +14,7 @@ interface JuegosPanelProps {
 export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState(true);
+    const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
 
     useEffect(() => {
         loadGames();
@@ -100,21 +102,29 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                 </div>
                             </div>
                             
-                            <Button 
-                                className="w-full shadow-md hover:shadow-lg transition-shadow group-hover:bg-primary/90"
-                                disabled={game.status !== 'published'}
-                                variant={game.status === 'published' ? 'default' : 'secondary'}
-                                onClick={() => game.status === 'published' && onPlayGame(game.id)}
-                            >
-                                {game.status === 'published' ? (
-                                    <>
+                            {game.status === 'published' ? (
+                                <div className="grid grid-cols-5 gap-2 w-full">
+                                    <Button 
+                                        variant="outline" 
+                                        className="col-span-1 shadow-md hover:shadow-lg transition-shadow bg-background px-0"
+                                        onClick={() => setActiveInstructionsGame(game)}
+                                        title="Cómo Jugar"
+                                    >
+                                        <Info className="w-5 h-5 text-primary" />
+                                    </Button>
+                                    <Button 
+                                        className="col-span-4 shadow-md hover:shadow-lg transition-shadow group-hover:bg-primary/90"
+                                        onClick={() => onPlayGame(game.id)}
+                                    >
                                         <PlayCircle className="w-5 h-5 mr-2" />
                                         Jugar Ahora
-                                    </>
-                                ) : (
-                                    <>En Preparación</>
-                                )}
-                            </Button>
+                                    </Button>
+                                </div>
+                            ) : (
+                                <Button className="w-full shadow-md" disabled variant="secondary">
+                                    En Preparación
+                                </Button>
+                            )}
                         </CardContent>
                     </Card>
                 ))}
@@ -125,6 +135,14 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     <LeaderboardPanel />
                 </TabsContent>
             </Tabs>
+
+            {activeInstructionsGame && (
+                <GameInstructionsDialog 
+                    open={!!activeInstructionsGame}
+                    onOpenChange={(open) => !open && setActiveInstructionsGame(null)}
+                    game={activeInstructionsGame}
+                />
+            )}
         </div>
     );
 };
