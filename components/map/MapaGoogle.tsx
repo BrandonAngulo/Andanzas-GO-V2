@@ -65,7 +65,7 @@ const MapLegend = ({ language }: { language: 'es' | 'en' }) => {
                     <CardContent className="p-3 space-y-2.5">
                         {categories.map((cat, i) => (
                             <div key={i} className="flex items-center gap-2.5 text-xs">
-                                <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] shadow-sm bg-white border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
+                                <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] shadow-sm bg-background border border-border">
                                     {cat.icon}
                                 </div>
                                 <div className="flex-1">
@@ -423,7 +423,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
 
                 <div className="absolute top-3 right-3 flex flex-col items-end gap-2 pointer-events-auto">
                     {props.isFiltered && (
-                        <Button onClick={props.onResetFilter} size="sm" variant="secondary" className="shadow-md h-10 w-auto px-3 rounded-full md:rounded-md bg-white/90 text-primary border border-primary/20">
+                        <Button onClick={props.onResetFilter} size="sm" variant="secondary" className="shadow-md h-10 w-auto px-3 rounded-full md:rounded-md bg-background/90 text-primary border border-primary/20">
                             <X className="h-4 w-4 mr-1" />
                             <span className="text-xs font-semibold">{t('showAll')}</span>
                         </Button>
@@ -446,7 +446,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
                         <Button
                             variant={props.selectedCategories.length > 0 ? "default" : "secondary"}
                             size="sm"
-                            className={cn("bg-white/95 backdrop-blur shadow-lg h-10 w-10 p-0 md:h-10 md:w-auto md:px-4 rounded-full md:rounded-xl border border-border/50 text-foreground hover:bg-white")}
+                            className={cn("bg-background/95 backdrop-blur shadow-lg h-10 w-10 p-0 md:h-10 md:w-auto md:px-4 rounded-full md:rounded-xl border border-border/50 text-foreground hover:bg-background/80")}
                             onClick={() => setShowFilterPanel(s => !s)}
                         >
                             <Filter className="h-5 w-5 md:h-4 md:w-4 md:mr-2 text-primary" />
@@ -459,19 +459,19 @@ const MapWrapper = (props: MapaGoogleProps) => {
                         </Button>
 
                         {showFilterPanel && (
-                            <Card className="absolute top-full right-0 mt-3 w-64 shadow-2xl border-border/50 bg-white/95 backdrop-blur z-[1000] animate-in fade-in slide-in-from-top-2 rounded-2xl overflow-hidden">
+                            <Card className="absolute top-full right-0 mt-3 w-64 shadow-2xl border-border/50 bg-card/95 backdrop-blur z-[1000] animate-in fade-in slide-in-from-top-2 rounded-2xl overflow-hidden">
                                 <div className="p-3 border-b bg-muted/20 flex items-center justify-between w-full">
                                     <h3 className="text-sm font-bold text-foreground flex items-center gap-2 m-0">
                                         <Filter className="h-4 w-4 text-primary" />
                                         {language === 'es' ? 'Filtros' : 'Filters'}
                                     </h3>
-                                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-white shadow-sm border hover:bg-muted flex-shrink-0" onClick={() => setShowFilterPanel(false)}><X className="h-3.5 w-3.5" /></Button>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-background shadow-sm border hover:bg-muted flex-shrink-0" onClick={() => setShowFilterPanel(false)}><X className="h-3.5 w-3.5" /></Button>
                                 </div>
                                 <div className="p-0 flex flex-col">
                                     <ScrollArea className="h-[200px] p-2">
                                         <div className="space-y-1">
                                             {props.allCategories.map(cat => (
-                                                <label key={cat} className="flex items-center gap-2 p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-md cursor-pointer text-sm">
+                                                <label key={cat} className="flex items-center gap-2 p-2 hover:bg-muted/50 rounded-md cursor-pointer text-sm">
                                                     <input type="checkbox" className="rounded border-gray-300" checked={props.selectedCategories.includes(cat)} onChange={(e) => props.onCategoryChange(cat, e.target.checked)} />
                                                     <span className="flex-1 truncate flex items-center gap-1.5">
                                                         <span>{getCategoryIcon(cat)}</span>

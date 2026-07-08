@@ -24,6 +24,8 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
+    const [ageConfirmed, setAgeConfirmed] = useState(false);
+    const [termsAccepted, setTermsAccepted] = useState(false);
 
     const defaultTitle = language === 'es' ? 'Descubre más' : 'Discover more';
     const defaultDesc = language === 'es'
@@ -75,13 +77,43 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                         />
+
+                        {isSignUp && (
+                            <div className="flex flex-col gap-2 mt-2 bg-muted/30 p-3 rounded-lg border border-border/50">
+                                <label className="flex items-start gap-2 text-sm cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        className="mt-1 accent-primary" 
+                                        checked={ageConfirmed} 
+                                        onChange={(e) => setAgeConfirmed(e.target.checked)} 
+                                    />
+                                    <span className="text-muted-foreground leading-tight">
+                                        {language === 'es' ? 'Confirmo que tengo 14 años o más.' : 'I confirm that I am 14 years or older.'}
+                                    </span>
+                                </label>
+                                <label className="flex items-start gap-2 text-sm cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        className="mt-1 accent-primary" 
+                                        checked={termsAccepted} 
+                                        onChange={(e) => setTermsAccepted(e.target.checked)} 
+                                    />
+                                    <span className="text-muted-foreground leading-tight">
+                                        {language === 'es' ? 'Acepto los Términos y Condiciones y la Política de Privacidad.' : 'I accept the Terms and Conditions and Privacy Policy.'}
+                                    </span>
+                                </label>
+                            </div>
+                        )}
+
                         <Button
+                            disabled={isSignUp && (!ageConfirmed || !termsAccepted || !email || !password)}
                             onClick={() => { 
                                 if (email && password) {
+                                    if (isSignUp && (!ageConfirmed || !termsAccepted)) return;
                                     onLogin(email, password, isSignUp);
                                 }
                             }}
-                            className="w-full h-12 mt-2 rounded-xl text-base font-medium shadow-lg shadow-primary/25 bg-gradient-to-r from-primary to-emerald-600 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02]"
+                            className="w-full h-12 mt-2 rounded-xl text-base font-medium shadow-lg shadow-primary/25 bg-gradient-to-r from-primary to-emerald-600 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <LogIn className="w-5 h-5 mr-2" />
                             {isSignUp ? (language === 'es' ? 'Crear Cuenta' : 'Sign Up') : (language === 'es' ? 'Iniciar Sesión' : 'Login')}

@@ -453,7 +453,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                     </div>
 
                     {challenge?.quiz_data?.fun_fact && (
-                      <div className="bg-white/80 dark:bg-black/35 p-3 rounded-lg text-xs text-foreground/80 text-left border border-border/30">
+                      <div className="bg-card/80 p-3 rounded-lg text-xs text-foreground/80 text-left border border-border/30">
                         <strong>Dato Curioso:</strong> {getTranslated(challenge.quiz_data, 'fun_fact', language)}
                       </div>
                     )}

@@ -59,7 +59,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     </div>
 
                     {selectedEntry.sabias_que && selectedEntry.sabias_que.length > 0 && (
-                        <div className="mt-8 p-6 relative overflow-hidden rounded-2xl bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg">
+                        <div className="mt-8 p-6 relative overflow-hidden rounded-2xl bg-card/40 backdrop-blur-md border border-border shadow-lg">
                             <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-primary/20 blur-3xl rounded-full pointer-events-none" />
                             <h3 className="text-xl font-bold mb-5 flex items-center gap-2 text-primary relative z-10">
                                 <Sparkles className="w-5 h-5" />
@@ -117,7 +117,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     {entries.map(entry => (
                         <div 
                             key={entry.id} 
-                            className="cursor-pointer group relative overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:-translate-y-1 border border-black/5 dark:border-white/5 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl rounded-[2rem] shadow-sm"
+                            className="cursor-pointer group relative overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:-translate-y-1 border border-border bg-card/90 backdrop-blur-xl rounded-[2rem] shadow-sm"
                             onClick={() => setSelectedEntry(entry)}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

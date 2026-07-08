@@ -175,11 +175,12 @@ export interface Ruta {
   descripcion_en?: string;
   intro_story?: string;
   intro_story_en?: string;
-  justificaciones: string[];
-  justificaciones_en?: string[];
-  publico?: boolean;
-  recomendaciones?: RecomendacionRuta[];
-  gamificacion?: Challenge[];
+  justificaciones: Record<string, string>;
+  justificaciones_en?: Record<string, string>;
+  recomendaciones: RecomendacionRuta[];
+  gamificacion?: boolean;
+  gamification_level?: 'none' | 'light' | 'medium' | 'full'; // New field for Phase 5
+  publico: boolean;
   reward_badge_id?: string;
   mensajeCierre?: string;
   mensajeCierre_en?: string;
@@ -265,4 +266,38 @@ export interface UserProfile {
   interests: string[];
   travel_style?: string;
   accessibility_needs?: string[];
+  leaderboard_opt_in?: boolean; // New field for Phase 5
+}
+
+// === Phase 5: Gamification & Trivia Models ===
+
+export interface GameQuestion {
+  id: string;
+  game_id: string;
+  question_text: string;
+  question_text_en?: string;
+  options: string[];
+  correct_index: number;
+  points_reward: number;
+  time_limit_sec?: number;
+}
+
+export interface GameSession {
+  id: string;
+  user_id: string;
+  game_id: string;
+  started_at: string;
+  completed_at?: string;
+  total_score: number;
+  status: 'active' | 'completed' | 'abandoned';
+}
+
+export interface GameAnswer {
+  id: string;
+  session_id: string;
+  question_id: string;
+  selected_index: number;
+  is_correct: boolean;
+  time_taken_sec: number;
+  points_earned: number;
 }
