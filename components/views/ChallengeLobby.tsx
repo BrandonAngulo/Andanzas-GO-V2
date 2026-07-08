@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 import { Swords, Trophy, Clock, XCircle, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void; onAccept: (gameId: string, challengeId: string) => void }> = ({ challengeId, onClose, onAccept }) => {
+export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void; onAccept: (gameId: string, challengeId: string) => void; isAuthenticated?: boolean }> = ({ challengeId, onClose, onAccept, isAuthenticated = true }) => {
     const [challenge, setChallenge] = useState<GameChallenge | null>(null);
     const [game, setGame] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -86,16 +86,19 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
                     </div>
                 </div>
 
-                <div className="space-y-4 relative z-10">
                     <Button 
                         size="lg" 
-                        className="w-full h-14 text-lg font-bold rounded-xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 group"
+                        className="w-full h-14 text-lg font-bold rounded-xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 group flex items-center justify-center"
                         onClick={() => onAccept(game.id, challenge.id)}
                     >
-                        Aceptar Reto <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                        {isAuthenticated ? (
+                            <>Aceptar Reto <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
+                        ) : (
+                            <>Crear cuenta para jugar <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></>
+                        )}
                     </Button>
                     <Button variant="ghost" className="w-full h-14 rounded-xl" onClick={onClose}>
-                        Rechazar (Huir)
+                        {isAuthenticated ? "Rechazar (Huir)" : "Explorar la app primero"}
                     </Button>
                 </div>
             </motion.div>

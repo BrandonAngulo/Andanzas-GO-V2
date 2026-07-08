@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { challengeService, GameChallenge } from '../../services/challenge.service';
 import { supabase } from '../../lib/supabaseClient';
 import { Button } from '../ui/button';
-import { Swords, Trophy, Clock, XCircle, ArrowLeft, Star, Target } from 'lucide-react';
+import { Swords, Trophy, Clock, XCircle, ArrowLeft, Star, Target, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 export const ChallengeVerdict: React.FC<{ challengeId: string; onClose: () => void }> = ({ challengeId, onClose }) => {
     const [challenge, setChallenge] = useState<GameChallenge | null>(null);
@@ -83,7 +84,18 @@ export const ChallengeVerdict: React.FC<{ challengeId: string; onClose: () => vo
 
     const formatTime = (ms: number) => {
         const s = Math.floor(ms / 1000);
-        return `${s}s`;
+    const handleInvite = async () => {
+        const text = `¡He terminado un reto épico en Andanzas GO! Únete y explora nuestra cultura mientras juegas trivias.`;
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: 'Andanzas GO', text, url: window.location.origin });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            await navigator.clipboard.writeText(`${text}\n\n${window.location.origin}`);
+            toast.success("¡Enlace copiado al portapapeles!");
+        }
     };
 
     return (
@@ -158,9 +170,17 @@ export const ChallengeVerdict: React.FC<{ challengeId: string; onClose: () => vo
                     </div>
                 </div>
 
-                <Button className="w-full h-14 rounded-xl text-lg font-bold mt-8" onClick={onClose}>
-                    <ArrowLeft className="w-5 h-5 mr-2" /> Volver al Inicio
-                </Button>
+                <div className="flex flex-col gap-3 mt-8">
+                    <Button 
+                        className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20" 
+                        onClick={handleInvite}
+                    >
+                        <Share2 className="w-5 h-5 mr-2" /> Invita a más amigos
+                    </Button>
+                    <Button variant="outline" className="w-full h-14 rounded-xl text-lg font-bold" onClick={onClose}>
+                        <ArrowLeft className="w-5 h-5 mr-2" /> Volver al Inicio
+                    </Button>
+                </div>
             </div>
         </div>
     );
