@@ -84,6 +84,9 @@ export const ChallengeVerdict: React.FC<{ challengeId: string; onClose: () => vo
 
     const formatTime = (ms: number) => {
         const s = Math.floor(ms / 1000);
+        return `${s}s`;
+    };
+
     const handleInvite = async () => {
         const text = `¡He terminado un reto épico en Andanzas GO! Únete y explora nuestra cultura mientras juegas trivias.`;
         if (navigator.share) {
