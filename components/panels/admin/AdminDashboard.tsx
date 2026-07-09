@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar, Smile } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
@@ -19,6 +19,7 @@ import { AdminUsuarios } from './AdminUsuarios';
 import { AdminInstitucional } from './AdminInstitucional';
 import { CuriousFactsManager } from './CuriousFactsManager';
 import { AdminMetricas } from './AdminMetricas';
+import { AdminAvatarsManager } from './AdminAvatarsManager';
 
 const AdminOverview = () => {
     const [counts, setCounts] = useState({ users: 0, curiosities: 0, routes: 0, sites: 0, events: 0, news: 0 });
@@ -122,7 +123,7 @@ const AdminOverview = () => {
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'settings'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'settings' | 'avatares'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
 
     // Security Check: Only render if user is admin or editor
@@ -161,6 +162,13 @@ const AdminDashboard: React.FC = () => {
                         className="rounded-full"
                     >
                         <ShieldAlert className="w-4 h-4 mr-2" /> General
+                    </Button>
+                    <Button 
+                        variant={activeTab === 'avatares' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('avatares')}
+                        className="rounded-full"
+                    >
+                        <Smile className="w-4 h-4 mr-2" /> Avatares
                     </Button>
                     <Button 
                         variant={activeTab === 'metricas' ? 'default' : 'outline'} 
@@ -236,9 +244,10 @@ const AdminDashboard: React.FC = () => {
                     )}
                 </div>
 
-                <div className="bg-background rounded-xl p-4 md:p-6 shadow-sm border border-border">
+                <div className="bg-card rounded-xl border p-4 md:p-6 shadow-sm min-h-[500px]">
                     {activeTab === 'overview' && <AdminOverview />}
                     {activeTab === 'metricas' && <AdminMetricas />}
+                    {activeTab === 'avatares' && <AdminAvatarsManager />}
                     {activeTab === 'sabias_que' && <CuriousFactsManager />}
                     {activeTab === 'paquesepas' && <AdminCuriosidades />}
                     {activeTab === 'rutas' && <AdminRutas />}

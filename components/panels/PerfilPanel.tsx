@@ -22,43 +22,7 @@ import { reviewsService } from '../../services/reviews.service';
 import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { COLOMBIAN_CITIES } from '../../lib/locations';
 
-const HARDCODED_AVATARS = [
-    {
-        id: 'gata_callejera',
-        name: 'La Gata Callejera',
-        personality_title: 'Independiente e intuitiva',
-        phrase: 'Por aquí hay algo que no sale en los mapas.',
-        image_url: '/images/avatars/gato.png'
-    },
-    {
-        id: 'caleño_salsero',
-        name: 'El Caleño Salsero',
-        personality_title: 'Festivo y rítmico',
-        phrase: 'Si escuchás bien, Cali también camina en clave.',
-        image_url: '/images/avatars/salsero.png'
-    },
-    {
-        id: 'ave_curiosa',
-        name: 'El Ave Curiosa (Bichofué)',
-        personality_title: 'Observadora y ligera',
-        phrase: 'Mirá dos veces: la ciudad siempre deja pistas.',
-        image_url: '/images/avatars/bichofue.png'
-    },
-    {
-        id: 'barranquero',
-        name: 'El Barranquero',
-        personality_title: 'Misterioso y colorido',
-        phrase: 'Entre la selva de cemento, mi canto es un secreto.',
-        image_url: '/images/avatars/barranquero.png'
-    },
-    {
-        id: 'maceta',
-        name: 'La Dulce Maceta',
-        personality_title: 'Tradicional y alegre',
-        phrase: 'Endulzo cada paso que das por Cali.',
-        image_url: '/images/avatars/maceta.png'
-    }
-];
+// Dynamic avatars will be fetched from the database via userService.getAvatarPresets()
 
 interface PerfilPanelProps {
     favCount: number;
@@ -144,7 +108,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 }
             };
             const loadAvatars = async () => {
-                setAvailableAvatars(HARDCODED_AVATARS);
+                const presets = await userService.getAvatarPresets();
+                setAvailableAvatars(presets);
             };
             loadBadges();
             loadAvatars();
@@ -540,7 +505,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </TabsList>
 
                     <TabsContent value="overview" className="space-y-6 mt-0">
-                        {/* Stats Grid */}
+                        {/* Experiencias Vividas */}
                         <div className="grid grid-cols-2 gap-3">
                             <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-none shadow-sm">
                                 <CardContent className="p-4 flex flex-col gap-2">
@@ -567,10 +532,96 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10" />
                                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
                                 <CardContent className="p-5 flex gap-4 overflow-x-auto snap-x hide-scrollbar">
-                                    {stamps.length > 0 ? stamps.map((stamp, idx) => (
-                                        <div key={stamp.id} className="flex flex-col items-center gap-2 snap-center shrink-0 w-28 group cursor-pointer relative">
-                                            <div className={`w-20 h-20 rounded-full border-4 border-dashed p-1 flex items-center justify-center bg-background shadow-md relative group-hover:scale-105 transition-transform ${stamp.color_theme ? 'border-' + stamp.color_theme + '-500/50' : 'border-primary/50'}`}>
-                                                <div className={`absolute inset-1 rounded-full flex items-center justify-center overflow-hidden ${stamp.color_theme ? 'bg-' + stamp.color_theme + '-500/10' : 'bg-primary/10'}`}>
+                                    
+                                    {/* Cali Stamp (Dynamic) */}
+                                    {(() => {
+                                        // Calculate total experiences dynamically based on user stats
+                                        const totalExperiences = routesCompletedCount + (myReviews?.length || 0);
+                                        // If no experiences, show a faded "Próximamente" state or early state.
+                                        // But requirements said "aparecerá si tiene al menos 1 experiencia". 
+                                        // However, providing a faded placeholder motivates them.
+                                        
+                                        // Stamp styles logic
+                                        const isLevel1 = totalExperiences >= 1 && totalExperiences <= 4;
+                                        const isLevel2 = totalExperiences >= 5 && totalExperiences <= 9;
+                                        const isLevel3 = totalExperiences >= 10;
+                                        const hasAnyExperience = totalExperiences > 0;
+                                        
+                                        const getStampStyle = () => {
+                                            if (isLevel3) return 'border-yellow-400 bg-yellow-100/50 shadow-[0_0_15px_rgba(250,204,21,0.5)]';
+                                            if (isLevel2) return 'border-primary bg-primary/10 shadow-sm';
+                                            if (isLevel1) return 'border-border bg-background shadow-sm';
+                                            return 'border-dashed border-border bg-muted/20 opacity-50 grayscale'; // Level 0
+                                        };
+                                        
+                                        const getInnerStyle = () => {
+                                            if (isLevel3) return 'bg-yellow-400/20 text-yellow-700';
+                                            if (isLevel2) return 'bg-primary/20 text-primary-foreground';
+                                            return 'bg-muted text-muted-foreground';
+                                        };
+
+                                        return (
+                                            <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-32 group cursor-pointer relative">
+                                                {isLevel3 && (
+                                                    <div className="absolute -top-3 right-0 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full z-10 shadow-md">
+                                                        Oro
+                                                    </div>
+                                                )}
+                                                
+                                                {/* Rectangular Postal Stamp Design */}
+                                                <div className={`w-24 h-28 relative flex flex-col items-center justify-center p-1.5 transition-transform group-hover:scale-105 duration-300
+                                                    ${getStampStyle()} 
+                                                    [mask-image:radial-gradient(circle_4px_at_border-box,transparent_0,transparent_100%)]
+                                                    [mask-size:8px_8px] [mask-repeat:round] [mask-composite:exclude]
+                                                    border-4`}>
+                                                    
+                                                    <div className={`w-full h-full border border-dashed rounded-sm flex flex-col items-center justify-center overflow-hidden p-1 ${isLevel3 ? 'border-yellow-500/50' : 'border-border'}`}>
+                                                        <div className={`w-full h-1/2 flex items-center justify-center ${getInnerStyle()} rounded-sm mb-1`}>
+                                                             {hasAnyExperience ? (
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 opacity-80"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/></svg>
+                                                             ) : (
+                                                                <MapPin className="w-8 h-8 opacity-40" />
+                                                             )}
+                                                        </div>
+                                                        <span className={`text-[12px] font-black uppercase drop-shadow-sm tracking-widest mt-1 ${isLevel3 ? 'text-yellow-600' : (hasAnyExperience ? 'text-foreground' : 'text-muted-foreground')}`}>
+                                                            Cali
+                                                        </span>
+                                                        <span className="text-[8px] font-mono opacity-60">
+                                                            {hasAnyExperience ? `${totalExperiences} EXP` : '0 EXP'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="text-center mt-1">
+                                                    <span className="text-xs font-bold leading-tight block w-full truncate">
+                                                        Santiago de Cali
+                                                    </span>
+                                                    <span className="text-[10px] text-muted-foreground block w-full truncate">
+                                                        {isLevel3 ? 'Leyenda Urbana' : (isLevel2 ? 'Explorador Frecuente' : (isLevel1 ? 'Iniciando Viaje' : 'Por descubrir'))}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
+                                    
+                                    {/* Future region placeholder */}
+                                    <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-32 opacity-40 grayscale">
+                                        <div className="w-24 h-28 border-4 border-muted border-dashed bg-muted/20 flex flex-col items-center justify-center p-2 [mask-size:8px_8px] [mask-repeat:round] border-4">
+                                            <div className="w-full h-full border border-dashed border-muted rounded-sm flex items-center justify-center">
+                                                <MapPin className="h-8 w-8 text-muted-foreground" />
+                                            </div>
+                                        </div>
+                                        <div className="text-center mt-1">
+                                            <span className="text-xs font-bold leading-tight block">Valle del Cauca</span>
+                                            <span className="text-[10px] text-muted-foreground block">Próximamente</span>
+                                        </div>
+                                    </div>
+                                    
+                                    {stamps.filter(s => s.stamp_type !== 'city' && s.city !== 'Cali').map((stamp, idx) => (
+                                        <div key={stamp.id} className="flex flex-col items-center gap-2 snap-center shrink-0 w-32 group cursor-pointer relative">
+                                            {/* Retro-compatibility or extra stamps */}
+                                            <div className={`w-24 h-28 border-4 flex flex-col items-center justify-center p-1.5 transition-transform group-hover:scale-105 duration-300 ${stamp.color_theme ? 'border-' + stamp.color_theme + '-500 bg-' + stamp.color_theme + '-100/50' : 'border-primary bg-primary/10'}`}>
+                                                <div className="w-full h-full border border-dashed border-border rounded-sm flex flex-col items-center justify-center overflow-hidden">
                                                     {stamp.image_url ? (
                                                         <img src={stamp.image_url} alt={stamp.title} className="w-full h-full object-cover mix-blend-multiply opacity-80" />
                                                     ) : (
@@ -578,33 +629,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="text-center">
-                                                <span className="text-xs font-bold leading-tight block truncate w-28">{stamp.title}</span>
-                                                {stamp.subtitle && <span className="text-[10px] text-muted-foreground block truncate w-28">{stamp.subtitle}</span>}
+                                            <div className="text-center mt-1">
+                                                <span className="text-xs font-bold leading-tight block truncate w-32">{stamp.title}</span>
+                                                {stamp.subtitle && <span className="text-[10px] text-muted-foreground block truncate w-32">{stamp.subtitle}</span>}
                                             </div>
                                         </div>
-                                    )) : (
-                                        <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-28 group">
-                                            <div className="w-20 h-20 rounded-full border-4 border-primary/50 border-dashed p-1 flex items-center justify-center bg-background shadow-md relative">
-                                                <div className="absolute inset-1 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
-                                                    <span className="text-[10px] font-black text-primary uppercase drop-shadow-sm rotate-[-15deg] opacity-80">Cali</span>
-                                                </div>
-                                            </div>
-                                            <div className="text-center">
-                                                <span className="text-xs font-bold leading-tight block">Santiago de Cali</span>
-                                                <span className="text-[10px] text-muted-foreground block">Sello inicial</span>
-                                            </div>
-                                        </div>
-                                    )}
-                                    <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-28 opacity-40 grayscale">
-                                        <div className="w-20 h-20 rounded-full border-4 border-muted border-dashed flex items-center justify-center bg-muted/20">
-                                            <MapPin className="h-8 w-8 text-muted-foreground" />
-                                        </div>
-                                        <div className="text-center">
-                                            <span className="text-xs font-bold leading-tight block">Valle del Cauca</span>
-                                            <span className="text-[10px] text-muted-foreground block">Próximamente</span>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </CardContent>
                             </Card>
                         </div>

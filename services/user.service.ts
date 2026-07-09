@@ -154,6 +154,52 @@ export const userService = {
         return data || [];
     },
 
+    // Admin methods for Avatars
+    async getAllAvatarPresetsAdmin(): Promise<any[]> {
+        const { data, error } = await supabase
+            .from('avatar_presets')
+            .select('*')
+            .order('order_index', { ascending: true });
+        if (error) {
+            console.error('Error fetching admin avatar presets:', error);
+            return [];
+        }
+        return data || [];
+    },
+
+    async createAvatarPreset(preset: any): Promise<any> {
+        const { data, error } = await supabase
+            .from('avatar_presets')
+            .insert(preset)
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
+    },
+
+    async updateAvatarPreset(id: string, preset: any): Promise<any> {
+        const { data, error } = await supabase
+            .from('avatar_presets')
+            .update(preset)
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
+    },
+
+    async deleteAvatarPreset(id: string): Promise<boolean> {
+        const { error } = await supabase
+            .from('avatar_presets')
+            .delete()
+            .eq('id', id);
+        if (error) {
+            console.error('Error deleting avatar preset:', error);
+            return false;
+        }
+        return true;
+    },
+
     // Admin methods
     async getAllProfilesAdmin(): Promise<UserProfile[]> {
         const { data, error } = await supabase
