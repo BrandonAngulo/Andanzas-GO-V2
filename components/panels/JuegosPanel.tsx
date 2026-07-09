@@ -77,28 +77,28 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     const bgTheme = game.cover_theme || 'bg-primary/10';
                     return (
                     <Card key={game.id} className="overflow-hidden border-2 border-border/50 hover:border-primary/30 hover:shadow-xl transition-all hover:-translate-y-1 bg-card rounded-2xl group flex flex-col">
-                        <div className={`h-40 relative flex items-center justify-center p-6 overflow-hidden ${bgTheme}`}>
+                        <div className={`h-48 relative flex flex-col items-center justify-center p-4 overflow-hidden ${bgTheme}`}>
                             {game.cover_image_url && (
                                 <>
                                     <div className="absolute inset-0 bg-black/40 z-10" />
                                     <LazyImage src={game.cover_image_url} alt={game.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                 </>
                             )}
-                            {isUpcoming && (
-                                <div className="absolute top-3 right-3 bg-yellow-500 text-white text-[10px] font-black px-3 py-1.5 rounded-md uppercase flex items-center gap-1.5 shadow-md z-20 tracking-wider">
-                                    {game.show_countdown && game.release_at ? (
-                                        <><Clock className="w-3.5 h-3.5" /> Faltan {Math.max(1, Math.ceil((new Date(game.release_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))} días</>
-                                    ) : (
-                                        <><CalendarDays className="w-3.5 h-3.5" /> Próximamente</>
-                                    )}
-                                </div>
-                            )}
-                            <div className="text-center relative z-20">
-                                <h3 className={`text-2xl font-black drop-shadow-md line-clamp-2 uppercase tracking-tight ${game.cover_image_url ? 'text-white' : 'text-primary'}`}>
+                            <div className="text-center relative z-20 flex flex-col items-center justify-center w-full">
+                                {isUpcoming && (
+                                    <div className="bg-yellow-500 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase flex items-center gap-1.5 shadow-sm mb-2 tracking-wider inline-flex">
+                                        {game.show_countdown && game.release_at ? (
+                                            <><Clock className="w-3.5 h-3.5" /> Faltan {Math.max(1, Math.ceil((new Date(game.release_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))} días</>
+                                        ) : (
+                                            <><CalendarDays className="w-3.5 h-3.5" /> Próximamente</>
+                                        )}
+                                    </div>
+                                )}
+                                <h3 className={`text-lg sm:text-xl font-black drop-shadow-md line-clamp-3 uppercase tracking-tight ${game.cover_image_url ? 'text-white' : 'text-primary'}`}>
                                     {game.cover_title || game.title}
                                 </h3>
                                 {(game.cover_subtitle) && (
-                                    <p className={`text-sm font-bold mt-1 tracking-wide ${game.cover_image_url ? 'text-white/90' : 'text-foreground/80'}`}>
+                                    <p className={`text-xs font-bold mt-1 tracking-wide ${game.cover_image_url ? 'text-white/90' : 'text-foreground/80'}`}>
                                         {game.cover_subtitle}
                                     </p>
                                 )}
