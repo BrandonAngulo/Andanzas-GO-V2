@@ -162,21 +162,6 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   return (
     <ScrollArea className="h-[72vh]">
       {!query && (
-        <div className="mb-4">
-          <CategoryCarousel 
-            categories={CATEGORY_TAGS.map(tag => ({
-              id: tag.filter,
-              label: tag.label,
-              icon: <tag.icon className="w-4 h-4" />
-            }))}
-            activeCategoryId={categoryFilter || ''}
-            onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
-            className="mb-0"
-          />
-        </div>
-      )}
-
-      {!query && (
         <div className="relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10 mx-2">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             {/* Full-width banner background */}
@@ -188,8 +173,8 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
             {/* Gradient overlay to ensure text readability on the left, blending smoothly */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
           </div>
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex-1 w-full max-w-xl">
+          <div className="relative z-10 flex flex-col gap-6">
+              <div className="w-full max-w-xl">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="bg-blue-600 p-2.5 rounded-2xl shadow-md text-white">
                       <Compass className="h-6 w-6" />
@@ -198,11 +183,23 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
                       {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
                     </h2>
                   </div>
-                  <p className="text-muted-foreground text-lg mb-2 leading-relaxed font-medium">
+                  <p className="text-muted-foreground text-lg leading-relaxed font-medium">
                     {language === 'es' 
                       ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
                       : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
                   </p>
+              </div>
+              <div className="w-full">
+                  <CategoryCarousel 
+                    categories={CATEGORY_TAGS.map(tag => ({
+                      id: tag.filter,
+                      label: tag.label,
+                      icon: <tag.icon className="w-4 h-4" />
+                    }))}
+                    activeCategoryId={categoryFilter || ''}
+                    onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
+                    className="mb-0"
+                  />
               </div>
           </div>
         </div>
