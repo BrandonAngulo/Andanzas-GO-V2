@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card
 import { ScrollArea } from '../ui/scroll-area';
 import { useI18n } from '../../i18n';
 import { getTranslated, getMacroCategory } from '../../lib/utils';
+import { PanelBanner } from './shared/PanelBanner';
 import { LazyImage } from '../ui/lazy-image';
 import { Badge } from '../ui/badge';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
@@ -162,47 +163,37 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   return (
     <ScrollArea className="h-[72vh]">
       {!query && (
-        <div className="relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10 mx-2">
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            {/* Full-width banner background */}
-            <img 
-                src="/images/banner_explorar.png" 
-                alt="Fondo Explorar" 
-                className="w-full h-full object-cover object-right"
-            />
-            {/* Gradient overlay to ensure text readability on the left, blending smoothly */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
-          </div>
-          <div className="relative z-10 flex flex-col gap-6">
-              <div className="w-full max-w-xl">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-blue-600 p-2.5 rounded-2xl shadow-md text-white">
-                      <Compass className="h-6 w-6" />
-                    </div>
-                    <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-blue-950 dark:text-blue-50">
-                      {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
-                    </h2>
-                  </div>
-                  <p className="text-muted-foreground text-lg leading-relaxed font-medium">
-                    {language === 'es' 
-                      ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
-                      : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
-                  </p>
+        <PanelBanner
+          panelKey="explorar"
+          defaultImage="/images/banner_explorar.png"
+          gradientClass="from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
+          title={
+            <>
+              <div className="bg-blue-600 p-2.5 rounded-2xl shadow-md text-white">
+                <Compass className="h-6 w-6" />
               </div>
-              <div className="w-full">
-                  <CategoryCarousel 
-                    categories={CATEGORY_TAGS.map(tag => ({
-                      id: tag.filter,
-                      label: tag.label,
-                      icon: <tag.icon className="w-4 h-4" />
-                    }))}
-                    activeCategoryId={categoryFilter || ''}
-                    onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
-                    className="mb-0"
-                  />
-              </div>
-          </div>
-        </div>
+              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-blue-950 dark:text-blue-50">
+                {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
+              </h2>
+            </>
+          }
+          description={
+            language === 'es' 
+              ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
+              : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'
+          }
+        >
+          <CategoryCarousel 
+            categories={CATEGORY_TAGS.map(tag => ({
+              id: tag.filter,
+              label: tag.label,
+              icon: <tag.icon className="w-4 h-4" />
+            }))}
+            activeCategoryId={categoryFilter || ''}
+            onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
+            className="mb-0"
+          />
+        </PanelBanner>
       )}
 
       {/* Imperdibles Banners */}

@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Plus, Search, Trash2, Edit, CheckCircle, Map, Compass, PenTool, ChevronUp, ChevronDown, Lock, Trophy, MapPin } from 'lucide-react';
 import { Ruta, Site } from '../../types';
+import { useToast } from '../ui/use-toast';
+import { PanelBanner } from './shared/PanelBanner';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Input } from '../ui/input';
@@ -242,27 +244,22 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     return (
         <ScrollArea className="h-[72vh]">
             <div className="p-4 max-w-5xl mx-auto">
-                <div className="relative mb-6 overflow-hidden rounded-[2rem] border shadow-sm bg-emerald-50/50 dark:bg-emerald-950/20">
-                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                        <img 
-                            src="/images/banner_rutas.png" 
-                            alt="Fondo Rutas" 
-                            className="w-full h-full object-cover object-right"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/95 via-emerald-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
-                    </div>
-                    <div className="relative z-10 p-8 md:p-10 flex flex-col justify-center max-w-lg">
-                        <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-emerald-950 dark:text-emerald-50">
+                <PanelBanner
+                    panelKey="rutas"
+                    defaultImage="/images/banner_rutas.png"
+                    gradientClass="from-emerald-50/95 via-emerald-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
+                    title={
+                        <>
                             <div className="bg-emerald-600 p-2.5 rounded-2xl shadow-md text-white">
                                 <Compass className="h-6 w-6" />
                             </div>
-                            {language === 'es' ? 'Pasaporte de Rutas' : 'Route Passport'}
-                        </h2>
-                        <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-                            {language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
-                        </p>
-                    </div>
-                </div>
+                            <h2 className="text-4xl font-extrabold tracking-tight text-emerald-950 dark:text-emerald-50">
+                                {language === 'es' ? 'Pasaporte de Rutas' : 'Route Passport'}
+                            </h2>
+                        </>
+                    }
+                    description={language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
+                />
 
                 <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex bg-muted p-1 rounded-lg shrink-0">

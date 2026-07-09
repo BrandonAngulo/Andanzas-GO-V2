@@ -17,6 +17,7 @@ import { AdminIntroModal } from './AdminIntroModal';
 import { AdminNoticias } from './AdminNoticias';
 import { AdminUsuarios } from './AdminUsuarios';
 import { AdminInstitucional } from './AdminInstitucional';
+import { AdminBanners } from './AdminBanners';
 import { CuriousFactsManager } from './CuriousFactsManager';
 import { AdminMetricas } from './AdminMetricas';
 import { AdminAvatarsManager } from './AdminAvatarsManager';
@@ -124,7 +125,7 @@ const AdminOverview = () => {
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
 
     // Security Check: Only render if user is admin or editor
@@ -235,6 +236,13 @@ const AdminDashboard: React.FC = () => {
                         <BookOpen className="w-4 h-4 mr-2" /> Institucional
                     </Button>
                     <Button 
+                        variant={activeTab === 'banners' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('banners')}
+                        className="rounded-full whitespace-nowrap"
+                    >
+                        <Settings className="w-4 h-4 mr-2" /> Banners
+                    </Button>
+                    <Button 
                         variant={activeTab === 'legal' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('legal')}
                         className="rounded-full whitespace-nowrap"
@@ -266,6 +274,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'institucional' && <AdminInstitucional />}
                     {activeTab === 'legal' && <AdminDocumentosLegales />}
                     {activeTab === 'usuarios' && <AdminUsuarios />}
+                    {activeTab === 'banners' && <AdminBanners />}
                     {activeTab === 'settings' && <div>Módulo de Ajustes en construcción...</div>}
                 </div>
             </div>

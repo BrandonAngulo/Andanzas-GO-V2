@@ -206,11 +206,13 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             <span className="text-4xl font-black text-white mb-1">{score}</span>
                             <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Puntos</span>
                         </div>
-                        <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-6 rounded-3xl flex flex-col items-center">
-                            <Target className="w-8 h-8 text-emerald-400 mb-3" />
-                            <span className="text-4xl font-black text-white mb-1">{accuracyPercent.toFixed(0)}%</span>
-                            <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Precisión</span>
-                        </div>
+                        {game?.type !== 'quiz' && (
+                            <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-6 rounded-3xl flex flex-col items-center">
+                                <Target className="w-8 h-8 text-emerald-400 mb-3" />
+                                <span className="text-4xl font-black text-white mb-1">{accuracyPercent.toFixed(0)}%</span>
+                                <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Precisión</span>
+                            </div>
+                        )}
                     </div>
 
                     {(bestCategory || worstCategory) && (
@@ -363,14 +365,16 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 </span>
                                 
                                 {/* Visible Timer Progress Bar */}
-                                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden shadow-inner backdrop-blur-sm">
-                                    <motion.div 
-                                        className={`h-full rounded-full ${timeRemaining <= 5 ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,1)]' : 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,1)]'}`} 
-                                        initial={{ width: '100%' }}
-                                        animate={{ width: `${(timeRemaining / (currentQuestion?.time_limit_sec || 30)) * 100}%` }}
-                                        transition={{ duration: 1, ease: 'linear' }}
-                                    />
-                                </div>
+                                {game?.type !== 'quiz' && (
+                                    <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden shadow-inner backdrop-blur-sm">
+                                        <motion.div 
+                                            className={`h-full rounded-full ${timeRemaining <= 5 ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,1)]' : 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,1)]'}`} 
+                                            initial={{ width: '100%' }}
+                                            animate={{ width: `${(timeRemaining / (currentQuestion?.time_limit_sec || 30)) * 100}%` }}
+                                            transition={{ duration: 1, ease: 'linear' }}
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                             <div className="w-full bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl flex flex-col items-center text-center relative overflow-hidden flex-shrink-0">
@@ -383,15 +387,23 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                         let buttonStateClass = "bg-white/5 border-white/10 hover:bg-white/10 text-white/90";
                                         
                                         if (isChecking && !hasTimedOut) {
-                                            if (opt === currentQuestion.correct_answer) {
-                                                buttonStateClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]";
-                                            } else if (opt === selectedOption) {
-                                                buttonStateClass = "bg-red-500/20 border-red-500 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]";
+                                            if (game?.type === 'quiz') {
+                                                if (opt === selectedOption) {
+                                                    buttonStateClass = "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)]";
+                                                } else {
+                                                    buttonStateClass = "opacity-30 border-white/5 text-white/90";
+                                                }
                                             } else {
-                                                buttonStateClass = "opacity-30 border-white/5 text-white/90";
+                                                if (opt === currentQuestion.correct_answer) {
+                                                    buttonStateClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]";
+                                                } else if (opt === selectedOption) {
+                                                    buttonStateClass = "bg-red-500/20 border-red-500 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]";
+                                                } else {
+                                                    buttonStateClass = "opacity-30 border-white/5 text-white/90";
+                                                }
                                             }
                                         } else if (isChecking && hasTimedOut) {
-                                            if (opt === currentQuestion.correct_answer) {
+                                            if (opt === currentQuestion.correct_answer && game?.type !== 'quiz') {
                                                 buttonStateClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400";
                                             } else {
                                                 buttonStateClass = "opacity-30 border-white/5 text-white/90";
@@ -425,11 +437,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         <motion.div 
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className={`mt-4 mb-8 w-full p-6 sm:p-8 rounded-[2.5rem] border-2 backdrop-blur-2xl shadow-2xl ${isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50')}`}
+                            className={`mt-4 mb-8 w-full p-6 sm:p-8 rounded-[2.5rem] border-2 backdrop-blur-2xl shadow-2xl ${game?.type === 'quiz' ? 'bg-primary/10 border-primary/50' : (isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50'))}`}
                         >
-                            <h3 className={`text-2xl font-black mb-3 flex items-center ${isCorrect ? 'text-emerald-400' : (hasTimedOut ? 'text-orange-400' : 'text-red-400')}`}>
-                                {isCorrect ? <CheckCircle2 className="mr-3 w-8 h-8" /> : (hasTimedOut ? <Clock className="mr-3 w-8 h-8" /> : <XCircle className="mr-3 w-8 h-8" />)}
-                                {isCorrect ? '¡Correcto!' : (hasTimedOut ? '¡Tiempo Agotado!' : 'Incorrecto')}
+                            <h3 className={`text-2xl font-black mb-3 flex items-center ${game?.type === 'quiz' ? 'text-primary' : (isCorrect ? 'text-emerald-400' : (hasTimedOut ? 'text-orange-400' : 'text-red-400'))}`}>
+                                {game?.type === 'quiz' ? <CheckCircle2 className="mr-3 w-8 h-8" /> : (isCorrect ? <CheckCircle2 className="mr-3 w-8 h-8" /> : (hasTimedOut ? <Clock className="mr-3 w-8 h-8" /> : <XCircle className="mr-3 w-8 h-8" />))}
+                                {game?.type === 'quiz' ? '¡Respuesta registrada!' : (isCorrect ? '¡Correcto!' : (hasTimedOut ? '¡Tiempo Agotado!' : 'Incorrecto'))}
                             </h3>
                             
                             {(() => {

@@ -6,7 +6,7 @@ import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info } from 'l
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LeaderboardPanel } from './LeaderboardPanel';
 import GameInstructionsDialog from '../shared/GameInstructionsDialog';
-import { AndiGuia } from '../shared/AndiGuia';
+import { PanelBanner } from './shared/PanelBanner';
 import { LazyImage } from '../ui/lazy-image';
 
 interface JuegosPanelProps {
@@ -53,31 +53,23 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
 
     return (
         <div className="space-y-6 pb-20">
-            <div className="relative mb-6 overflow-hidden rounded-[2rem] border shadow-sm bg-purple-50/50 dark:bg-purple-950/20">
-                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                    <img 
-                        src="/images/banner_juegos.png" 
-                        alt="Fondo Juegos" 
-                        className="w-full h-full object-cover object-right"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-50/95 via-purple-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
-                </div>
-                <div className="relative z-10 p-8 md:p-10 max-w-lg">
-                    <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-purple-950 dark:text-purple-50">
+            <PanelBanner
+                panelKey="juegos"
+                defaultImage="/images/banner_juegos.png"
+                gradientClass="from-purple-50/95 via-purple-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
+                title={
+                    <>
                         <div className="bg-purple-600 p-2.5 rounded-2xl shadow-md text-white">
                             <Gamepad2 className="h-6 w-6" />
                         </div>
-                        Zona Play
-                    </h2>
-                    <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-                        Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global.
-                    </p>
-                </div>
-            </div>
-            
-            <div className="mb-6">
-                <AndiGuia message="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos." variant="celebration" />
-            </div>
+                        <h2 className="text-4xl font-extrabold tracking-tight text-purple-950 dark:text-purple-50">
+                            Zona Play
+                        </h2>
+                    </>
+                }
+                description="Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global."
+                andiMessage="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos."
+            />
 
             <Tabs defaultValue="juegos" className="w-full">
                 <TabsList className="mb-6 grid w-full grid-cols-2 max-w-[400px]">
@@ -91,8 +83,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';
                     const bgTheme = game.cover_theme || 'bg-primary/10';
                     return (
-                    <Card key={game.id} className="overflow-hidden border-2 border-border/50 hover:border-primary/30 hover:shadow-xl transition-all hover:-translate-y-1 bg-card rounded-2xl group flex flex-col">
-                        <div className={`h-48 relative flex flex-col items-center justify-center p-4 overflow-hidden ${bgTheme}`}>
+                    <Card key={game.id} className="overflow-hidden border-2 border-border/50 hover:border-primary/30 hover:shadow-xl transition-all hover:-translate-y-1 bg-card rounded-2xl group flex flex-col h-full">
+                        <div className={`h-36 relative flex flex-col items-center justify-center p-4 overflow-hidden ${bgTheme}`}>
                             {game.cover_image_url && (
                                 <>
                                     <div className="absolute inset-0 bg-black/40 z-10" />
@@ -101,26 +93,26 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             )}
                             <div className="text-center relative z-20 flex flex-col items-center justify-center w-full">
                                 {isUpcoming && (
-                                    <div className="bg-yellow-500 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase flex items-center gap-1.5 shadow-sm mb-2 tracking-wider inline-flex">
+                                    <div className="bg-yellow-500 text-white text-[9px] font-black px-2.5 py-1 rounded-md uppercase flex items-center gap-1 shadow-sm mb-1.5 tracking-wider inline-flex">
                                         {game.show_countdown && game.release_at ? (
-                                            <><Clock className="w-3.5 h-3.5" /> Faltan {Math.max(1, Math.ceil((new Date(game.release_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))} días</>
+                                            <><Clock className="w-3 h-3" /> Faltan {Math.max(1, Math.ceil((new Date(game.release_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))} días</>
                                         ) : (
-                                            <><CalendarDays className="w-3.5 h-3.5" /> Próximamente</>
+                                            <><CalendarDays className="w-3 h-3" /> Próximamente</>
                                         )}
                                     </div>
                                 )}
-                                <h3 className={`text-lg sm:text-xl font-black drop-shadow-md line-clamp-3 uppercase tracking-tight ${game.cover_image_url ? 'text-white' : 'text-primary'}`}>
+                                <h3 className={`text-base sm:text-lg font-black drop-shadow-md line-clamp-2 uppercase tracking-tight leading-tight ${game.cover_image_url ? 'text-white' : 'text-primary'}`}>
                                     {game.cover_title || game.title}
                                 </h3>
                                 {(game.cover_subtitle) && (
-                                    <p className={`text-xs font-bold mt-1 tracking-wide ${game.cover_image_url ? 'text-white/90' : 'text-foreground/80'}`}>
+                                    <p className={`text-[10px] font-bold mt-1 tracking-wide line-clamp-1 ${game.cover_image_url ? 'text-white/90' : 'text-foreground/80'}`}>
                                         {game.cover_subtitle}
                                     </p>
                                 )}
                             </div>
                         </div>
-                        <CardContent className="p-5 flex flex-col flex-1">
-                            <p className="text-[15px] text-muted-foreground line-clamp-3 mb-5 flex-1 leading-relaxed">
+                        <CardContent className="p-4 flex flex-col flex-1">
+                            <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1 leading-relaxed">
                                 {game.description || 'Pon a prueba tus conocimientos en este desafío especial.'}
                             </p>
                             

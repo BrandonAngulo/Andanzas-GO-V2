@@ -9,7 +9,7 @@ import { Badge } from '../ui/badge';
 import { TextWithLearnLinks } from '../shared/TextWithLearnLinks';
 import { Game, gamesService } from '../../services/games.service';
 import { Gamepad2, Quote } from 'lucide-react';
-import { AndiGuia } from '../shared/AndiGuia';
+import { PanelBanner } from './shared/PanelBanner';
 
 interface PaQueSepasPanelProps {
     entries: LearnEntry[];
@@ -144,31 +144,23 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
     return (
         <ScrollArea className="h-[72vh] bg-muted/20">
             <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-                <div className="relative mb-8 overflow-hidden rounded-[2rem] border shadow-sm bg-indigo-50/50 dark:bg-indigo-950/20">
-                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                        <img 
-                            src="/images/banner_aprende.png" 
-                            alt="Fondo Aprende" 
-                            className="w-full h-full object-cover object-right"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50/95 via-indigo-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
-                    </div>
-                    <div className="relative z-10 p-8 md:p-10 max-w-lg">
-                        <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-indigo-950 dark:text-indigo-50">
+                <PanelBanner
+                    panelKey="paquesepas"
+                    defaultImage="/images/banner_aprende.png"
+                    gradientClass="from-indigo-50/95 via-indigo-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
+                    title={
+                        <>
                             <div className="bg-indigo-600 p-2.5 rounded-2xl shadow-md text-white">
                                 <BookOpen className="h-6 w-6" />
                             </div>
-                            Pa' que sepás
-                        </h2>
-                        <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-                            Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.
-                        </p>
-                    </div>
-                </div>
-                
-                <div className="mb-8">
-                    <AndiGuia message="¡Ey andante! La ciudad está llena de historias escondidas. Aquí te dejo mis favoritas para que las leás con un buen champús o cafecito." variant="tip" />
-                </div>
+                            <h2 className="text-4xl font-extrabold tracking-tight text-indigo-950 dark:text-indigo-50">
+                                Pa' que sepás
+                            </h2>
+                        </>
+                    }
+                    description="Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves."
+                    andiMessage="¡Ey andante! La ciudad está llena de historias escondidas. Aquí te dejo mis favoritas para que las leás con un buen champús o cafecito."
+                />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {entries.map(entry => (

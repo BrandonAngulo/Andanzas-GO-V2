@@ -175,7 +175,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         
         // Ensure accurate comparison handling depending on type
         // Assume multiple choice string comparison for now
-        const isCorrect = !isTimeout && selectedAnswer === currentQ.correct_answer;
+        const isCorrect = state.game?.type === 'quiz' ? true : (!isTimeout && selectedAnswer === currentQ.correct_answer);
         
         let pointsEarned = 0;
         let newStreak = isCorrect ? state.streak + 1 : 0;

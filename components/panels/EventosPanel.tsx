@@ -10,6 +10,7 @@ import { Calendar, MapPin, Clock, Search, Filter, ArrowRight, Music, Ticket } fr
 import { Input } from '../ui/input';
 import { LazyImage } from '../ui/lazy-image';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
+import { PanelBanner } from './shared/PanelBanner';
 
 interface EventosPanelProps {
   eventos: Evento[];
@@ -205,27 +206,22 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
         
         {/* Header Hero */}
-        <div className="relative mb-6 overflow-hidden rounded-[2rem] border shadow-sm bg-orange-50/50 dark:bg-orange-950/20">
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <img 
-                src="/images/banner_eventos.png" 
-                alt="Fondo Eventos" 
-                className="w-full h-full object-cover object-right"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-50/95 via-orange-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
-          </div>
-          <div className="relative z-10 p-8 md:p-10 max-w-lg">
-            <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-orange-950 dark:text-orange-50">
-                <div className="bg-orange-600 p-2.5 rounded-2xl shadow-md text-white">
-                    <Calendar className="h-6 w-6" />
-                </div>
-                Cartelera Cultural
-            </h2>
-            <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-              Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida.
-            </p>
-          </div>
-        </div>
+        <PanelBanner
+            panelKey="eventos"
+            defaultImage="/images/banner_eventos.png"
+            gradientClass="from-orange-50/95 via-orange-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
+            title={
+                <>
+                    <div className="bg-orange-600 p-2.5 rounded-2xl shadow-md text-white">
+                        <Calendar className="h-6 w-6" />
+                    </div>
+                    <h2 className="text-4xl font-extrabold tracking-tight text-orange-950 dark:text-orange-50">
+                        Cartelera Cultural
+                    </h2>
+                </>
+            }
+            description="Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida."
+        />
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           
