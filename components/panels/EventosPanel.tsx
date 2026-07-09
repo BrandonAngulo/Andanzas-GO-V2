@@ -214,10 +214,9 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
             {/* Vector Illustration */}
             <div className="absolute right-0 bottom-0 flex items-end justify-end pointer-events-none z-10 w-64 md:w-80 h-full">
                 <img 
-                    src="/images/salsa_obrero.png" 
+                    src="/images/ilus_salsa.png" 
                     alt="Eventos" 
-                    className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-lighten opacity-90 object-right-bottom" 
-                    style={{ maskImage: 'linear-gradient(to right, transparent, black 30%)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 30%)' }}
+                    className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-lighten opacity-100 object-right-bottom drop-shadow-xl" 
                 />
             </div>
           </div>

@@ -22,7 +22,44 @@ import { reviewsService } from '../../services/reviews.service';
 import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { COLOMBIAN_CITIES } from '../../lib/locations';
 
-// Dynamic avatars will be fetched from the database via userService.getAvatarPresets()
+// Hardcoded avatars for immediate rendering in UI
+const HARDCODED_AVATARS = [
+    {
+        id: 'gata_callejera',
+        name: 'La Gata Callejera',
+        personality_title: 'Independiente e intuitiva',
+        phrase: 'Por aquí hay algo que no sale en los mapas.',
+        image_url: '/images/avatars/gato.png'
+    },
+    {
+        id: 'caleño_salsero',
+        name: 'El Caleño Salsero',
+        personality_title: 'Festivo y rítmico',
+        phrase: 'Si escuchás bien, Cali también camina en clave.',
+        image_url: '/images/avatars/salsero.png'
+    },
+    {
+        id: 'ave_curiosa',
+        name: 'El Ave Curiosa (Bichofué)',
+        personality_title: 'Observadora y ligera',
+        phrase: 'Mirá dos veces: la ciudad siempre deja pistas.',
+        image_url: '/images/avatars/bichofue.png'
+    },
+    {
+        id: 'barranquero',
+        name: 'El Barranquero',
+        personality_title: 'Misterioso y colorido',
+        phrase: 'Entre la selva de cemento, mi canto es un secreto.',
+        image_url: '/images/avatars/barranquero.png'
+    },
+    {
+        id: 'maceta',
+        name: 'La Dulce Maceta',
+        personality_title: 'Tradicional y alegre',
+        phrase: 'Endulzo cada paso que das por Cali.',
+        image_url: '/images/avatars/maceta.png'
+    }
+];
 
 interface PerfilPanelProps {
     favCount: number;
@@ -108,8 +145,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 }
             };
             const loadAvatars = async () => {
-                const presets = await userService.getAvatarPresets();
-                setAvailableAvatars(presets);
+                setAvailableAvatars(HARDCODED_AVATARS);
             };
             loadBadges();
             loadAvatars();
@@ -578,7 +614,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     <div className={`w-full h-full border border-dashed rounded-sm flex flex-col items-center justify-center overflow-hidden p-1 ${isLevel3 ? 'border-yellow-500/50' : 'border-border'}`}>
                                                         <div className={`w-full h-1/2 flex items-center justify-center ${getInnerStyle()} rounded-sm mb-1`}>
                                                              {hasAnyExperience ? (
-                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 opacity-80"><path d="M2 12h20"/><path d="M12 2v20"/><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/></svg>
+                                                                <img src="/images/ilus_ermita.png" alt="Cali" className="w-12 h-12 object-contain drop-shadow-sm mix-blend-multiply opacity-90" />
                                                              ) : (
                                                                 <MapPin className="w-8 h-8 opacity-40" />
                                                              )}

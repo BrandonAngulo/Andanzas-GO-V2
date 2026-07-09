@@ -62,8 +62,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         <img 
                             src="/images/ilus_juegos.png" 
                             alt="Juegos y Retos" 
-                            className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-lighten opacity-90 object-right-bottom" 
-                            style={{ maskImage: 'linear-gradient(to right, transparent, black 30%)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 30%)' }}
+                            className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-lighten opacity-100 object-right-bottom drop-shadow-xl" 
                         />
                     </div>
                 </div>
