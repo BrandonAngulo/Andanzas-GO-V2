@@ -139,6 +139,45 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                         />
                     </div>
 
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-muted/20 p-4 rounded-lg border border-border/50">
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Categoría</label>
+                            <Input 
+                                value={editingQuestion.category || ''} 
+                                onChange={e => setEditingQuestion({ ...editingQuestion, category: e.target.value })} 
+                                placeholder="Ej: Historia"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Nivel Dificultad (1-5)</label>
+                            <Select 
+                                value={editingQuestion.level?.toString() || "1"} 
+                                onValueChange={(val) => setEditingQuestion({ ...editingQuestion, level: parseInt(val) })}
+                            >
+                                <SelectTrigger><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    {[1,2,3,4,5].map(l => <SelectItem key={l} value={l.toString()}>Nivel {l}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Tiempo (seg)</label>
+                            <Input 
+                                type="number"
+                                value={editingQuestion.time_limit_sec || 30} 
+                                onChange={e => setEditingQuestion({ ...editingQuestion, time_limit_sec: parseInt(e.target.value) || 30 })} 
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Puntos</label>
+                            <Input 
+                                type="number"
+                                value={editingQuestion.points_reward || 10} 
+                                onChange={e => setEditingQuestion({ ...editingQuestion, points_reward: parseInt(e.target.value) || 10 })} 
+                            />
+                        </div>
+                    </div>
+
                     {editingQuestion.question_type === 'multiple_choice' && (
                         <div className="space-y-3">
                             <label className="text-sm font-medium text-foreground">Opciones (Selecciona la correcta)</label>

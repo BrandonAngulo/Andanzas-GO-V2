@@ -28,7 +28,12 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
         allow_retries: false,
         show_feedback: true,
         leaderboard_enabled: false,
-        related_learn_ids: []
+        related_learn_ids: [],
+        mechanic_type: 'safe_zones',
+        lives_count: 3,
+        questions_per_match: 15,
+        instructions: '',
+        level_distribution: { "1": 3, "2": 3, "3": 3, "4": 3, "5": 3 }
     });
     const [saving, setSaving] = useState(false);
     const [learnEntries, setLearnEntries] = useState<LearnEntry[]>([]);
@@ -56,6 +61,17 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
 
     const handleCheckboxChange = (name: string, checked: boolean) => {
         setFormData(prev => ({ ...prev, [name]: checked }));
+    };
+
+    const handleLevelDistChange = (level: string, value: string) => {
+        const val = parseInt(value) || 0;
+        setFormData(prev => ({
+            ...prev,
+            level_distribution: {
+                ...(prev.level_distribution || {}),
+                [level]: val
+            }
+        }));
     };
 
     const handleRelatedLearnToggle = (id: string) => {
@@ -163,6 +179,62 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
                                 <SelectItem value="archived">Archivado</SelectItem>
                             </SelectContent>
                         </Select>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium leading-none text-foreground">Mecánica del Juego</label>
+                        <Select value={formData.mechanic_type || 'safe_zones'} onValueChange={(val) => handleSelectChange('mechanic_type', val)}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Selecciona mecánica" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="safe_zones">Clásico (Zonas Seguras)</SelectItem>
+                                <SelectItem value="lives">Arcade (Vidas)</SelectItem>
+                                <SelectItem value="multiplier">Multiplicador por Racha</SelectItem>
+                                <SelectItem value="sudden_death">Muerte Súbita</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium leading-none text-foreground">Instrucciones / Reglas Especiales</label>
+                        <Input name="instructions" value={formData.instructions || ''} onChange={handleChange} placeholder="Ej: No puedes equivocarte ni una vez." />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/20 p-4 rounded-lg border border-border/50">
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium leading-none text-foreground">Preguntas por Partida</label>
+                            <Input type="number" name="questions_per_match" value={formData.questions_per_match || 15} onChange={handleChange} />
+                            <p className="text-xs text-muted-foreground">Cantidad total de preguntas que responderá el usuario en una sesión.</p>
+                        </div>
+                        {formData.mechanic_type === 'lives' && (
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium leading-none text-foreground">Cantidad de Vidas</label>
+                                <Input type="number" name="lives_count" value={formData.lives_count || 3} onChange={handleChange} />
+                            </div>
+                        )}
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium leading-none text-foreground">Distribución de Preguntas (Niveles)</label>
+                        <p className="text-xs text-muted-foreground mb-2">Cuántas preguntas sacar del banco para cada nivel.</p>
+                        <div className="grid grid-cols-5 gap-2">
+                            {[1, 2, 3, 4, 5].map(lvl => (
+                                <div key={lvl} className="flex flex-col items-center">
+                                    <label className="text-xs font-semibold mb-1">N{lvl}</label>
+                                    <Input 
+                                        type="number" 
+                                        className="h-8 px-2 text-center" 
+                                        value={formData.level_distribution?.[lvl.toString()] ?? 0} 
+                                        onChange={(e) => handleLevelDistChange(lvl.toString(), e.target.value)} 
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
