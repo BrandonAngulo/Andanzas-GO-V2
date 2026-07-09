@@ -4,7 +4,7 @@ import { Ruta, Site } from '../../types';
 import { Button } from '../ui/button';
 import { LazyImage } from '../ui/lazy-image';
 import { ScrollArea } from '../ui/scroll-area';
-import { cn, getTranslated } from '../../lib/utils';
+import { cn, getTranslated, formatDuration } from '../../lib/utils';
 import { useI18n } from '../../i18n';
 import { BADGES } from '../../data/badges';
 import { useAuth } from '../../contexts/AuthContext';
@@ -138,7 +138,7 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                             <div className="flex items-center gap-6 text-sm text-muted-foreground font-medium pt-4">
                                 <div className="flex items-center gap-2">
                                     <Clock className="w-4 h-4 text-primary" />
-                                    {route.duracionMin} min
+                                    {formatDuration(route.duracionMin, language as 'es' | 'en')}
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <MapPin className="w-4 h-4 text-primary" />

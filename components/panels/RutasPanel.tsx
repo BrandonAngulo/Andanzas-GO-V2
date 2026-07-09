@@ -11,7 +11,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { useI18n } from '../../i18n';
-import { getTranslated } from '../../lib/utils';
+import { getTranslated, formatDuration } from '../../lib/utils';
 import { BADGES } from '../../data/badges';
 import { LazyImage } from '../ui/lazy-image';
 
@@ -140,7 +140,13 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                         ? "border-yellow-500/50 shadow-[0_0_20px_-3px_rgba(234,179,8,0.25)] bg-gradient-to-br from-yellow-500/5 to-transparent"
                         : "border-border/60"
                 )}
-                onClick={() => onStartRoute(route)}
+                onClick={() => {
+                    if (route.content_only || !route.puntos || route.puntos.length === 0) {
+                        onOpenDetail(route);
+                    } else {
+                        onStartRoute(route);
+                    }
+                }}
             >
                 {/* Background Image Area */}
                 <div className="h-32 w-full relative overflow-hidden bg-muted">
@@ -183,16 +189,22 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
 
                     <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-3 border-dashed border-border/60">
                         <span className="flex items-center gap-1.5"><Map className="w-3.5 h-3.5 text-primary" /> {route.puntos.length} paradas</span>
-                        <span className="font-mono text-primary/80 font-bold">{route.duracionMin} min</span>
+                        <span className="font-mono text-primary/80 font-bold">{formatDuration(route.duracionMin, language as 'es' | 'en')}</span>
                     </div>
                 </div>
 
                 {/* Hover Effect Reveal */}
                 {!isCompleted && !isInProgress && (
                     <div className="absolute inset-0 bg-primary/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            <Compass className="w-5 h-5 animate-spin duration-[3s]" /> {language === 'es' ? 'Iniciar Recorrido' : 'Start Route'}
-                        </span>
+                        {(route.content_only || !route.puntos || route.puntos.length === 0) ? (
+                            <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <Lock className="w-5 h-5" /> {language === 'es' ? 'En Construcción' : 'Coming Soon'}
+                            </span>
+                        ) : (
+                            <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <Compass className="w-5 h-5 animate-spin duration-[3s]" /> {language === 'es' ? 'Iniciar Recorrido' : 'Start Route'}
+                            </span>
+                        )}
                     </div>
                 )}
             </div>

@@ -23,6 +23,20 @@ export function getTranslated<T extends object, K extends keyof T>(
   return (val === null || val === undefined) ? '' : (val as T[K]);
 }
 
+export function formatDuration(minutes: number, lang: 'es' | 'en'): string {
+  if (!minutes || minutes < 0) return '';
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  
+  if (hours === 0) {
+    return `${mins} min`;
+  } else if (mins === 0) {
+    return `${hours} h`;
+  } else {
+    return `${hours} h ${mins} min`;
+  }
+}
+
 export const getMacroCategory = (category: string | undefined | null, lang: 'es' | 'en'): string => {
   if (!category) return lang === 'es' ? 'Sitios Históricos / Otros' : 'Historic / Other';
   const cat = category.toLowerCase();

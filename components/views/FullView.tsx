@@ -5,7 +5,7 @@ import { Badge } from '../ui/badge';
 import { Site, Evento, Ruta, RecomendacionRuta, RecomendacionTipo } from '../../types';
 import ExpandableText from '../shared/ExpandableText';
 import AddReviewInline from '../shared/AddReviewInline';
-import { cn, getTranslated, getMacroCategory } from '../../lib/utils';
+import { getTranslated, getMacroCategory, getCategoryIcon, getCategoryColor, cn, formatDuration } from '../../lib/utils';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { LazyImage } from '../ui/lazy-image';
@@ -428,6 +428,14 @@ const RouteDetail: React.FC<{ data: Ruta, goToPlaceInMap: (placeName: string) =>
                 </div>
             );
         }
+        if (data.content_only || !data.puntos || data.puntos.length === 0) {
+            return (
+                <Button size="lg" disabled className="bg-muted text-muted-foreground border-border">
+                    <Lock className="h-5 w-5 mr-2" />
+                    {language === 'es' ? 'En Construcción (Solo Lectura)' : 'Under Construction (Read Only)'}
+                </Button>
+            );
+        }
         return <Button size="lg" onClick={() => onStartRoute(data)}>{t('fullView.startRoute')}</Button>;
     };
 
@@ -438,7 +446,10 @@ const RouteDetail: React.FC<{ data: Ruta, goToPlaceInMap: (placeName: string) =>
             {/* Header with Title and Duration */}
             <div>
                 <h2 className="text-3xl font-bold leading-tight">{getTranslated(data, 'nombre', language)}</h2>
-                <p className="text-muted-foreground mt-1">{t('fullView.estimatedDuration', { duration: data.duracionMin })}</p>
+                <p className="text-muted-foreground mt-1">
+                    {language === 'es' ? 'Duración estimada: ' : 'Estimated duration: '}
+                    {formatDuration(data.duracionMin, language as 'es' | 'en')}
+                </p>
             </div>
 
             {/* Route Description */}

@@ -291,6 +291,8 @@ export interface Ruta {
   gamification_level?: 'none' | 'light' | 'medium' | 'full'; // New field for Phase 5
   publico: boolean;
   status?: 'draft' | 'published' | 'archived';
+  fully_playable?: boolean;
+  content_only?: boolean;
   reward_badge_id?: string;
   mensajeCierre?: string;
   mensajeCierre_en?: string;
