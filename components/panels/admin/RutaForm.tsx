@@ -30,7 +30,10 @@ export const RutaForm: React.FC<RutaFormProps> = ({ routeId, onClose, onSaved })
         justificaciones: {},
         recomendaciones: [],
         mensajeCierre: '',
-        reward_badge_id: ''
+        reward_badge_id: '',
+        requires_registration: false,
+        max_capacity: 0,
+        registration_status: 'open'
     });
 
     useEffect(() => {
@@ -165,10 +168,11 @@ export const RutaForm: React.FC<RutaFormProps> = ({ routeId, onClose, onSaved })
             </div>
 
             <Tabs defaultValue="basic" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                     <TabsTrigger value="basic">Básico</TabsTrigger>
                     <TabsTrigger value="points">Puntos & Historia</TabsTrigger>
                     <TabsTrigger value="gamification">Gamificación</TabsTrigger>
+                    <TabsTrigger value="registration">Inscripciones</TabsTrigger>
                     <TabsTrigger value="recommendations">Recomendaciones</TabsTrigger>
                 </TabsList>
 
@@ -287,6 +291,46 @@ export const RutaForm: React.FC<RutaFormProps> = ({ routeId, onClose, onSaved })
                             <label className="text-sm font-semibold">Mensaje de Cierre / Felicitaciones</label>
                             <Textarea name="mensajeCierre" value={formData.mensajeCierre || ''} onChange={handleChange} rows={2} placeholder="¡Felicidades por completar la ruta!" />
                         </div>
+                    </div>
+                </TabsContent>
+
+                {/* REGISTRATION */}
+                <TabsContent value="registration" className="space-y-4 pt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2 md:col-span-2 flex items-center gap-2 pt-2">
+                            <input 
+                                type="checkbox" 
+                                id="requires_registration"
+                                name="requires_registration"
+                                checked={!!formData.requires_registration} 
+                                onChange={handleChange}
+                                className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                            />
+                            <label htmlFor="requires_registration" className="text-sm font-semibold cursor-pointer">
+                                Esta ruta requiere inscripción previa
+                            </label>
+                        </div>
+                        {formData.requires_registration && (
+                            <>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold">Cupo Máximo (0 = Ilimitado)</label>
+                                    <Input type="number" name="max_capacity" value={formData.max_capacity || 0} onChange={handleNumberChange} />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold">Estado de Inscripciones</label>
+                                    <select 
+                                        name="registration_status" 
+                                        value={formData.registration_status || 'open'} 
+                                        onChange={handleChange}
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    >
+                                        <option value="open">Abierto al público</option>
+                                        <option value="closed">Cerrado (Solo ver lista)</option>
+                                        <option value="invite_only">Por Invitación (Administrador inscribe)</option>
+                                    </select>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </TabsContent>
 

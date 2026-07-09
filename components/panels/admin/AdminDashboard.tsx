@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
 import { ScrollArea } from '../../ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
@@ -12,46 +13,111 @@ import { AdminRutas } from './AdminRutas';
 import { AdminJuegos } from './AdminJuegos';
 import { AdminSitios } from './AdminSitios';
 import { AdminEventos } from './AdminEventos';
+import { AdminIntroModal } from './AdminIntroModal';
 import { AdminNoticias } from './AdminNoticias';
 import { AdminUsuarios } from './AdminUsuarios';
 import { AdminInstitucional } from './AdminInstitucional';
 import { CuriousFactsManager } from './CuriousFactsManager';
 import { AdminMetricas } from './AdminMetricas';
 
-// Subcomponents for the admin tabs (We'll build these later)
-const AdminOverview = () => (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">--</div>
-                <p className="text-xs text-muted-foreground">+0 desde el mes pasado</p>
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Curiosidades</CardTitle>
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">--</div>
-                <p className="text-xs text-muted-foreground">Activas en la app</p>
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Rutas Creadas</CardTitle>
-                <Map className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">--</div>
-            </CardContent>
-        </Card>
-    </div>
-);
+const AdminOverview = () => {
+    const [counts, setCounts] = useState({ users: 0, curiosities: 0, routes: 0, sites: 0, events: 0, news: 0 });
+
+    useEffect(() => {
+        const fetchCounts = async () => {
+            try {
+                const [
+                    { count: usersCount },
+                    { count: curiositiesCount },
+                    { count: routesCount },
+                    { count: sitesCount },
+                    { count: eventsCount },
+                    { count: newsCount }
+                ] = await Promise.all([
+                    supabase.from('profiles').select('*', { count: 'exact', head: true }),
+                    supabase.from('curious_facts').select('*', { count: 'exact', head: true }).eq('status', 'published'),
+                    supabase.from('rutas').select('*', { count: 'exact', head: true }),
+                    supabase.from('sites').select('*', { count: 'exact', head: true }),
+                    supabase.from('events').select('*', { count: 'exact', head: true }).eq('status', 'published'),
+                    supabase.from('news').select('*', { count: 'exact', head: true }).eq('status', 'published')
+                ]);
+                
+                setCounts({
+                    users: usersCount || 0,
+                    curiosities: curiositiesCount || 0,
+                    routes: routesCount || 0,
+                    sites: sitesCount || 0,
+                    events: eventsCount || 0,
+                    news: newsCount || 0
+                });
+            } catch (err) {
+                console.error("Error fetching admin overview counts:", err);
+            }
+        };
+        fetchCounts();
+    }, []);
+
+    return (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{counts.users}</div>
+                    <p className="text-xs text-muted-foreground">Registrados en el sistema</p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Curiosidades Activas</CardTitle>
+                    <BookOpen className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{counts.curiosities}</div>
+                    <p className="text-xs text-muted-foreground">Visibles en la app</p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Rutas Creadas</CardTitle>
+                    <Map className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{counts.routes}</div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Sitios Registrados</CardTitle>
+                    <Landmark className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{counts.sites}</div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Eventos Activos</CardTitle>
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{counts.events}</div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Noticias Publicadas</CardTitle>
+                    <Megaphone className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{counts.news}</div>
+                </CardContent>
+            </Card>
+        </div>
+    );
+};
 
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
@@ -74,44 +140,13 @@ const AdminDashboard: React.FC = () => {
     return (
         <ScrollArea className="h-[72vh] bg-muted/20">
             <div className="p-4 md:p-6 max-w-6xl mx-auto">
+                <AdminIntroModal isOpen={showIntroModal} onClose={() => setShowIntroModal(false)} />
                 <div className="mb-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                         <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
                             <ShieldAlert className="h-8 w-8 text-primary" />
                             Panel de Administración
                         </h2>
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline" size="sm" className="rounded-full gap-2 shrink-0">
-                                    <Info className="w-4 h-4" />
-                                    ¿Cómo funciona?
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
-                                <DialogHeader>
-                                    <DialogTitle className="flex items-center gap-2 text-xl">
-                                        <Info className="w-5 h-5 text-primary" />
-                                        Guía del Panel
-                                    </DialogTitle>
-                                </DialogHeader>
-                                <div className="space-y-4 text-sm text-muted-foreground mt-2">
-                                    <p>Este panel te permite gestionar todo el contenido dinámico de Andanzas GO.</p>
-                                    <ul className="space-y-3">
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><ShieldAlert className="w-3.5 h-3.5" /> General:</strong> Vista rápida de estadísticas y estado del sistema.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><Activity className="w-3.5 h-3.5" /> Actividad:</strong> Métricas de uso, sesiones y eventos de los usuarios.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Sabías que:</strong> Frases cortas y curiosidades aleatorias.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Pa' que sepás:</strong> Artículos editoriales sobre cultura e historia.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><Map className="w-3.5 h-3.5" /> Rutas:</strong> Recorridos temáticos que agrupan varios sitios de interés.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><Landmark className="w-3.5 h-3.5" /> Sitios:</strong> Puntos de interés en el mapa (museos, parques, etc).</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><Settings className="w-3.5 h-3.5" /> Eventos:</strong> Agenda cultural con fechas y horarios específicos.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><Megaphone className="w-3.5 h-3.5" /> Noticias:</strong> Novedades para la comunidad de usuarios.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><Gamepad2 className="w-3.5 h-3.5" /> Juegos:</strong> Trivias y retos. (Puedes programar lanzamientos).</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Institucional:</strong> Información sobre Andanzas GO y aliados.</li>
-                                        <li><strong className="text-foreground flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> Usuarios:</strong> Gestión de roles (Admin/Editor).</li>
-                                    </ul>
-                                </div>
-                            </DialogContent>
-                        </Dialog>
                     </div>
                     <p className="text-muted-foreground">
                         Bienvenido, {userProfile?.full_name || 'Admin'}. Gestiona el contenido de Andanzas GO.

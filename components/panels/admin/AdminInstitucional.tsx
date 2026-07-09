@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../../ui/card';
-import { Button } from '../../../ui/button';
-import { Input } from '../../../ui/input';
-import { Textarea } from '../../../ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
+import { Button } from '../../ui/button';
+import { Input } from '../../ui/input';
+import { Textarea } from '../../ui/textarea';
 import { Loader2, Save, Info } from 'lucide-react';
 import { toast } from 'sonner';
-import { institutionalService } from '../../../../services/institutional.service';
-import { InstitutionalContent } from '../../../../types';
+import { institutionalService } from '../../../services/institutional.service';
+import { InstitutionalContent } from '../../../types';
 
 export const AdminInstitucional: React.FC = () => {
     const [contentMap, setContentMap] = useState<Record<string, InstitutionalContent>>({});

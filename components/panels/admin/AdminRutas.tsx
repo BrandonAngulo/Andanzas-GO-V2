@@ -4,8 +4,9 @@ import { routesService } from '../../../services/routes.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Eye, EyeOff, Search, Edit, Plus } from 'lucide-react';
+import { Eye, EyeOff, Search, Edit, Plus, Users } from 'lucide-react';
 import { RutaForm } from './RutaForm';
+import { AdminRutaInscripciones } from './AdminRutaInscripciones';
 
 export const AdminRutas = () => {
     const [routes, setRoutes] = useState<Ruta[]>([]);
@@ -13,6 +14,7 @@ export const AdminRutas = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingRouteId, setEditingRouteId] = useState<string | null>(null);
+    const [viewingRegistrationsRoute, setViewingRegistrationsRoute] = useState<Ruta | null>(null);
 
     useEffect(() => {
         loadRoutes();
@@ -63,6 +65,10 @@ export const AdminRutas = () => {
         return <RutaForm routeId={editingRouteId} onClose={() => setIsFormOpen(false)} onSaved={handleFormSaved} />;
     }
 
+    if (viewingRegistrationsRoute) {
+        return <AdminRutaInscripciones rutaId={viewingRegistrationsRoute.id} rutaNombre={viewingRegistrationsRoute.nombre} onClose={() => setViewingRegistrationsRoute(null)} />;
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -109,6 +115,11 @@ export const AdminRutas = () => {
                                         >
                                             {route.publico ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                         </Button>
+                                        {route.requires_registration && (
+                                            <Button variant="outline" size="sm" onClick={() => setViewingRegistrationsRoute(route)} title="Ver inscripciones">
+                                                <Users className="w-4 h-4 text-primary" />
+                                            </Button>
+                                        )}
                                         <Button variant="outline" size="sm" onClick={() => handleOpenEdit(route.id)} title="Editar ruta">
                                             <Edit className="w-4 h-4" />
                                         </Button>

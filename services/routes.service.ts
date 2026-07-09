@@ -55,7 +55,11 @@ export const routesService = {
                 duracion_min: route.duracionMin,
                 descripcion: route.descripcion,
                 justificaciones: route.justificaciones,
-                is_published: route.publico || false
+                is_published: route.publico || false,
+                requires_registration: route.requires_registration || false,
+                max_capacity: route.max_capacity,
+                current_registrations: route.current_registrations || 0,
+                registration_status: route.registration_status || 'open'
             })
             .select()
             .single();
@@ -75,6 +79,10 @@ export const routesService = {
         if (route.descripcion !== undefined) updates.descripcion = route.descripcion;
         if (route.publico !== undefined) updates.is_published = route.publico;
         if (route.puntos !== undefined) updates.puntos = route.puntos;
+        if (route.requires_registration !== undefined) updates.requires_registration = route.requires_registration;
+        if (route.max_capacity !== undefined) updates.max_capacity = route.max_capacity;
+        if (route.current_registrations !== undefined) updates.current_registrations = route.current_registrations;
+        if (route.registration_status !== undefined) updates.registration_status = route.registration_status;
 
         const { data, error } = await supabase
             .from('routes')
@@ -101,6 +109,49 @@ export const routesService = {
             return false;
         }
         return true;
+    },
+
+    async registerForRoute(routeId: string, userId: string): Promise<boolean> {
+        const { error } = await supabase
+            .from('ruta_registrations')
+            .insert({ ruta_id: routeId, user_id: userId, status: 'confirmed' });
+        
+        if (error) {
+            console.error('Error registering for route:', error);
+            return false;
+        }
+        return true;
+    },
+
+    async cancelRegistration(routeId: string, userId: string): Promise<boolean> {
+        const { error } = await supabase
+            .from('ruta_registrations')
+            .update({ status: 'cancelled' })
+            .eq('ruta_id', routeId)
+            .eq('user_id', userId);
+        
+        if (error) {
+            console.error('Error cancelling route registration:', error);
+            return false;
+        }
+        return true;
+    },
+
+    async getRegistrations(routeId: string): Promise<any[]> {
+        const { data, error } = await supabase
+            .from('ruta_registrations')
+            .select(`
+                id, status, created_at,
+                profiles:user_id (id, full_name, email)
+            `)
+            .eq('ruta_id', routeId)
+            .neq('status', 'cancelled');
+        
+        if (error) {
+            console.error('Error fetching route registrations:', error);
+            return [];
+        }
+        return data || [];
     }
 };
 
@@ -121,6 +172,10 @@ function mapRoute(dbRoute: any): Ruta {
         gamificacion: dbRoute.gamificacion,
         publico: dbRoute.is_published,
         status: dbRoute.status || (dbRoute.is_published ? 'published' : 'draft'),
-        reward_badge_id: dbRoute.reward_badge_id
+        reward_badge_id: dbRoute.reward_badge_id,
+        requires_registration: dbRoute.requires_registration,
+        max_capacity: dbRoute.max_capacity,
+        current_registrations: dbRoute.current_registrations,
+        registration_status: dbRoute.registration_status
     };
 }

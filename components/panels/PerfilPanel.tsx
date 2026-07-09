@@ -531,12 +531,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <CardContent className="p-5 flex gap-4 overflow-x-auto snap-x hide-scrollbar">
                                     {stamps.length > 0 ? stamps.map((stamp, idx) => (
                                         <div key={stamp.id} className="flex flex-col items-center gap-2 snap-center shrink-0 w-28 group cursor-pointer relative">
-                                            <div className={`w-20 h-20 rounded-full border-4 border-dashed p-1 flex items-center justify-center bg-background shadow-md relative group-hover:scale-105 transition-transform ${stamp.color_theme ? \`border-\${stamp.color_theme}-500/50\` : 'border-primary/50'}`}>
-                                                <div className={`absolute inset-1 rounded-full flex items-center justify-center overflow-hidden ${stamp.color_theme ? \`bg-\${stamp.color_theme}-500/10\` : 'bg-primary/10'}`}>
+                                            <div className={`w-20 h-20 rounded-full border-4 border-dashed p-1 flex items-center justify-center bg-background shadow-md relative group-hover:scale-105 transition-transform ${stamp.color_theme ? 'border-' + stamp.color_theme + '-500/50' : 'border-primary/50'}`}>
+                                                <div className={`absolute inset-1 rounded-full flex items-center justify-center overflow-hidden ${stamp.color_theme ? 'bg-' + stamp.color_theme + '-500/10' : 'bg-primary/10'}`}>
                                                     {stamp.image_url ? (
                                                         <img src={stamp.image_url} alt={stamp.title} className="w-full h-full object-cover mix-blend-multiply opacity-80" />
                                                     ) : (
-                                                        <span className={`text-[10px] font-black uppercase drop-shadow-sm rotate-[-15deg] opacity-80 ${stamp.color_theme ? \`text-\${stamp.color_theme}-600\` : 'text-primary'}`}>{stamp.city || 'Sellado'}</span>
+                                                        <span className={`text-[10px] font-black uppercase drop-shadow-sm rotate-[-15deg] opacity-80 ${stamp.color_theme ? 'text-' + stamp.color_theme + '-600' : 'text-primary'}`}>{stamp.city || 'Sellado'}</span>
                                                     )}
                                                 </div>
                                             </div>

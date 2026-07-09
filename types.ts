@@ -35,6 +35,8 @@ export interface Game {
   time_limit_seconds?: number;
   points_per_correct_answer?: number;
   leaderboard_enabled?: boolean;
+  rating_average?: number | null;
+  rating_count?: number;
 }
 
 export interface GameQuestion {
@@ -139,7 +141,9 @@ export interface Site {
   tipo_en?: string;
   lat: number;
   lng: number;
-  rating: number;
+  rating: number; // legacy
+  rating_average?: number | null;
+  rating_count?: number;
   visitas: number;
   logoUrl: string;
   descripcion: string;
@@ -291,6 +295,12 @@ export interface Ruta {
   mensajeCierre?: string;
   mensajeCierre_en?: string;
   coverUrl?: string;
+
+  // Registration & Capacity
+  requires_registration?: boolean;
+  max_capacity?: number | null;
+  current_registrations?: number;
+  registration_status?: 'open' | 'closed' | 'invite_only';
 }
 
 export interface Review {

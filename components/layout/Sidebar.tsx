@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
           <div className="text-xs font-medium text-muted-foreground px-3 py-2 uppercase tracking-wider opacity-70">
             App
           </div>
-          <Item id="tendencias" icon={TrendingUp} label={t('panelTitles.tendencias')} />
+          <Item id="tendencias" icon={TrendingUp} label={import.meta.env.VITE_ENABLE_MOCK_DATA === 'false' ? 'Recomendados' : t('panelTitles.tendencias')} />
           <Item id="configuracion" icon={Settings} label={t('panelTitles.configuracion')} />
           <Item id="soporte" icon={HelpCircle} label={t('panelTitles.soporte')} />
           <Item id="sobre" icon={Info} label={t('panelTitles.sobre') || 'Sobre Andanzas GO'} />

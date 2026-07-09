@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
-import { supabase } from '../../../lib/supabase';
+import { supabase } from '../../../lib/supabaseClient';
 import { BarChart, Activity, Users, MousePointerClick, CalendarDays } from 'lucide-react';
 
 interface MetricsSummary {

@@ -42,12 +42,21 @@ const TendenciasPanel: React.FC<TendenciasPanelProps> = ({ items, query, onOpenS
               />
               <div className="flex-1">
                 <div className="font-semibold leading-tight">{getTranslated(s, 'nombre', language)}</div>
-                <div className="text-sm text-muted-foreground">{getMacroCategory(getTranslated(s, 'tipo', language) as string, language)} • {s.visitas} {t('rightRail.visits')}</div>
+                <div className="text-sm text-muted-foreground">
+                  {getMacroCategory(getTranslated(s, 'tipo', language) as string, language)}
+                  {import.meta.env.VITE_ENABLE_MOCK_DATA !== 'false' && s.visitas ? ` • ${s.visitas} ${t('rightRail.visits')}` : ''}
+                </div>
               </div>
               <div className="flex flex-col items-end gap-1 ml-auto flex-shrink-0">
-                <div className="flex items-center gap-1 text-sm font-medium">
-                  <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" /> {s.rating}
-                </div>
+                {(!s.rating_count || s.rating_count === 0) ? (
+                  <div className="text-[10px] text-muted-foreground italic text-right max-w-[80px] leading-tight">
+                    Sin calificaciones aún
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 text-sm font-medium">
+                    <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" /> {s.rating_average || s.rating} ({s.rating_count})
+                  </div>
+                )}
                 <Button size="sm" variant="outline" className="mt-1" onClick={() => onOpenSite(s)}>{t('seeMore')}</Button>
               </div>
             </CardContent>

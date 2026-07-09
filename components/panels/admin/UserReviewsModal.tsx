@@ -4,8 +4,7 @@ import { reviewsService } from '../../../services/reviews.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Trash2, X, AlertCircle } from 'lucide-react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+
 
 interface UserReviewsModalProps {
     user: UserProfile;
@@ -75,7 +74,7 @@ export const UserReviewsModal: React.FC<UserReviewsModalProps> = ({ user, onClos
                                                 <div className="flex items-center gap-2 mb-2">
                                                     <span className="text-yellow-500 font-bold">★ {review.rating}</span>
                                                     <span className="text-xs text-muted-foreground">
-                                                        {format(new Date(review.createdAt), "d 'de' MMMM, yyyy", { locale: es })}
+                                                        {new Date(review.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                                                     </span>
                                                 </div>
                                                 <p className="text-sm">{review.text}</p>
