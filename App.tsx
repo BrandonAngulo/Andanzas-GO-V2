@@ -35,6 +35,7 @@ import Logo from "./components/layout/Logo";
 import AccessibilityMenu from "./components/layout/AccessibilityMenu";
 import PrivacyPolicy from './components/legal/PrivacyPolicy';
 import TermsOfService from './components/legal/TermsOfService';
+import { LegalAcceptanceModal } from './components/legal/LegalAcceptanceModal';
 import { useI18n } from "./i18n";
 import NoticiasPanel from "./components/panels/NoticiasPanel";
 import ConfiguracionPanel from "./components/panels/ConfiguracionPanel";
@@ -623,6 +624,7 @@ export default function App() {
       {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} onAuthRequired={() => setAuthDialogOpen(true)} />}
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
+      <LegalAcceptanceModal />
       {activeGameId && <GameSessionModal gameId={activeGameId} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); setActiveChallengeId(null); }} />}
     </div>
   );

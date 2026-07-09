@@ -960,6 +960,26 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <Switch defaultChecked id="notifications-switch" />
                             </div>
                             
+                            <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
+                                <div>
+                                    <h4 className="text-sm font-semibold">Perfil Accesible</h4>
+                                    <p className="text-xs text-muted-foreground mt-0.5">Guardar preferencias de accesibilidad en tu cuenta</p>
+                                </div>
+                                <Switch 
+                                    checked={userProfile?.accessibility_preferences?.persist || false} 
+                                    onChange={async (e) => {
+                                        const checked = e.target.checked;
+                                        if (user) {
+                                            const updatedPrefs = { ...userProfile?.accessibility_preferences, persist: checked };
+                                            await userService.updateProfileData(user.id, { accessibility_preferences: updatedPrefs });
+                                            setUserProfile(prev => prev ? { ...prev, accessibility_preferences: updatedPrefs } : prev);
+                                            toast.success("Preferencias guardadas");
+                                        }
+                                    }} 
+                                    id="accessibility-persist-switch" 
+                                />
+                            </div>
+                            
                             <Button 
                                 variant="outline" 
                                 onClick={() => {

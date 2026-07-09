@@ -386,6 +386,7 @@ export interface UserProfile {
   interests: string[];
   travel_style?: string;
   accessibility_needs?: string[];
+  accessibility_preferences?: Record<string, boolean>;
   selected_avatar_id?: string;
   leaderboard_opt_in?: boolean;
   public_display_name?: string;

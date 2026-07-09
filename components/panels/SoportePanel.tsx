@@ -26,6 +26,7 @@ const SoportePanel: React.FC = () => {
 
     // State for Contact Form
     const [contactEmail, setContactEmail] = useState('');
+    const [contactCategory, setContactCategory] = useState('general');
     const [contactMessage, setContactMessage] = useState('');
     const [contactSuccess, setContactSuccess] = useState(false);
     const [isSubmittingContact, setIsSubmittingContact] = useState(false);
@@ -63,8 +64,8 @@ const SoportePanel: React.FC = () => {
         try {
             await supportService.submitTicket(
                 user?.id || 'anonymous',
-                'contact',
-                `Email: ${contactEmail}\nMessage: ${contactMessage}`
+                contactCategory,
+                `Email: ${contactEmail}\nCategory: ${contactCategory}\nMessage: ${contactMessage}`
             );
             setContactSuccess(true);
             setContactMessage('');
@@ -171,6 +172,22 @@ const SoportePanel: React.FC = () => {
                                             <div className="grid gap-1">
                                                 <label htmlFor="ct-email" className="text-xs font-medium">{t('support.emailLabel')}</label>
                                                 <Input id="ct-email" type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} required />
+                                            </div>
+                                            <div className="grid gap-1">
+                                                <label htmlFor="ct-category" className="text-xs font-medium">Categoría</label>
+                                                <select 
+                                                    id="ct-category" 
+                                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                                    value={contactCategory}
+                                                    onChange={(e) => setContactCategory(e.target.value)}
+                                                    required
+                                                >
+                                                    <option value="general">Duda General</option>
+                                                    <option value="technical">Soporte Técnico</option>
+                                                    <option value="accessibility">Reportar barrera de accesibilidad</option>
+                                                    <option value="appeal">Apelar decisión de moderación</option>
+                                                    <option value="other">Otro</option>
+                                                </select>
                                             </div>
                                             <div className="grid gap-1">
                                                 <label htmlFor="ct-msg" className="text-xs font-medium">{t('support.messageLabel')}</label>
