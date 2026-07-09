@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { Site, Evento } from '../../types';
+import React, { useMemo, useState, useEffect } from 'react';
+import { Site, Evento, CuriousFact } from '../../types';
+import { curiositiesService } from '../../services/curiosities.service';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
@@ -90,6 +91,23 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   const { language } = useI18n();
 
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [randomFact, setRandomFact] = useState<CuriousFact | null>(null);
+
+  useEffect(() => {
+    const loadFact = async () => {
+      try {
+        const facts = await curiositiesService.getPublished('home');
+        if (facts && facts.length > 0) {
+          // Select a random fact from the available ones for the home
+          const randomIndex = Math.floor(Math.random() * facts.length);
+          setRandomFact(facts[randomIndex]);
+        }
+      } catch (err) {
+        console.error("Failed to load random fact", err);
+      }
+    };
+    loadFact();
+  }, []);
 
   const CATEGORY_TAGS = useMemo(() => [
     { id: 'salsa', filter: 'Salsa y Música', label: language === 'es' ? 'Salsa y Música' : 'Salsa & Music', icon: Music, color: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-800/50' },
@@ -222,7 +240,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
       )}
 
       {/* Sabías que Banner */}
-      {!query && !categoryFilter && (
+      {!query && !categoryFilter && randomFact && (
         <div className="px-5 md:px-8 mb-8">
           <div 
             className="bg-card border border-primary/20 rounded-2xl p-5 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-4 relative overflow-hidden"
@@ -237,9 +255,11 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
             </div>
             
             <div className="flex-1 relative z-10">
-              <h4 className="font-bold text-lg text-primary mb-1">Pa' que sepás</h4>
+              <h4 className="font-bold text-lg text-primary mb-1">
+                {randomFact.title || "Pa' que sepás"}
+              </h4>
               <p className="text-sm text-foreground/80 font-medium mb-3">
-                ¿Sabías que en los años 70, los caleños aceleraban los discos de vinilo de salsa a 45 rpm para bailarla más rápido?
+                {randomFact.text}
               </p>
               <div className="flex items-center text-xs font-bold text-primary group-hover:underline">
                 Aprender más sobre cultura local <ArrowRight className="w-3 h-3 ml-1" />

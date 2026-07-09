@@ -28,6 +28,42 @@ export interface LearnEntry {
   };
 }
 
+export interface CuriousFact {
+  id: string;
+  title?: string;
+  text: string;
+  city: string;
+  category: string;
+  tags?: string[];
+  
+  related_entry_id?: string;
+  related_route_id?: string;
+  related_game_id?: string;
+  series_id?: string;
+
+  status: 'draft' | 'review' | 'ready' | 'scheduled' | 'published' | 'archived';
+
+  publish_at?: string;
+  published_at?: string;
+  archived_at?: string;
+
+  show_in_home?: boolean;
+  show_in_pa_que_sepas?: boolean;
+  show_as_notification?: boolean;
+  show_as_news?: boolean;
+
+  notification_title?: string;
+  notification_body?: string;
+
+  created_by?: string;
+  updated_by?: string;
+  published_by?: string;
+
+  created_at?: string;
+  updated_at?: string;
+}
+
+
 export interface Site {
   id: string;
   nombre: string;
@@ -272,6 +308,7 @@ export interface UserProfile {
   travel_style?: string;
   accessibility_needs?: string[];
   leaderboard_opt_in?: boolean; // New field for Phase 5
+  status?: string; // e.g. 'active' or 'banned'
 }
 
 // === Phase 5: Gamification & Trivia Models ===

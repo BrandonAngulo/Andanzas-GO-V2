@@ -162,5 +162,17 @@ export const userService = {
             return false;
         }
         return true;
+    },
+
+    async updateUserStatus(userId: string, status: 'active' | 'banned'): Promise<boolean> {
+        const { error } = await supabase
+            .from('profiles')
+            .update({ status })
+            .eq('id', userId);
+        if (error) {
+            console.error('Error updating user status:', error);
+            return false;
+        }
+        return true;
     }
 };

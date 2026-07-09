@@ -13,6 +13,7 @@ import { AdminSitios } from './AdminSitios';
 import { AdminEventos } from './AdminEventos';
 import { AdminNoticias } from './AdminNoticias';
 import { AdminUsuarios } from './AdminUsuarios';
+import { CuriousFactsManager } from './CuriousFactsManager';
 
 // Subcomponents for the admin tabs (We'll build these later)
 const AdminOverview = () => (
@@ -52,7 +53,7 @@ const AdminOverview = () => (
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'curiosidades' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'settings'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'settings'>('overview');
 
     // Security Check: Only render if user is admin or editor
     if (userProfile?.role !== 'admin' && userProfile?.role !== 'editor' && user?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com' && userProfile?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com') {
@@ -89,8 +90,15 @@ const AdminDashboard: React.FC = () => {
                         <ShieldAlert className="w-4 h-4 mr-2" /> General
                     </Button>
                     <Button 
-                        variant={activeTab === 'curiosidades' ? 'default' : 'outline'} 
-                        onClick={() => setActiveTab('curiosidades')}
+                        variant={activeTab === 'sabias_que' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('sabias_que')}
+                        className="rounded-full"
+                    >
+                        <BookOpen className="w-4 h-4 mr-2" /> Sabías que
+                    </Button>
+                    <Button 
+                        variant={activeTab === 'paquesepas' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('paquesepas')}
                         className="rounded-full"
                     >
                         <BookOpen className="w-4 h-4 mr-2" /> Pa' que sepás
@@ -143,7 +151,8 @@ const AdminDashboard: React.FC = () => {
 
                 <div className="bg-background rounded-xl p-4 md:p-6 shadow-sm border border-border">
                     {activeTab === 'overview' && <AdminOverview />}
-                    {activeTab === 'curiosidades' && <AdminCuriosidades />}
+                    {activeTab === 'sabias_que' && <CuriousFactsManager />}
+                    {activeTab === 'paquesepas' && <AdminCuriosidades />}
                     {activeTab === 'rutas' && <AdminRutas />}
                     {activeTab === 'sitios' && <AdminSitios />}
                     {activeTab === 'eventos' && <AdminEventos />}
