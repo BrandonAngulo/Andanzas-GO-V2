@@ -75,8 +75,8 @@ export const userService = {
         if (error) throw error;
     },
 
-    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[], avatar_url?: string, full_name?: string, city?: string, birth_date?: string }) {
-        // Strategy: Update 'interests', 'full_name', 'city', 'avatar_url' in profiles table.
+    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[], avatar_url?: string, full_name?: string, city?: string, birth_date?: string, selected_avatar_id?: string }) {
+        // Strategy: Update 'interests', 'full_name', 'city', 'avatar_url', 'selected_avatar_id' in profiles table.
         // Update 'travel_style', 'accessibility_needs', 'avatar_url', 'full_name', 'city', 'birth_date' in auth.users metadata.
 
         const profileUpdates: any = {};
@@ -84,6 +84,7 @@ export const userService = {
         if (data.full_name !== undefined) profileUpdates.full_name = data.full_name;
         if (data.city !== undefined) profileUpdates.city = data.city;
         if (data.avatar_url !== undefined) profileUpdates.avatar_url = data.avatar_url;
+        if (data.selected_avatar_id !== undefined) profileUpdates.selected_avatar_id = data.selected_avatar_id;
 
         if (Object.keys(profileUpdates).length > 0) {
             const { error } = await supabase
@@ -137,6 +138,20 @@ export const userService = {
             .eq('user_id', userId)
             .eq('site_id', siteId);
         if (error) throw error;
+    },
+
+    async getAvatarPresets(): Promise<any[]> {
+        const { data, error } = await supabase
+            .from('avatar_presets')
+            .select('*')
+            .eq('active', true)
+            .order('order_index', { ascending: true });
+        
+        if (error) {
+            console.error('Error fetching avatar presets:', error);
+            return [];
+        }
+        return data || [];
     },
 
     // Admin methods

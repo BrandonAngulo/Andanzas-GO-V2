@@ -76,11 +76,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [editName, setEditName] = useState("");
     const [editCity, setEditCity] = useState("");
 
-    const CUSTOM_AVATARS = [
-        { id: 'gato', url: '/avatars/gato.jpg', name: 'Gato del Río' },
-        { id: 'bichofue', url: '/avatars/bichofue.jpg', name: 'El Bichofué' },
-        { id: 'salsero', url: '/avatars/salsero.jpg', name: 'Caleño Salsero' }
-    ];
+    const [availableAvatars, setAvailableAvatars] = useState<any[]>([]);
 
     React.useEffect(() => {
         if (user) {
@@ -105,7 +101,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     console.error("Error loading profile data", err);
                 }
             };
+            const loadAvatars = async () => {
+                const presets = await userService.getAvatarPresets();
+                setAvailableAvatars(presets);
+            };
             loadBadges();
+            loadAvatars();
         }
     }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
 
@@ -743,16 +744,24 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             )}
 
                             {/* Custom Avatars */}
-                            {CUSTOM_AVATARS.map(avatar => (
+                            {availableAvatars.map(avatar => (
                                 <div 
                                     key={avatar.id} 
-                                    className={`relative cursor-pointer flex flex-col items-center gap-2 group p-2 rounded-xl transition-all ${currentAvatarUrl === avatar.url ? 'bg-primary/10 ring-2 ring-primary' : 'hover:bg-muted'}`}
-                                    onClick={() => handleSelectAvatar(avatar.url)}
+                                    className={`relative cursor-pointer flex flex-col items-center gap-2 group p-3 rounded-xl transition-all border ${currentAvatarUrl === avatar.image_url ? 'bg-primary/10 border-primary shadow-sm' : 'border-transparent hover:bg-muted'}`}
+                                    onClick={() => handleSelectAvatar(avatar.image_url)}
                                 >
-                                    <div className="w-16 h-16 rounded-full overflow-hidden shadow-md group-hover:scale-105 transition-transform bg-muted">
-                                        <img src={avatar.url} alt={avatar.name} className="w-full h-full object-cover" />
+                                    <div className="w-16 h-16 rounded-full overflow-hidden shadow-md group-hover:scale-105 transition-transform bg-muted border-2 border-background">
+                                        <img src={avatar.image_url} alt={avatar.name} className="w-full h-full object-cover" />
                                     </div>
-                                    <span className="text-xs font-semibold text-center">{avatar.name}</span>
+                                    <div className="text-center">
+                                        <span className="block text-sm font-bold leading-none mb-1">{avatar.name}</span>
+                                        {avatar.personality_title && (
+                                            <span className="block text-[10px] text-primary font-medium">{avatar.personality_title}</span>
+                                        )}
+                                        {avatar.phrase && (
+                                            <span className="block text-[9px] text-muted-foreground mt-1 italic leading-tight">"{avatar.phrase}"</span>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>

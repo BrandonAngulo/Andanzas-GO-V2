@@ -2,12 +2,36 @@ import React from 'react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Instagram, Facebook, Globe, Heart, Sun, Map, Users, Info } from 'lucide-react';
+import { Instagram, Facebook, Globe, Heart, Sun, Map, Users, Info, Loader2 } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import Logo from '../layout/Logo';
+import { institutionalService } from '../../services/institutional.service';
+import { InstitutionalContent } from '../../types';
 
 const SobrePanel: React.FC = () => {
     const { t } = useI18n();
+    const [content, setContent] = React.useState<Record<string, InstitutionalContent>>({});
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const load = async () => {
+            const data = await institutionalService.getAllContent();
+            const contentMap: Record<string, InstitutionalContent> = {};
+            data.forEach(item => contentMap[item.id] = item);
+            setContent(contentMap);
+            setLoading(false);
+        };
+        load();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-[72vh]">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        );
+    }
+
     return (
         <ScrollArea className="h-[72vh]">
             <div className="flex flex-col gap-6 p-4 max-w-2xl mx-auto">
@@ -31,11 +55,11 @@ const SobrePanel: React.FC = () => {
                             <div className="p-2.5 rounded-full bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
                                 <Sun className="h-6 w-6" />
                             </div>
-                            <CardTitle className="text-lg">{t('about.missionTitle')}</CardTitle>
+                            <CardTitle className="text-lg">{content['mission']?.title || t('about.missionTitle')}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors">
-                                {t('about.missionText')}
+                            <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors whitespace-pre-wrap">
+                                {content['mission']?.content_text || t('about.missionText')}
                             </p>
                         </CardContent>
                     </Card>
@@ -46,11 +70,11 @@ const SobrePanel: React.FC = () => {
                             <div className="p-2.5 rounded-full bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">
                                 <Map className="h-6 w-6" />
                             </div>
-                            <CardTitle className="text-lg">{t('about.whatIsTitle')}</CardTitle>
+                            <CardTitle className="text-lg">{content['what_is']?.title || t('about.whatIsTitle')}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors">
-                                {t('about.whatIsText')}
+                            <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors whitespace-pre-wrap">
+                                {content['what_is']?.content_text || t('about.whatIsText')}
                             </p>
                         </CardContent>
                     </Card>
@@ -61,11 +85,11 @@ const SobrePanel: React.FC = () => {
                             <div className="p-2.5 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
                                 <Users className="h-6 w-6" />
                             </div>
-                            <CardTitle className="text-lg">{t('about.whoIsTitle')}</CardTitle>
+                            <CardTitle className="text-lg">{content['who_is']?.title || t('about.whoIsTitle')}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors">
-                                {t('about.whoIsText')}
+                            <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-foreground/80 transition-colors whitespace-pre-wrap">
+                                {content['who_is']?.content_text || t('about.whoIsText')}
                             </p>
                         </CardContent>
                     </Card>
@@ -75,19 +99,19 @@ const SobrePanel: React.FC = () => {
                 <section className="text-center pt-6 pb-8 space-y-6">
                     <div className="flex flex-col items-center gap-4">
                         <Button asChild className="w-full max-w-sm font-semibold shadow-lg shadow-indigo-500/20 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 border-none text-white h-12 rounded-xl">
-                            <a href="http://www.andanzascentrocultural.com" target="_blank" rel="noopener noreferrer">
+                            <a href={content['website']?.content_text || "http://www.andanzascentrocultural.com"} target="_blank" rel="noopener noreferrer">
                                 <Globe className="h-5 w-5 mr-2" />
-                                {t('about.visitWebsite')}
+                                {content['website']?.title || t('about.visitWebsite')}
                             </a>
                         </Button>
 
                         <div className="flex justify-center items-center gap-4">
-                            <a href="https://www.instagram.com/andanzas_centrocultural/" target="_blank" rel="noopener noreferrer"
+                            <a href={content['instagram']?.content_text || "https://www.instagram.com/andanzas_centrocultural/"} target="_blank" rel="noopener noreferrer"
                                 className="p-3 rounded-full bg-gradient-to-tr from-orange-400 to-pink-600 text-white shadow-md hover:shadow-lg hover:scale-110 transition-all"
                                 aria-label="Instagram">
                                 <Instagram className="h-5 w-5" />
                             </a>
-                            <a href="https://www.facebook.com/andanzascentrocultural" target="_blank" rel="noopener noreferrer"
+                            <a href={content['facebook']?.content_text || "https://www.facebook.com/andanzascentrocultural"} target="_blank" rel="noopener noreferrer"
                                 className="p-3 rounded-full bg-blue-600 text-white shadow-md hover:shadow-lg hover:scale-110 transition-all"
                                 aria-label="Facebook">
                                 <Facebook className="h-5 w-5" />

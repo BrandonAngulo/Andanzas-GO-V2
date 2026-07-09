@@ -13,6 +13,7 @@ import { AdminSitios } from './AdminSitios';
 import { AdminEventos } from './AdminEventos';
 import { AdminNoticias } from './AdminNoticias';
 import { AdminUsuarios } from './AdminUsuarios';
+import { AdminInstitucional } from './AdminInstitucional';
 import { CuriousFactsManager } from './CuriousFactsManager';
 
 // Subcomponents for the admin tabs (We'll build these later)
@@ -53,7 +54,7 @@ const AdminOverview = () => (
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'settings'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'settings'>('overview');
 
     // Security Check: Only render if user is admin or editor
     if (userProfile?.role !== 'admin' && userProfile?.role !== 'editor' && user?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com' && userProfile?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com') {
@@ -138,6 +139,13 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Gamepad2 className="w-4 h-4 mr-2" /> Juegos
                     </Button>
+                    <Button 
+                        variant={activeTab === 'institucional' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('institucional')}
+                        className="rounded-full"
+                    >
+                        <BookOpen className="w-4 h-4 mr-2" /> Institucional
+                    </Button>
                     {(userProfile?.role === 'admin' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com') && (
                         <Button 
                             variant={activeTab === 'usuarios' ? 'default' : 'outline'} 
@@ -158,6 +166,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'eventos' && <AdminEventos />}
                     {activeTab === 'noticias' && <AdminNoticias />}
                     {activeTab === 'juegos' && <AdminJuegos />}
+                    {activeTab === 'institucional' && <AdminInstitucional />}
                     {activeTab === 'usuarios' && <AdminUsuarios />}
                     {activeTab === 'settings' && <div>Módulo de Ajustes en construcción...</div>}
                 </div>

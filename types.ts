@@ -1,5 +1,61 @@
 import React from 'react';
 
+export interface InstitutionalContent {
+  id: string; // 'mission', 'what_is', 'who_is', 'website', 'instagram', 'facebook'
+  title?: string;
+  content_text: string;
+}
+
+export interface AvatarPreset {
+  id: string;
+  name: string;
+  type: 'animal' | 'person' | 'symbol' | 'object' | 'hybrid';
+  image_url: string;
+  personality_title?: string;
+  personality_description?: string;
+  phrase?: string;
+  active?: boolean;
+  order_index?: number;
+}
+
+export interface Game {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  type: 'trivia' | 'quiz' | 'daily' | 'guess' | 'visual' | 'matching' | 'ordering';
+  status: 'draft' | 'review' | 'published' | 'paused' | 'archived' | 'coming_soon' | 'scheduled';
+  cover_title?: string;
+  time_limit_seconds?: number;
+  points_per_correct_answer?: number;
+  leaderboard_enabled?: boolean;
+}
+
+export interface GameQuestion {
+  id: string;
+  game_id: string;
+  question_text: string;
+  question_type: 'multiple_choice' | 'true_false' | 'guess_by_clue' | 'matching' | 'ordering';
+  difficulty: 'easy' | 'medium' | 'hard';
+  options: any; // jsonb
+  correct_answer: any; // jsonb
+  explanation?: string;
+  version?: number;
+  status?: string;
+}
+
+export interface GameSession {
+  id: string;
+  user_id: string;
+  game_id: string;
+  status: 'started' | 'completed' | 'abandoned' | 'expired';
+  started_at?: string;
+  completed_at?: string;
+  score?: number;
+  correct_answers?: number;
+  points_earned?: number;
+}
+
 export interface LearnEntry {
   id: string;
   title: string;
@@ -307,7 +363,9 @@ export interface UserProfile {
   interests: string[];
   travel_style?: string;
   accessibility_needs?: string[];
-  leaderboard_opt_in?: boolean; // New field for Phase 5
+  selected_avatar_id?: string;
+  leaderboard_opt_in?: boolean;
+  public_display_name?: string;
   status?: string; // e.g. 'active' or 'banned'
 }
 
