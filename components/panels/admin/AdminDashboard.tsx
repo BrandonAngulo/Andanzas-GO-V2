@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
 import { AdminRutas } from './AdminRutas';
@@ -74,10 +75,44 @@ const AdminDashboard: React.FC = () => {
         <ScrollArea className="h-[72vh] bg-muted/20">
             <div className="p-4 md:p-6 max-w-6xl mx-auto">
                 <div className="mb-8">
-                    <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-                        <ShieldAlert className="h-8 w-8 text-primary" />
-                        Panel de Administración
-                    </h2>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+                        <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+                            <ShieldAlert className="h-8 w-8 text-primary" />
+                            Panel de Administración
+                        </h2>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" size="sm" className="rounded-full gap-2 shrink-0">
+                                    <Info className="w-4 h-4" />
+                                    ¿Cómo funciona?
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
+                                <DialogHeader>
+                                    <DialogTitle className="flex items-center gap-2 text-xl">
+                                        <Info className="w-5 h-5 text-primary" />
+                                        Guía del Panel
+                                    </DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4 text-sm text-muted-foreground mt-2">
+                                    <p>Este panel te permite gestionar todo el contenido dinámico de Andanzas GO.</p>
+                                    <ul className="space-y-3">
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><ShieldAlert className="w-3.5 h-3.5" /> General:</strong> Vista rápida de estadísticas y estado del sistema.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><Activity className="w-3.5 h-3.5" /> Actividad:</strong> Métricas de uso, sesiones y eventos de los usuarios.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Sabías que:</strong> Frases cortas y curiosidades aleatorias.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Pa' que sepás:</strong> Artículos editoriales sobre cultura e historia.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><Map className="w-3.5 h-3.5" /> Rutas:</strong> Recorridos temáticos que agrupan varios sitios de interés.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><Landmark className="w-3.5 h-3.5" /> Sitios:</strong> Puntos de interés en el mapa (museos, parques, etc).</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><Settings className="w-3.5 h-3.5" /> Eventos:</strong> Agenda cultural con fechas y horarios específicos.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><Megaphone className="w-3.5 h-3.5" /> Noticias:</strong> Novedades para la comunidad de usuarios.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><Gamepad2 className="w-3.5 h-3.5" /> Juegos:</strong> Trivias y retos. (Puedes programar lanzamientos).</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Institucional:</strong> Información sobre Andanzas GO y aliados.</li>
+                                        <li><strong className="text-foreground flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> Usuarios:</strong> Gestión de roles (Admin/Editor).</li>
+                                    </ul>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
                     <p className="text-muted-foreground">
                         Bienvenido, {userProfile?.full_name || 'Admin'}. Gestiona el contenido de Andanzas GO.
                     </p>
