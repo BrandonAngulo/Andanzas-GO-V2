@@ -28,35 +28,35 @@ const HARDCODED_AVATARS = [
         name: 'La Gata Callejera',
         personality_title: 'Independiente e intuitiva',
         phrase: 'Por aquí hay algo que no sale en los mapas.',
-        image_url: '/images/avatars/avatar_gato.png'
+        image_url: '/images/avatars/gato.png'
     },
     {
         id: 'caleño_salsero',
         name: 'El Caleño Salsero',
         personality_title: 'Festivo y rítmico',
         phrase: 'Si escuchás bien, Cali también camina en clave.',
-        image_url: '/images/avatars/avatar_salsero.png'
+        image_url: '/images/avatars/salsero.png'
     },
     {
         id: 'ave_curiosa',
         name: 'El Ave Curiosa (Bichofué)',
         personality_title: 'Observadora y ligera',
         phrase: 'Mirá dos veces: la ciudad siempre deja pistas.',
-        image_url: '/images/avatars/avatar_bichofue.png'
+        image_url: '/images/avatars/bichofue.png'
     },
     {
         id: 'barranquero',
         name: 'El Barranquero',
         personality_title: 'Misterioso y colorido',
         phrase: 'Entre la selva de cemento, mi canto es un secreto.',
-        image_url: '/images/avatars/avatar_barranquero.png'
+        image_url: '/images/avatars/barranquero.png'
     },
     {
         id: 'maceta',
         name: 'La Dulce Maceta',
         personality_title: 'Tradicional y alegre',
         phrase: 'Endulzo cada paso que das por Cali.',
-        image_url: '/images/avatars/avatar_maceta.png'
+        image_url: '/images/avatars/maceta.png'
     }
 ];
 
