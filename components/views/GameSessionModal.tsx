@@ -40,7 +40,22 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     } = useGameEngine(gameId, userProfile?.id);
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
+
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [isChecking, setIsChecking] = useState(false);
+    const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+
+    const [isReporting, setIsReporting] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+    const [reportSubmitted, setReportSubmitted] = useState(false);
     
+    const [showExitConfirm, setShowExitConfirm] = useState(false);
+    const [hasTimedOut, setHasTimedOut] = useState(false);
+
+    const [isShuffling, setIsShuffling] = useState(false);
+    const [shuffledCategory, setShuffledCategory] = useState("Salsa");
+    const categories = ["Historia", "Arte", "Salsa", "Naturaleza", "Gastronomía", "Literatura", "General"];
+
     React.useEffect(() => {
         if (isFinished && challengeId && sessionId) {
             challengeService.completeChallenge(challengeId, sessionId, null).then(() => {
@@ -84,20 +99,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         }
     };
 
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
-    const [isChecking, setIsChecking] = useState(false);
-    const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
-    const [isReporting, setIsReporting] = useState(false);
-    const [reportReason, setReportReason] = useState('');
-    const [reportSubmitted, setReportSubmitted] = useState(false);
-    
-    const [showExitConfirm, setShowExitConfirm] = useState(false);
-    const [hasTimedOut, setHasTimedOut] = useState(false);
-
-    const [isShuffling, setIsShuffling] = useState(false);
-    const [shuffledCategory, setShuffledCategory] = useState("Salsa");
-    const categories = ["Historia", "Arte", "Salsa", "Naturaleza", "Gastronomía", "Literatura", "General"];
 
     React.useEffect(() => {
         if (!currentQuestion || isFinished) return;

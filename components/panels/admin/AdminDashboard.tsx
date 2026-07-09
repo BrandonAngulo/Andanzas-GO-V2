@@ -123,6 +123,7 @@ const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'settings'>('overview');
+    const [showIntroModal, setShowIntroModal] = useState(false);
 
     // Security Check: Only render if user is admin or editor
     if (userProfile?.role !== 'admin' && userProfile?.role !== 'editor' && user?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com' && userProfile?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com') {

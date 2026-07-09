@@ -35,11 +35,6 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
 
   const displayUrl = forceInitials ? null : (profileAvatarUrl || providerUrl);
 
-  // Priority 3: Auth Provider Photo URL
-  const providerUrl = authPhotoUrl;
-
-  const displayUrl = forceInitials ? null : (selectedAvatarUrl || profileAvatarUrl || providerUrl);
-
   const getInitials = () => {
     if (userProfile?.full_name) {
       return userProfile.full_name.substring(0, 2).toUpperCase();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle, Target, BookOpen, ArrowRight } from 'lucide-react';
+import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle, Target, BookOpen, ArrowRight, Lock } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Site, Evento, Ruta, RecomendacionRuta, RecomendacionTipo } from '../../types';
