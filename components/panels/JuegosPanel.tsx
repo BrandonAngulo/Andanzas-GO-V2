@@ -53,17 +53,32 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
 
     return (
         <div className="space-y-6">
-            <div className="relative mb-6 overflow-hidden rounded-2xl border shadow-sm">
-                <div className="absolute inset-0 z-0">
-                    <img src="/images/banner_juegos.png" alt="Zona Play" className="w-full h-full object-cover opacity-40 dark:opacity-20 mix-blend-luminosity" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30"></div>
+            <div className="relative mb-6 overflow-hidden rounded-[2rem] border shadow-sm bg-purple-50/50 dark:bg-purple-950/20">
+                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <div className="absolute -top-12 -right-12 w-64 h-64 bg-purple-100 dark:bg-purple-900/30 rounded-full blur-3xl opacity-60"></div>
+                    <div className="absolute bottom-0 right-32 w-40 h-40 bg-pink-100 dark:bg-pink-900/30 rounded-full blur-2xl opacity-60"></div>
+                    
+                    <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-80">
+                        <div className="relative w-40 h-40">
+                            <Gamepad2 className="absolute inset-0 w-full h-full text-purple-200 dark:text-purple-800/40 drop-shadow-sm" strokeWidth={1} />
+                            <Trophy className="absolute -top-4 -right-4 w-12 h-12 text-yellow-400 drop-shadow-sm" />
+                            <Star className="absolute -bottom-2 -left-4 w-10 h-10 text-pink-400 drop-shadow-sm animate-pulse" />
+                        </div>
+                    </div>
                 </div>
-                <div className="relative z-10 p-6 md:p-8">
-                    <h2 className="text-3xl font-bold tracking-tight mb-2">Zona Play</h2>
-                    <p className="text-muted-foreground max-w-2xl text-lg">Demuestra cuánto sabés, reta amigos y gana puntos para tu perfil.</p>
+                <div className="relative z-10 p-8 md:p-10 max-w-lg">
+                    <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-purple-950 dark:text-purple-50">
+                        <div className="bg-purple-600 p-2.5 rounded-2xl shadow-md text-white">
+                            <Gamepad2 className="h-6 w-6" />
+                        </div>
+                        Zona Play
+                    </h2>
+                    <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
+                        Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global.
+                    </p>
                 </div>
             </div>
-
+            
             <div className="mb-6">
                 <AndiGuia message="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos." variant="celebration" />
             </div>

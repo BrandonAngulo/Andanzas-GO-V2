@@ -6,7 +6,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useI18n } from '../../i18n';
 import { getTranslated, cn, getCategoryIcon, getMacroCategory } from '../../lib/utils';
-import { Calendar, MapPin, Clock, Search, Filter, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, Clock, Search, Filter, ArrowRight, Music, Ticket } from 'lucide-react';
 import { Input } from '../ui/input';
 import { LazyImage } from '../ui/lazy-image';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
@@ -205,15 +205,30 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
         
         {/* Header Hero */}
-        <div className="relative mb-6 overflow-hidden rounded-2xl border shadow-sm">
-          <div className="absolute inset-0 z-0">
-            <img src="/images/banner_eventos.png" alt="Cartelera Cultural" className="w-full h-full object-cover opacity-40 dark:opacity-20 mix-blend-luminosity" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30"></div>
+        <div className="relative mb-6 overflow-hidden rounded-[2rem] border shadow-sm bg-orange-50/50 dark:bg-orange-950/20">
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            {/* Decorative Background Elements */}
+            <div className="absolute -top-12 -right-12 w-64 h-64 bg-orange-100 dark:bg-orange-900/30 rounded-full blur-3xl opacity-60"></div>
+            <div className="absolute bottom-0 right-32 w-40 h-40 bg-red-100 dark:bg-red-900/30 rounded-full blur-2xl opacity-60"></div>
+            
+            {/* Vector Icons forming an illustration */}
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-80">
+                <div className="relative w-40 h-40">
+                    <Calendar className="absolute inset-0 w-full h-full text-orange-200 dark:text-orange-800/40 drop-shadow-sm" strokeWidth={1} />
+                    <Music className="absolute -top-4 -right-4 w-12 h-12 text-pink-400 drop-shadow-sm" />
+                    <Ticket className="absolute -bottom-2 -left-4 w-12 h-12 text-red-400 drop-shadow-sm rotate-12" />
+                </div>
+            </div>
           </div>
-          <div className="relative z-10 p-6 md:p-8">
-            <h2 className="text-3xl font-bold tracking-tight mb-2">Cartelera Cultural</h2>
-            <p className="text-muted-foreground max-w-2xl text-lg">
-              Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida. Filtra, elige y disfruta.
+          <div className="relative z-10 p-8 md:p-10 max-w-lg">
+            <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-orange-950 dark:text-orange-50">
+                <div className="bg-orange-600 p-2.5 rounded-2xl shadow-md text-white">
+                    <Calendar className="h-6 w-6" />
+                </div>
+                Cartelera Cultural
+            </h2>
+            <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
+              Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida.
             </p>
           </div>
         </div>

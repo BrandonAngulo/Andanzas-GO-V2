@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Plus, Search, Trash2, Edit, CheckCircle, Map, Compass, PenTool, ChevronUp, ChevronDown, Lock, Trophy } from 'lucide-react';
+import { Plus, Search, Trash2, Edit, CheckCircle, Map, Compass, PenTool, ChevronUp, ChevronDown, Lock, Trophy, MapPin } from 'lucide-react';
 import { Ruta, Site } from '../../types';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
@@ -242,21 +242,31 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     return (
         <ScrollArea className="h-[72vh]">
             <div className="p-4 max-w-5xl mx-auto">
-                <div className="relative mb-6 overflow-hidden rounded-2xl border shadow-sm">
-                    <div className="absolute inset-0 z-0">
-                        <img src="/images/banner_rutas.png" alt="Pasaporte de Rutas" className="w-full h-full object-cover opacity-40 dark:opacity-20 mix-blend-luminosity" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30"></div>
-                    </div>
-                    <div className="relative z-10 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div>
-                            <h2 className="text-3xl font-black tracking-tight flex items-center gap-2 mb-2">
-                                <Compass className="w-8 h-8 text-primary" />
-                                {language === 'es' ? 'Pasaporte de Rutas' : 'Route Passport'}
-                            </h2>
-                            <p className="text-muted-foreground max-w-2xl text-lg">
-                                {language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
-                            </p>
+                <div className="relative mb-6 overflow-hidden rounded-[2rem] border shadow-sm bg-emerald-50/50 dark:bg-emerald-950/20">
+                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                        {/* Decorative Background Elements */}
+                        <div className="absolute -top-12 -right-12 w-64 h-64 bg-emerald-100 dark:bg-emerald-900/30 rounded-full blur-3xl opacity-60"></div>
+                        <div className="absolute bottom-0 right-32 w-40 h-40 bg-teal-100 dark:bg-teal-900/30 rounded-full blur-2xl opacity-60"></div>
+                        
+                        {/* Vector Icons forming an illustration */}
+                        <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-80">
+                            <div className="relative w-40 h-40">
+                                <Map className="absolute inset-0 w-full h-full text-emerald-200 dark:text-emerald-800/40 drop-shadow-sm" strokeWidth={1} />
+                                <MapPin className="absolute -top-4 -right-4 w-12 h-12 text-rose-500 drop-shadow-sm animate-bounce" />
+                                <Compass className="absolute -bottom-2 -left-4 w-10 h-10 text-teal-500 drop-shadow-sm animate-spin duration-[3s]" />
+                            </div>
                         </div>
+                    </div>
+                    <div className="relative z-10 p-8 md:p-10 flex flex-col justify-center max-w-lg">
+                        <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-emerald-950 dark:text-emerald-50">
+                            <div className="bg-emerald-600 p-2.5 rounded-2xl shadow-md text-white">
+                                <Compass className="h-6 w-6" />
+                            </div>
+                            {language === 'es' ? 'Pasaporte de Rutas' : 'Route Passport'}
+                        </h2>
+                        <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
+                            {language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
+                        </p>
                     </div>
                 </div>
 

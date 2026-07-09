@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LearnEntry } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
-import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints } from 'lucide-react';
+import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints, Lightbulb } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
@@ -144,17 +144,29 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
     return (
         <ScrollArea className="h-[72vh] bg-muted/20">
             <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-                <div className="relative mb-8 overflow-hidden rounded-2xl border shadow-sm">
-                    <div className="absolute inset-0 z-0">
-                        <img src="/images/banner_aprende.png" alt="Pa' que sepás" className="w-full h-full object-cover opacity-40 dark:opacity-20 mix-blend-luminosity" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30"></div>
+                <div className="relative mb-8 overflow-hidden rounded-[2rem] border shadow-sm bg-indigo-50/50 dark:bg-indigo-950/20">
+                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                        {/* Decorative Background Elements */}
+                        <div className="absolute -top-12 -right-12 w-64 h-64 bg-indigo-100 dark:bg-indigo-900/30 rounded-full blur-3xl opacity-60"></div>
+                        <div className="absolute bottom-0 right-20 w-40 h-40 bg-purple-100 dark:bg-purple-900/30 rounded-full blur-2xl opacity-60"></div>
+                        
+                        {/* Vector Icons forming an illustration */}
+                        <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-80">
+                            <div className="relative w-40 h-40">
+                                <BookOpen className="absolute inset-0 w-full h-full text-indigo-200 dark:text-indigo-800/40 drop-shadow-sm" strokeWidth={1} />
+                                <Sparkles className="absolute -top-4 -right-4 w-12 h-12 text-yellow-400 drop-shadow-sm animate-pulse" />
+                                <Lightbulb className="absolute -bottom-2 -left-4 w-10 h-10 text-orange-400 drop-shadow-sm" />
+                            </div>
+                        </div>
                     </div>
-                    <div className="relative z-10 p-6 md:p-8">
-                        <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2 mb-2">
-                            <BookOpen className="h-8 w-8 text-primary" />
+                    <div className="relative z-10 p-8 md:p-10 max-w-lg">
+                        <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-indigo-950 dark:text-indigo-50">
+                            <div className="bg-indigo-600 p-2.5 rounded-2xl shadow-md text-white">
+                                <BookOpen className="h-6 w-6" />
+                            </div>
                             Pa' que sepás
                         </h2>
-                        <p className="text-muted-foreground text-lg max-w-2xl">
+                        <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
                             Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.
                         </p>
                     </div>

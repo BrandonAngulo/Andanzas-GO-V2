@@ -9,7 +9,7 @@ import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { Badge } from '../ui/badge';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
-import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library } from 'lucide-react';
+import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library, Map } from 'lucide-react';
 
 const IMPERDIBLES = [
   {
@@ -162,35 +162,47 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   return (
     <ScrollArea className="h-[72vh]">
       {!query && (
-        <div className="relative p-5 md:p-8 mb-4 border-b overflow-hidden rounded-b-2xl">
-          <div className="absolute inset-0 z-0">
-            <img src="/images/banner_explorar.png" alt="Explorar Cali" className="w-full h-full object-cover opacity-30 dark:opacity-20 mix-blend-luminosity" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/20"></div>
-          </div>
-          <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-4">
-            <div className="bg-primary/20 p-2 rounded-full">
-              <Compass className="h-6 w-6 text-primary" />
+        <div className="relative p-6 md:p-10 mb-4 border-b overflow-hidden rounded-[2rem] bg-blue-50/50 dark:bg-blue-950/20 shadow-sm">
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            {/* Decorative Background Elements */}
+            <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 dark:bg-blue-900/30 rounded-full blur-3xl opacity-60"></div>
+            <div className="absolute bottom-0 right-32 w-40 h-40 bg-sky-100 dark:bg-sky-900/30 rounded-full blur-2xl opacity-60"></div>
+            
+            {/* Vector Icons forming an illustration */}
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-80 hidden md:flex">
+                <div className="relative w-40 h-40">
+                    <Compass className="absolute inset-0 w-full h-full text-blue-200 dark:text-blue-800/40 drop-shadow-sm" strokeWidth={1} />
+                    <Sparkles className="absolute -top-4 -right-4 w-12 h-12 text-yellow-400 drop-shadow-sm animate-pulse" />
+                    <Map className="absolute -bottom-2 -left-4 w-10 h-10 text-sky-400 drop-shadow-sm" />
+                </div>
             </div>
-            <h2 className="text-2xl font-bold tracking-tight">
-              {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
-            </h2>
           </div>
-          <p className="text-muted-foreground mb-6 max-w-2xl">
-            {language === 'es' 
-              ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
-              : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
-          </p>
-          <CategoryCarousel 
-            categories={CATEGORY_TAGS.map(tag => ({
-              id: tag.filter,
-              label: tag.label,
-              icon: <tag.icon className="w-4 h-4" />
-            }))}
-            activeCategoryId={categoryFilter || ''}
-            onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
-            className="mb-0"
-          />
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex-1 w-full max-w-xl">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="bg-blue-600 p-2.5 rounded-2xl shadow-md text-white">
+                      <Compass className="h-6 w-6" />
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-blue-950 dark:text-blue-50">
+                      {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
+                    </h2>
+                  </div>
+                  <p className="text-muted-foreground text-lg mb-6 leading-relaxed font-medium">
+                    {language === 'es' 
+                      ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
+                      : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
+                  </p>
+                  <CategoryCarousel 
+                    categories={CATEGORY_TAGS.map(tag => ({
+                      id: tag.filter,
+                      label: tag.label,
+                      icon: <tag.icon className="w-4 h-4" />
+                    }))}
+                    activeCategoryId={categoryFilter || ''}
+                    onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
+                    className="mb-0"
+                  />
+              </div>
           </div>
         </div>
       )}
