@@ -319,7 +319,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
             </AnimatePresence>
 
             {/* Main Area */}
-            <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-4 sm:p-8 w-full max-w-5xl mx-auto h-full overflow-hidden">
+            <div className="relative z-10 flex-1 flex flex-col items-center p-4 sm:p-6 w-full max-w-4xl mx-auto h-full overflow-y-auto overflow-x-hidden scrollbar-none">
                 <AnimatePresence mode="wait">
                     {isShuffling ? (
                         <motion.div 
@@ -337,7 +337,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             key="question"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="w-full flex flex-col flex-1 max-h-full"
+                            className="w-full flex flex-col flex-1 my-auto"
                         >
                             <div className="mb-6 w-full max-w-xl mx-auto flex flex-col items-center">
                                 <span className="text-white/50 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3">
@@ -355,8 +355,8 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 </div>
                             </div>
 
-                            <div className="w-full bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl flex flex-col items-center text-center relative overflow-hidden flex-shrink-0">
-                                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-12 mt-4 text-white drop-shadow-md">
+                            <div className="w-full bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl flex flex-col items-center text-center relative overflow-hidden flex-shrink-0">
+                                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight mb-8 mt-2 text-white drop-shadow-md">
                                     {currentQuestion?.question_text}
                                 </h2>
 
@@ -370,13 +370,13 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                             } else if (opt === selectedOption) {
                                                 buttonStateClass = "bg-red-500/20 border-red-500 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]";
                                             } else {
-                                                buttonStateClass = "opacity-30 border-white/5";
+                                                buttonStateClass = "opacity-30 border-white/5 text-white/90";
                                             }
                                         } else if (isChecking && hasTimedOut) {
                                             if (opt === currentQuestion.correct_answer) {
                                                 buttonStateClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400";
                                             } else {
-                                                buttonStateClass = "opacity-30 border-white/5";
+                                                buttonStateClass = "opacity-30 border-white/5 text-white/90";
                                             }
                                         }
 
@@ -405,9 +405,9 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                 <AnimatePresence>
                     {isChecking && (
                         <motion.div 
-                            initial={{ y: 50, opacity: 0 }}
+                            initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className={`mt-6 w-full p-6 sm:p-8 rounded-[2.5rem] border-2 backdrop-blur-2xl shadow-2xl ${isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50')}`}
+                            className={`mt-4 mb-8 w-full p-6 sm:p-8 rounded-[2.5rem] border-2 backdrop-blur-2xl shadow-2xl ${isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50')}`}
                         >
                             <h3 className={`text-2xl font-black mb-3 flex items-center ${isCorrect ? 'text-emerald-400' : (hasTimedOut ? 'text-orange-400' : 'text-red-400')}`}>
                                 {isCorrect ? <CheckCircle2 className="mr-3 w-8 h-8" /> : (hasTimedOut ? <Clock className="mr-3 w-8 h-8" /> : <XCircle className="mr-3 w-8 h-8" />)}
