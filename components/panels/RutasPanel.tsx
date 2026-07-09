@@ -244,18 +244,12 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
             <div className="p-4 max-w-5xl mx-auto">
                 <div className="relative mb-6 overflow-hidden rounded-[2rem] border shadow-sm bg-emerald-50/50 dark:bg-emerald-950/20">
                     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                        {/* Decorative Background Elements */}
-                        <div className="absolute -top-12 -right-12 w-64 h-64 bg-emerald-100 dark:bg-emerald-900/30 rounded-full blur-3xl opacity-60"></div>
-                        <div className="absolute bottom-0 right-32 w-40 h-40 bg-teal-100 dark:bg-teal-900/30 rounded-full blur-2xl opacity-60"></div>
-                        
-                        {/* Vector Illustration */}
-                        <div className="absolute right-0 bottom-0 flex items-end justify-end pointer-events-none z-10 w-64 md:w-80 h-full">
-                            <img 
-                                src="/images/ilus_gato.png" 
-                                alt="Rutas" 
-                                className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-lighten opacity-100 object-right-bottom drop-shadow-xl" 
-                            />
-                        </div>
+                        <img 
+                            src="/images/banner_rutas.png" 
+                            alt="Fondo Rutas" 
+                            className="w-full h-full object-cover object-right"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/95 via-emerald-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
                     </div>
                     <div className="relative z-10 p-8 md:p-10 flex flex-col justify-center max-w-lg">
                         <h2 className="text-4xl font-extrabold tracking-tight flex items-center gap-3 mb-3 text-emerald-950 dark:text-emerald-50">

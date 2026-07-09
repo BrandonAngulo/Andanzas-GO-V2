@@ -162,7 +162,22 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   return (
     <ScrollArea className="h-[72vh]">
       {!query && (
-        <div className="relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10">
+        <div className="mb-4">
+          <CategoryCarousel 
+            categories={CATEGORY_TAGS.map(tag => ({
+              id: tag.filter,
+              label: tag.label,
+              icon: <tag.icon className="w-4 h-4" />
+            }))}
+            activeCategoryId={categoryFilter || ''}
+            onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
+            className="mb-0"
+          />
+        </div>
+      )}
+
+      {!query && (
+        <div className="relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10 mx-2">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             {/* Full-width banner background */}
             <img 
@@ -183,21 +198,11 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
                       {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
                     </h2>
                   </div>
-                  <p className="text-muted-foreground text-lg mb-6 leading-relaxed font-medium">
+                  <p className="text-muted-foreground text-lg mb-2 leading-relaxed font-medium">
                     {language === 'es' 
                       ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
                       : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
                   </p>
-                  <CategoryCarousel 
-                    categories={CATEGORY_TAGS.map(tag => ({
-                      id: tag.filter,
-                      label: tag.label,
-                      icon: <tag.icon className="w-4 h-4" />
-                    }))}
-                    activeCategoryId={categoryFilter || ''}
-                    onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
-                    className="mb-0"
-                  />
               </div>
           </div>
         </div>
