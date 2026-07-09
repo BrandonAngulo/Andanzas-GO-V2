@@ -84,7 +84,7 @@ export const userService = {
         if (data.full_name !== undefined) profileUpdates.full_name = data.full_name;
         if (data.city !== undefined) profileUpdates.city = data.city;
         if (data.avatar_url !== undefined) profileUpdates.avatar_url = data.avatar_url;
-        if (data.selected_avatar_id !== undefined) profileUpdates.selected_avatar_id = data.selected_avatar_id;
+        // DO NOT update selected_avatar_id to prevent foreign key violations if the ID is not in avatar_presets table
 
         if (Object.keys(profileUpdates).length > 0) {
             const { error } = await supabase

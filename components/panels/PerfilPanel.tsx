@@ -58,34 +58,6 @@ const HARDCODED_AVATARS = [
         personality_title: 'Tradicional y alegre',
         phrase: 'Endulzo cada paso que das por Cali.',
         image_url: '/images/avatars/maceta.png'
-    },
-    {
-        id: 'exploradora',
-        name: 'Exploradora Urbana',
-        personality_title: 'La Caminante Curiosa',
-        phrase: '¡Vení, que por aquí hay una historia escondida!',
-        image_url: '/images/avatars/exploradora.png'
-    },
-    {
-        id: 'lectora',
-        name: 'Lectora de Memoria',
-        personality_title: 'La Guardiana de Historias',
-        phrase: 'Cada fachada tiene algo que contarnos.',
-        image_url: '/images/avatars/lectora.png'
-    },
-    {
-        id: 'salserx',
-        name: 'Salserx Caleñx',
-        personality_title: 'El Alma de la Fiesta',
-        phrase: '¡Esa campana llama, vámonos!',
-        image_url: '/images/avatars/salserx.png'
-    },
-    {
-        id: 'catadorx',
-        name: 'Catadorx de Sabores',
-        personality_title: 'El Paladar Caleño',
-        phrase: 'Después de caminar, el cuerpo pide pandebono.',
-        image_url: '/images/avatars/catadorx.png'
     }
 ];
 
