@@ -159,77 +159,77 @@ const AdminDashboard: React.FC = () => {
                     <Button 
                         variant={activeTab === 'overview' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('overview')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <ShieldAlert className="w-4 h-4 mr-2" /> General
                     </Button>
                     <Button 
                         variant={activeTab === 'avatares' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('avatares')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Smile className="w-4 h-4 mr-2" /> Avatares
                     </Button>
                     <Button 
                         variant={activeTab === 'metricas' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('metricas')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Activity className="w-4 h-4 mr-2" /> Actividad
                     </Button>
                     <Button 
                         variant={activeTab === 'sabias_que' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('sabias_que')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <BookOpen className="w-4 h-4 mr-2" /> Sabías que
                     </Button>
                     <Button 
                         variant={activeTab === 'paquesepas' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('paquesepas')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <BookOpen className="w-4 h-4 mr-2" /> Pa' que sepás
                     </Button>
                     <Button 
                         variant={activeTab === 'rutas' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('rutas')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Map className="w-4 h-4 mr-2" /> Rutas
                     </Button>
                     <Button 
                         variant={activeTab === 'sitios' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('sitios')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Landmark className="w-4 h-4 mr-2" /> Sitios
                     </Button>
                     <Button 
                         variant={activeTab === 'eventos' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('eventos')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Settings className="w-4 h-4 mr-2" /> Eventos
                     </Button>
                     <Button 
                         variant={activeTab === 'noticias' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('noticias')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Megaphone className="w-4 h-4 mr-2" /> Noticias
                     </Button>
                     <Button 
                         variant={activeTab === 'juegos' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('juegos')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Gamepad2 className="w-4 h-4 mr-2" /> Juegos
                     </Button>
                     <Button 
                         variant={activeTab === 'institucional' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('institucional')}
-                        className="rounded-full"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <BookOpen className="w-4 h-4 mr-2" /> Institucional
                     </Button>
