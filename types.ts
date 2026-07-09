@@ -276,6 +276,19 @@ export interface UserProfile {
 
 // === Phase 5: Gamification & Trivia Models ===
 
+export interface GameChallenge {
+  id: string;
+  game_id: string;
+  challenger_id: string;
+  challenged_id: string;
+  status: 'pending' | 'accepted' | 'completed' | 'declined';
+  challenger_score: number;
+  challenged_score: number;
+  questions_snapshot: GameQuestion[];
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface GameQuestion {
   id: string;
   game_id: string;

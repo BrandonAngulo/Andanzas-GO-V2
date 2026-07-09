@@ -116,6 +116,13 @@ export const ChallengeVerdict: React.FC<{ challengeId: string; onClose: () => vo
                     <h1 className="text-4xl font-extrabold tracking-tight">
                         {winner === 'tie' ? '¡Es un Empate!' : '¡Reto Concluido!'}
                     </h1>
+                    <p className="text-muted-foreground mt-3 font-medium px-4">
+                        {winner === 'challenger' 
+                            ? 'Estuviste cerca. ¡No te rindas! Reta a alguien más para recuperar tu honor o vuelve a intentarlo.' 
+                            : winner === 'challenged'
+                            ? '¡Increíble! Demostraste ser el mejor. Sigue así y reta a más amigos para dominar el salón de la fama.'
+                            : '¡Vaya duelo de titanes! Ambos son unos expertos. ¿Qué tal si desempatan con otra ronda?'}
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-[1fr_auto_1fr] gap-4 items-center">
