@@ -9,6 +9,7 @@ import { getTranslated, cn, getCategoryIcon, getMacroCategory } from '../../lib/
 import { Calendar, MapPin, Clock, Search, Filter, ArrowRight } from 'lucide-react';
 import { Input } from '../ui/input';
 import { LazyImage } from '../ui/lazy-image';
+import { CategoryCarousel } from '../shared/CategoryCarousel';
 
 interface EventosPanelProps {
   eventos: Evento[];
@@ -281,20 +282,16 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
           {/* Right Content - Event Grid */}
           <div className="flex-1">
             {/* Quick Pills */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {eventCategories.filter(c => c !== 'Todos los tipos').map(cat => (
-                <Button 
-                  key={cat}
-                  variant={categoryFilter === cat ? 'default' : 'outline'} 
-                  size="sm"
-                  className="rounded-full bg-background hover:bg-muted"
-                  onClick={() => setCategoryFilter(categoryFilter === cat ? 'Todos los tipos' : cat)}
-                >
-                  <span className="mr-2 text-primary">{getCategoryIcon(cat)}</span>
-                  {cat}
-                </Button>
-              ))}
-            </div>
+            <CategoryCarousel 
+              categories={eventCategories.filter(c => c !== 'Todos los tipos').map(cat => ({
+                id: cat,
+                label: cat,
+                icon: getCategoryIcon(cat)
+              }))}
+              activeCategoryId={categoryFilter}
+              onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? 'Todos los tipos' : id)}
+              className="mb-6"
+            />
 
             {filteredEvents.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">

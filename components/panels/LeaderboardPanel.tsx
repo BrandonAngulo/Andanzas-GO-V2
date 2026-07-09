@@ -3,6 +3,7 @@ import { gamificationService } from '../../services/gamification.service';
 import { Card, CardContent } from '../ui/card';
 import { Trophy, Medal, Star, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { UserAvatar } from '../shared/UserAvatar';
 
 export const LeaderboardPanel: React.FC = () => {
     const [leaders, setLeaders] = useState<any[]>([]);
@@ -81,14 +82,8 @@ export const LeaderboardPanel: React.FC = () => {
                                     {rankIcon || (index + 1)}
                                 </div>
                                 
-                                <div className="w-12 h-12 rounded-full overflow-hidden bg-muted flex-shrink-0 ring-2 ring-background shadow-sm">
-                                    {leader.avatar_url ? (
-                                        <img src={leader.avatar_url} alt={leader.full_name} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <div className="w-full h-full bg-primary flex items-center justify-center text-white font-bold text-sm">
-                                            {leader.full_name?.charAt(0) || '?'}
-                                        </div>
-                                    )}
+                                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                                    <UserAvatar userProfile={leader} className="w-full h-full" />
                                 </div>
 
                                 <div className="flex-1 min-w-0">

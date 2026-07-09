@@ -45,7 +45,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
     const { user } = useAuth();
     // Start at 0 for new users (Welcome), 1 for editing
     const [step, setStep] = useState(isEditing ? 1 : 0);
-    const totalSteps = 3;
+    const totalSteps = 4;
+
+    const [isLocal, setIsLocal] = useState<boolean>(true);
 
     const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
     const [travelStyle, setTravelStyle] = useState<string | null>(null);
@@ -230,6 +232,40 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="text-center space-y-2 mb-6">
+                            <h3 className="text-xl font-bold text-primary">Recomendaciones para tu andanza</h3>
+                            <p className="text-sm text-muted-foreground">Andar una ciudad también es un arte. Aquí te dejamos algunas claves para que tus andanzas sean más ricas y seguras:</p>
+                        </div>
+                        
+                        <div className="flex bg-muted p-1 rounded-lg mb-4">
+                            <button className={cn("flex-1 py-2 text-sm font-bold rounded-md transition-all", isLocal ? "bg-background shadow-sm text-foreground" : "text-muted-foreground")} onClick={() => setIsLocal(true)}>Soy local</button>
+                            <button className={cn("flex-1 py-2 text-sm font-bold rounded-md transition-all", !isLocal ? "bg-background shadow-sm text-foreground" : "text-muted-foreground")} onClick={() => setIsLocal(false)}>Estoy de visita</button>
+                        </div>
+
+                        <div className="space-y-3 px-2">
+                            {isLocal ? (
+                                <>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Redescubre tu ciudad con ojos de turista: siempre hay algo nuevo en la esquina de siempre.</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Cuida el espacio público, la ciudad es la casa de todos.</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Camina alerta pero con curiosidad, sin dar papaya pero sin miedo a explorar.</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Apoya el comercio y arte local en tus andanzas.</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Comparte tus rutas favoritas con otros andantes.</p></div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Pregunta a los locales si tienes dudas, ¡la hospitalidad es nuestro fuerte!</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Mantén tus pertenencias a la vista en zonas concurridas.</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Prueba la gastronomía típica en lugares recomendados.</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Respeta las dinámicas de los barrios y pide permiso para tomar fotos a personas.</p></div>
+                                    <div className="flex gap-3 items-start"><Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" /><p className="text-sm">Lleva zapatos cómodos, protector solar y agua para tus recorridos.</p></div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                );
+            case 2:
+                return (
+                    <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+                        <div className="text-center space-y-2 mb-6">
                             <h3 className="text-lg font-medium">{language === 'es' ? '¿Qué te apasiona?' : 'What are you passionate about?'}</h3>
                             <p className="text-sm text-muted-foreground">{language === 'es' ? 'Selecciona tus temas favoritos para recomendarte lo mejor.' : 'Select your favorite topics for better recommendations.'}</p>
                         </div>
@@ -260,7 +296,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                         </div>
                     </div>
                 );
-            case 2:
+            case 3:
                 // ... (Existing Step 2 content)
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
@@ -297,7 +333,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                         </div>
                     </div>
                 );
-            case 3:
+            case 4:
                 // ... (Existing Step 3 content)
                 return (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
@@ -360,7 +396,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                     </DialogDescription>
                     {step > 0 && (
                         <div className="flex justify-center items-center gap-2 mt-4">
-                            {[1, 2, 3].map((s) => (
+                            {[1, 2, 3, 4].map((s) => (
                                 <div key={s} className={cn("h-1.5 rounded-full transition-all duration-300", s === step ? "w-8 bg-primary" : s < step ? "w-2 bg-primary/50" : "w-2 bg-muted")} />
                             ))}
                         </div>

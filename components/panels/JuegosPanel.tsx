@@ -6,6 +6,8 @@ import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info } from 'l
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LeaderboardPanel } from './LeaderboardPanel';
 import GameInstructionsDialog from '../shared/GameInstructionsDialog';
+import { AndiGuia } from '../shared/AndiGuia';
+import { LazyImage } from '../ui/lazy-image';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string) => void;
@@ -24,7 +26,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
         setLoading(true);
         // We fetch all games, then filter by public statuses
         const data = await gamesService.getAllGames();
-        const publicGames = data.filter(g => g.status === 'published' || g.status === 'coming_soon');
+        const publicGames = data.filter(g => g.status === 'published' || g.status === 'coming_soon' || g.status === 'scheduled');
         setGames(publicGames);
         setLoading(false);
     };
@@ -58,6 +60,10 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                 </div>
             </div>
 
+            <div className="mb-6">
+                <AndiGuia message="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos." variant="celebration" />
+            </div>
+
             <Tabs defaultValue="juegos" className="w-full">
                 <TabsList className="mb-6 grid w-full grid-cols-2 max-w-[400px]">
                     <TabsTrigger value="juegos">Trivias y Retos</TabsTrigger>
@@ -66,28 +72,40 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                 
                 <TabsContent value="juegos" className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {games.map(game => (
-                    <Card key={game.id} className="overflow-hidden border border-border/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/60 backdrop-blur-sm group">
-                        <div className="h-32 bg-primary/10 relative flex items-center justify-center p-6">
-                            {game.status === 'coming_soon' && (
-                                <div className="absolute top-3 right-3 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full uppercase flex items-center gap-1 shadow-md">
-                                    <CalendarDays className="w-3 h-3" />
-                                    Próximamente
+                {games.map(game => {
+                    const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';
+                    const bgTheme = game.cover_theme || 'bg-primary/10';
+                    return (
+                    <Card key={game.id} className="overflow-hidden border-2 border-border/50 hover:border-primary/30 hover:shadow-xl transition-all hover:-translate-y-1 bg-card rounded-2xl group flex flex-col">
+                        <div className={`h-40 relative flex items-center justify-center p-6 overflow-hidden ${bgTheme}`}>
+                            {game.cover_image_url && (
+                                <>
+                                    <div className="absolute inset-0 bg-black/40 z-10" />
+                                    <LazyImage src={game.cover_image_url} alt={game.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                </>
+                            )}
+                            {isUpcoming && (
+                                <div className="absolute top-3 right-3 bg-yellow-500 text-white text-[10px] font-black px-3 py-1.5 rounded-md uppercase flex items-center gap-1.5 shadow-md z-20 tracking-wider">
+                                    {game.show_countdown && game.release_at ? (
+                                        <><Clock className="w-3.5 h-3.5" /> Faltan {Math.max(1, Math.ceil((new Date(game.release_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))} días</>
+                                    ) : (
+                                        <><CalendarDays className="w-3.5 h-3.5" /> Próximamente</>
+                                    )}
                                 </div>
                             )}
-                            <div className="text-center">
-                                <h3 className="text-xl font-black text-primary drop-shadow-sm line-clamp-2">
+                            <div className="text-center relative z-20">
+                                <h3 className={`text-2xl font-black drop-shadow-md line-clamp-2 uppercase tracking-tight ${game.cover_image_url ? 'text-white' : 'text-primary'}`}>
                                     {game.cover_title || game.title}
                                 </h3>
-                                {(game.cover_subtitle || game.status === 'coming_soon') && (
-                                    <p className="text-sm font-medium text-foreground/80 mt-1">
-                                        {game.cover_subtitle || 'En preparación...'}
+                                {(game.cover_subtitle) && (
+                                    <p className={`text-sm font-bold mt-1 tracking-wide ${game.cover_image_url ? 'text-white/90' : 'text-foreground/80'}`}>
+                                        {game.cover_subtitle}
                                     </p>
                                 )}
                             </div>
                         </div>
-                        <CardContent className="p-5 flex flex-col h-[200px]">
-                            <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1">
+                        <CardContent className="p-5 flex flex-col flex-1">
+                            <p className="text-[15px] text-muted-foreground line-clamp-3 mb-5 flex-1 leading-relaxed">
                                 {game.description || 'Pon a prueba tus conocimientos en este desafío especial.'}
                             </p>
                             
@@ -121,13 +139,14 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                     </Button>
                                 </div>
                             ) : (
-                                <Button className="w-full shadow-md" disabled variant="secondary">
-                                    En Preparación
-                                </Button>
-                            )}
-                        </CardContent>
-                    </Card>
-                ))}
+                                    <Button className="w-full shadow-md" disabled variant="secondary">
+                                        En Preparación
+                                    </Button>
+                                )}
+                            </CardContent>
+                        </Card>
+                    )
+                })}
                     </div>
                 </TabsContent>
                 

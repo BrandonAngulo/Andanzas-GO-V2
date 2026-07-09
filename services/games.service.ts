@@ -13,6 +13,12 @@ export interface Game {
     cover_title?: string;
     cover_subtitle?: string;
     cover_image_url?: string;
+    cover_theme?: string;
+    release_at?: string;
+    show_countdown?: boolean;
+    featured?: boolean;
+    time_limit_seconds?: number;
+    points_per_correct_answer?: number;
     allow_retries: boolean;
     show_feedback: boolean;
     bonus_time_enabled: boolean;

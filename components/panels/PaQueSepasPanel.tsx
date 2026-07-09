@@ -8,7 +8,8 @@ import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
 import { TextWithLearnLinks } from '../shared/TextWithLearnLinks';
 import { Game, gamesService } from '../../services/games.service';
-import { Gamepad2 } from 'lucide-react';
+import { Gamepad2, Quote } from 'lucide-react';
+import { AndiGuia } from '../shared/AndiGuia';
 
 interface PaQueSepasPanelProps {
     entries: LearnEntry[];
@@ -152,43 +153,56 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                         Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.
                     </p>
                 </div>
+                
+                <div className="mb-8">
+                    <AndiGuia message="¡Ey andante! La ciudad está llena de historias escondidas. Aquí te dejo mis favoritas para que las leás con un buen champús o cafecito." variant="tip" />
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {entries.map(entry => (
                         <div 
                             key={entry.id} 
-                            className="cursor-pointer group relative overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:-translate-y-1 border border-border bg-card/90 backdrop-blur-xl rounded-[2rem] shadow-sm"
+                            className="cursor-pointer group relative overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 border border-border/50 bg-card rounded-[1.5rem] shadow-sm flex flex-col"
                             onClick={() => setSelectedEntry(entry)}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="p-7 relative z-10 flex flex-col h-full">
-                                <div className="flex justify-between items-start mb-5">
-                                    <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full">
+                            {entry.image_url ? (
+                                <div className="h-48 relative overflow-hidden bg-muted">
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+                                    <img src={entry.image_url} alt={entry.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                    <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-md">
                                         <MapPin className="w-3 h-3" /> {entry.city}
                                     </div>
-                                    <div className="w-8 h-8 rounded-full bg-primary/5 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
-                                        <BookOpen className="w-4 h-4 text-primary opacity-70 group-hover:opacity-100" />
+                                </div>
+                            ) : (
+                                <div className="pt-6 px-6 pb-2">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2.5 py-1 rounded-md">
+                                            <MapPin className="w-3 h-3" /> {entry.city}
+                                        </div>
+                                        <Quote className="w-5 h-5 text-muted-foreground/30" />
                                     </div>
                                 </div>
-                                
-                                <h3 className="text-lg md:text-xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">
+                            )}
+
+                            <div className="p-6 relative z-10 flex flex-col flex-grow">
+                                <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors leading-tight font-heading">
                                     {getTranslated(entry, 'title', language)}
                                 </h3>
                                 
-                                <p className="text-muted-foreground text-[15px] line-clamp-3 mb-6 leading-relaxed flex-grow">
+                                <p className="text-muted-foreground/90 text-sm line-clamp-3 mb-6 leading-relaxed flex-grow font-serif">
                                     {(getTranslated(entry, 'content_full', language) as string || getTranslated(entry, 'content_simple', language) as string || '').split('\n\n')[0]}
                                 </p>
                                 
-                                <div className="flex items-center justify-between mt-auto pt-5 border-t border-border/30">
-                                    <div className="flex flex-wrap gap-2">
+                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/40">
+                                    <div className="flex flex-wrap gap-1.5">
                                         {entry.tags?.slice(0, 2).map(tag => (
-                                            <Badge key={tag} variant="secondary" className="bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-foreground border-0 transition-colors">
+                                            <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground bg-muted px-2 py-0.5 rounded-sm">
                                                 {tag}
-                                            </Badge>
+                                            </span>
                                         ))}
                                     </div>
-                                    <div className="text-primary group-hover:translate-x-1 transition-transform">
-                                        <ChevronRight className="w-5 h-5" />
+                                    <div className="text-primary group-hover:translate-x-1 transition-transform flex items-center gap-1 text-xs font-bold uppercase tracking-wider">
+                                        Leer <ChevronRight className="w-4 h-4" />
                                     </div>
                                 </div>
                             </div>

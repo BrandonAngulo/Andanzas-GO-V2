@@ -24,8 +24,14 @@ export interface Game {
   slug: string;
   description?: string;
   type: 'trivia' | 'quiz' | 'daily' | 'guess' | 'visual' | 'matching' | 'ordering';
-  status: 'draft' | 'review' | 'published' | 'paused' | 'archived' | 'coming_soon' | 'scheduled';
+  status: 'draft' | 'ready' | 'coming_soon' | 'scheduled' | 'published' | 'paused' | 'archived';
   cover_title?: string;
+  cover_subtitle?: string;
+  cover_image_url?: string;
+  cover_theme?: string;
+  release_at?: string;
+  show_countdown?: boolean;
+  featured?: boolean;
   time_limit_seconds?: number;
   points_per_correct_answer?: number;
   leaderboard_enabled?: boolean;
@@ -36,10 +42,11 @@ export interface GameQuestion {
   game_id: string;
   question_text: string;
   question_type: 'multiple_choice' | 'true_false' | 'guess_by_clue' | 'matching' | 'ordering';
-  difficulty: 'easy' | 'medium' | 'hard';
+  level: number;
   options: any; // jsonb
   correct_answer: any; // jsonb
   explanation?: string;
+  category?: string;
   version?: number;
   status?: string;
 }
@@ -70,6 +77,10 @@ export interface LearnEntry {
   site_ids?: string[];
   route_ids?: string[];
   image_url?: string;
+  illustration_url?: string;
+  illustration_alt?: string;
+  illustration_style?: string;
+  color_theme?: string;
   created_at?: string;
   // Legacy fields kept for a smooth transition if needed:
   content_simple?: string;
@@ -384,25 +395,41 @@ export interface GameChallenge {
   updated_at?: string;
 }
 
-export interface GameQuestion {
+export interface AnalyticsEvent {
   id: string;
-  game_id: string;
-  question_text: string;
-  question_text_en?: string;
-  options: string[];
-  correct_index: number;
-  points_reward: number;
-  time_limit_sec?: number;
+  user_id?: string;
+  session_id?: string;
+  event_name: string;
+  entity_type?: string;
+  entity_id?: string;
+  metadata?: any;
+  created_at?: string;
 }
 
-export interface GameSession {
+export interface UserSession {
+  id: string;
+  user_id?: string;
+  session_id: string;
+  started_at?: string;
+  ended_at?: string;
+  duration_seconds?: number;
+  device_type?: string;
+  city_context?: string;
+}
+
+export interface PassportStamp {
   id: string;
   user_id: string;
-  game_id: string;
-  started_at: string;
-  completed_at?: string;
-  total_score: number;
-  status: 'active' | 'completed' | 'abandoned';
+  stamp_type: 'city' | 'route' | 'game' | 'campaign' | 'event' | 'special';
+  entity_id?: string;
+  title: string;
+  subtitle?: string;
+  city?: string;
+  icon?: string;
+  image_url?: string;
+  color_theme?: string;
+  unlocked_at?: string;
+  created_at?: string;
 }
 
 export interface GameAnswer {

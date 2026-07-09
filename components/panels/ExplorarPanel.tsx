@@ -8,6 +8,7 @@ import { useI18n } from '../../i18n';
 import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { Badge } from '../ui/badge';
+import { CategoryCarousel } from '../shared/CategoryCarousel';
 import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library } from 'lucide-react';
 
 // --- Reusable Card Components for the Feed ---
@@ -173,22 +174,16 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
               : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'}
           </p>
-          <div className="flex flex-wrap gap-3">
-            {CATEGORY_TAGS.map(tag => {
-              const Icon = tag.icon;
-              const isActive = categoryFilter === tag.filter;
-              return (
-                <button
-                  key={tag.id}
-                  onClick={() => setCategoryFilter(isActive ? null : tag.filter)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border font-medium transition-all hover:scale-105 active:scale-95 hover:shadow-md ${isActive ? 'bg-primary text-primary-foreground border-primary shadow-md' : tag.color + ' bg-background'}`}
-                >
-                  <Icon className="w-5 h-5" />
-                  {tag.label}
-                </button>
-              );
-            })}
-          </div>
+          <CategoryCarousel 
+            categories={CATEGORY_TAGS.map(tag => ({
+              id: tag.filter,
+              label: tag.label,
+              icon: <tag.icon className="w-4 h-4" />
+            }))}
+            activeCategoryId={categoryFilter || ''}
+            onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
+            className="mb-0"
+          />
         </div>
       )}
 

@@ -10,12 +10,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
+import { UserAvatar } from '../shared/UserAvatar';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
-import { UserProfile, Insignia, Review, Site } from '../../types';
+import { UserProfile, Insignia, Review, Site, PassportStamp } from '../../types';
 import { reviewsService } from '../../services/reviews.service';
 
 import { getTranslated, getMacroCategory } from '../../lib/utils';
@@ -66,6 +67,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
+    const [stamps, setStamps] = useState<PassportStamp[]>([]);
     const [myReviews, setMyReviews] = useState<Review[]>([]);
     const [activeTab, setActiveTab] = useState("overview");
     const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -95,6 +97,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     setAllBadges(all);
                     const earnedIds = await gamificationService.getUserBadgeIds(user.id);
                     setEarnedBadgeIds(earnedIds);
+                    const userStamps = await gamificationService.getUserPassportStamps(user.id);
+                    setStamps(userStamps);
                     const reviews = await reviewsService.getByUserId(user.id);
                     setMyReviews(reviews);
                 } catch (err) {
@@ -419,8 +423,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const pointsForNextLevel = currentLevel * 100;
     const progressPercent = Math.min(100, Math.round((currentPoints / pointsForNextLevel) * 100));
 
-    // Avatar Priority: Database Profile > Auth Metadata > None
-    const currentAvatarUrl = userProfile?.avatar_url || user?.user_metadata?.avatar_url;
+    const currentAvatarUrl = userProfile?.selected_avatar_id || userProfile?.avatar_url || user?.user_metadata?.avatar_url;
 
     return (
         <ScrollArea className="h-[72vh]">
@@ -459,13 +462,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             </svg>
 
                             <div className="w-24 h-24 rounded-full relative bg-background border-4 border-background overflow-hidden grid place-items-center shadow-lg group-hover:brightness-90 transition-all">
-                                {currentAvatarUrl ? (
-                                    <img src={currentAvatarUrl} alt={displayName} className="w-full h-full object-cover" />
-                                ) : (
-                                    <span className="text-3xl font-bold text-primary">
-                                        {displayName.charAt(0).toUpperCase()}
-                                    </span>
-                                )}
+                                <UserAvatar userProfile={userProfile} className="w-full h-full border-0" />
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                     <Camera className="w-8 h-8 text-white" />
                                 </div>
@@ -523,29 +520,52 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             </Card>
                         </div>
 
-                        {/* Pasaporte de Ciudades */}
+                        {/* Pasaporte de Ciudades y Andanzas */}
                         <div className="space-y-3 mt-6">
                             <h3 className="font-semibold text-sm flex items-center gap-2">
-                                <Map className="h-4 w-4 text-primary" /> Pasaporte de Ciudades
+                                <Map className="h-4 w-4 text-primary" /> Mi Pasaporte
                             </h3>
-                            <Card className="border border-border/50 bg-card/50 overflow-hidden relative">
+                            <Card className="border-2 border-border bg-card overflow-hidden relative shadow-sm">
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10" />
-                                <CardContent className="p-4 flex gap-3 overflow-x-auto snap-x hide-scrollbar">
-                                    {(userProfile?.ciudades_visitadas || ['Cali']).map((ciudad, idx) => (
-                                        <div key={idx} className="flex flex-col items-center gap-2 snap-center shrink-0 w-24">
-                                            <div className="w-16 h-16 rounded-full border-2 border-primary border-dashed p-1 flex items-center justify-center bg-background/80 shadow-sm relative group">
-                                                <div className="absolute inset-1 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
-                                                    <span className="text-xs font-bold text-primary uppercase drop-shadow-sm rotate-[-15deg] opacity-80 group-hover:scale-110 transition-transform">Sellado</span>
+                                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
+                                <CardContent className="p-5 flex gap-4 overflow-x-auto snap-x hide-scrollbar">
+                                    {stamps.length > 0 ? stamps.map((stamp, idx) => (
+                                        <div key={stamp.id} className="flex flex-col items-center gap-2 snap-center shrink-0 w-28 group cursor-pointer relative">
+                                            <div className={`w-20 h-20 rounded-full border-4 border-dashed p-1 flex items-center justify-center bg-background shadow-md relative group-hover:scale-105 transition-transform ${stamp.color_theme ? \`border-\${stamp.color_theme}-500/50\` : 'border-primary/50'}`}>
+                                                <div className={`absolute inset-1 rounded-full flex items-center justify-center overflow-hidden ${stamp.color_theme ? \`bg-\${stamp.color_theme}-500/10\` : 'bg-primary/10'}`}>
+                                                    {stamp.image_url ? (
+                                                        <img src={stamp.image_url} alt={stamp.title} className="w-full h-full object-cover mix-blend-multiply opacity-80" />
+                                                    ) : (
+                                                        <span className={`text-[10px] font-black uppercase drop-shadow-sm rotate-[-15deg] opacity-80 ${stamp.color_theme ? \`text-\${stamp.color_theme}-600\` : 'text-primary'}`}>{stamp.city || 'Sellado'}</span>
+                                                    )}
                                                 </div>
                                             </div>
-                                            <span className="text-xs font-semibold">{ciudad}</span>
+                                            <div className="text-center">
+                                                <span className="text-xs font-bold leading-tight block truncate w-28">{stamp.title}</span>
+                                                {stamp.subtitle && <span className="text-[10px] text-muted-foreground block truncate w-28">{stamp.subtitle}</span>}
+                                            </div>
                                         </div>
-                                    ))}
-                                    <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-24 opacity-40 grayscale">
-                                        <div className="w-16 h-16 rounded-full border-2 border-muted border-dashed flex items-center justify-center bg-muted/20">
-                                            <MapPin className="h-6 w-6 text-muted-foreground" />
+                                    )) : (
+                                        <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-28 group">
+                                            <div className="w-20 h-20 rounded-full border-4 border-primary/50 border-dashed p-1 flex items-center justify-center bg-background shadow-md relative">
+                                                <div className="absolute inset-1 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                                                    <span className="text-[10px] font-black text-primary uppercase drop-shadow-sm rotate-[-15deg] opacity-80">Cali</span>
+                                                </div>
+                                            </div>
+                                            <div className="text-center">
+                                                <span className="text-xs font-bold leading-tight block">Santiago de Cali</span>
+                                                <span className="text-[10px] text-muted-foreground block">Sello inicial</span>
+                                            </div>
                                         </div>
-                                        <span className="text-xs font-semibold">Próximamente</span>
+                                    )}
+                                    <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-28 opacity-40 grayscale">
+                                        <div className="w-20 h-20 rounded-full border-4 border-muted border-dashed flex items-center justify-center bg-muted/20">
+                                            <MapPin className="h-8 w-8 text-muted-foreground" />
+                                        </div>
+                                        <div className="text-center">
+                                            <span className="text-xs font-bold leading-tight block">Valle del Cauca</span>
+                                            <span className="text-[10px] text-muted-foreground block">Próximamente</span>
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>

@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
-import { Insignia } from '../types';
+import { Insignia, PassportStamp } from '../types';
 import { Heart, PenTool, Map as MapIcon, Flag, Award, Bell, Utensils, Palette, Feather, Music, Church, Cat, Footprints, Unlock, Trophy } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
@@ -112,6 +112,21 @@ export const gamificationService = {
             return [];
         }
         return data;
+    },
+
+    async getUserPassportStamps(userId: string): Promise<PassportStamp[]> {
+        if (!userId) return [];
+        const { data, error } = await supabase
+            .from('passport_stamps')
+            .select('*')
+            .eq('user_id', userId)
+            .order('unlocked_at', { ascending: false });
+
+        if (error) {
+            console.error('Error fetching passport stamps:', error);
+            return [];
+        }
+        return data as PassportStamp[];
     }
 };
 

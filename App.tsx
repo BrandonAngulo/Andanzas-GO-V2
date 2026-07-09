@@ -22,6 +22,7 @@ import FavoritosPanel from "./components/panels/FavoritosPanel";
 import ResenasPanel from "./components/panels/ResenasPanel";
 import RutasPanel from "./components/panels/RutasPanel";
 import PerfilPanel from "./components/panels/PerfilPanel";
+import { UserAvatar } from "./components/shared/UserAvatar";
 import SobrePanel from "./components/panels/SobrePanel";
 import SoportePanel from "./components/panels/SoportePanel";
 import RightRail from "./components/layout/RightRail";
@@ -482,15 +483,9 @@ export default function App() {
 
             <Button variant="ghost" size="icon" className={cn("rounded-full hover:bg-muted p-0 overflow-hidden", isAuthenticated ? "border-2 border-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? 'mapa' : 'perfil')}>
               {isAuthenticated ? (
-                avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
-                ) : (
-                  <div className="h-full w-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-[10px]">
-                    {firstLetter}
-                  </div>
-                )
+                <UserAvatar userProfile={userProfile} className="w-full h-full" />
               ) : (
-                <User className="h-5 w-5" />
+                <User className="h-6 w-6 text-foreground" />
               )}
             </Button>
           </div>
