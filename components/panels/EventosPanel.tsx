@@ -205,11 +205,17 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
         
         {/* Header Hero */}
-        <div className="mb-6 pb-6 border-b">
-          <h2 className="text-3xl font-bold tracking-tight mb-2">Cartelera Cultural</h2>
-          <p className="text-muted-foreground max-w-2xl text-lg">
-            Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida. Filtra, elige y disfruta.
-          </p>
+        <div className="relative mb-6 overflow-hidden rounded-2xl border shadow-sm">
+          <div className="absolute inset-0 z-0">
+            <img src="/images/banner_eventos.png" alt="Cartelera Cultural" className="w-full h-full object-cover opacity-40 dark:opacity-20 mix-blend-luminosity" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30"></div>
+          </div>
+          <div className="relative z-10 p-6 md:p-8">
+            <h2 className="text-3xl font-bold tracking-tight mb-2">Cartelera Cultural</h2>
+            <p className="text-muted-foreground max-w-2xl text-lg">
+              Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida. Filtra, elige y disfruta.
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">

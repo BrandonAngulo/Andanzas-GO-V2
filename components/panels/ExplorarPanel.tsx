@@ -162,8 +162,13 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   return (
     <ScrollArea className="h-[72vh]">
       {!query && (
-        <div className="p-5 md:p-8 bg-gradient-to-br from-primary/10 via-background to-background mb-4 border-b">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="relative p-5 md:p-8 mb-4 border-b overflow-hidden rounded-b-2xl">
+          <div className="absolute inset-0 z-0">
+            <img src="/images/banner_explorar.png" alt="Explorar Cali" className="w-full h-full object-cover opacity-30 dark:opacity-20 mix-blend-luminosity" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/20"></div>
+          </div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-4">
             <div className="bg-primary/20 p-2 rounded-full">
               <Compass className="h-6 w-6 text-primary" />
             </div>
@@ -186,6 +191,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
             onSelectCategory={(id) => setCategoryFilter(categoryFilter === id ? null : id)}
             className="mb-0"
           />
+          </div>
         </div>
       )}
 

@@ -53,10 +53,14 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
 
     return (
         <div className="space-y-6">
-            <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 className="text-2xl font-bold mb-2">Zona Play</h2>
-                    <p className="text-muted-foreground">Demuestra cuánto sabés, reta amigos y gana puntos para tu perfil.</p>
+            <div className="relative mb-6 overflow-hidden rounded-2xl border shadow-sm">
+                <div className="absolute inset-0 z-0">
+                    <img src="/images/banner_juegos.png" alt="Zona Play" className="w-full h-full object-cover opacity-40 dark:opacity-20 mix-blend-luminosity" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30"></div>
+                </div>
+                <div className="relative z-10 p-6 md:p-8">
+                    <h2 className="text-3xl font-bold tracking-tight mb-2">Zona Play</h2>
+                    <p className="text-muted-foreground max-w-2xl text-lg">Demuestra cuánto sabés, reta amigos y gana puntos para tu perfil.</p>
                 </div>
             </div>
 

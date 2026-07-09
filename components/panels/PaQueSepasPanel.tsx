@@ -144,14 +144,20 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
     return (
         <ScrollArea className="h-[72vh] bg-muted/20">
             <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-                <div className="mb-8">
-                    <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2 mb-2">
-                        <BookOpen className="h-8 w-8 text-primary" />
-                        Pa' que sepás
-                    </h2>
-                    <p className="text-muted-foreground text-lg max-w-2xl">
-                        Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.
-                    </p>
+                <div className="relative mb-8 overflow-hidden rounded-2xl border shadow-sm">
+                    <div className="absolute inset-0 z-0">
+                        <img src="/images/banner_aprende.png" alt="Pa' que sepás" className="w-full h-full object-cover opacity-40 dark:opacity-20 mix-blend-luminosity" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/30"></div>
+                    </div>
+                    <div className="relative z-10 p-6 md:p-8">
+                        <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2 mb-2">
+                            <BookOpen className="h-8 w-8 text-primary" />
+                            Pa' que sepás
+                        </h2>
+                        <p className="text-muted-foreground text-lg max-w-2xl">
+                            Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.
+                        </p>
+                    </div>
                 </div>
                 
                 <div className="mb-8">
