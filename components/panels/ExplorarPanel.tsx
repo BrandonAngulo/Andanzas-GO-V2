@@ -11,6 +11,30 @@ import { Badge } from '../ui/badge';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
 import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library } from 'lucide-react';
 
+const IMPERDIBLES = [
+  {
+    id: 'route-salsa',
+    title: 'Ruta de la Salsa: Obrero',
+    subtitle: 'Historia y ritmo en el corazón de Cali',
+    image: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=1000&auto=format&fit=crop',
+    tag: 'Ruta Recomendada'
+  },
+  {
+    id: 'route-food',
+    title: 'Fogones de la Memoria',
+    subtitle: 'El talento de los sabores vallecaucanos',
+    image: 'https://images.unsplash.com/photo-1628267280784-884d5df68c2e?q=80&w=1000&auto=format&fit=crop',
+    tag: 'Ruta Gastronómica'
+  },
+  {
+    id: 'route-art',
+    title: 'Pinceles de la Calle',
+    subtitle: 'Arte urbano y memoria viva',
+    image: 'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?q=80&w=1000&auto=format&fit=crop',
+    tag: 'Ruta Visual'
+  }
+];
+
 // --- Reusable Card Components for the Feed ---
 
 const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ site, onOpenSite }) => {
@@ -165,7 +189,33 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
         </div>
       )}
 
-
+      {/* Imperdibles Banners */}
+      {!query && !categoryFilter && (
+        <div className="px-4 md:px-8 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-xl flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-yellow-500" />
+              {language === 'es' ? 'Imperdibles' : 'Must See'}
+            </h3>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar">
+            {IMPERDIBLES.map(item => (
+              <div 
+                key={item.id} 
+                className="min-w-[280px] md:min-w-[320px] snap-center shrink-0 cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all"
+                onClick={() => onOpenRoute && onOpenRoute({ id: item.id } as any)}
+              >
+                <LazyImage src={item.image} alt={item.title} className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-4">
+                  <Badge className="w-fit mb-2 bg-primary/90 text-white border-none">{item.tag}</Badge>
+                  <h4 className="text-white font-bold text-lg leading-tight mb-1">{item.title}</h4>
+                  <p className="text-white/80 text-sm font-medium">{item.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Sabías que Banner */}
       {!query && !categoryFilter && randomFact && (
