@@ -162,20 +162,16 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   return (
     <ScrollArea className="h-[72vh]">
       {!query && (
-        <div className="relative p-6 md:p-10 mb-4 border-b overflow-hidden rounded-[2rem] bg-blue-50/50 dark:bg-blue-950/20 shadow-sm">
+        <div className="relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            {/* Decorative Background Elements */}
-            <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 dark:bg-blue-900/30 rounded-full blur-3xl opacity-60"></div>
-            <div className="absolute bottom-0 right-32 w-40 h-40 bg-sky-100 dark:bg-sky-900/30 rounded-full blur-2xl opacity-60"></div>
-            
-            {/* Vector Illustration */}
-            <div className="absolute right-0 bottom-0 flex items-end justify-end pointer-events-none z-10 w-64 md:w-80 h-full hidden md:flex">
-                <img 
-                    src="/images/ilus_ermita.png" 
-                    alt="Explorar" 
-                    className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-lighten opacity-100 object-right-bottom drop-shadow-xl" 
-                />
-            </div>
+            {/* Full-width banner background */}
+            <img 
+                src="/images/banner_explorar.png" 
+                alt="Fondo Explorar" 
+                className="w-full h-full object-cover object-right"
+            />
+            {/* Gradient overlay to ensure text readability on the left, blending smoothly */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"></div>
           </div>
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex-1 w-full max-w-xl">

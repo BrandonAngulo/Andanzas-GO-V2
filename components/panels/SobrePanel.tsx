@@ -7,11 +7,13 @@ import { useI18n } from '../../i18n';
 import Logo from '../layout/Logo';
 import { institutionalService } from '../../services/institutional.service';
 import { InstitutionalContent } from '../../types';
+import { SupportUsModal } from './SupportUsModal';
 
 const SobrePanel: React.FC = () => {
     const { t } = useI18n();
     const [content, setContent] = React.useState<Record<string, InstitutionalContent>>({});
     const [loading, setLoading] = React.useState(true);
+    const [isSupportModalOpen, setIsSupportModalOpen] = React.useState(false);
 
     React.useEffect(() => {
         const load = async () => {
@@ -46,6 +48,14 @@ const SobrePanel: React.FC = () => {
                         <Info className="w-3 h-3 text-muted-foreground" />
                         <span className="text-xs font-mono text-muted-foreground">v1.0.2 Public Beta</span>
                     </div>
+
+                    <Button 
+                        onClick={() => setIsSupportModalOpen(true)}
+                        className="mt-6 font-semibold shadow-lg shadow-pink-500/20 bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 border-none text-white rounded-xl flex items-center gap-2"
+                    >
+                        <Heart className="w-5 h-5 fill-current" />
+                        ¡Apóyanos!
+                    </Button>
                 </div>
 
                 <div className="grid gap-4">
@@ -125,6 +135,8 @@ const SobrePanel: React.FC = () => {
                     </div>
                 </section>
             </div>
+            
+            <SupportUsModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />
         </ScrollArea>
     );
 };

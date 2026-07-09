@@ -700,13 +700,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     })}
                                 </div>
                             ) : (
-                                <Card className="border-dashed shadow-none bg-muted/30">
+                                <Card className="border-dashed border-2 border-primary/20 shadow-none bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer">
                                     <CardContent className="p-8 text-center flex flex-col items-center justify-center">
-                                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-3">
-                                            <MapPin className="h-8 w-8 text-primary/50" />
+                                        <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4">
+                                            <MapPin className="h-8 w-8 text-primary" />
                                         </div>
-                                        <p className="text-sm font-semibold text-foreground mb-1">Aún no hay actividad reciente</p>
-                                        <p className="text-xs text-muted-foreground">¡Empieza a explorar la ciudad y deja reseñas para llenar tu historial!</p>
+                                        <p className="text-base font-bold text-primary mb-1">Aún no hay actividad reciente</p>
+                                        <p className="text-sm text-muted-foreground mb-4">¡El mapa te espera! Empieza a explorar la ciudad y deja tu huella.</p>
+                                        <Button variant="default" className="rounded-full shadow-lg shadow-primary/20">Descubrir Sitios</Button>
                                     </CardContent>
                                 </Card>
                             )}
@@ -772,11 +773,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     ))}
                                 </div>
                             ) : (
-                                <Card className="border-dashed shadow-none bg-muted/10">
+                                <Card className="border-dashed border-2 border-pink-500/20 shadow-none bg-pink-500/5 hover:bg-pink-500/10 transition-colors cursor-pointer">
                                     <CardContent className="p-6 text-center flex flex-col items-center">
-                                        <Heart className="h-10 w-10 text-muted-foreground/30 mb-2" />
-                                        <p className="text-sm font-semibold mb-1">Aún no tienes favoritos</p>
-                                        <p className="text-xs text-muted-foreground mb-3">Guarda los sitios que más te gusten tocando el corazón.</p>
+                                        <div className="p-3 bg-pink-100 dark:bg-pink-900/30 rounded-full mb-3">
+                                            <Heart className="h-8 w-8 text-pink-500" />
+                                        </div>
+                                        <p className="text-sm font-bold text-pink-600 dark:text-pink-400 mb-1">Aún no tienes favoritos</p>
+                                        <p className="text-xs text-muted-foreground mb-3 leading-relaxed">Guarda los sitios que más te gusten tocando el corazón. Así armarás tu propia ruta personal.</p>
+                                        <Button variant="outline" size="sm" className="border-pink-200 text-pink-600 hover:bg-pink-50 dark:border-pink-900 dark:hover:bg-pink-950 rounded-full">Encontrar favoritos</Button>
                                     </CardContent>
                                 </Card>
                             )}
@@ -831,11 +835,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     })}
                                 </div>
                             ) : (
-                                <Card className="border-dashed shadow-none bg-muted/10">
+                                <Card className="border-dashed border-2 border-orange-500/20 shadow-none bg-orange-500/5 hover:bg-orange-500/10 transition-colors cursor-pointer">
                                     <CardContent className="p-6 text-center flex flex-col items-center">
-                                        <MessageSquare className="h-10 w-10 text-muted-foreground/30 mb-2" />
-                                        <p className="text-sm font-semibold mb-1">Sin reseñas</p>
-                                        <p className="text-xs text-muted-foreground mb-3">Tus aportes ayudan a la comunidad. Deja tu opinión en los sitios que visites.</p>
+                                        <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-3">
+                                            <MessageSquare className="h-8 w-8 text-orange-500" />
+                                        </div>
+                                        <p className="text-sm font-bold text-orange-600 dark:text-orange-400 mb-1">Sin reseñas</p>
+                                        <p className="text-xs text-muted-foreground mb-3 leading-relaxed">Tus aportes ayudan a que la comunidad crezca. Deja tu opinión en los sitios que visites.</p>
+                                        <Button variant="outline" size="sm" className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-orange-900 dark:hover:bg-orange-950 rounded-full">Escribir una reseña</Button>
                                     </CardContent>
                                 </Card>
                             )}
