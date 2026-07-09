@@ -28,21 +28,12 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
     fetchAuthPhoto();
   }, []);
 
-  // Priority 1: Selected gamification avatar (if not forcing initials)
-  // Need to fetch from avatar_presets if we only have the ID, or assume selected_avatar_id is the image path if it's a path
-  // In phase 15 we set selected_avatar_id. If it's a preset ID, we'd need its image.
-  // For now, if selected_avatar_id is a URL or path, use it. If it's just an ID like 'female_explorer', we build the path.
-  const getSelectedAvatarUrl = () => {
-    if (!userProfile?.selected_avatar_id) return null;
-    const id = userProfile.selected_avatar_id;
-    if (id.startsWith('http') || id.startsWith('/')) return id;
-    return `/avatars/${id}.png`; // Fallback assumption
-  };
-
-  const selectedAvatarUrl = getSelectedAvatarUrl();
-
-  // Priority 2: Uploaded avatar in profile
   const profileAvatarUrl = userProfile?.avatar_url;
+
+  // Priority 2: Auth Provider Photo URL
+  const providerUrl = authPhotoUrl;
+
+  const displayUrl = forceInitials ? null : (profileAvatarUrl || providerUrl);
 
   // Priority 3: Auth Provider Photo URL
   const providerUrl = authPhotoUrl;

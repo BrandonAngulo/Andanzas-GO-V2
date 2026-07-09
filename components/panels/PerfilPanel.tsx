@@ -129,15 +129,16 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         });
     };
 
-    const handleSelectAvatar = async (url: string) => {
+    const handleSelectAvatar = async (url: { id: string, image_url: string }) => {
         setLoading(true);
         try {
             if (user?.id === 'audit-user-id') {
                 // Mock user bypass
-                setUserProfile(prev => prev ? { ...prev, avatar_url: url } : { 
+                setUserProfile(prev => prev ? { ...prev, avatar_url: url.image_url, selected_avatar_id: url.id } : { 
                     id: 'audit-user-id', 
                     email: 'audit@andanzas.com',
-                    avatar_url: url, 
+                    avatar_url: url.image_url, 
+                    selected_avatar_id: url.id,
                     full_name: 'Auditor Andanzas', 
                     points: 0, 
                     interests: [] 
@@ -148,7 +149,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 return;
             }
 
-            await userService.updateProfileData(user!.id, { avatar_url: url });
+            await userService.updateProfileData(user!.id, { avatar_url: url.image_url, selected_avatar_id: url.id });
             // Force refresh user profile
             const updatedProfile = await userService.getProfile(user!.id);
             setUserProfile(updatedProfile);
@@ -754,7 +755,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             {user?.user_metadata?.avatar_url && !user?.user_metadata?.avatar_url.includes('/avatars/') && (
                                 <div 
                                     className={`relative cursor-pointer flex flex-col items-center gap-2 group p-2 rounded-xl transition-all ${currentAvatarUrl === user.user_metadata.avatar_url ? 'bg-primary/10 ring-2 ring-primary' : 'hover:bg-muted'}`}
-                                    onClick={() => handleSelectAvatar(user.user_metadata.avatar_url)}
+                                    onClick={() => handleSelectAvatar({ id: 'google', image_url: user.user_metadata.avatar_url })}
                                 >
                                     <div className="w-16 h-16 rounded-full overflow-hidden shadow-md group-hover:scale-105 transition-transform">
                                         <img src={user.user_metadata.avatar_url} alt="Google Avatar" className="w-full h-full object-cover" />
@@ -768,7 +769,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <div 
                                     key={avatar.id} 
                                     className={`relative cursor-pointer flex flex-col items-center gap-2 group p-3 rounded-xl transition-all border ${currentAvatarUrl === avatar.image_url ? 'bg-primary/10 border-primary shadow-sm' : 'border-transparent hover:bg-muted'}`}
-                                    onClick={() => handleSelectAvatar(avatar.image_url)}
+                                    onClick={() => handleSelectAvatar({ id: avatar.id, image_url: avatar.image_url })}
                                 >
                                     <div className="w-16 h-16 rounded-full overflow-hidden shadow-md group-hover:scale-105 transition-transform bg-muted border-2 border-background">
                                         <img src={avatar.image_url} alt={avatar.name} className="w-full h-full object-cover" />
