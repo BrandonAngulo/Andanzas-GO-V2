@@ -58,6 +58,34 @@ const HARDCODED_AVATARS = [
         personality_title: 'Tradicional y alegre',
         phrase: 'Endulzo cada paso que das por Cali.',
         image_url: '/images/avatars/maceta.png'
+    },
+    {
+        id: 'exploradora',
+        name: 'Exploradora Urbana',
+        personality_title: 'La Caminante Curiosa',
+        phrase: '¡Vení, que por aquí hay una historia escondida!',
+        image_url: '/images/avatars/exploradora.png'
+    },
+    {
+        id: 'lectora',
+        name: 'Lectora de Memoria',
+        personality_title: 'La Guardiana de Historias',
+        phrase: 'Cada fachada tiene algo que contarnos.',
+        image_url: '/images/avatars/lectora.png'
+    },
+    {
+        id: 'salserx',
+        name: 'Salserx Caleñx',
+        personality_title: 'El Alma de la Fiesta',
+        phrase: '¡Esa campana llama, vámonos!',
+        image_url: '/images/avatars/salserx.png'
+    },
+    {
+        id: 'catadorx',
+        name: 'Catadorx de Sabores',
+        personality_title: 'El Paladar Caleño',
+        phrase: 'Después de caminar, el cuerpo pide pandebono.',
+        image_url: '/images/avatars/catadorx.png'
     }
 ];
 
@@ -613,11 +641,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     
                                                     <div className={`w-full h-full border border-dashed rounded-sm flex flex-col items-center justify-center overflow-hidden p-1 ${isLevel3 ? 'border-yellow-500/50' : 'border-border'}`}>
                                                         <div className={`w-full h-1/2 flex items-center justify-center ${getInnerStyle()} rounded-sm mb-1`}>
-                                                             {hasAnyExperience ? (
-                                                                <img src="/images/ilus_ermita.png" alt="Cali" className="w-12 h-12 object-contain drop-shadow-sm mix-blend-multiply opacity-90" />
-                                                             ) : (
-                                                                <MapPin className="w-8 h-8 opacity-40" />
-                                                             )}
+                                                            <img src="/images/ilus_ermita.png" alt="Cali" className={`w-12 h-12 object-contain drop-shadow-sm mix-blend-multiply ${hasAnyExperience ? 'opacity-90' : 'opacity-30 grayscale'}`} />
                                                         </div>
                                                         <span className={`text-[12px] font-black uppercase drop-shadow-sm tracking-widest mt-1 ${isLevel3 ? 'text-yellow-600' : (hasAnyExperience ? 'text-foreground' : 'text-muted-foreground')}`}>
                                                             Cali
@@ -849,7 +873,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
                 {/* Avatar Selection Modal */}
                 <Dialog open={showAvatarModal} onOpenChange={setShowAvatarModal}>
-                    <DialogContent className="max-w-xs sm:max-w-sm rounded-3xl p-6">
+                    <DialogContent className="max-w-xs sm:max-w-sm rounded-3xl p-6 max-h-[85vh] overflow-y-auto">
                         <DialogHeader>
                             <DialogTitle className="text-center font-bold text-xl">Elige tu Avatar</DialogTitle>
                         </DialogHeader>
