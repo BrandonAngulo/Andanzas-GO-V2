@@ -13,6 +13,14 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
     const [showInstructions, setShowInstructions] = useState(false);
 
     useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
+
+    useEffect(() => {
         const load = async () => {
             setLoading(true);
             const c = await challengeService.getChallenge(challengeId);

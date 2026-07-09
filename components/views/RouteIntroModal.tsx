@@ -34,6 +34,12 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                 }
             });
         }
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') handleClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isAuthenticated, user, route.id, route.requires_registration]);
 
     const handleClose = () => {

@@ -35,6 +35,14 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
     const { user } = useAuth();
     const { type, data } = view;
 
+    React.useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
+
     if (!data) return null;
 
     const viewTitle = getTranslated(data, type === 'event' ? 'titulo' : 'nombre', language);
@@ -51,15 +59,28 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
         <div className="fixed inset-0 z-[1100] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/95 overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200" onClick={onClose}>
             <div className="min-h-full w-full" onClick={(e) => e.stopPropagation()}>
                 <div className="sticky top-0 border-b bg-background/90 px-3 py-2 flex items-center gap-2 z-10 backdrop-blur-md">
-                    <Button variant="ghost" size="icon" onClick={onClose} aria-label="Atrás"><ChevronLeft className="w-6 h-6" /></Button>
-                    <div className="font-medium truncate flex-1">
+                    <Button variant="ghost" size="sm" onClick={onClose} aria-label="Atrás" className="flex items-center gap-1 rounded-full pr-4 text-primary hover:bg-primary/10 transition-colors shrink-0">
+                        <ChevronLeft className="w-5 h-5" />
+                        <span className="font-semibold text-sm hidden sm:inline-block">
+                            {type === 'site' && (language === 'es' ? 'Volver a explorar' : 'Back to explore')}
+                            {type === 'route' && (language === 'es' ? 'Volver a rutas' : 'Back to routes')}
+                            {type === 'event' && (language === 'es' ? 'Volver a eventos' : 'Back to events')}
+                            {type === 'challenge_lobby' && (language === 'es' ? 'Volver' : 'Back')}
+                            {type === 'challenge_verdict' && (language === 'es' ? 'Volver a historias' : 'Back to stories')}
+                        </span>
+                        <span className="font-semibold text-sm sm:hidden">
+                            {language === 'es' ? 'Atrás' : 'Back'}
+                        </span>
+                    </Button>
+                    <div className="font-bold truncate flex-1 text-center">
                         {viewTitle}
                     </div>
-                    {type === 'site' && (
-                        <Button size="sm" onClick={() => handleAuthAction(() => toggleFav(data.id))}>
-                            <Heart className={cn("h-4 w-4 mr-1", isFav(data.id) ? "fill-red-500 text-red-500" : "")} />
-                            {isFav(data.id) ? t('fullView.remove') : t('fullView.save')}
+                    {type === 'site' ? (
+                        <Button variant="ghost" size="sm" className="rounded-full px-3 shrink-0" onClick={() => handleAuthAction(() => toggleFav(data.id))}>
+                            <Heart className={cn("h-4 w-4", isFav(data.id) ? "fill-red-500 text-red-500" : "")} />
                         </Button>
+                    ) : (
+                        <div className="w-[52px]" /> /* Spacer to keep title centered if no favorite button */
                     )}
                 </div>
 

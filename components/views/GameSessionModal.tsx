@@ -49,6 +49,22 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         }
     }, [isFinished, challengeId, sessionId]);
 
+    React.useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                if (!isFinished && !loading && !error && !showExitConfirm) {
+                    setShowExitConfirm(true);
+                } else if (showExitConfirm) {
+                    setShowExitConfirm(false);
+                } else if (isFinished || error) {
+                    onClose();
+                }
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFinished, loading, error, showExitConfirm, onClose]);
+
     const handleChallengeFriend = async () => {
         if (!sessionId) return;
         setIsCreatingChallenge(true);
