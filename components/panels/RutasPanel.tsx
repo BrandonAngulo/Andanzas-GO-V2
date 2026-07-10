@@ -16,6 +16,8 @@ import { useI18n } from '../../i18n';
 import { getTranslated, formatDuration } from '../../lib/utils';
 import { BADGES } from '../../data/badges';
 import { LazyImage } from '../ui/lazy-image';
+import { settingsService } from '../../services/settings.service';
+import { RequestCustomRouteModal } from './RequestCustomRouteModal';
 
 interface RutasPanelProps {
     rutas: Ruta[];
@@ -52,6 +54,19 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     const [editedDescription, setEditedDescription] = useState('');
     const [editedPoints, setEditedPoints] = useState<Site[]>([]);
     const [activeTab, setActiveTab] = useState("sugeridas");
+    
+    const [enableCustomRouteRequest, setEnableCustomRouteRequest] = useState(false);
+    const [showRequestModal, setShowRequestModal] = useState(false);
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            const val = await settingsService.getSetting('enable_custom_route_requests');
+            if (val === 'true') {
+                setEnableCustomRouteRequest(true);
+            }
+        };
+        fetchSettings();
+    }, []);
 
     const moveUp = (index: number) => {
         if (!onReorderPoints || index === 0) return;
@@ -308,8 +323,20 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     </TabsContent>
 
                     <TabsContent value="mis-rutas" className="mt-0 animate-in fade-in duration-300">
+                        {enableCustomRouteRequest && (
+                            <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-primary/5 border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div>
+                                    <h3 className="font-bold text-lg text-emerald-800 dark:text-emerald-200">¿Quieres una ruta exclusiva?</h3>
+                                    <p className="text-sm text-muted-foreground">Déjanos diseñar un recorrido guiado perfecto para ti y tu grupo.</p>
+                                </div>
+                                <Button className="shrink-0 rounded-full" onClick={() => setShowRequestModal(true)}>
+                                    <Compass className="w-4 h-4 mr-2" /> Solicitar Ruta
+                                </Button>
+                            </div>
+                        )}
+
                         <div className="mb-4 flex justify-between items-center">
-                            <h3 className="font-bold">Rutas Personalizadas</h3>
+                            <h3 className="font-bold">Mis Creaciones</h3>
                             <Button size="sm" onClick={() => setActiveTab("crear")}>
                                 <Plus className="w-4 h-4 mr-2" /> Crear Nueva
                             </Button>
@@ -608,6 +635,11 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            <RequestCustomRouteModal 
+                open={showRequestModal} 
+                onOpenChange={setShowRequestModal} 
+            />
         </ScrollArea>
     );
 };

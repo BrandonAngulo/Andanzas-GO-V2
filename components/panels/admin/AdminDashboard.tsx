@@ -16,6 +16,7 @@ import { AdminSitios } from './AdminSitios';
 import { AdminEventos } from './AdminEventos';
 import { AdminIntroModal } from './AdminIntroModal';
 import { AdminNoticias } from './AdminNoticias';
+import { AdminSettings } from './AdminSettings';
 import { AdminUsuarios } from './AdminUsuarios';
 import { AdminInstitucional } from './AdminInstitucional';
 import { AdminBanners } from './AdminBanners';
@@ -295,7 +296,14 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setActiveTab('avatares')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <Smile className="w-4 h-4 mr-2" /> Avatares
+                        <User className="w-4 h-4 mr-2" /> Avatares
+                    </Button>
+                    <Button 
+                        variant={activeTab === 'settings' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('settings')}
+                        className="rounded-full whitespace-nowrap"
+                    >
+                        <Settings className="w-4 h-4 mr-2" /> Ajustes
                     </Button>
                     <Button 
                         variant={activeTab === 'metricas' ? 'default' : 'outline'} 
@@ -408,7 +416,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'legal' && <AdminDocumentosLegales />}
                     {activeTab === 'usuarios' && <AdminUsuarios />}
                     {activeTab === 'banners' && <AdminBanners />}
-                    {activeTab === 'settings' && <div>MÃ³dulo de Ajustes en construcciÃ³n...</div>}
+                    {activeTab === 'settings' && <AdminSettings />}
                 </div>
             </div>
         </ScrollArea>
