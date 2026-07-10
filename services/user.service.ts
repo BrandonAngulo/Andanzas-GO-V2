@@ -76,7 +76,7 @@ export const userService = {
         if (error) throw error;
     },
 
-    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[], accessibility_preferences?: Record<string, boolean>, avatar_url?: string, full_name?: string, city?: string, birth_date?: string, selected_avatar_id?: string }) {
+    async updateProfileData(userId: string, data: { interests?: string[], travel_style?: string | null, accessibility_needs?: string[], accessibility_preferences?: Record<string, boolean>, avatar_url?: string, full_name?: string, city?: string, birth_date?: string, selected_avatar_id?: string, unlocked_banners?: string[], selected_banner_id?: string, saved_routes?: string[] }) {
         // Strategy: Update 'interests', 'full_name', 'city', 'avatar_url', 'selected_avatar_id', 'accessibility_preferences' in profiles table.
         // Update 'travel_style', 'accessibility_needs', 'avatar_url', 'full_name', 'city', 'birth_date' in auth.users metadata.
 
@@ -86,6 +86,9 @@ export const userService = {
         if (data.city !== undefined) profileUpdates.city = data.city;
         if (data.avatar_url !== undefined) profileUpdates.avatar_url = data.avatar_url;
         if (data.accessibility_preferences !== undefined) profileUpdates.accessibility_preferences = data.accessibility_preferences;
+        if (data.unlocked_banners !== undefined) profileUpdates.unlocked_banners = data.unlocked_banners;
+        if (data.selected_banner_id !== undefined) profileUpdates.selected_banner_id = data.selected_banner_id;
+        if (data.saved_routes !== undefined) profileUpdates.saved_routes = data.saved_routes;
         // DO NOT update selected_avatar_id to prevent foreign key violations if the ID is not in avatar_presets table
 
         if (Object.keys(profileUpdates).length > 0) {

@@ -17,7 +17,11 @@ import { getTranslated, formatDuration } from '../../lib/utils';
 import { BADGES } from '../../data/badges';
 import { LazyImage } from '../ui/lazy-image';
 import { settingsService } from '../../services/settings.service';
+import { userService } from '../../services/user.service';
+import { useAuth } from '../../contexts/AuthContext';
 import { RequestCustomRouteModal } from './RequestCustomRouteModal';
+import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface RutasPanelProps {
     rutas: Ruta[];
@@ -57,16 +61,49 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     
     const [enableCustomRouteRequest, setEnableCustomRouteRequest] = useState(false);
     const [showRequestModal, setShowRequestModal] = useState(false);
+    const { user } = useAuth();
+    const [savedRouteIds, setSavedRouteIds] = useState<string[]>([]);
+    const [savingRoute, setSavingRoute] = useState(false);
 
     useEffect(() => {
-        const fetchSettings = async () => {
+        const fetchSettingsAndProfile = async () => {
             const val = await settingsService.getSetting('enable_custom_route_requests');
             if (val === 'true') {
                 setEnableCustomRouteRequest(true);
             }
+            if (user) {
+                const profile = await userService.getProfile(user.id);
+                if (profile?.saved_routes) {
+                    setSavedRouteIds(profile.saved_routes);
+                }
+            }
         };
-        fetchSettings();
-    }, []);
+        fetchSettingsAndProfile();
+    }, [user]);
+
+    const handleToggleSaveRoute = async (e: React.MouseEvent, routeId: string) => {
+        e.stopPropagation();
+        if (!user) {
+            toast.error("Debes iniciar sesión para guardar rutas.");
+            return;
+        }
+        setSavingRoute(true);
+        try {
+            const isSaved = savedRouteIds.includes(routeId);
+            const newSaved = isSaved 
+                ? savedRouteIds.filter(id => id !== routeId)
+                : [...savedRouteIds, routeId];
+            
+            await userService.updateProfileData(user.id, { saved_routes: newSaved });
+            setSavedRouteIds(newSaved);
+            if (!isSaved) toast.success("Ruta guardada en 'Por Andar'");
+        } catch (error) {
+            console.error(error);
+            toast.error("Error al guardar la ruta");
+        } finally {
+            setSavingRoute(false);
+        }
+    };
 
     const moveUp = (index: number) => {
         if (!onReorderPoints || index === 0) return;
@@ -182,9 +219,21 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     </div>
 
                     {/* Badge Overlay */}
-                    <div className="absolute top-2 right-2 p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-sm z-10">
+                    <div className="absolute top-2 left-2 p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-sm z-10">
                         <BadgeIcon className={cn("w-5 h-5", isCompleted ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground")} />
                     </div>
+
+                    <button 
+                        onClick={(e) => handleToggleSaveRoute(e, route.id)}
+                        disabled={savingRoute}
+                        className="absolute top-2 right-2 p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-sm z-20 hover:bg-background transition-colors"
+                        title="Guardar en Por Andar"
+                    >
+                        {savedRouteIds.includes(route.id) 
+                            ? <BookmarkCheck className="w-5 h-5 text-emerald-500" /> 
+                            : <Bookmark className="w-5 h-5 text-muted-foreground" />
+                        }
+                    </button>
 
                     {/* Status Label */}
                     {isCompleted && (
@@ -298,6 +347,17 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             size="sm" 
                             className={cn(
                                 "h-8 rounded-md text-xs font-medium transition-all",
+                                activeTab === "por-andar" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                            )}
+                            onClick={() => setActiveTab("por-andar")}
+                        >
+                            Por Andar
+                        </Button>
+                        <Button 
+                            variant="ghost"
+                            size="sm" 
+                            className={cn(
+                                "h-8 rounded-md text-xs font-medium transition-all",
                                 activeTab === "mis-rutas" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                             )}
                             onClick={() => setActiveTab("mis-rutas")}
@@ -318,6 +378,25 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             <div className="text-center py-20 text-muted-foreground">
                                 <Search className="w-12 h-12 mx-auto mb-4 opacity-20" />
                                 <p>No se encontraron rutas de conquista.</p>
+                            </div>
+                        )}
+                    </TabsContent>
+
+                    <TabsContent value="por-andar" className="mt-0 animate-in fade-in duration-300">
+                        <div className="mb-4">
+                            <h3 className="font-bold flex items-center gap-2"><Bookmark className="w-5 h-5 text-primary" /> Rutas Guardadas</h3>
+                            <p className="text-sm text-muted-foreground">Tus rutas pendientes para explorar Cali a tu propio ritmo.</p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {rutasSugeridas.filter(r => savedRouteIds.includes(r.id)).map((r) => (
+                                <PassportCard key={r.id} route={r} />
+                            ))}
+                        </div>
+                        {rutasSugeridas.filter(r => savedRouteIds.includes(r.id)).length === 0 && (
+                            <div className="text-center py-20 text-muted-foreground border-2 border-dashed rounded-xl mt-4">
+                                <Bookmark className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                                <p>Aún no has guardado ninguna ruta en "Por Andar".</p>
+                                <Button variant="outline" className="mt-4" onClick={() => setActiveTab("sugeridas")}>Explorar Rutas</Button>
                             </div>
                         )}
                     </TabsContent>

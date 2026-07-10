@@ -397,6 +397,9 @@ export interface UserProfile {
   legal_accepted_at?: string;
   legal_accepted_version?: string;
   profile_completed?: boolean;
+  unlocked_banners?: string[];
+  selected_banner_id?: string;
+  saved_routes?: string[];
 }
 
 // === Phase 5: Gamification & Trivia Models ===

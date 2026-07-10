@@ -14,10 +14,11 @@ import { UserAvatar } from '../shared/UserAvatar';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
-import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
 import { UserProfile, Insignia, Review, Site, PassportStamp } from '../../types';
 import { reviewsService } from '../../services/reviews.service';
+import { BannerGalleryModal, AVAILABLE_BANNERS } from './BannerGalleryModal';
+import { RewardUnlockModal } from './RewardUnlockModal';
 
 import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { COLOMBIAN_CITIES } from '../../lib/locations';
@@ -140,6 +141,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
     
+    // Gamification Modals
+    const [showBannerGallery, setShowBannerGallery] = useState(false);
+    const [showUnlockModal, setShowUnlockModal] = useState(false);
+    const [unlockData, setUnlockData] = useState({ type: 'banner' as 'banner' | 'badge', name: '', description: '' });
+
     // Profile Edit State
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [editName, setEditName] = useState("");
@@ -179,6 +185,45 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
             loadAvatars();
         }
     }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
+
+    // Check for banner unlocks based on activity
+    React.useEffect(() => {
+        if (!userProfile) return;
+
+        let newUnlocks = [...(userProfile.unlocked_banners || [])];
+        let triggeredUnlock = null;
+
+        // Condition 1: First Review unlocks Bulevar del Río
+        if (myReviews.length > 0 && !newUnlocks.includes('banner_bulevar_rio')) {
+            newUnlocks.push('banner_bulevar_rio');
+            triggeredUnlock = {
+                type: 'banner' as const,
+                name: 'Banner: Bulevar del Río',
+                description: '¡Por dejar tu primera reseña has desbloqueado una ilustración exclusiva para tu perfil!'
+            };
+        }
+        
+        // Condition 2: First Saved Route unlocks La Ermita
+        if ((userProfile.saved_routes?.length || 0) > 0 && !newUnlocks.includes('banner_la_ermita')) {
+            newUnlocks.push('banner_la_ermita');
+            // Prioritize showing only one modal at a time
+            if (!triggeredUnlock) {
+                triggeredUnlock = {
+                    type: 'banner' as const,
+                    name: 'Banner: La Ermita',
+                    description: '¡Por guardar tu primera ruta has desbloqueado una ilustración exclusiva para tu perfil!'
+                };
+            }
+        }
+
+        if (triggeredUnlock) {
+            userService.updateProfileData(userProfile.id, { unlocked_banners: newUnlocks }).then(() => {
+                setUserProfile(prev => prev ? { ...prev, unlocked_banners: newUnlocks } : null);
+                setUnlockData(triggeredUnlock);
+                setShowUnlockModal(true);
+            });
+        }
+    }, [myReviews.length, userProfile?.saved_routes?.length]);
 
     const handleDeleteReview = async (reviewId: string) => {
         toast((t('deleteConfirm') || "¿Estás seguro de eliminar esta reseña?"), {
@@ -491,6 +536,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const progressPercent = Math.min(100, Math.round((currentPoints / pointsForNextLevel) * 100));
 
     const currentAvatarUrl = userProfile?.selected_avatar_id || userProfile?.avatar_url || user?.user_metadata?.avatar_url;
+    
+    // Get active banner image URL
+    const activeBannerUrl = userProfile?.selected_banner_id 
+        ? AVAILABLE_BANNERS.find(b => b.id === userProfile.selected_banner_id)?.image_url 
+        : null;
 
     return (
         <ScrollArea className="h-[72vh] w-full">
@@ -526,18 +576,34 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
                 {/* Header Profile Section */}
                 <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50" />
+                    {activeBannerUrl ? (
+                        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${activeBannerUrl})` }}>
+                            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm sm:backdrop-blur-none sm:bg-gradient-to-t sm:from-background sm:via-background/80 sm:to-transparent" />
+                        </div>
+                    ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50" />
+                    )}
                     
                     <Button 
-                        variant="ghost" 
+                        variant="secondary" 
                         size="icon" 
-                        className="absolute top-4 right-4 z-20 hover:bg-muted/50 rounded-full"
-                        onClick={() => setShowSettingsModal(true)}
+                        className="absolute top-4 right-4 z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80"
+                        onClick={() => setShowBannerGallery(true)}
+                        title="Cambiar fondo"
                     >
-                        <Settings className="h-5 w-5 text-muted-foreground" />
+                        <ImageIcon className="h-4 w-4 text-foreground" />
+                    </Button>
+                    <Button 
+                        variant="secondary" 
+                        size="icon" 
+                        className="absolute top-4 right-16 z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80"
+                        onClick={() => setShowSettingsModal(true)}
+                        title="Ajustes de perfil"
+                    >
+                        <Settings className="h-4 w-4 text-foreground" />
                     </Button>
 
-                    <div className="relative p-6 flex flex-col items-center text-center z-10">
+                    <div className="relative p-6 flex flex-col items-center text-center z-10 pt-12">
                         <div className="relative mb-4 cursor-pointer group" onClick={() => setShowAvatarModal(true)}>
                             {/* Circular Progress SVG */}
                             <svg className="absolute -inset-2 w-[112px] h-[112px] -rotate-90">
@@ -1099,6 +1165,24 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
             </div>
             <OnboardingModal isOpen={showInterestsModal} onClose={() => setShowInterestsModal(false)} isEditing={true} />
+            <BannerGalleryModal 
+                open={showBannerGallery}
+                onOpenChange={setShowBannerGallery}
+                unlockedBanners={userProfile?.unlocked_banners || []}
+                selectedBannerId={userProfile?.selected_banner_id}
+                onBannerSelected={(id) => {
+                    setUserProfile(prev => prev ? { ...prev, selected_banner_id: id } : null);
+                }}
+            />
+
+            <RewardUnlockModal
+                open={showUnlockModal}
+                onOpenChange={setShowUnlockModal}
+                rewardType={unlockData.type}
+                rewardName={unlockData.name}
+                description={unlockData.description}
+                onActionClick={() => setShowBannerGallery(true)}
+            />
         </ScrollArea>
     );
 };
