@@ -56,7 +56,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
     };
 
     return (
-        <div className="fixed inset-0 z-[1100] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/95 overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200" onClick={onClose}>
+        <div className="absolute inset-0 z-50 bg-background overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200" onClick={onClose}>
             <div className="min-h-full w-full" onClick={(e) => e.stopPropagation()}>
                 <div className="sticky top-0 border-b bg-background/90 px-3 py-2 flex items-center gap-2 z-10 backdrop-blur-md">
                     <Button variant="ghost" size="sm" onClick={onClose} aria-label="Atrás" className="flex items-center gap-1 rounded-full pr-4 text-primary hover:bg-primary/10 transition-colors shrink-0">

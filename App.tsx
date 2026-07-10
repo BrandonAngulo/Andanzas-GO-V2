@@ -538,6 +538,11 @@ export default function App() {
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
               {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId } }))} />}
               {activePanel === 'admin' && <AdminDashboard />}
+
+              {/* Full View inside CardContent */}
+              {fullView && ["site", "event", "route"].includes(fullView.type) && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
+              {fullView && fullView.type === 'challenge_lobby' && <ChallengeLobby challengeId={fullView.data.id} onClose={closeFull} isAuthenticated={isAuthenticated} onAccept={(gameId, challengeId) => { if (!isAuthenticated) { setAuthDialogOpen(true); } else { closeFull(); setActiveChallengeId(challengeId); setActiveGameId(gameId); } }} />}
+              {fullView && fullView.type === 'challenge_verdict' && <ChallengeVerdict challengeId={fullView.data.id} onClose={closeFull} />}
             </CardContent>
           </Card>
 
@@ -581,13 +586,7 @@ export default function App() {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Full View */}
-      {fullView && ["site", "event", "route"].includes(fullView.type) && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
       
-      {fullView && fullView.type === 'challenge_lobby' && <ChallengeLobby challengeId={fullView.data.id} onClose={closeFull} isAuthenticated={isAuthenticated} onAccept={(gameId, challengeId) => { if (!isAuthenticated) { setAuthDialogOpen(true); } else { closeFull(); setActiveChallengeId(challengeId); setActiveGameId(gameId); } }} />}
-      {fullView && fullView.type === 'challenge_verdict' && <ChallengeVerdict challengeId={fullView.data.id} onClose={closeFull} />}
-
       {/* Privacy Banner */}
       {showPrivacyBanner && (
         <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t z-[2000] p-3 flex items-center gap-3 text-sm">
