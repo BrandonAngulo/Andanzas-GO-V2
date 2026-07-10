@@ -7,6 +7,7 @@ import { Input } from '../../ui/input';
 import { Eye, EyeOff, Search, Edit, Plus, Users } from 'lucide-react';
 import { RutaForm } from './RutaForm';
 import { AdminRutaInscripciones } from './AdminRutaInscripciones';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const AdminRutas = () => {
     const [routes, setRoutes] = useState<Ruta[]>([]);
@@ -15,6 +16,7 @@ export const AdminRutas = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingRouteId, setEditingRouteId] = useState<string | null>(null);
     const [viewingRegistrationsRoute, setViewingRegistrationsRoute] = useState<Ruta | null>(null);
+    const [routeToDelete, setRouteToDelete] = useState<Ruta | null>(null);
 
     useEffect(() => {
         loadRoutes();
@@ -33,14 +35,19 @@ export const AdminRutas = () => {
         loadRoutes();
     };
 
-    const handleDeleteRoute = async (route: Ruta) => {
-        if (window.confirm(`¿Estás seguro de eliminar la ruta "${route.nombre}"? Esta acción no se puede deshacer.`)) {
-            const success = await routesService.deleteRoute(route.id);
+    const handleDeleteRoute = (route: Ruta) => {
+        setRouteToDelete(route);
+    };
+
+    const confirmDeleteRoute = async () => {
+        if (routeToDelete) {
+            const success = await routesService.deleteRoute(routeToDelete.id);
             if (success) {
                 loadRoutes();
             } else {
                 alert('Hubo un error al eliminar la ruta.');
             }
+            setRouteToDelete(null);
         }
     };
 
@@ -71,6 +78,15 @@ export const AdminRutas = () => {
 
     return (
         <div className="space-y-6">
+            <ConfirmDialog 
+                open={!!routeToDelete} 
+                onOpenChange={(open) => !open && setRouteToDelete(null)}
+                title={`¿Estás seguro de eliminar la ruta "${routeToDelete?.nombre}"?`}
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmDeleteRoute}
+                destructive={true}
+                confirmText="Eliminar"
+            />
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="relative w-full sm:w-72">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

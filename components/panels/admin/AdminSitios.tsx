@@ -6,6 +6,7 @@ import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
 import { Eye, EyeOff, Search, Trash2, Edit, Plus } from 'lucide-react';
 import { SitioForm } from './SitioForm';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const AdminSitios = () => {
     const [sites, setSites] = useState<Site[]>([]);
@@ -13,6 +14,7 @@ export const AdminSitios = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingSiteId, setEditingSiteId] = useState<string | null>(null);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadSites();
@@ -31,10 +33,15 @@ export const AdminSitios = () => {
         loadSites();
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm('¿Estás seguro de eliminar este sitio? Esta acción no se puede deshacer.')) {
-            await sitesService.delete(id);
+    const handleDelete = (id: string) => {
+        setDeleteId(id);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteId) {
+            await sitesService.delete(deleteId);
             loadSites();
+            setDeleteId(null);
         }
     };
 

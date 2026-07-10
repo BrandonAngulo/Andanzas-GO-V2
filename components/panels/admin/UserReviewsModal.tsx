@@ -4,6 +4,7 @@ import { reviewsService } from '../../../services/reviews.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Trash2, X, AlertCircle } from 'lucide-react';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 
 interface UserReviewsModalProps {
@@ -14,6 +15,7 @@ interface UserReviewsModalProps {
 export const UserReviewsModal: React.FC<UserReviewsModalProps> = ({ user, onClose }) => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadReviews();
@@ -26,19 +28,33 @@ export const UserReviewsModal: React.FC<UserReviewsModalProps> = ({ user, onClos
         setLoading(false);
     };
 
-    const handleDelete = async (reviewId: string) => {
-        if (window.confirm('¿Eliminar esta reseña por incumplir las normas de la comunidad?')) {
-            const success = await reviewsService.deleteReview(reviewId);
+    const handleDelete = (reviewId: string) => {
+        setDeleteId(reviewId);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteId) {
+            const success = await reviewsService.deleteReview(deleteId);
             if (success) {
                 loadReviews();
             } else {
                 alert('Hubo un error al eliminar la reseña.');
             }
+            setDeleteId(null);
         }
     };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <ConfirmDialog 
+                open={!!deleteId} 
+                onOpenChange={(open) => !open && setDeleteId(null)}
+                title="¿Eliminar esta reseña?"
+                description="Se eliminará por incumplir las normas de la comunidad."
+                onConfirm={confirmDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
             <div className="bg-background rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden border border-border">
                 
                 {/* Header */}

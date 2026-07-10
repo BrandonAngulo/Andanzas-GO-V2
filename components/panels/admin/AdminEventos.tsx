@@ -6,6 +6,7 @@ import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
 import { Eye, EyeOff, Search, Trash2, Edit, Plus } from 'lucide-react';
 import { EventoForm } from './EventoForm';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const AdminEventos = () => {
     const [events, setEvents] = useState<Evento[]>([]);
@@ -13,6 +14,7 @@ export const AdminEventos = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingEventId, setEditingEventId] = useState<string | null>(null);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadEvents();
@@ -31,10 +33,15 @@ export const AdminEventos = () => {
         loadEvents();
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm('¿Estás seguro de eliminar este evento?')) {
-            await eventsService.delete(id);
+    const handleDelete = (id: string) => {
+        setDeleteId(id);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteId) {
+            await eventsService.delete(deleteId);
             loadEvents();
+            setDeleteId(null);
         }
     };
 

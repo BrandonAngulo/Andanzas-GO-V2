@@ -6,6 +6,7 @@ import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
 import { Eye, EyeOff, Search, Trash2, Edit, Plus } from 'lucide-react';
 import { NoticiaForm } from './NoticiaForm';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const AdminNoticias = () => {
     const [news, setNews] = useState<FeedItem[]>([]);
@@ -13,6 +14,7 @@ export const AdminNoticias = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadNews();
@@ -31,10 +33,15 @@ export const AdminNoticias = () => {
         loadNews();
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm('¿Estás seguro de eliminar esta noticia?')) {
-            await newsService.delete(id);
+    const handleDelete = (id: string) => {
+        setDeleteId(id);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteId) {
+            await newsService.delete(deleteId);
             loadNews();
+            setDeleteId(null);
         }
     };
 

@@ -6,6 +6,7 @@ import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
 import { Search, ShieldAlert, ShieldCheck, User, MoreVertical, MessageSquareWarning, Ban } from 'lucide-react';
 import { UserReviewsModal } from './UserReviewsModal';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const AdminUsuarios = () => {
     const [users, setUsers] = useState<UserProfile[]>([]);
@@ -13,6 +14,7 @@ export const AdminUsuarios = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [reviewModalUser, setReviewModalUser] = useState<UserProfile | null>(null);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [actionToConfirm, setActionToConfirm] = useState<{ type: 'role' | 'ban', userId: string, payload: string } | null>(null);
 
     useEffect(() => {
         loadUsers();
@@ -25,22 +27,29 @@ export const AdminUsuarios = () => {
         setLoading(false);
     };
 
-    const handleRoleChange = async (userId: string, currentRole: string) => {
+    const handleRoleChange = (userId: string, currentRole: string) => {
         const newRole = currentRole === 'admin' ? 'user' : (currentRole === 'editor' ? 'admin' : 'editor');
-        if (window.confirm(`¿Cambiar rol a ${newRole}?`)) {
-            await userService.updateRole(userId, newRole);
-            loadUsers();
-        }
+        setActionToConfirm({ type: 'role', userId, payload: newRole });
         setActiveDropdown(null);
     };
 
-    const handleBanUser = async (userId: string, currentStatus: string) => {
+    const handleBanUser = (userId: string, currentStatus: string) => {
         const newStatus = currentStatus === 'banned' ? 'active' : 'banned';
-        if (window.confirm(`¿${newStatus === 'banned' ? 'Banear' : 'Desbanear'} a este usuario? ${newStatus === 'banned' ? 'No podrá usar la app.' : ''}`)) {
-            await userService.updateUserStatus(userId, newStatus as 'active' | 'banned');
-            loadUsers();
-        }
+        setActionToConfirm({ type: 'ban', userId, payload: newStatus });
         setActiveDropdown(null);
+    };
+
+    const confirmAction = async () => {
+        if (!actionToConfirm) return;
+        
+        if (actionToConfirm.type === 'role') {
+            await userService.updateRole(actionToConfirm.userId, actionToConfirm.payload);
+        } else if (actionToConfirm.type === 'ban') {
+            await userService.updateUserStatus(actionToConfirm.userId, actionToConfirm.payload as 'active' | 'banned');
+        }
+        
+        loadUsers();
+        setActionToConfirm(null);
     };
 
     const filteredUsers = users.filter(u => 
@@ -49,7 +58,19 @@ export const AdminUsuarios = () => {
     );
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 pb-20">
+            <ConfirmDialog 
+                open={!!actionToConfirm} 
+                onOpenChange={(open) => !open && setActionToConfirm(null)}
+                title={
+                    actionToConfirm?.type === 'role' 
+                        ? `¿Cambiar rol a ${actionToConfirm.payload}?` 
+                        : `¿${actionToConfirm?.payload === 'banned' ? 'Banear' : 'Desbanear'} a este usuario?`
+                }
+                description={actionToConfirm?.type === 'ban' && actionToConfirm.payload === 'banned' ? 'No podrá usar la app.' : undefined}
+                onConfirm={confirmAction}
+                destructive={actionToConfirm?.type === 'ban' && actionToConfirm.payload === 'banned'}
+            />
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="relative w-full sm:w-72">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

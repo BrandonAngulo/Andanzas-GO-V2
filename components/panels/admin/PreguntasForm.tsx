@@ -7,12 +7,14 @@ import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Save, X, Plus, Trash2, Edit2 } from 'lucide-react';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [questions, setQuestions] = useState<GameQuestion[]>([]);
     const [loading, setLoading] = useState(true);
     const [editingQuestion, setEditingQuestion] = useState<Partial<GameQuestion> | null>(null);
     const [learnEntries, setLearnEntries] = useState<LearnEntry[]>([]);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadQuestions();
@@ -50,10 +52,15 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
         setEditingQuestion(q);
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm("¿Estás seguro de eliminar esta pregunta?")) {
-            await gamesService.deleteQuestion(id);
+    const handleDelete = (id: string) => {
+        setDeleteId(id);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteId) {
+            await gamesService.deleteQuestion(deleteId);
             loadQuestions();
+            setDeleteId(null);
         }
     };
 
@@ -85,6 +92,15 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
 
     return (
         <div className="space-y-4">
+            <ConfirmDialog 
+                open={!!deleteId} 
+                onOpenChange={(open) => !open && setDeleteId(null)}
+                title="¿Estás seguro de eliminar esta pregunta?"
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
             <div className="flex justify-between items-center mb-4">
                 <h4 className="font-semibold text-foreground">Preguntas del Juego</h4>
                 {!editingQuestion && (

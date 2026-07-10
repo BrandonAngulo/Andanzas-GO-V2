@@ -8,12 +8,14 @@ import { Switch } from '../../ui/switch';
 import { Plus, Edit, Trash2, CheckCircle, RefreshCcw, Smile } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const AdminAvatarsManager: React.FC = () => {
     const [avatars, setAvatars] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState<any>(null);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
 
     const loadAvatars = async () => {
         setLoading(true);
@@ -42,10 +44,15 @@ export const AdminAvatarsManager: React.FC = () => {
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm("¿Seguro que deseas eliminar este avatar? Esto podría afectar a los usuarios que ya lo tienen seleccionado.")) {
-            await userService.deleteAvatarPreset(id);
+    const handleDelete = (id: string) => {
+        setDeleteId(id);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteId) {
+            await userService.deleteAvatarPreset(deleteId);
             loadAvatars();
+            setDeleteId(null);
         }
     };
 
@@ -75,6 +82,15 @@ export const AdminAvatarsManager: React.FC = () => {
 
     return (
         <div className="space-y-6">
+            <ConfirmDialog 
+                open={!!deleteId} 
+                onOpenChange={(open) => !open && setDeleteId(null)}
+                title="¿Seguro que deseas eliminar este avatar?"
+                description="Esto podría afectar a los usuarios que ya lo tienen seleccionado."
+                onConfirm={confirmDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
             <div className="flex justify-between items-center">
                 <div>
                     <h3 className="text-xl font-bold flex items-center gap-2">
