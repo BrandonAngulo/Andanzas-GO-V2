@@ -497,7 +497,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
             <div className="p-3 space-y-6">
 
                 {/* Incomplete Profile Banner */}
-                {userProfile && (!userProfile.full_name || !userProfile.selected_avatar_id || !userProfile.interests?.length) && (
+                {userProfile && (!userProfile.full_name || !currentAvatarUrl || !userProfile.interests?.length) && (
                     <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2">
                         <div className="flex items-start gap-3">
                             <div className="p-2 bg-amber-500/20 rounded-full text-amber-600 dark:text-amber-400 mt-0.5">
@@ -508,7 +508,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
                                     Terminá de completar tu perfil para guardar rutas, recibir sellos y personalizar tu experiencia.
                                     {!userProfile.full_name && " Faltan tus datos."}
-                                    {!userProfile.selected_avatar_id && " Falta tu avatar."}
+                                    {!currentAvatarUrl && " Falta tu avatar."}
                                     {!userProfile.interests?.length && " Faltan tus intereses."}
                                 </p>
                             </div>
