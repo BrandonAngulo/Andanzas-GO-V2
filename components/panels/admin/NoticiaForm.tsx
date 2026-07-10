@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { FeedItem } from '../../../types';
 import { newsService } from '../../../services/news.service';
@@ -65,7 +66,7 @@ export const NoticiaForm: React.FC<NoticiaFormProps> = ({ itemId, onClose, onSav
             onSaved();
         } catch (error) {
             console.error("Error saving feed item:", error);
-            alert("Error al guardar la noticia.");
+            toast.error("Error al guardar la noticia.");
         } finally {
             setLoading(false);
         }

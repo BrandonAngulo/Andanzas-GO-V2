@@ -115,7 +115,7 @@ export const EventoForm: React.FC<EventoFormProps> = ({ eventId, onClose, onSave
             onSaved();
         } catch (error) {
             console.error("Error saving event:", error);
-            alert("Error al guardar el evento.");
+            toast.error("Error al guardar el evento.");
         } finally {
             setLoading(false);
         }

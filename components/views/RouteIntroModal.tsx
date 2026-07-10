@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useEffect, useState } from 'react';
 import { X, PlayCircle, Clock, MapPin, Award } from 'lucide-react';
 import { Ruta, Site } from '../../types';
@@ -63,7 +64,7 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
         if (success) {
             setIsRegistered(true);
         } else {
-            alert('Error al inscribirse a la ruta.');
+            toast.error('Error al inscribirse a la ruta.');
         }
     };
 

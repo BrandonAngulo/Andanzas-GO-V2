@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { Ruta } from '../../../types';
 import { routesService } from '../../../services/routes.service';
@@ -47,7 +48,7 @@ export const AdminRutas = () => {
             if (success) {
                 loadRoutes();
             } else {
-                alert('Hubo un error al eliminar la ruta.');
+                toast.error('Hubo un error al eliminar la ruta.');
             }
             setRouteToDelete(null);
         }

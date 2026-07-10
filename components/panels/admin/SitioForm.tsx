@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { Site } from '../../../types';
 import { sitesService } from '../../../services/sites.service';
@@ -84,7 +85,7 @@ export const SitioForm: React.FC<SitioFormProps> = ({ siteId, onClose, onSaved }
             onSaved();
         } catch (error) {
             console.error("Error saving site:", error);
-            alert("Error al guardar el sitio.");
+            toast.error("Error al guardar el sitio.");
         } finally {
             setLoading(false);
         }

@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { Ruta, RecomendacionRuta } from '../../../types';
 import { routesService } from '../../../services/routes.service';
@@ -139,7 +140,7 @@ export const RutaForm: React.FC<RutaFormProps> = ({ routeId, onClose, onSaved })
             onSaved();
         } catch (error) {
             console.error("Error saving route:", error);
-            alert("Error al guardar la ruta.");
+            toast.error("Error al guardar la ruta.");
         } finally {
             setLoading(false);
         }

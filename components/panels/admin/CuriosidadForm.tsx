@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { LearnEntry } from '../../../types';
 import { Button } from '../../ui/button';
@@ -85,7 +86,7 @@ export const CuriosidadForm: React.FC<CuriosidadFormProps> = ({ entry, onSave, o
             await onSave(formData);
         } catch (error) {
             console.error("Error saving entry:", error);
-            alert("Error al guardar la curiosidad.");
+            toast.error("Error al guardar la curiosidad.");
         } finally {
             setSaving(false);
         }

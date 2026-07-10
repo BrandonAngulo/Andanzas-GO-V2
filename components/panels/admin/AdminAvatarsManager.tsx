@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { userService } from '../../../services/user.service';
 import { supabase } from '../../../lib/supabaseClient';
@@ -43,7 +44,7 @@ export const AdminAvatarsManager: React.FC = () => {
             loadAvatars();
         } catch (err) {
             console.error("Error saving avatar:", err);
-            alert("Error al guardar el avatar. Verifica que el ID sea único.");
+            toast.error("Error al guardar el avatar. Verifica que el ID sea único.");
         }
     };
 
@@ -98,7 +99,7 @@ export const AdminAvatarsManager: React.FC = () => {
                 
             if (uploadError) {
                 console.error("Upload error:", uploadError);
-                alert(`Error subiendo imagen: ${uploadError.message}. Asegúrate de que el bucket 'avatars' exista y sea público.`);
+                toast.error(`Error subiendo imagen: ${uploadError.message}. Asegúrate de que el bucket 'avatars' exista y sea público.`);
                 setUploadingImage(false);
                 return;
             }
@@ -110,7 +111,7 @@ export const AdminAvatarsManager: React.FC = () => {
             setCurrentAvatar({ ...currentAvatar, image_url: publicUrl });
             setUploadingImage(false);
         } catch (err: any) {
-            alert("Error de subida: " + err.message);
+            toast.error("Error de subida: " + err.message);
             setUploadingImage(false);
         }
     };

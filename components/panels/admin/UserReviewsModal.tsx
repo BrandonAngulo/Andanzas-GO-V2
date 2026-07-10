@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { Review, UserProfile } from '../../../types';
 import { reviewsService } from '../../../services/reviews.service';
@@ -38,7 +39,7 @@ export const UserReviewsModal: React.FC<UserReviewsModalProps> = ({ user, onClos
             if (success) {
                 loadReviews();
             } else {
-                alert('Hubo un error al eliminar la reseña.');
+                toast.error('Hubo un error al eliminar la reseña.');
             }
             setDeleteId(null);
         }

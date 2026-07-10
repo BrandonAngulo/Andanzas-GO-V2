@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { Game } from '../../../services/games.service';
 import { learningService } from '../../../services/learning.service';
@@ -97,7 +98,7 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
             await onSave(finalData);
         } catch (error) {
             console.error("Error saving game:", error);
-            alert("Error al guardar el juego.");
+            toast.error("Error al guardar el juego.");
         } finally {
             setSaving(false);
         }

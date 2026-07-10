@@ -275,7 +275,7 @@ const AdminDashboard: React.FC = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                         <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
                             <ShieldAlert className="h-8 w-8 text-primary" />
-                            Panel de AdministraciÃ³n
+                            Panel de Administración
                         </h2>
                     </div>
                     <p className="text-muted-foreground">

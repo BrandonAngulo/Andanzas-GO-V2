@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 import { X, Heart, MapPin, Star, Route, Landmark, Award, ScrollText, Lightbulb, Music, UtensilsCrossed, Sparkles, CheckCircle, Shirt, Coffee, Sun, Cookie, ShieldCheck, Camera, Footprints, Activity, Clock, Calendar, ChevronLeft, Users, HelpCircle, Target, BookOpen, ArrowRight, Lock } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -419,9 +420,12 @@ const RouteDetail: React.FC<{ data: Ruta, goToPlaceInMap: (placeName: string) =>
                         {t('route.continue') || (language === 'es' ? "Continuar Ruta" : "Continue Route")}
                     </Button>
                     <Button size="lg" variant="outline" className="text-destructive border-destructive hover:bg-destructive/10" onClick={() => {
-                        if (window.confirm(language === 'es' ? "¿Seguro quieres salir de la ruta?" : "Are you sure you want to exit the route?")) {
-                            onCompleteRoute(data.id); // Reusing complete to just remove from active
-                        }
+                        toast(language === 'es' ? '¿Seguro quieres salir de la ruta?' : 'Are you sure you want to exit the route?', {
+                            action: {
+                                label: language === 'es' ? 'Salir' : 'Exit',
+                                onClick: () => onCompleteRoute(data.id)
+                            }
+                        });
                     }}>
                         {t('mission.cancel')}
                     </Button>

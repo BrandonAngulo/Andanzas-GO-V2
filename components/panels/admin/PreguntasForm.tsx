@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { useState, useEffect } from 'react';
 import { GameQuestion, gamesService } from '../../../services/games.service';
 import { learningService } from '../../../services/learning.service';
@@ -77,7 +78,7 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
             loadQuestions();
         } catch (error) {
             console.error(error);
-            alert("Error al guardar la pregunta.");
+            toast.error("Error al guardar la pregunta.");
         }
     };
 
