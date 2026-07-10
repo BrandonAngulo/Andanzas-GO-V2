@@ -264,17 +264,23 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                 <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex bg-muted p-1 rounded-lg shrink-0">
                         <Button 
-                            variant={activeTab === "sugeridas" ? "secondary" : "ghost"} 
+                            variant="ghost"
                             size="sm" 
-                            className="h-8 rounded-md text-xs font-medium" 
+                            className={cn(
+                                "h-8 rounded-md text-xs font-medium transition-all",
+                                activeTab === "sugeridas" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                            )}
                             onClick={() => setActiveTab("sugeridas")}
                         >
                             Descubrir
                         </Button>
                         <Button 
-                            variant={activeTab === "mis-rutas" ? "secondary" : "ghost"} 
+                            variant="ghost"
                             size="sm" 
-                            className="h-8 rounded-md text-xs font-medium" 
+                            className={cn(
+                                "h-8 rounded-md text-xs font-medium transition-all",
+                                activeTab === "mis-rutas" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                            )}
                             onClick={() => setActiveTab("mis-rutas")}
                         >
                             Mis Rutas
