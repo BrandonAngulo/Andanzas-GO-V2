@@ -65,7 +65,7 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
 
             {/* Andi Floating Button inside Banner */}
             {andiMessage && (
-                <div className="absolute bottom-4 right-4 z-20">
+                <div className="absolute bottom-6 right-6 md:bottom-8 md:right-10 z-20">
                     <AndiGuia message={andiMessage} variant="tip" />
                 </div>
             )}

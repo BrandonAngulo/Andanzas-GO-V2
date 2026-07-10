@@ -42,17 +42,24 @@ export const AndiGuia: React.FC<AndiGuiaProps> = ({
   };
 
   return (
-    <div className={cn("flex justify-end mb-2", className)}>
+    <div className={cn("flex justify-end", className)}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button 
-            variant="outline" 
-            size="sm"
-            className={cn("rounded-full border shadow-sm flex items-center gap-2 px-4 py-1.5 h-auto transition-transform hover:scale-105", variantStyles[variant])}
-          >
-            <BotMessageSquare className="w-4 h-4" />
-            <span className="text-xs font-semibold">{titles[variant]}</span>
-          </Button>
+          <div className="relative group cursor-pointer">
+            {/* Ping animation behind the button */}
+            <div className={cn("absolute inset-0 rounded-full animate-ping opacity-75", variantStyles[variant].split(' ')[0])}></div>
+            <Button 
+              variant="outline" 
+              size="icon"
+              className={cn(
+                "relative rounded-full border-2 shadow-lg flex items-center justify-center w-12 h-12 transition-all duration-300 hover:scale-110 group-hover:shadow-xl", 
+                variantStyles[variant],
+                "bg-background/95 backdrop-blur-sm"
+              )}
+            >
+              <BotMessageSquare className={cn("w-6 h-6", iconColors[variant])} />
+            </Button>
+          </div>
         </DialogTrigger>
         <DialogContent className="max-w-sm rounded-3xl p-6">
           <DialogHeader>
