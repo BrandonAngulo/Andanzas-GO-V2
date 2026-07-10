@@ -71,9 +71,27 @@ export const AdminCuriosidades = () => {
 
     const filteredEntries = entries.filter(e => e.title.toLowerCase().includes(searchQuery.toLowerCase()) || e.city.toLowerCase().includes(searchQuery.toLowerCase()));
 
+    if (isFormOpen) {
+        return (
+            <div className="space-y-6">
+                <CuriosidadForm 
+                    entry={currentEntry} 
+                    onSave={handleSave} 
+                    onCancel={() => { setIsFormOpen(false); setCurrentEntry(undefined); }} 
+                />
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h3 className="text-xl font-bold flex items-center gap-2">
+                        <span className="text-primary text-2xl leading-none mr-1">📖</span> Sabías Qué (Cápsulas de aprendizaje)
+                    </h3>
+                    <p className="text-muted-foreground text-sm">Estos datos aparecen en la sección 'Aprende' de la app.</p>
+                </div>
                 <div className="relative w-full sm:w-72">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input 
@@ -90,18 +108,7 @@ export const AdminCuriosidades = () => {
                 )}
             </div>
 
-            <Dialog open={isFormOpen} onOpenChange={(open) => {
-                setIsFormOpen(open);
-                if (!open) setCurrentEntry(undefined);
-            }}>
-                <DialogContent className="max-w-3xl p-0 border-none bg-transparent shadow-none [&>button]:hidden">
-                    <CuriosidadForm 
-                        entry={currentEntry} 
-                        onSave={handleSave} 
-                        onCancel={() => { setIsFormOpen(false); setCurrentEntry(undefined); }} 
-                    />
-                </DialogContent>
-            </Dialog>
+
 
             <ConfirmDialog 
                 open={!!deleteId} 
@@ -112,7 +119,7 @@ export const AdminCuriosidades = () => {
                 confirmText="Eliminar"
             />
 
-            {!isFormOpen && loading ? (
+            {loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando curiosidades...</div>
             ) : (
                 <div className="grid gap-4">

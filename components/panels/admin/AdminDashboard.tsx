@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
 import { AdminRutas } from './AdminRutas';
+import { AdminRutasPersonalizadas } from './AdminRutasPersonalizadas';
 import { AdminJuegos } from './AdminJuegos';
 import { AdminSitios } from './AdminSitios';
 import { AdminEventos } from './AdminEventos';
@@ -130,7 +131,7 @@ const AdminOverview = () => {
                     </Card>
                     <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Inscripciones a Rutas</CardTitle>
+                            <CardTitle className="text-sm font-medium">Rutas Guiadas</CardTitle>
                             <Map className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -169,7 +170,7 @@ const AdminOverview = () => {
                     </Card>
                     <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Rutas Creadas</CardTitle>
+                            <CardTitle className="text-sm font-medium">Rutas Oficiales (Públicas)</CardTitle>
                             <Map className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -249,7 +250,7 @@ const AdminOverview = () => {
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
 
     // Security Check: Only render if user is admin or editor
@@ -259,7 +260,7 @@ const AdminDashboard: React.FC = () => {
                 <ShieldAlert className="h-16 w-16 text-destructive mb-4" />
                 <h2 className="text-2xl font-bold mb-2">Acceso Denegado</h2>
                 <p className="text-muted-foreground">
-                    No tienes los permisos necesarios para ver esta página. Requiere rol de Administrador o Editor.
+                    No tienes los permisos necesarios para ver esta pÃ¡gina. Requiere rol de Administrador o Editor.
                 </p>
             </div>
         );
@@ -273,7 +274,7 @@ const AdminDashboard: React.FC = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                         <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
                             <ShieldAlert className="h-8 w-8 text-primary" />
-                            Panel de Administración
+                            Panel de AdministraciÃ³n
                         </h2>
                     </div>
                     <p className="text-muted-foreground">
@@ -308,14 +309,14 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setActiveTab('sabias_que')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <BookOpen className="w-4 h-4 mr-2" /> Sabías que
+                        <BookOpen className="w-4 h-4 mr-2" /> SabÃ­as que
                     </Button>
                     <Button 
                         variant={activeTab === 'paquesepas' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('paquesepas')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <BookOpen className="w-4 h-4 mr-2" /> Pa' que sepás
+                        <BookOpen className="w-4 h-4 mr-2" /> Pa' que sepÃ¡s
                     </Button>
                     <Button 
                         variant={activeTab === 'rutas' ? 'default' : 'outline'} 
@@ -323,6 +324,13 @@ const AdminDashboard: React.FC = () => {
                         className="rounded-full whitespace-nowrap"
                     >
                         <Map className="w-4 h-4 mr-2" /> Rutas
+                    </Button>
+                    <Button 
+                        variant={activeTab === 'rutas_personalizadas' ? 'default' : 'outline'} 
+                        onClick={() => setActiveTab('rutas_personalizadas')}
+                        className="rounded-full whitespace-nowrap border-primary/30"
+                    >
+                        <Map className="w-4 h-4 mr-2" /> Solicitudes Rutas
                     </Button>
                     <Button 
                         variant={activeTab === 'sitios' ? 'default' : 'outline'} 
@@ -371,7 +379,7 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setActiveTab('legal')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <ShieldAlert className="w-4 h-4 mr-2" /> Legal y Moderación
+                        <ShieldAlert className="w-4 h-4 mr-2" /> Legal y ModeraciÃ³n
                     </Button>
                     {(userProfile?.role === 'admin' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com') && (
                         <Button 
@@ -391,6 +399,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'sabias_que' && <CuriousFactsManager />}
                     {activeTab === 'paquesepas' && <AdminCuriosidades />}
                     {activeTab === 'rutas' && <AdminRutas />}
+                    {activeTab === 'rutas_personalizadas' && <AdminRutasPersonalizadas />}
                     {activeTab === 'sitios' && <AdminSitios />}
                     {activeTab === 'eventos' && <AdminEventos />}
                     {activeTab === 'noticias' && <AdminNoticias />}
@@ -399,7 +408,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'legal' && <AdminDocumentosLegales />}
                     {activeTab === 'usuarios' && <AdminUsuarios />}
                     {activeTab === 'banners' && <AdminBanners />}
-                    {activeTab === 'settings' && <div>Módulo de Ajustes en construcción...</div>}
+                    {activeTab === 'settings' && <div>MÃ³dulo de Ajustes en construcciÃ³n...</div>}
                 </div>
             </div>
         </ScrollArea>

@@ -29,7 +29,8 @@ export const EventoForm: React.FC<EventoFormProps> = ({ eventId, onClose, onSave
         que_permiten: '',
         curiosidades: '',
         como_participar: '',
-        siteId: ''
+        siteId: '',
+        organizer: 'Andanzas GO'
     });
 
     useEffect(() => {
@@ -172,6 +173,18 @@ export const EventoForm: React.FC<EventoFormProps> = ({ eventId, onClose, onSave
                                 <option value="draft">Borrador (Oculto)</option>
                                 <option value="published">Publicado</option>
                                 <option value="archived">Archivado</option>
+                            </select>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold">Organizador del Evento</label>
+                            <select 
+                                name="organizer" 
+                                value={formData.organizer || 'Andanzas GO'} 
+                                onChange={handleChange}
+                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none"
+                            >
+                                <option value="Andanzas GO">Andanzas GO (Predeterminado)</option>
+                                <option value="Andanzas Centro Cultural">Andanzas Centro Cultural</option>
                             </select>
                         </div>
                     </div>

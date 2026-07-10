@@ -25,11 +25,11 @@ interface RutasPanelProps {
     query?: string;
     onAddPoint: (point: Site) => void;
     onRemovePoint: (id: string) => void;
-    onSave: (name: string, description: string) => void;
+    onSave: (name: string, description: string, emoji?: string) => void;
     onOpenDetail: (route: Ruta) => void;
     onTogglePrivacy: (id: string) => void;
     onDelete: (id: string) => void;
-    onUpdateDetails: (id: string, newName: string, newDescription: string, newPoints?: string[]) => void;
+    onUpdateDetails: (id: string, newName: string, newDescription: string, newPoints?: string[], emoji?: string) => void;
     onStartRoute: (route: Ruta) => void;
     onCompleteRoute: (id: string) => void;
     routesInProgress: string[];
@@ -37,10 +37,13 @@ interface RutasPanelProps {
     onReorderPoints?: (points: Site[]) => void;
 }
 
+const ROUTE_EMOJIS = ["🗺️", "🚶", "🚲", "🚗", "🚌", "🏞️", "🏛️", "🎨", "🎭", "🎵", "🍔", "☕", "📸", "🛍️", "⚽", "🌳", "🌻", "🌆", "🌃", "🌉", "🏰", "⛪", "🎡", "🎢", "🚂", "✈️", "🚀", "⛵", "🏖️", "🏔️", "🏕️", "💡", "❤️", "⭐"];
+
 const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoints, allSites, query, onAddPoint, onRemovePoint, onSave, onOpenDetail, onTogglePrivacy, onDelete, onUpdateDetails, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, onReorderPoints }) => {
     const { t, language } = useI18n();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
+    const [selectedEmoji, setSelectedEmoji] = useState("🗺️");
     const [searchQuery, setSearchQuery] = useState('');
     const [editSearchQuery, setEditSearchQuery] = useState('');
     const [routeToDelete, setRouteToDelete] = useState<Ruta | null>(null);
@@ -94,6 +97,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
             setEditedDescription(getTranslated(editingRoute, 'descripcion', language) as string);
             const points = editingRoute.puntos.map(pid => allSites.find(s => s.id === pid)).filter(Boolean) as Site[];
             setEditedPoints(points);
+            setSelectedEmoji(editingRoute.emoji || "🗺️");
         }
     }, [editingRoute, language, allSites]);
 
@@ -120,7 +124,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
 
     const handleEditSave = () => {
         if (editingRoute) {
-            onUpdateDetails(editingRoute.id, editedName, editedDescription, editedPoints.map(p => p.id));
+            onUpdateDetails(editingRoute.id, editedName, editedDescription, editedPoints.map(p => p.id), selectedEmoji);
             setEditingRoute(null);
         }
     };
@@ -200,7 +204,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     <div className="absolute inset-0 bg-primary/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {(route.content_only || !route.puntos || route.puntos.length === 0) ? (
                             <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                <Lock className="w-5 h-5" /> {language === 'es' ? 'En Construcción' : 'Coming Soon'}
+                                <Lock className="w-5 h-5" /> {language === 'es' ? 'En ConstrucciÃ³n' : 'Coming Soon'}
                             </span>
                         ) : (
                             <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -216,9 +220,9 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     // Keep Custom Route Card simpler
     const RouteCard = ({ route }: { route: Ruta }) => (
         <Card className="group overflow-hidden border-border bg-card hover:border-primary/50 transition-all cursor-pointer" onClick={() => onOpenDetail(route)}>
-            <CardContent className="p-4 flex items-start gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <PenTool className="w-6 h-6" />
+            <CardContent className="p-4 pr-6 flex items-start gap-4">
+                <div className="shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-2xl">
+                    {route.emoji || <PenTool className="w-6 h-6" />}
                 </div>
                 <div className="flex-1 min-w-0">
                     <h3 className="font-bold truncate">{getTranslated(route, 'nombre', language)}</h3>
@@ -258,7 +262,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             </h2>
                         </>
                     }
-                    description={language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
+                    description={language === 'es' ? 'Explora circuitos diseÃ±ados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
                 />
 
                 <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -336,7 +340,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                 {/* Search Section */}
                                 <div className="space-y-3">
                                     <label className="text-sm font-medium flex items-center gap-2">
-                                        <Search className="h-4 w-4" /> Buscar sitios para añadir
+                                        <Search className="h-4 w-4" /> Buscar sitios para aÃ±adir
                                     </label>
                                     <div className="relative">
                                         <Input
@@ -435,10 +439,30 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                             rows={3}
                                         />
                                     </div>
+                                    <div className="grid gap-2">
+                                        <label className="text-sm font-medium flex items-center gap-2">
+                                            <span>Imagen de la ruta (Emoji)</span>
+                                        </label>
+                                        <div className="flex flex-wrap gap-2 p-3 bg-muted/30 rounded-xl border">
+                                            {ROUTE_EMOJIS.map(emoji => (
+                                                <button
+                                                    key={emoji}
+                                                    type="button"
+                                                    onClick={() => setSelectedEmoji(emoji)}
+                                                    className={cn(
+                                                        "w-8 h-8 flex items-center justify-center text-lg rounded-lg transition-transform hover:scale-110",
+                                                        selectedEmoji === emoji ? "bg-primary text-primary-foreground shadow-md scale-110" : "hover:bg-muted"
+                                                    )}
+                                                >
+                                                    {emoji}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
                                     <Button
                                         className="w-full font-bold shadow-lg shadow-primary/20"
                                         size="lg"
-                                        onClick={() => { onSave(name, description); setName(""); setDescription(""); setSearchQuery(''); }}
+                                        onClick={() => { onSave(name, description, selectedEmoji); setName(""); setDescription(""); setSearchQuery(''); setSelectedEmoji("🗺️"); }}
                                         disabled={!name || newPoints.length === 0}
                                     >
                                         {t('routes.saveRoute')}
@@ -490,6 +514,26 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                         maxLength={600}
                                     />
                                 </div>
+                                <div className="grid gap-2 mt-2">
+                                    <label className="text-sm font-medium flex items-center gap-2">
+                                        <span>Imagen de la ruta (Emoji)</span>
+                                    </label>
+                                    <div className="flex flex-wrap gap-2 p-3 bg-muted/30 rounded-xl border">
+                                        {ROUTE_EMOJIS.map(emoji => (
+                                            <button
+                                                key={emoji}
+                                                type="button"
+                                                onClick={() => setSelectedEmoji(emoji)}
+                                                className={cn(
+                                                    "w-8 h-8 flex items-center justify-center text-lg rounded-lg transition-transform hover:scale-110",
+                                                    selectedEmoji === emoji ? "bg-primary text-primary-foreground shadow-md scale-110" : "hover:bg-muted"
+                                                )}
+                                            >
+                                                {emoji}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
                                 <div className="border-t my-2" />
                                 <div className="space-y-3">
                                     <h4 className="text-sm font-bold flex items-center gap-2">
@@ -498,7 +542,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                     </h4>
                                     <div className="space-y-2">
                                         <label className="text-xs text-muted-foreground flex items-center gap-2">
-                                            <Search className="h-3 w-3" /> Añadir nuevos puntos
+                                            <Search className="h-3 w-3" /> AÃ±adir nuevos puntos
                                         </label>
                                         <Input
                                             placeholder="Buscar sitios..."

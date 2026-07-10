@@ -72,6 +72,11 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
           >
             {category}
           </span>
+          {event.organizer === 'Andanzas Centro Cultural' && (
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider bg-amber-100 text-amber-700 border border-amber-200 dark:bg-amber-900/30 dark:text-amber-400">
+              Centro Cultural
+            </span>
+          )}
           {isPast && (
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider bg-destructive/10 text-destructive border border-destructive/20">
               Evento Pasado

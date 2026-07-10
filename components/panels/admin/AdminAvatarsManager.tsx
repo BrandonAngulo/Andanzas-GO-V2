@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { userService } from '../../../services/user.service';
+import { supabase } from '../../../lib/supabaseClient';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
@@ -16,6 +17,7 @@ export const AdminAvatarsManager: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [currentAvatar, setCurrentAvatar] = useState<any>(null);
     const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [uploadingImage, setUploadingImage] = useState(false);
 
     const loadAvatars = async () => {
         setLoading(true);
@@ -80,8 +82,40 @@ export const AdminAvatarsManager: React.FC = () => {
         setIsEditing(true);
     };
 
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            if (!e.target.files || e.target.files.length === 0) return;
+            const file = e.target.files[0];
+            setUploadingImage(true);
+            
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+            
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(fileName, file);
+                
+            if (uploadError) {
+                console.error("Upload error:", uploadError);
+                alert(`Error subiendo imagen: ${uploadError.message}. Asegúrate de que el bucket 'avatars' exista y sea público.`);
+                setUploadingImage(false);
+                return;
+            }
+            
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(fileName);
+                
+            setCurrentAvatar({ ...currentAvatar, image_url: publicUrl });
+            setUploadingImage(false);
+        } catch (err: any) {
+            alert("Error de subida: " + err.message);
+            setUploadingImage(false);
+        }
+    };
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 pb-24 min-h-[85vh]">
             <ConfirmDialog 
                 open={!!deleteId} 
                 onOpenChange={(open) => !open && setDeleteId(null)}
@@ -193,14 +227,23 @@ export const AdminAvatarsManager: React.FC = () => {
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium">URL de Imagen</label>
-                                <Input 
-                                    value={currentAvatar.image_url} 
-                                    onChange={e => setCurrentAvatar({...currentAvatar, image_url: e.target.value})} 
-                                    required 
-                                    placeholder="/images/avatars/ejemplo.png"
-                                />
+                                <div className="flex flex-col gap-2">
+                                    <Input 
+                                        type="file" 
+                                        accept="image/*" 
+                                        onChange={handleImageUpload} 
+                                        disabled={uploadingImage}
+                                    />
+                                    <Input 
+                                        value={currentAvatar.image_url} 
+                                        onChange={e => setCurrentAvatar({...currentAvatar, image_url: e.target.value})} 
+                                        required 
+                                        placeholder="/images/avatars/ejemplo.png o URL externa"
+                                    />
+                                </div>
                                 <p className="text-xs text-muted-foreground mt-1">
-                                    Debes subir la imagen a la carpeta <code className="bg-muted px-1 rounded">public/images/avatars/</code> en tu repositorio.
+                                    Puedes subir una imagen directamente o pegar una URL. La imagen subida se guardará en la nube.
+                                    {uploadingImage && <span className="text-primary ml-2 font-bold animate-pulse">Subiendo...</span>}
                                 </p>
                             </div>
                             <div className="space-y-1.5">

@@ -78,9 +78,27 @@ export const CuriousFactsManager = () => {
         }
     };
 
+    if (isFormOpen) {
+        return (
+            <div className="space-y-6">
+                <CuriousFactForm 
+                    fact={editingFact} 
+                    onSave={handleSave} 
+                    onCancel={() => { setIsFormOpen(false); setEditingFact(undefined); }} 
+                />
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h3 className="text-xl font-bold flex items-center gap-2">
+                        <CalendarClock className="w-6 h-6 text-primary" /> Curiosidades rotativas (Pa' que sepás)
+                    </h3>
+                    <p className="text-muted-foreground text-sm">Estos datos aparecen en la pantalla principal (Home) de la app.</p>
+                </div>
                 <div className="relative w-full sm:w-72">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input 
@@ -97,18 +115,7 @@ export const CuriousFactsManager = () => {
                 )}
             </div>
 
-            <Dialog open={isFormOpen} onOpenChange={(open) => {
-                setIsFormOpen(open);
-                if (!open) setEditingFact(undefined);
-            }}>
-                <DialogContent className="max-w-3xl p-0 border-none bg-transparent shadow-none [&>button]:hidden">
-                    <CuriousFactForm 
-                        fact={editingFact} 
-                        onSave={handleSave} 
-                        onCancel={() => { setIsFormOpen(false); setEditingFact(undefined); }} 
-                    />
-                </DialogContent>
-            </Dialog>
+
 
             <ConfirmDialog 
                 open={!!deleteId} 
@@ -120,9 +127,9 @@ export const CuriousFactsManager = () => {
                 confirmText="Eliminar"
             />
 
-            {!isFormOpen && loading ? (
+            {loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando datos curiosos...</div>
-            ) : !isFormOpen && (
+            ) : (
                 <div className="grid gap-4">
                     {filteredFacts.map(fact => (
                         <Card key={fact.id} className="overflow-hidden border-l-4 border-l-emerald-500">

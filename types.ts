@@ -209,6 +209,7 @@ export interface Evento {
   curiosidades_en?: string;
   como_participar?: string;
   como_participar_en?: string;
+  organizer?: 'Andanzas GO' | 'Andanzas Centro Cultural';
 }
 
 export type RecomendacionTipo = 'Música' | 'Sabores' | 'Experiencia' | 'Vestuario' | 'Bebida' | 'Mejor Hora' | 'Snack' | 'Seguridad' | 'Sabor' | 'Foto' | 'Transporte' | 'Salud' | 'Horario' | 'Planificación' | 'Ubicación';
@@ -297,6 +298,7 @@ export interface Ruta {
   mensajeCierre?: string;
   mensajeCierre_en?: string;
   coverUrl?: string;
+  emoji?: string;
 
   // Registration & Capacity
   requires_registration?: boolean;
@@ -457,4 +459,17 @@ export interface GameAnswer {
   is_correct: boolean;
   time_taken_sec: number;
   points_earned: number;
+}
+
+export interface CustomRouteRequest {
+  id: string;
+  user_id: string;
+  category: string;
+  themes: string[];
+  cultural_approach: string[];
+  group_type: string;
+  group_size: number;
+  status: 'pending' | 'reviewed' | 'contacted' | 'accepted' | 'rejected';
+  details?: string;
+  created_at: string;
 }

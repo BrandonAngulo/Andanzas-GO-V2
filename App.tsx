@@ -306,7 +306,7 @@ export default function App() {
     setNewRoutePoints([]); setActivePanel("rutas");
   };
 
-  const saveNewRoute = async (name: string, description: string) => {
+  const saveNewRoute = async (name: string, description: string, emoji?: string) => {
     if (!isAuthenticated || !name || newRoutePoints.length === 0 || !user) return;
     const ruta: Ruta = {
       id: `r_${Date.now()}`,
@@ -317,6 +317,7 @@ export default function App() {
       justificaciones: newRoutePoints.map(p => `Punto añadido: ${p.nombre}.`),
       recomendaciones: [],
       publico: false,
+      emoji: emoji || "🗺️"
     };
 
     setUserRoutes((r) => [ruta, ...r]); // Optimistic
@@ -332,14 +333,15 @@ export default function App() {
     }
   };
 
-  const updateRouteDetails = async (id: string, newName: string, newDescription: string, newPoints?: string[]) => {
+  const updateRouteDetails = async (id: string, newName: string, newDescription: string, newPoints?: string[], emoji?: string) => {
     setUserRoutes(prevRutas => prevRutas.map(ruta =>
       ruta.id === id
-        ? { ...ruta, nombre: newName, descripcion: newDescription, ...(newPoints ? { puntos: newPoints, duracionMin: newPoints.length * 20 } : {}) }
+        ? { ...ruta, nombre: newName, descripcion: newDescription, ...(emoji ? { emoji } : {}), ...(newPoints ? { puntos: newPoints, duracionMin: newPoints.length * 20 } : {}) }
         : ruta
     ));
     const updatePayload: any = { id, nombre: newName, descripcion: newDescription };
     if (newPoints) updatePayload.puntos = newPoints;
+    if (emoji) updatePayload.emoji = emoji;
     if (isAuthenticated) routesService.updateRoute(updatePayload);
   };
 
