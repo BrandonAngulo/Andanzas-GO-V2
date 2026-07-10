@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Plus, Search, Trash2, Edit, CheckCircle, Map, Compass, PenTool, ChevronUp, ChevronDown, Lock, Trophy, MapPin } from 'lucide-react';
 import { Ruta, Site } from '../../types';
-import { useToast } from '../ui/use-toast';
+
 import { PanelBanner } from './shared/PanelBanner';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';

@@ -391,6 +391,10 @@ export interface UserProfile {
   leaderboard_opt_in?: boolean;
   public_display_name?: string;
   status?: string; // e.g. 'active' or 'banned'
+  created_at?: string;
+  legal_accepted_at?: string;
+  legal_accepted_version?: string;
+  profile_completed?: boolean;
 }
 
 // === Phase 5: Gamification & Trivia Models ===

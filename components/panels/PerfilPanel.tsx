@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2 } from 'lucide-react';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
 import { UserAvatar } from '../shared/UserAvatar';
@@ -58,6 +58,34 @@ const HARDCODED_AVATARS = [
         personality_title: 'Tradicional y alegre',
         phrase: 'Endulzo cada paso que das por Cali.',
         image_url: '/images/avatars/maceta.png'
+    },
+    {
+        id: 'exploradora',
+        name: 'La Exploradora Urbana',
+        personality_title: 'Curiosa y atenta',
+        phrase: 'Cada callejón tiene una historia que contar.',
+        image_url: '/images/avatars/exploradora.png'
+    },
+    {
+        id: 'poeta',
+        name: 'El Poeta del Barrio',
+        personality_title: 'Reflexivo y profundo',
+        phrase: 'Las paredes hablan si sabes leerlas.',
+        image_url: '/images/avatars/poeta.png'
+    },
+    {
+        id: 'estudiante',
+        name: 'El Alma Joven',
+        personality_title: 'Energético y neutro',
+        phrase: 'La cultura se mueve y yo me muevo con ella.',
+        image_url: '/images/avatars/estudiante.png'
+    },
+    {
+        id: 'chontaduro',
+        name: 'El Chontaduro Poderoso',
+        personality_title: 'Enérgico y vital',
+        phrase: 'Conmigo nunca te falta la energía.',
+        image_url: '/images/avatars/chontaduro.png'
     }
 ];
 
@@ -468,6 +496,34 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         <ScrollArea className="h-[72vh]">
             <div className="p-3 space-y-6">
 
+                {/* Incomplete Profile Banner */}
+                {userProfile && (!userProfile.full_name || !userProfile.selected_avatar_id || !userProfile.interests?.length) && (
+                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2">
+                        <div className="flex items-start gap-3">
+                            <div className="p-2 bg-amber-500/20 rounded-full text-amber-600 dark:text-amber-400 mt-0.5">
+                                <Info className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-amber-800 dark:text-amber-200 text-sm">Perfil Incompleto</h4>
+                                <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                                    Terminá de completar tu perfil para guardar rutas, recibir sellos y personalizar tu experiencia.
+                                    {!userProfile.full_name && " Faltan tus datos."}
+                                    {!userProfile.selected_avatar_id && " Falta tu avatar."}
+                                    {!userProfile.interests?.length && " Faltan tus intereses."}
+                                </p>
+                            </div>
+                        </div>
+                        <Button 
+                            variant="default" 
+                            size="sm" 
+                            className="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white shrink-0 shadow-sm"
+                            onClick={() => setShowSettingsModal(true)}
+                        >
+                            Completar Perfil
+                        </Button>
+                    </div>
+                )}
+
                 {/* Header Profile Section */}
                 <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50" />
@@ -534,11 +590,17 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
                 {/* Tabs Navigation */}
                 <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <TabsList className="grid w-full grid-cols-3 h-12 rounded-xl bg-muted/50 p-1 mb-6">
-                        <TabsTrigger value="overview" className="rounded-lg text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm">General</TabsTrigger>
-                        <TabsTrigger value="badges" className="rounded-lg text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm">Insignias</TabsTrigger>
-                        <TabsTrigger value="activity" className="rounded-lg text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm">Diario</TabsTrigger>
-                    </TabsList>
+                    <ScrollArea className="w-full whitespace-nowrap mb-6">
+                        <TabsList className="inline-flex h-12 w-full justify-start rounded-xl bg-muted/50 p-1">
+                            <TabsTrigger value="overview" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Pasaporte</TabsTrigger>
+                            <TabsTrigger value="rutas" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Rutas</TabsTrigger>
+                            <TabsTrigger value="stamps" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Sellos</TabsTrigger>
+                            <TabsTrigger value="badges" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Insignias</TabsTrigger>
+                            <TabsTrigger value="games" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Juegos</TabsTrigger>
+                            <TabsTrigger value="activity" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Aportes</TabsTrigger>
+                        </TabsList>
+                        <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background pointer-events-none" />
+                    </ScrollArea>
 
                     <TabsContent value="overview" className="space-y-6 mt-0">
                         {/* Experiencias Vividas */}
@@ -558,12 +620,27 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </CardContent>
                             </Card>
                         </div>
+                    </TabsContent>
 
+                    {/* Rutas Tab */}
+                    <TabsContent value="rutas" className="space-y-6 mt-0">
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                            <RouteIcon className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
+                            <h3 className="text-lg font-bold">Mis Rutas</h3>
+                            <p className="text-sm text-muted-foreground mt-2 max-w-sm">Aquí verás las rutas que tienes por andar, las que están en progreso y las que ya finalizaste.</p>
+                            <Button variant="outline" className="mt-4 rounded-full" onClick={() => {}}>Explorar Rutas</Button>
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="stamps" className="space-y-6 mt-0">
                         {/* Pasaporte de Ciudades y Andanzas */}
-                        <div className="space-y-3 mt-6">
-                            <h3 className="font-semibold text-sm flex items-center gap-2">
-                                <Map className="h-4 w-4 text-primary" /> Mi Pasaporte
-                            </h3>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <h3 className="font-semibold text-sm flex items-center gap-2">
+                                    <Map className="h-4 w-4 text-primary" /> Mis Sellos
+                                </h3>
+                                <span className="text-xs text-muted-foreground">{stamps.length + (routesCompletedCount > 0 ? 1 : 0)} coleccionados</span>
+                            </div>
                             <Card className="border-2 border-border bg-card overflow-hidden relative shadow-sm">
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10" />
                                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
@@ -670,9 +747,39 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </CardContent>
                             </Card>
                         </div>
+                    </TabsContent>
 
+                    <TabsContent value="badges" className="mt-0">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {allBadges.length > 0 ? (
+                                allBadges.map(badge => (
+                                    <BadgeCard
+                                        key={badge.id}
+                                        insignia={badge}
+                                        obtenida={earnedBadgeIds.includes(String(badge.id))}
+                                    />
+                                ))
+                            ) : (
+                                <div className="col-span-full py-8 text-center text-muted-foreground">
+                                    <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
+                                    Cargando insignias...
+                                </div>
+                            )}
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="games" className="mt-0 space-y-6">
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                            <Trophy className="h-12 w-12 text-yellow-500 mb-4 opacity-80" />
+                            <h3 className="text-lg font-bold">Mi Rendimiento en Juegos</h3>
+                            <p className="text-sm text-muted-foreground mt-2 max-w-sm">Juega trivias en la Zona de Juegos para ganar puntos y aparecer aquí.</p>
+                            <Button variant="outline" className="mt-4 rounded-full text-purple-600 border-purple-200 hover:bg-purple-50" onClick={() => setActiveTab('games')}>Ir a Juegos</Button>
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="activity" className="mt-0 space-y-6">
                         {/* Recent Activity Feed */}
-                        <div className="space-y-3 mt-6">
+                        <div className="space-y-3">
                             <h3 className="font-semibold text-sm flex items-center gap-2">
                                 <Share2 className="h-4 w-4 text-primary" /> Actividad Reciente
                             </h3>
@@ -707,33 +814,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         </div>
                                         <p className="text-base font-bold text-primary mb-1">Aún no hay actividad reciente</p>
                                         <p className="text-sm text-muted-foreground mb-4">¡El mapa te espera! Empieza a explorar la ciudad y deja tu huella.</p>
-                                        <Button variant="default" className="rounded-full shadow-lg shadow-primary/20">Descubrir Sitios</Button>
+                                        <Button variant="default" className="rounded-full shadow-lg shadow-primary/20" onClick={() => setActiveTab('rutas')}>Descubrir Sitios</Button>
                                     </CardContent>
                                 </Card>
                             )}
                         </div>
-                    </TabsContent>
 
-                    <TabsContent value="badges" className="mt-0">
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                            {allBadges.length > 0 ? (
-                                allBadges.map(badge => (
-                                    <BadgeCard
-                                        key={badge.id}
-                                        insignia={badge}
-                                        obtenida={earnedBadgeIds.includes(String(badge.id))}
-                                    />
-                                ))
-                            ) : (
-                                <div className="col-span-full py-8 text-center text-muted-foreground">
-                                    <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
-                                    Cargando insignias...
-                                </div>
-                            )}
-                        </div>
-                    </TabsContent>
-
-                    <TabsContent value="activity" className="mt-0 space-y-6">
                         {/* Favorites Section */}
                         <div className="space-y-3">
                             <h3 className="font-semibold text-sm flex items-center gap-2">
@@ -985,6 +1071,15 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     }} 
                                     id="accessibility-persist-switch" 
                                 />
+                            </div>
+
+                            <div className="flex flex-col gap-2 p-3 bg-muted/40 rounded-xl">
+                                <h4 className="text-sm font-semibold">Documentos Legales</h4>
+                                <div className="flex gap-4 mt-1">
+                                    <a href="/terms" className="text-xs text-primary hover:underline">Términos de Servicio</a>
+                                    <a href="/privacy" className="text-xs text-primary hover:underline">Política de Privacidad</a>
+                                </div>
+                                <p className="text-[10px] text-muted-foreground mt-1">Aceptados el {userProfile?.legal_accepted_at ? new Date(userProfile.legal_accepted_at).toLocaleDateString() : 'fecha de registro'}</p>
                             </div>
                             
                             <Button 

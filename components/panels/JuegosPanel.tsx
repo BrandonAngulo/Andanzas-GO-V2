@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LeaderboardPanel } from './LeaderboardPanel';
 import GameInstructionsDialog from '../shared/GameInstructionsDialog';
 import { PanelBanner } from './shared/PanelBanner';
+import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
 
 interface JuegosPanelProps {
@@ -70,14 +71,18 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </>
                     }
                 description="Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global."
-                andiMessage="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos."
             />
 
             <Tabs defaultValue="juegos" className="w-full">
-                <TabsList className="mb-6 grid w-full grid-cols-2 max-w-[400px]">
-                    <TabsTrigger value="juegos">Trivias y Retos</TabsTrigger>
-                    <TabsTrigger value="podio">Salón de la Fama</TabsTrigger>
-                </TabsList>
+                <div className="flex flex-row items-center justify-between mb-6">
+                    <TabsList className="grid w-full grid-cols-2 max-w-[400px] m-0">
+                        <TabsTrigger value="juegos">Trivias y Retos</TabsTrigger>
+                        <TabsTrigger value="podio">Salón de la Fama</TabsTrigger>
+                    </TabsList>
+                    <div className="ml-4">
+                        <AndiGuia message="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos." variant="tip" />
+                    </div>
+                </div>
                 
                 <TabsContent value="juegos" className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
