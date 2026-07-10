@@ -58,6 +58,18 @@ export const notificationsService = {
                 fecha: new Date().toISOString()
             });
         if (error) console.error('Error adding notification:', error);
+    },
+
+    async broadcastMessage(titulo: string, descripcion: string) {
+        const { error } = await supabase.rpc('broadcast_notification', {
+            p_titulo: titulo,
+            p_descripcion: descripcion,
+            p_icono_name: 'Megaphone'
+        });
+        if (error) {
+            console.error('Error broadcasting notification:', error);
+            throw error;
+        }
     }
 };
 

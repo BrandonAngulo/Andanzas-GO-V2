@@ -474,6 +474,12 @@ export default function App() {
                       setActivePanel('noticias');
                       setShowNotifications(false);
                   }}
+                  onNotificationClick={(notif) => {
+                      if (notif.tipo === 'badge_earned' || notif.tipo === 'reward' || notif.titulo.includes('Insignia') || notif.titulo.includes('Banner')) {
+                          setActivePanel('perfil');
+                          setShowNotifications(false);
+                      }
+                  }}
               />}
             </div>
 

@@ -4,10 +4,11 @@ import { routesService } from '../../../services/routes.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Eye, EyeOff, Search, Edit, Plus, Users } from 'lucide-react';
+import { Eye, EyeOff, Search, Edit, Plus, Users, Megaphone } from 'lucide-react';
 import { RutaForm } from './RutaForm';
 import { AdminRutaInscripciones } from './AdminRutaInscripciones';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
+import { BroadcastModal } from './BroadcastModal';
 
 export const AdminRutas = () => {
     const [routes, setRoutes] = useState<Ruta[]>([]);
@@ -17,6 +18,7 @@ export const AdminRutas = () => {
     const [editingRouteId, setEditingRouteId] = useState<string | null>(null);
     const [viewingRegistrationsRoute, setViewingRegistrationsRoute] = useState<Ruta | null>(null);
     const [routeToDelete, setRouteToDelete] = useState<Ruta | null>(null);
+    const [broadcastOpen, setBroadcastOpen] = useState(false);
 
     useEffect(() => {
         loadRoutes();
@@ -97,10 +99,16 @@ export const AdminRutas = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <Button onClick={handleOpenCreate}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Crear Ruta
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setBroadcastOpen(true)} className="shrink-0 text-blue-600 hover:text-blue-700">
+                        <Megaphone className="w-4 h-4 mr-2" />
+                        Notificar
+                    </Button>
+                    <Button onClick={handleOpenCreate}>
+                        <Plus className="w-4 h-4 mr-2" />
+                        Crear Ruta
+                    </Button>
+                </div>
             </div>
 
             {loading ? (
@@ -161,6 +169,8 @@ export const AdminRutas = () => {
                     )}
                 </div>
             )}
+            
+            <BroadcastModal open={broadcastOpen} onOpenChange={setBroadcastOpen} />
         </div>
     );
 };

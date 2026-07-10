@@ -97,57 +97,57 @@ const AdminOverview = () => {
             <div className="bg-background rounded-2xl p-6 border shadow-sm">
                 <h3 className="text-xl font-bold mb-6 border-b pb-3 flex items-center gap-2 text-primary">
                     <Users className="h-5 w-5" /> 
-                    Mtricas de Usuarios y Actividad
+                    Métricas de Usuarios y Actividad
                 </h3>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Users className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.users}</div>
-                            <p className="text-xs text-muted-foreground">Registrados en el sistema</p>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.users}</div>
+                            <p className="text-xs text-muted-foreground mt-1">Registrados en el sistema</p>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-destructive/5 shadow-none hover:bg-destructive/10 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-destructive/5 shadow-none hover:bg-destructive/10 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <UserX className="h-6 w-6 text-destructive mb-1" />
                             <CardTitle className="text-sm font-medium text-destructive">Usuarios Suspendidos</CardTitle>
-                            <UserX className="h-4 w-4 text-destructive" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-destructive">{counts.bannedUsers}</div>
-                            <p className="text-xs text-destructive/70">Cuentas inactivadas</p>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold text-destructive">{counts.bannedUsers}</div>
+                            <p className="text-xs text-destructive/70 mt-1">Cuentas inactivadas</p>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Reseas Publicadas</CardTitle>
-                            <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <MessageSquare className="h-6 w-6 text-primary mb-1" />
+                            <CardTitle className="text-sm font-medium">Reseñas Publicadas</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.reviews}</div>
-                            <p className="text-xs text-muted-foreground">Opiniones de sitios</p>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.reviews}</div>
+                            <p className="text-xs text-muted-foreground mt-1">Opiniones de sitios</p>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Map className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Rutas Guiadas</CardTitle>
-                            <Map className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.rutaRegistrations}</div>
-                            <p className="text-xs text-muted-foreground">Rutas iniciadas/completadas</p>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.rutaRegistrations}</div>
+                            <p className="text-xs text-muted-foreground mt-1">Iniciadas/completadas</p>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Gamepad2 className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Sesiones de Juego</CardTitle>
-                            <Gamepad2 className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.gameSessions}</div>
-                            <p className="text-xs text-muted-foreground">Partidas jugadas</p>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.gameSessions}</div>
+                            <p className="text-xs text-muted-foreground mt-1">Partidas jugadas</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -157,89 +157,89 @@ const AdminOverview = () => {
             <div className="bg-background rounded-2xl p-6 border shadow-sm">
                 <h3 className="text-xl font-bold mb-6 border-b pb-3 flex items-center gap-2 text-primary">
                     <Landmark className="h-5 w-5" />
-                    Mtricas de Contenido de la App
+                    Métricas de Contenido de la App
                 </h3>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Landmark className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Sitios Registrados</CardTitle>
-                            <Landmark className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.sites}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.sites}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Rutas Oficiales (Públicas)</CardTitle>
-                            <Map className="h-4 w-4 text-muted-foreground" />
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Map className="h-6 w-6 text-primary mb-1" />
+                            <CardTitle className="text-sm font-medium">Rutas Oficiales</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.rutas}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.rutas}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Gamepad2 className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Juegos Activos</CardTitle>
-                            <Gamepad2 className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.games}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.games}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Preguntas de Trivia</CardTitle>
-                            <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <HelpCircle className="h-6 w-6 text-primary mb-1" />
+                            <CardTitle className="text-sm font-medium">Preguntas Trivia</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.questions}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.questions}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Info className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Curiosidades</CardTitle>
-                            <BookOpen className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.curiosities}</div>
-                            <p className="text-xs text-muted-foreground">Sabas qu y Pa' que seps</p>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.curiosities}</div>
+                            <p className="text-xs text-muted-foreground mt-1">Sabías que / Pa' que sepás</p>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Calendar className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Eventos</CardTitle>
-                            <Calendar className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.events}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.events}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Megaphone className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Noticias</CardTitle>
-                            <Megaphone className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.news}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.news}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Smile className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Avatares</CardTitle>
-                            <Smile className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.avatars}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.avatars}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
+                        <CardHeader className="flex flex-col items-center space-y-2 pb-2">
+                            <Image className="h-6 w-6 text-primary mb-1" />
                             <CardTitle className="text-sm font-medium">Banners Activos</CardTitle>
-                            <Image className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{counts.banners}</div>
+                        <CardContent className="flex flex-col items-center pt-0">
+                            <div className="text-3xl font-bold">{counts.banners}</div>
                         </CardContent>
                     </Card>
                 </div>
@@ -317,14 +317,14 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setActiveTab('sabias_que')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <BookOpen className="w-4 h-4 mr-2" /> SabÃ­as que
+                        <HelpCircle className="w-4 h-4 mr-2" /> Sabías que
                     </Button>
                     <Button 
                         variant={activeTab === 'paquesepas' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('paquesepas')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <BookOpen className="w-4 h-4 mr-2" /> Pa' que sepÃ¡s
+                        <BookOpen className="w-4 h-4 mr-2" /> Pa' que sepás
                     </Button>
                     <Button 
                         variant={activeTab === 'rutas' ? 'default' : 'outline'} 
@@ -352,7 +352,7 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setActiveTab('eventos')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <Settings className="w-4 h-4 mr-2" /> Eventos
+                        <Calendar className="w-4 h-4 mr-2" /> Eventos
                     </Button>
                     <Button 
                         variant={activeTab === 'noticias' ? 'default' : 'outline'} 
@@ -373,21 +373,21 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setActiveTab('institucional')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <BookOpen className="w-4 h-4 mr-2" /> Institucional
+                        <Info className="w-4 h-4 mr-2" /> Institucional
                     </Button>
                     <Button 
                         variant={activeTab === 'banners' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('banners')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <Settings className="w-4 h-4 mr-2" /> Banners
+                        <Image className="w-4 h-4 mr-2" /> Banners
                     </Button>
                     <Button 
                         variant={activeTab === 'legal' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('legal')}
                         className="rounded-full whitespace-nowrap"
                     >
-                        <ShieldAlert className="w-4 h-4 mr-2" /> Legal y ModeraciÃ³n
+                        <ShieldAlert className="w-4 h-4 mr-2" /> Legal y Moderación
                     </Button>
                     {(userProfile?.role === 'admin' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com') && (
                         <Button 

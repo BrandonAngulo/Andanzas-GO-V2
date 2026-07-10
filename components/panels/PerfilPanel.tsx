@@ -17,6 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import OnboardingModal from '../panels/OnboardingModal';
 import { UserProfile, Insignia, Review, Site, PassportStamp } from '../../types';
 import { reviewsService } from '../../services/reviews.service';
+import { bannerService } from '../../services/banner.service';
 import { BannerGalleryModal, AVAILABLE_BANNERS } from './BannerGalleryModal';
 import { RewardUnlockModal } from './RewardUnlockModal';
 
@@ -136,8 +137,31 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
     const [stamps, setStamps] = useState<PassportStamp[]>([]);
+    const [dynamicBanners, setDynamicBanners] = useState(AVAILABLE_BANNERS);
     const [myReviews, setMyReviews] = useState<Review[]>([]);
     const [activeTab, setActiveTab] = useState("overview");
+
+    useEffect(() => {
+        const loadBanners = async () => {
+            const dbBanners = await bannerService.getProfileBanners();
+            if (dbBanners.length > 0) {
+                const merged = AVAILABLE_BANNERS.map(b => {
+                    const db = dbBanners.find(dbb => dbb.section_key === `profile_banner_${b.id}`);
+                    if (db) {
+                        return {
+                            ...b,
+                            image_url: db.image_url || b.image_url,
+                            title: db.title || b.title,
+                            unlock_condition: db.content_text || b.unlock_condition
+                        };
+                    }
+                    return b;
+                });
+                setDynamicBanners(merged);
+            }
+        };
+        loadBanners();
+    }, []);
     const [showAvatarModal, setShowAvatarModal] = useState(false);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
     
@@ -539,7 +563,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     
     // Get active banner image URL
     const activeBannerUrl = userProfile?.selected_banner_id 
-        ? AVAILABLE_BANNERS.find(b => b.id === userProfile.selected_banner_id)?.image_url 
+        ? dynamicBanners.find(b => b.id === userProfile.selected_banner_id)?.image_url 
         : null;
 
     return (
@@ -1173,6 +1197,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 onBannerSelected={(id) => {
                     setUserProfile(prev => prev ? { ...prev, selected_banner_id: id } : null);
                 }}
+                dynamicBanners={dynamicBanners}
             />
 
             <RewardUnlockModal

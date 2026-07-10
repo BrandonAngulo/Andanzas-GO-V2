@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { userService } from '../../../services/user.service';
 import { supabase } from '../../../lib/supabaseClient';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
-import { Textarea } from '../../ui/textarea';
 import { Switch } from '../../ui/switch';
-import { Plus, Edit, Trash2, CheckCircle, RefreshCcw, Smile } from 'lucide-react';
+import { Plus, Edit, Trash2, RefreshCcw, Smile, Megaphone } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../ui/dialog';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
+import { BroadcastModal } from './BroadcastModal';
 
 export const AdminAvatarsManager: React.FC = () => {
     const [avatars, setAvatars] = useState<any[]>([]);
@@ -18,6 +18,7 @@ export const AdminAvatarsManager: React.FC = () => {
     const [currentAvatar, setCurrentAvatar] = useState<any>(null);
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
+    const [broadcastOpen, setBroadcastOpen] = useState(false);
 
     const loadAvatars = async () => {
         setLoading(true);
@@ -125,7 +126,7 @@ export const AdminAvatarsManager: React.FC = () => {
                 destructive={true}
                 confirmText="Eliminar"
             />
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h3 className="text-xl font-bold flex items-center gap-2">
                         <Smile className="w-6 h-6 text-primary" /> Gestión de Avatares
@@ -133,6 +134,9 @@ export const AdminAvatarsManager: React.FC = () => {
                     <p className="text-muted-foreground text-sm">Añade o edita los avatares disponibles para los usuarios.</p>
                 </div>
                 <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setBroadcastOpen(true)} className="shrink-0 text-blue-600 hover:text-blue-700">
+                        <Megaphone className="w-4 h-4 mr-2" /> Notificar
+                    </Button>
                     <Button variant="outline" onClick={loadAvatars}><RefreshCcw className="w-4 h-4 mr-2" /> Actualizar</Button>
                     <Button onClick={openCreate}><Plus className="w-4 h-4 mr-2" /> Nuevo Avatar</Button>
                 </div>
@@ -148,7 +152,7 @@ export const AdminAvatarsManager: React.FC = () => {
                                 <div className="absolute top-4 right-4 flex gap-1">
                                     <Switch 
                                         checked={avatar.active} 
-                                        onChange={() => toggleActive(avatar)} 
+                                        onClick={() => toggleActive(avatar)} 
                                         className="scale-75"
                                     />
                                 </div>
@@ -258,19 +262,21 @@ export const AdminAvatarsManager: React.FC = () => {
                                 <Switch 
                                     id="active-status"
                                     checked={currentAvatar.active}
-                                    onChange={(e) => setCurrentAvatar({...currentAvatar, active: e.target.checked})}
+                                    onCheckedChange={(checked) => setCurrentAvatar({...currentAvatar, active: checked})}
                                 />
                                 <label htmlFor="active-status" className="text-sm font-medium">Avatar Activo (Visible)</label>
                             </div>
                             
-                            <div className="flex justify-end gap-2 pt-4 border-t">
+                            <DialogFooter>
                                 <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>Cancelar</Button>
                                 <Button type="submit">Guardar Avatar</Button>
-                            </div>
+                            </DialogFooter>
                         </form>
                     )}
                 </DialogContent>
             </Dialog>
+
+            <BroadcastModal open={broadcastOpen} onOpenChange={setBroadcastOpen} />
         </div>
     );
 };

@@ -4,9 +4,10 @@ import { eventsService } from '../../../services/events.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Eye, EyeOff, Search, Trash2, Edit, Plus } from 'lucide-react';
+import { Eye, EyeOff, Search, Trash2, Edit, Plus, Megaphone } from 'lucide-react';
 import { EventoForm } from './EventoForm';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
+import { BroadcastModal } from './BroadcastModal';
 
 export const AdminEventos = () => {
     const [events, setEvents] = useState<Evento[]>([]);
@@ -15,6 +16,7 @@ export const AdminEventos = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingEventId, setEditingEventId] = useState<string | null>(null);
     const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [broadcastOpen, setBroadcastOpen] = useState(false);
 
     useEffect(() => {
         loadEvents();
@@ -78,10 +80,16 @@ export const AdminEventos = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <Button onClick={handleOpenCreate}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Crear Evento
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setBroadcastOpen(true)} className="shrink-0 text-blue-600 hover:text-blue-700">
+                        <Megaphone className="w-4 h-4 mr-2" />
+                        Notificar
+                    </Button>
+                    <Button onClick={handleOpenCreate}>
+                        <Plus className="w-4 h-4 mr-2" />
+                        Crear Evento
+                    </Button>
+                </div>
             </div>
 
             {loading ? (
@@ -131,6 +139,8 @@ export const AdminEventos = () => {
                     )}
                 </div>
             )}
+            
+            <BroadcastModal open={broadcastOpen} onOpenChange={setBroadcastOpen} />
         </div>
     );
 };

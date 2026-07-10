@@ -6,7 +6,9 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
-import { Save, ArrowLeft } from 'lucide-react';
+import { Save, ArrowLeft, Loader2, Image as ImageIcon } from 'lucide-react';
+import { supabase } from '../../../lib/supabaseClient';
+import { toast } from 'sonner';
 
 interface EventoFormProps {
     eventId?: string | null;
@@ -16,6 +18,7 @@ interface EventoFormProps {
 
 export const EventoForm: React.FC<EventoFormProps> = ({ eventId, onClose, onSaved }) => {
     const [loading, setLoading] = useState(false);
+    const [uploadingImage, setUploadingImage] = useState(false);
     const [sites, setSites] = useState<{id: string, nombre: string}[]>([]);
     const [formData, setFormData] = useState<Partial<Evento>>({
         titulo: '',
@@ -60,6 +63,36 @@ export const EventoForm: React.FC<EventoFormProps> = ({ eventId, onClose, onSave
             setFormData({...data, fecha: formattedDate});
         }
         setLoading(false);
+    };
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            setUploadingImage(true);
+            const fileExt = file.name.split('.').pop();
+            const fileName = `evento_${Date.now()}.${fileExt}`;
+            const filePath = `events/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('images')
+                .upload(filePath, file);
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('images')
+                .getPublicUrl(filePath);
+
+            setFormData(prev => ({ ...prev, img: publicUrl }));
+            toast.success("Imagen subida exitosamente");
+        } catch (error: any) {
+            console.error(error);
+            toast.error("Error al subir imagen: " + error.message);
+        } finally {
+            setUploadingImage(false);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -158,8 +191,27 @@ export const EventoForm: React.FC<EventoFormProps> = ({ eventId, onClose, onSave
                         </div>
 
                         <div className="space-y-2 md:col-span-2">
-                            <label className="text-sm font-semibold">URL de la Imagen *</label>
-                            <Input required name="img" value={formData.img || ''} onChange={handleChange} placeholder="https://..." />
+                            <label className="text-sm font-semibold">Imagen del Evento (Banner) *</label>
+                            <div className="flex gap-4 items-center">
+                                {formData.img && (
+                                    <div className="w-32 h-20 rounded-md overflow-hidden border">
+                                        <img src={formData.img} alt="Preview" className="w-full h-full object-cover" />
+                                    </div>
+                                )}
+                                <div className="flex-1 space-y-2">
+                                    <div className="flex items-center gap-2">
+                                        <Input 
+                                            type="file" 
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            disabled={uploadingImage}
+                                            className="cursor-pointer"
+                                        />
+                                        {uploadingImage && <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />}
+                                    </div>
+                                    <Input required name="img" value={formData.img || ''} onChange={handleChange} placeholder="O ingresa la URL directamente..." />
+                                </div>
+                            </div>
                         </div>
 
                         <div className="space-y-2">

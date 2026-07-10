@@ -14,6 +14,7 @@ interface NotificationsPanelProps {
   onMarkAsRead: (id: string) => void;
   onMarkAllAsRead: () => void;
   onOpenNews?: () => void;
+  onNotificationClick?: (notification: Notificacion) => void;
 }
 
 const timeSince = (date: Date): string => {
@@ -32,7 +33,7 @@ const timeSince = (date: Date): string => {
 }
 
 
-const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, onMarkAsRead, onMarkAllAsRead, onOpenNews }) => {
+const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, onMarkAsRead, onMarkAllAsRead, onOpenNews, onNotificationClick }) => {
   const { t, language } = useI18n();
 
   return (
@@ -64,18 +65,25 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, 
             {notifications.map(n => {
               const Icon = n.icono || Bell;
               return (
-                <div key={n.id} className={cn("flex items-start gap-3 p-2 rounded-lg relative", !n.leida ? "bg-secondary" : "")}>
+                <div 
+                  key={n.id} 
+                  className={cn("flex items-start gap-3 p-2 rounded-lg relative", !n.leida ? "bg-secondary" : "", onNotificationClick ? "cursor-pointer hover:bg-muted/80" : "")}
+                  onClick={() => {
+                    if (!n.leida) onMarkAsRead(n.id);
+                    if (onNotificationClick) onNotificationClick(n);
+                  }}
+                >
                   {!n.leida && <div className="absolute top-2 left-2 h-2 w-2 rounded-full bg-primary" />}
                    <div className="mt-1 flex-shrink-0">
                      <Icon className="h-5 w-5 text-muted-foreground" />
                    </div>
-                  <div className="flex-1">
+                  <div className="flex-1 pointer-events-none">
                     <p className="text-sm font-medium leading-tight">{getTranslated(n, 'titulo', language)}</p>
                     <p className="text-xs text-muted-foreground">{getTranslated(n, 'descripcion', language)}</p>
                   </div>
-                  <div className="text-xs text-muted-foreground flex-shrink-0">{timeSince(new Date(n.fecha))}</div>
+                  <div className="text-xs text-muted-foreground flex-shrink-0 pointer-events-none">{timeSince(new Date(n.fecha))}</div>
                    {!n.leida && (
-                     <Button variant="ghost" size="sm" className="p-0 h-auto text-xs" onClick={() => onMarkAsRead(n.id)}>{t('notifications.read')}</Button>
+                     <Button variant="ghost" size="sm" className="p-0 h-auto text-xs z-10 relative" onClick={(e) => { e.stopPropagation(); onMarkAsRead(n.id); }}>{t('notifications.read')}</Button>
                    )}
                 </div>
               );

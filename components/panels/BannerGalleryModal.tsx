@@ -58,6 +58,7 @@ interface BannerGalleryModalProps {
     unlockedBanners: string[];
     selectedBannerId?: string;
     onBannerSelected: (bannerId: string) => void;
+    dynamicBanners: BannerItem[];
 }
 
 export const BannerGalleryModal: React.FC<BannerGalleryModalProps> = ({ 
@@ -65,7 +66,8 @@ export const BannerGalleryModal: React.FC<BannerGalleryModalProps> = ({
     onOpenChange, 
     unlockedBanners, 
     selectedBannerId,
-    onBannerSelected
+    onBannerSelected,
+    dynamicBanners
 }) => {
     const { user } = useAuth();
     const [saving, setSaving] = useState(false);
@@ -100,7 +102,7 @@ export const BannerGalleryModal: React.FC<BannerGalleryModalProps> = ({
                 </DialogHeader>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    {AVAILABLE_BANNERS.map((banner) => {
+                    {dynamicBanners.map((banner) => {
                         const isUnlocked = unlockedBanners.includes(banner.id);
                         const isSelected = selectedBannerId === banner.id;
 
