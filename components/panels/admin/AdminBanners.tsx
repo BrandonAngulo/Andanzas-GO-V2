@@ -173,7 +173,7 @@ export const AdminBanners = () => {
                         <div className="bg-background/90 backdrop-blur-md px-4 py-1.5 rounded-full border shadow-sm pointer-events-auto flex items-center gap-2">
                             <Switch 
                                 checked={currentBanner?.is_active ?? true} 
-                                onCheckedChange={(checked) => handleToggleActive(key, checked, isProfile)}
+                                onChange={(e) => handleToggleActive(key, e.target.checked, isProfile)}
                             />
                             <span className="text-xs font-bold">{currentBanner?.is_active ?? true ? 'Activo' : 'Inactivo'}</span>
                         </div>

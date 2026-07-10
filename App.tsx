@@ -475,7 +475,7 @@ export default function App() {
                       setShowNotifications(false);
                   }}
                   onNotificationClick={(notif) => {
-                      if (notif.tipo === 'badge_earned' || notif.tipo === 'reward' || notif.titulo.includes('Insignia') || notif.titulo.includes('Banner')) {
+                      if ((notif as any).tipo === 'badge_earned' || (notif as any).tipo === 'reward' || notif.titulo.includes('Insignia') || notif.titulo.includes('Banner')) {
                           setActivePanel('perfil');
                           setShowNotifications(false);
                       }

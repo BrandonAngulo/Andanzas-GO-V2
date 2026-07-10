@@ -262,7 +262,7 @@ export const AdminAvatarsManager: React.FC = () => {
                                 <Switch 
                                     id="active-status"
                                     checked={currentAvatar.active}
-                                    onCheckedChange={(checked) => setCurrentAvatar({...currentAvatar, active: checked})}
+                                    onChange={(e) => setCurrentAvatar({...currentAvatar, active: e.target.checked})}
                                 />
                                 <label htmlFor="active-status" className="text-sm font-medium">Avatar Activo (Visible)</label>
                             </div>

@@ -62,7 +62,7 @@ export const AdminSettings: React.FC = () => {
                                 </div>
                                 <Switch 
                                     checked={setting.value === 'true'} 
-                                    onCheckedChange={() => handleToggle(setting.key, setting.value)}
+                                    onChange={(e) => handleToggle(setting.key, setting.value)}
                                     disabled={saving}
                                 />
                             </div>

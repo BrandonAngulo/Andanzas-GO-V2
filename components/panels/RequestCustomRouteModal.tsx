@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 import { customRoutesService } from '../../services/customRoutes.service';
 import { CustomRouteRequest } from '../../types';
 import { Compass, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -62,8 +62,9 @@ export const RequestCustomRouteModal: React.FC<RequestCustomRouteModalProps> = (
         try {
             const requestPayload: Omit<CustomRouteRequest, 'id' | 'created_at' | 'status'> = {
                 user_id: user.id,
-                route_category: formData.route_category,
-                cultural_approach: formData.cultural_approach,
+                category: formData.route_category,
+                themes: [],
+                cultural_approach: [formData.cultural_approach],
                 group_type: formData.group_type,
                 group_size: parseInt(formData.group_size, 10),
                 preferred_date: formData.preferred_date ? new Date(formData.preferred_date).toISOString() : undefined,
@@ -111,7 +112,7 @@ export const RequestCustomRouteModal: React.FC<RequestCustomRouteModalProps> = (
                         
                         <div className="grid gap-2">
                             <label className="text-sm font-medium">Categoría de la Ruta *</label>
-                            <Select required value={formData.route_category} onValueChange={(val) => setFormData(p => ({ ...p, route_category: val }))}>
+                            <Select value={formData.route_category} onValueChange={(val) => setFormData(p => ({ ...p, route_category: val }))}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Selecciona la categoría principal" />
                                 </SelectTrigger>
@@ -129,7 +130,7 @@ export const RequestCustomRouteModal: React.FC<RequestCustomRouteModalProps> = (
 
                         <div className="grid gap-2">
                             <label className="text-sm font-medium">Aproximación Cultural *</label>
-                            <Select required value={formData.cultural_approach} onValueChange={(val) => setFormData(p => ({ ...p, cultural_approach: val }))}>
+                            <Select value={formData.cultural_approach} onValueChange={(val) => setFormData(p => ({ ...p, cultural_approach: val }))}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Ej. Música, Literatura, Arquitectura..." />
                                 </SelectTrigger>
@@ -147,7 +148,7 @@ export const RequestCustomRouteModal: React.FC<RequestCustomRouteModalProps> = (
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
                                 <label className="text-sm font-medium">Plan (Tipo de Grupo) *</label>
-                                <Select required value={formData.group_type} onValueChange={(val) => setFormData(p => ({ ...p, group_type: val }))}>
+                                <Select value={formData.group_type} onValueChange={(val) => setFormData(p => ({ ...p, group_type: val }))}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Tipo de plan" />
                                     </SelectTrigger>

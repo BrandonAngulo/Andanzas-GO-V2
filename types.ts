@@ -474,5 +474,7 @@ export interface CustomRouteRequest {
   group_size: number;
   status: 'pending' | 'reviewed' | 'contacted' | 'accepted' | 'rejected';
   details?: string;
+  preferred_date?: string;
+  additional_notes?: string;
   created_at: string;
 }

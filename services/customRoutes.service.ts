@@ -19,6 +19,17 @@ export const customRoutesService = {
         return data as any[];
     },
 
+    async createRequest(payload: any): Promise<boolean> {
+        const { error } = await supabase
+            .from('custom_route_requests')
+            .insert(payload);
+        if (error) {
+            console.error('Error creating request:', error);
+            throw error;
+        }
+        return true;
+    },
+
     async updateStatus(id: string, status: string): Promise<boolean> {
         const { error } = await supabase
             .from('custom_route_requests')

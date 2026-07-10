@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient';
 export interface Banner {
     id: string;
     section_key: string;
+    title?: string;
     image_url?: string;
     is_active: boolean;
     content_text?: string;
