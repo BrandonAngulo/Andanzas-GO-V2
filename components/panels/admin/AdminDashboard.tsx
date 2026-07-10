@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar, Smile } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar, Smile, MessageSquare, UserX, Image, HelpCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
@@ -24,34 +24,63 @@ import { AdminAvatarsManager } from './AdminAvatarsManager';
 import { AdminDocumentosLegales } from './AdminDocumentosLegales';
 
 const AdminOverview = () => {
-    const [counts, setCounts] = useState({ users: 0, curiosities: 0, routes: 0, sites: 0, events: 0, news: 0 });
+    const [counts, setCounts] = useState({
+        users: 0, bannedUsers: 0, reviews: 0, gameSessions: 0, rutaRegistrations: 0,
+        sites: 0, rutas: 0, events: 0, news: 0, games: 0, questions: 0, curiosities: 0, avatars: 0, banners: 0
+    });
 
     useEffect(() => {
         const fetchCounts = async () => {
             try {
                 const [
                     { count: usersCount },
-                    { count: curiositiesCount },
-                    { count: routesCount },
+                    { count: bannedUsersCount },
+                    { count: reviewsCount },
+                    { count: gameSessionsCount },
+                    { count: rutaRegistrationsCount },
                     { count: sitesCount },
+                    { count: rutasCount },
                     { count: eventsCount },
-                    { count: newsCount }
+                    { count: newsCount },
+                    { count: gamesCount },
+                    { count: questionsCount },
+                    { count: curiositiesCount },
+                    { count: avatarsCount },
+                    { count: bannersCount }
                 ] = await Promise.all([
                     supabase.from('profiles').select('*', { count: 'exact', head: true }),
-                    supabase.from('curious_facts').select('*', { count: 'exact', head: true }).eq('status', 'published'),
-                    supabase.from('rutas').select('*', { count: 'exact', head: true }),
+                    supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('status', 'banned'),
+                    supabase.from('reviews').select('*', { count: 'exact', head: true }),
+                    supabase.from('game_sessions').select('*', { count: 'exact', head: true }),
+                    supabase.from('ruta_registrations').select('*', { count: 'exact', head: true }),
+                    
                     supabase.from('sites').select('*', { count: 'exact', head: true }),
-                    supabase.from('events').select('*', { count: 'exact', head: true }).eq('status', 'published'),
-                    supabase.from('news').select('*', { count: 'exact', head: true }).eq('status', 'published')
+                    supabase.from('rutas').select('*', { count: 'exact', head: true }),
+                    supabase.from('events').select('*', { count: 'exact', head: true }),
+                    supabase.from('news').select('*', { count: 'exact', head: true }),
+                    supabase.from('games').select('*', { count: 'exact', head: true }),
+                    supabase.from('game_questions').select('*', { count: 'exact', head: true }),
+                    supabase.from('curious_facts').select('*', { count: 'exact', head: true }),
+                    supabase.from('avatar_presets').select('*', { count: 'exact', head: true }),
+                    supabase.from('institutional_content').select('*', { count: 'exact', head: true }).like('section_key', 'banner_%')
                 ]);
                 
                 setCounts({
                     users: usersCount || 0,
-                    curiosities: curiositiesCount || 0,
-                    routes: routesCount || 0,
+                    bannedUsers: bannedUsersCount || 0,
+                    reviews: reviewsCount || 0,
+                    gameSessions: gameSessionsCount || 0,
+                    rutaRegistrations: rutaRegistrationsCount || 0,
+
                     sites: sitesCount || 0,
+                    rutas: rutasCount || 0,
                     events: eventsCount || 0,
-                    news: newsCount || 0
+                    news: newsCount || 0,
+                    games: gamesCount || 0,
+                    questions: questionsCount || 0,
+                    curiosities: curiositiesCount || 0,
+                    avatars: avatarsCount || 0,
+                    banners: bannersCount || 0
                 });
             } catch (err) {
                 console.error("Error fetching admin overview counts:", err);
@@ -61,63 +90,158 @@ const AdminOverview = () => {
     }, []);
 
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{counts.users}</div>
-                    <p className="text-xs text-muted-foreground">Registrados en el sistema</p>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Curiosidades Activas</CardTitle>
-                    <BookOpen className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{counts.curiosities}</div>
-                    <p className="text-xs text-muted-foreground">Visibles en la app</p>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Rutas Creadas</CardTitle>
-                    <Map className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{counts.routes}</div>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Sitios Registrados</CardTitle>
-                    <Landmark className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{counts.sites}</div>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Eventos Activos</CardTitle>
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{counts.events}</div>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Noticias Publicadas</CardTitle>
-                    <Megaphone className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{counts.news}</div>
-                </CardContent>
-            </Card>
+        <div className="mt-4 space-y-8 animate-in fade-in slide-in-from-bottom-2">
+            {/* Seccin de Usuarios */}
+            <div className="bg-background rounded-2xl p-6 border shadow-sm">
+                <h3 className="text-xl font-bold mb-6 border-b pb-3 flex items-center gap-2 text-primary">
+                    <Users className="h-5 w-5" /> 
+                    Mtricas de Usuarios y Actividad
+                </h3>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Total Usuarios</CardTitle>
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.users}</div>
+                            <p className="text-xs text-muted-foreground">Registrados en el sistema</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-destructive/5 shadow-none hover:bg-destructive/10 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium text-destructive">Usuarios Suspendidos</CardTitle>
+                            <UserX className="h-4 w-4 text-destructive" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold text-destructive">{counts.bannedUsers}</div>
+                            <p className="text-xs text-destructive/70">Cuentas inactivadas</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Reseas Publicadas</CardTitle>
+                            <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.reviews}</div>
+                            <p className="text-xs text-muted-foreground">Opiniones de sitios</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Inscripciones a Rutas</CardTitle>
+                            <Map className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.rutaRegistrations}</div>
+                            <p className="text-xs text-muted-foreground">Rutas iniciadas/completadas</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Sesiones de Juego</CardTitle>
+                            <Gamepad2 className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.gameSessions}</div>
+                            <p className="text-xs text-muted-foreground">Partidas jugadas</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+
+            {/* Seccin de Contenido */}
+            <div className="bg-background rounded-2xl p-6 border shadow-sm">
+                <h3 className="text-xl font-bold mb-6 border-b pb-3 flex items-center gap-2 text-primary">
+                    <Landmark className="h-5 w-5" />
+                    Mtricas de Contenido de la App
+                </h3>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Sitios Registrados</CardTitle>
+                            <Landmark className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.sites}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Rutas Creadas</CardTitle>
+                            <Map className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.rutas}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Juegos Activos</CardTitle>
+                            <Gamepad2 className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.games}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Preguntas de Trivia</CardTitle>
+                            <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.questions}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Curiosidades</CardTitle>
+                            <BookOpen className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.curiosities}</div>
+                            <p className="text-xs text-muted-foreground">Sabas qu y Pa' que seps</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Eventos</CardTitle>
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.events}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Noticias</CardTitle>
+                            <Megaphone className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.news}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Avatares</CardTitle>
+                            <Smile className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.avatars}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Banners Activos</CardTitle>
+                            <Image className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{counts.banners}</div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
         </div>
     );
 };
