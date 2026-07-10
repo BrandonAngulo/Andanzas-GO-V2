@@ -17,21 +17,21 @@ const IMPERDIBLES = [
     id: 'route-salsa',
     title: 'Ruta de la Salsa: Obrero',
     subtitle: 'Historia y ritmo en el corazón de Cali',
-    image: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/imperdibles/salsa_obrero.png',
     tag: 'Ruta Recomendada'
   },
   {
     id: 'route-food',
     title: 'Fogones de la Memoria',
     subtitle: 'El talento de los sabores vallecaucanos',
-    image: 'https://images.unsplash.com/photo-1628267280784-884d5df68c2e?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/imperdibles/fogones_memoria.png',
     tag: 'Ruta Gastronómica'
   },
   {
     id: 'route-art',
     title: 'Pinceles de la Calle',
     subtitle: 'Arte urbano y memoria viva',
-    image: 'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/imperdibles/pinceles_calle.png',
     tag: 'Ruta Visual'
   }
 ];
