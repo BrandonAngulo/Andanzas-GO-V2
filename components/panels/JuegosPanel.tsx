@@ -3,6 +3,7 @@ import { Game, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info } from 'lucide-react';
+import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LeaderboardPanel } from './LeaderboardPanel';
 import GameInstructionsDialog from '../shared/GameInstructionsDialog';
@@ -52,21 +53,22 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     }
 
     return (
-        <div className="space-y-6 pb-20">
-            <PanelBanner
-                panelKey="juegos"
-                defaultImage="/images/banner_juegos.png"
-                gradientClass="from-purple-50/95 via-purple-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
-                title={
-                    <>
-                        <div className="bg-purple-600 p-2.5 rounded-2xl shadow-md text-white">
-                            <Gamepad2 className="h-6 w-6" />
-                        </div>
-                        <h2 className="text-4xl font-extrabold tracking-tight text-purple-950 dark:text-purple-50">
-                            Zona Play
-                        </h2>
-                    </>
-                }
+        <ScrollArea className="h-[72vh] bg-muted/10">
+            <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+                <PanelBanner
+                    panelKey="juegos"
+                    defaultImage="/images/banner_juegos.png"
+                    gradientClass="from-purple-50/95 via-purple-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
+                    title={
+                        <>
+                            <div className="bg-purple-600 p-2.5 rounded-2xl shadow-md text-white">
+                                <Gamepad2 className="h-6 w-6" />
+                            </div>
+                            <h2 className="text-4xl font-extrabold tracking-tight text-purple-950 dark:text-purple-50">
+                                Zona de Juegos
+                            </h2>
+                        </>
+                    }
                 description="Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global."
                 andiMessage="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos."
             />
@@ -169,6 +171,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     game={activeInstructionsGame}
                 />
             )}
-        </div>
+            </div>
+        </ScrollArea>
     );
 };

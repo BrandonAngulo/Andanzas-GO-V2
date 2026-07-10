@@ -10,7 +10,7 @@ import { Switch } from '../../ui/switch';
 
 const PANELS = [
     { key: 'explorar', label: 'Explorar Sitios', defaultImg: '/images/banner_explorar.png' },
-    { key: 'juegos', label: 'Zona Play (Juegos)', defaultImg: '/images/banner_juegos.png' },
+    { key: 'juegos', label: 'Zona de Juegos', defaultImg: '/images/banner_juegos.png' },
     { key: 'paquesepas', label: 'Pa\' que sepás', defaultImg: '/images/banner_aprende.png' },
     { key: 'rutas', label: 'Pasaporte de Rutas', defaultImg: '/images/banner_rutas.png' },
     { key: 'eventos', label: 'Cartelera Cultural', defaultImg: '/images/banner_eventos.png' }

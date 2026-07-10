@@ -26,7 +26,7 @@ const es = {
         routes: "Rutas",
         news: "Noticias",
         events: "Eventos",
-        games: "Zona Play",
+        games: "Zona de Juegos",
     },
     searchPlaceholder: "Buscar museos, teatros, murales…",
     ai: "IA",
