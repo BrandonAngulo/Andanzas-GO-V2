@@ -5,7 +5,9 @@ import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
 import { Plus, Edit2, Trash2, Eye, CalendarClock, Archive, Search } from 'lucide-react';
-import { CuriousFactForm } from './CuriousFactForm'; // We will build this next
+import { CuriousFactForm } from './CuriousFactForm';
+import { Dialog, DialogContent } from '../../ui/dialog';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const CuriousFactsManager = () => {
     const [facts, setFacts] = useState<CuriousFact[]>([]);
@@ -13,6 +15,7 @@ export const CuriousFactsManager = () => {
     const [editingFact, setEditingFact] = useState<CuriousFact | undefined>(undefined);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [deleteId, setDeleteId] = useState<string | null>(null);
 
     useEffect(() => {
         loadFacts();
@@ -25,10 +28,15 @@ export const CuriousFactsManager = () => {
         setLoading(false);
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm('¿Estás seguro de eliminar este dato curioso? Esta acción no se puede deshacer.')) {
-            await curiositiesService.deleteCuriosity(id);
+    const handleDelete = (id: string) => {
+        setDeleteId(id);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteId) {
+            await curiositiesService.deleteCuriosity(deleteId);
             loadFacts();
+            setDeleteId(null);
         }
     };
 
@@ -89,15 +97,28 @@ export const CuriousFactsManager = () => {
                 )}
             </div>
 
-            {isFormOpen && (
-                <div className="mb-6 animate-in slide-in-from-top-4 duration-300">
+            <Dialog open={isFormOpen} onOpenChange={(open) => {
+                setIsFormOpen(open);
+                if (!open) setEditingFact(undefined);
+            }}>
+                <DialogContent className="max-w-3xl p-0 border-none bg-transparent shadow-none [&>button]:hidden">
                     <CuriousFactForm 
                         fact={editingFact} 
                         onSave={handleSave} 
                         onCancel={() => { setIsFormOpen(false); setEditingFact(undefined); }} 
                     />
-                </div>
-            )}
+                </DialogContent>
+            </Dialog>
+
+            <ConfirmDialog 
+                open={!!deleteId} 
+                onOpenChange={(open) => !open && setDeleteId(null)}
+                title="¿Estás seguro de eliminar este dato curioso?"
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
 
             {!isFormOpen && loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando datos curiosos...</div>
