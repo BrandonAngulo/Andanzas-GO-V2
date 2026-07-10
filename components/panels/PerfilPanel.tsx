@@ -493,8 +493,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const currentAvatarUrl = userProfile?.selected_avatar_id || userProfile?.avatar_url || user?.user_metadata?.avatar_url;
 
     return (
-        <ScrollArea className="h-[72vh]">
-            <div className="p-3 space-y-6">
+        <ScrollArea className="h-[72vh] w-full">
+            <div className="p-3 pr-5 sm:pr-6 space-y-6 w-full max-w-full overflow-x-hidden pb-12">
 
                 {/* Incomplete Profile Banner */}
                 {userProfile && (!userProfile.full_name || !currentAvatarUrl || !userProfile.interests?.length) && (
