@@ -34,6 +34,11 @@ export interface Game {
     lives_count?: number;
     questions_per_match?: number;
     level_distribution?: Record<string, number>;
+    // Identidad visual por juego (tema completo: color, icono y fondo temático en la pantalla de juego)
+    theme_accent?: string;       // color principal en hex, ej. "#E85D2A"
+    theme_accent_soft?: string;  // tono claro del mismo color, para fondos/paneles
+    theme_icon?: string;         // clave de icono (mapeada a un ícono de lucide-react en el cliente)
+    theme_pattern?: string;      // clave de patrón/textura decorativa de fondo (ej. "salsa", "nature", "default")
 }
 
 export interface GameQuestion {
@@ -41,10 +46,25 @@ export interface GameQuestion {
     game_id: string;
     question_text: string;
     question_text_en?: string;
-    question_type: 'multiple_choice' | 'true_false' | 'guess_by_clue' | 'matching' | 'ordering';
+    // Tipo funcional de pregunta: determina qué interacción y qué lógica de verificación se usa.
+    question_type: 'multiple_choice' | 'multi_select' | 'ordering' | 'matching' | 'image_choice';
+    // Variante cosmética, solo aplica sobre 'multiple_choice': cambia el copy/encabezado, no la lógica.
+    // 'standard' = pregunta normal | 'true_false' = Verdadero o falso | 'fill_blank' = completar la frase
+    // | 'elimination' = "¿cuál no pertenece?"
+    question_format?: 'standard' | 'true_false' | 'fill_blank' | 'elimination';
     category?: string;
     level: number;
+    // Estructura de 'options' según question_type:
+    // - multiple_choice / multi_select: string[]
+    // - ordering: string[] (los ítems a ordenar, en cualquier orden de presentación)
+    // - matching: { left: string[], right: string[] }
+    // - image_choice: { label: string, image_url: string }[]
     options: any; // jsonb
+    // Estructura de 'correct_answer' según question_type:
+    // - multiple_choice / image_choice: string (debe ser igual a uno de los valores de 'options')
+    // - multi_select: string[] (subconjunto de 'options', el orden no importa)
+    // - ordering: string[] (los mismos ítems de 'options', en el orden correcto)
+    // - matching: Record<string, string> (mapa left -> right correcto)
     correct_answer: any; // jsonb
     explanation?: string;
     points_reward: number;

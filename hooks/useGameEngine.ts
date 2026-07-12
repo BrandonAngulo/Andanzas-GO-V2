@@ -22,6 +22,40 @@ export interface GameEngineState {
     worstCategory: string | null;
 }
 
+// Verifica si una respuesta es correcta según el tipo de pregunta.
+// Cada tipo tiene una forma distinta de 'options'/'correct_answer' (ver services/games.service.ts).
+export const checkAnswerCorrectness = (question: GameQuestion, selectedAnswer: any): boolean => {
+    if (selectedAnswer === null || selectedAnswer === undefined) return false;
+
+    switch (question.question_type) {
+        case 'multi_select': {
+            const correct: string[] = Array.isArray(question.correct_answer) ? question.correct_answer : [];
+            const chosen: string[] = Array.isArray(selectedAnswer) ? selectedAnswer : [];
+            if (correct.length === 0 || correct.length !== chosen.length) return false;
+            const sortedCorrect = [...correct].sort();
+            const sortedChosen = [...chosen].sort();
+            return sortedCorrect.every((v, i) => v === sortedChosen[i]);
+        }
+        case 'ordering': {
+            const correct: string[] = Array.isArray(question.correct_answer) ? question.correct_answer : [];
+            const chosen: string[] = Array.isArray(selectedAnswer) ? selectedAnswer : [];
+            if (correct.length === 0 || correct.length !== chosen.length) return false;
+            return correct.every((v, i) => v === chosen[i]);
+        }
+        case 'matching': {
+            const correct: Record<string, string> = (question.correct_answer && typeof question.correct_answer === 'object') ? question.correct_answer : {};
+            const chosen: Record<string, string> = (selectedAnswer && typeof selectedAnswer === 'object') ? selectedAnswer : {};
+            const keys = Object.keys(correct);
+            if (keys.length === 0) return false;
+            return keys.every(k => correct[k] === chosen[k]);
+        }
+        case 'image_choice':
+        case 'multiple_choice':
+        default:
+            return selectedAnswer === question.correct_answer;
+    }
+};
+
 export const useGameEngine = (gameId: string, userId: string | undefined) => {
     const [state, setState] = useState<GameEngineState>({
         game: null,
@@ -104,8 +138,11 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
             questions = finalQuestions.map((q: any) => {
                 let opts = q.options;
                 if (Array.isArray(opts)) {
-                    // Randomize options for multiple choice
+                    // Aleatoriza el orden de presentación (multiple_choice, multi_select, ordering, image_choice)
                     opts = [...opts].sort(() => Math.random() - 0.5);
+                } else if (opts && typeof opts === 'object' && Array.isArray(opts.right)) {
+                    // Tipo 'matching': solo se aleatoriza la columna derecha, la izquierda mantiene su orden de lectura
+                    opts = { ...opts, right: [...opts.right].sort(() => Math.random() - 0.5) };
                 }
                 return { ...q, options: opts };
             }) as GameQuestion[];
@@ -173,9 +210,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         const timeToAnswerMs = Date.now() - questionStartTimeRef.current;
         const currentQ = state.questions[state.currentQuestionIndex];
         
-        // Ensure accurate comparison handling depending on type
-        // Assume multiple choice string comparison for now
-        const isCorrect = state.game?.type === 'quiz' ? true : (!isTimeout && selectedAnswer === currentQ.correct_answer);
+        // El tipo 'quiz' (encuesta/consulta de opinión) no tiene respuesta correcta/incorrecta.
+        // Para el resto, la verificación depende del tipo de pregunta (ver checkAnswerCorrectness).
+        const isCorrect = state.game?.type === 'quiz' ? true : (!isTimeout && checkAnswerCorrectness(currentQ, selectedAnswer));
         
         let pointsEarned = 0;
         let newStreak = isCorrect ? state.streak + 1 : 0;

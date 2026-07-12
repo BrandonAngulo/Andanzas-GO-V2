@@ -8,6 +8,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUserData } from '../../contexts/UserDataContext';
 import { toast } from 'sonner';
 import { challengeService } from '../../services/challenge.service';
+import { QuestionRenderer } from './QuestionRenderer';
+import { GameMascot, MascotState } from './GameMascot';
+import ReactConfetti from 'react-confetti';
 
 interface GameSessionModalProps {
     gameId: string;
@@ -41,7 +44,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
 
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [selectedOption, setSelectedOption] = useState<any>(null);
     const [isChecking, setIsChecking] = useState(false);
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
@@ -55,6 +58,19 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     const [isShuffling, setIsShuffling] = useState(false);
     const [shuffledCategory, setShuffledCategory] = useState("Salsa");
     const categories = ["Historia", "Arte", "Salsa", "Naturaleza", "Gastronomía", "Literatura", "General"];
+    const [streakBurst, setStreakBurst] = useState(false);
+
+    // Reacción visual de la mascota del juego según el estado de la pregunta actual
+    const mascotState: MascotState = !isChecking ? 'idle' : (game?.type === 'quiz' ? 'idle' : (isCorrect ? 'correct' : 'wrong'));
+
+    // Ráfaga de confeti al alcanzar una racha importante (cada 3 respuestas correctas seguidas)
+    React.useEffect(() => {
+        if (isChecking && isCorrect && streak > 0 && streak % 3 === 0) {
+            setStreakBurst(true);
+            const t = setTimeout(() => setStreakBurst(false), 1600);
+            return () => clearTimeout(t);
+        }
+    }, [isChecking, isCorrect, streak]);
 
     React.useEffect(() => {
         if (isFinished && challengeId && sessionId) {
@@ -125,13 +141,13 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         }
     }, [timeRemaining, isChecking, isFinished, isShuffling]);
 
-    const handleAnswerSelect = async (option: string) => {
+    const handleAnswerSelect = async (answer: any) => {
         if (isChecking) return;
         
-        setSelectedOption(option);
+        setSelectedOption(answer);
         setIsChecking(true);
         
-        const correct = await submitAnswer(option, false);
+        const correct = await submitAnswer(answer, false);
         setIsCorrect(correct);
     };
 
@@ -180,22 +196,33 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         );
     }
 
+    // Identidad visual del juego: cada trivia trae su propio color de acento (theme_accent).
+    // Se declara antes de los early-returns para que la pantalla de resultados también la use.
+    const accent = game?.theme_accent || '#10B981';
+
     if (isFinished) {
         return (
             <div className="fixed inset-0 flex flex-col bg-slate-950 text-slate-50 overflow-y-auto" style={{ zIndex: 99999 }}>
+                {accuracyPercent >= 50 && (
+                    <ReactConfetti recycle={false} numberOfPieces={280} gravity={0.25} colors={[accent, '#FFFFFF', '#FDE68A']} style={{ position: 'fixed', inset: 0, zIndex: 100000, pointerEvents: 'none' }} />
+                )}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
-                    <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] bg-yellow-500/20 rounded-full blur-[120px]" />
+                    <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full blur-[120px]" style={{ backgroundColor: `${accent}33` }} />
                     <div className="absolute top-[40%] -right-[10%] w-[40vw] h-[40vw] bg-primary/20 rounded-full blur-[100px]" />
                 </div>
-                
+
                 <div className="relative z-10 flex-1 max-w-2xl mx-auto w-full flex flex-col justify-center items-center text-center p-6 py-12 space-y-8">
-                    <motion.div 
+                    <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", bounce: 0.5 }}
-                        className="bg-yellow-500/10 p-8 rounded-full mb-2 ring-4 ring-yellow-500/20 shadow-[0_0_40px_rgba(234,179,8,0.3)]"
+                        className="p-8 rounded-full mb-2"
+                        style={{
+                            backgroundColor: `${accent}1A`,
+                            boxShadow: `0 0 0 4px ${accent}33, 0 0 40px ${accent}4D`
+                        }}
                     >
-                        <Trophy className="w-24 h-24 text-yellow-500 drop-shadow-md" />
+                        <Trophy className="w-24 h-24 drop-shadow-md" style={{ color: accent }} />
                     </motion.div>
                     
                     <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-white drop-shadow-lg">¡Desafío Completado!</h2>
@@ -264,11 +291,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     return (
         <div className="fixed inset-0 flex flex-col bg-slate-950 text-slate-50 overflow-hidden font-sans" style={{ zIndex: 99999 }}>
-            {/* Dynamic Background */}
+            {/* Dynamic Background — tematizado por juego */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] bg-emerald-600/20 rounded-full blur-[120px]" />
-                <div className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] bg-purple-600/20 rounded-full blur-[100px]" />
-                <div className="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] bg-blue-600/20 rounded-full blur-[130px]" />
+                <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full blur-[120px]" style={{ backgroundColor: `${accent}33` }} />
+                <div className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full blur-[100px]" style={{ backgroundColor: `${accent}22` }} />
+                <div className="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] rounded-full blur-[130px]" style={{ backgroundColor: `${accent}1A` }} />
             </div>
 
             {/* HUD (Floating Pill) */}
@@ -338,6 +365,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                 )}
             </AnimatePresence>
 
+            {/* Ráfaga de confeti al alcanzar una racha */}
+            {streakBurst && (
+                <ReactConfetti recycle={false} numberOfPieces={140} gravity={0.3} style={{ position: 'fixed', inset: 0, zIndex: 100000, pointerEvents: 'none' }} />
+            )}
+
             {/* Main Area */}
             <div className="relative z-10 flex-1 flex flex-col items-center p-4 sm:p-6 w-full max-w-4xl mx-auto h-full overflow-y-auto overflow-x-hidden scrollbar-none">
                 <AnimatePresence mode="wait">
@@ -360,21 +392,56 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             className="w-full flex flex-col flex-1 my-auto"
                         >
                             <div className="mb-6 w-full max-w-xl mx-auto flex flex-col items-center">
+                                {/* Mascota del juego con anillo de tiempo alrededor */}
+                                <div className="relative w-24 h-24 mb-4 flex items-center justify-center">
+                                    {game?.type !== 'quiz' && (
+                                        <svg className="absolute inset-0 -rotate-90" width="96" height="96" viewBox="0 0 96 96">
+                                            <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
+                                            <motion.circle
+                                                cx="48" cy="48" r="42" fill="none"
+                                                stroke={timeRemaining <= 5 ? '#EF4444' : accent}
+                                                strokeWidth="6" strokeLinecap="round"
+                                                strokeDasharray={2 * Math.PI * 42}
+                                                animate={{ strokeDashoffset: 2 * Math.PI * 42 * (1 - timeRemaining / (currentQuestion?.time_limit_sec || 30)) }}
+                                                transition={{ duration: 1, ease: 'linear' }}
+                                                style={{ filter: `drop-shadow(0 0 6px ${timeRemaining <= 5 ? '#EF4444' : accent})` }}
+                                            />
+                                        </svg>
+                                    )}
+                                    <div
+                                        className="w-16 h-16 rounded-full flex items-center justify-center transition-shadow duration-300"
+                                        style={{
+                                            backgroundColor: `${accent}22`,
+                                            boxShadow: mascotState === 'correct'
+                                                ? `0 0 24px 4px ${accent}66`
+                                                : mascotState === 'wrong'
+                                                    ? '0 0 24px 4px rgba(239,68,68,0.4)'
+                                                    : `0 0 16px -2px ${accent}4D`
+                                        }}
+                                    >
+                                        <GameMascot icon={game?.theme_icon} accent={accent} size={44} state={mascotState} />
+                                    </div>
+                                </div>
+
                                 <span className="text-white/50 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3">
                                     Pregunta {currentQuestionIndex + 1} de {questions.length}
                                 </span>
-                                
-                                {/* Visible Timer Progress Bar */}
-                                {game?.type !== 'quiz' && (
-                                    <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden shadow-inner backdrop-blur-sm">
-                                        <motion.div 
-                                            className={`h-full rounded-full ${timeRemaining <= 5 ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,1)]' : 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,1)]'}`} 
-                                            initial={{ width: '100%' }}
-                                            animate={{ width: `${(timeRemaining / (currentQuestion?.time_limit_sec || 30)) * 100}%` }}
-                                            transition={{ duration: 1, ease: 'linear' }}
+
+                                {/* Puntos de progreso: una perla por pregunta de la partida */}
+                                <div className="flex items-center gap-1.5 flex-wrap justify-center max-w-xs">
+                                    {questions.map((_, idx) => (
+                                        <span
+                                            key={idx}
+                                            className="rounded-full transition-all duration-300"
+                                            style={{
+                                                width: idx === currentQuestionIndex ? 10 : 6,
+                                                height: idx === currentQuestionIndex ? 10 : 6,
+                                                backgroundColor: idx < currentQuestionIndex ? accent : idx === currentQuestionIndex ? accent : 'rgba(255,255,255,0.15)',
+                                                opacity: idx <= currentQuestionIndex ? 1 : 0.5
+                                            }}
                                         />
-                                    </div>
-                                )}
+                                    ))}
+                                </div>
                             </div>
 
                             <div className="w-full bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl flex flex-col items-center text-center relative overflow-hidden flex-shrink-0">
@@ -382,49 +449,18 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                     {currentQuestion?.question_text}
                                 </h2>
 
-                                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 overflow-y-auto max-h-[50vh] scrollbar-none pb-2">
-                                    {currentQuestion?.options.map((opt: string, idx: number) => {
-                                        let buttonStateClass = "bg-white/5 border-white/10 hover:bg-white/10 text-white/90";
-                                        
-                                        if (isChecking && !hasTimedOut) {
-                                            if (game?.type === 'quiz') {
-                                                if (opt === selectedOption) {
-                                                    buttonStateClass = "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)]";
-                                                } else {
-                                                    buttonStateClass = "opacity-30 border-white/5 text-white/90";
-                                                }
-                                            } else {
-                                                if (opt === currentQuestion.correct_answer) {
-                                                    buttonStateClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]";
-                                                } else if (opt === selectedOption) {
-                                                    buttonStateClass = "bg-red-500/20 border-red-500 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]";
-                                                } else {
-                                                    buttonStateClass = "opacity-30 border-white/5 text-white/90";
-                                                }
-                                            }
-                                        } else if (isChecking && hasTimedOut) {
-                                            if (opt === currentQuestion.correct_answer && game?.type !== 'quiz') {
-                                                buttonStateClass = "bg-emerald-500/20 border-emerald-500 text-emerald-400";
-                                            } else {
-                                                buttonStateClass = "opacity-30 border-white/5 text-white/90";
-                                            }
-                                        }
-
-                                        return (
-                                            <Button 
-                                                key={idx}
-                                                variant="outline"
-                                                className={`w-full justify-start text-left h-auto py-5 px-6 rounded-2xl border-2 transition-all duration-300 ${buttonStateClass} ${!isChecking ? 'hover:scale-[1.02]' : ''}`}
-                                                onClick={() => handleAnswerSelect(opt)}
-                                                disabled={isChecking}
-                                            >
-                                                <span className="mr-5 w-8 h-8 rounded-full border-2 border-current flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                                    {String.fromCharCode(65 + idx)}
-                                                </span>
-                                                <span className="text-base sm:text-lg font-semibold whitespace-normal">{opt}</span>
-                                            </Button>
-                                        );
-                                    })}
+                                <div className="w-full overflow-y-auto max-h-[50vh] scrollbar-none pb-2">
+                                    {currentQuestion && (
+                                        <QuestionRenderer
+                                            question={currentQuestion}
+                                            gameType={game?.type}
+                                            isChecking={isChecking}
+                                            hasTimedOut={hasTimedOut}
+                                            selectedAnswer={selectedOption}
+                                            onSubmit={handleAnswerSelect}
+                                            accent={accent}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </motion.div>

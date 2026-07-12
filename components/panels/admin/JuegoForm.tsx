@@ -146,6 +146,55 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
                     />
                 </div>
 
+                <div className="space-y-4 bg-muted/20 p-4 rounded-lg border border-border/50">
+                    <h4 className="text-sm font-semibold text-foreground">Identidad visual del juego</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Título de portada</label>
+                            <Input name="cover_title" value={formData.cover_title || ''} onChange={handleChange} placeholder="Ej: ¿Qué tanto sabés de tu ciudad?" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Subtítulo de portada</label>
+                            <Input name="cover_subtitle" value={formData.cover_subtitle || ''} onChange={handleChange} placeholder="Ej: Ponete a prueba con Trivia Cali" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-medium text-foreground">Imagen de portada (URL, opcional)</label>
+                        <Input name="cover_image_url" value={formData.cover_image_url || ''} onChange={handleChange} placeholder="https://..." />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Color de acento (hex)</label>
+                            <div className="flex items-center gap-2">
+                                <input type="color" value={formData.theme_accent || '#10B981'} onChange={e => setFormData(prev => ({ ...prev, theme_accent: e.target.value }))} className="w-9 h-9 rounded border border-border cursor-pointer" />
+                                <Input name="theme_accent" value={formData.theme_accent || ''} onChange={handleChange} placeholder="#E85D2A" />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Color de acento suave (fondo tarjeta)</label>
+                            <div className="flex items-center gap-2">
+                                <input type="color" value={formData.theme_accent_soft || '#FDECE1'} onChange={e => setFormData(prev => ({ ...prev, theme_accent_soft: e.target.value }))} className="w-9 h-9 rounded border border-border cursor-pointer" />
+                                <Input name="theme_accent_soft" value={formData.theme_accent_soft || ''} onChange={handleChange} placeholder="#FDECE1" />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Ícono temático</label>
+                            <Select value={formData.theme_icon || 'gamepad'} onValueChange={(val) => handleSelectChange('theme_icon', val)}>
+                                <SelectTrigger><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="gamepad">General</SelectItem>
+                                    <SelectItem value="music">Música / Salsa</SelectItem>
+                                    <SelectItem value="leaf">Naturaleza</SelectItem>
+                                    <SelectItem value="landmark">Historia / Monumentos</SelectItem>
+                                    <SelectItem value="utensils">Gastronomía</SelectItem>
+                                    <SelectItem value="ghost">Leyendas</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Este color y este ícono identifican al juego en la lista de trivias y dentro de la pantalla de juego (fondo, barra de tiempo).</p>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium leading-none text-foreground">Dificultad</label>
