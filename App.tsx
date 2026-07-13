@@ -157,6 +157,17 @@ export default function App() {
   // --- Local UI State ---
   const [openMenu, setOpenMenu] = useState(false);
   const [activePanel, setActivePanel] = useState<ActivePanelType>("mapa");
+  // Recuerda cuál era el panel activo justo antes de entrar a 'perfil' (sin importar la
+  // entrada: avatar del header, Sidebar, BottomNav o clic en notificación), para que el
+  // botón de "cerrar perfil" regrese ahí en vez de saltar siempre al mapa.
+  const [lastPanelBeforeProfile, setLastPanelBeforeProfile] = useState<ActivePanelType>("mapa");
+  const prevActivePanelRef = useRef<ActivePanelType>("mapa");
+  useEffect(() => {
+    if (activePanel === 'perfil' && prevActivePanelRef.current !== 'perfil') {
+      setLastPanelBeforeProfile(prevActivePanelRef.current);
+    }
+    prevActivePanelRef.current = activePanel;
+  }, [activePanel]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -397,8 +408,10 @@ export default function App() {
           } else {
             await signIn(email, password);
           }
+          // No forzar navegación a 'perfil': el diálogo de login siempre se abre desde una
+          // acción contextual (iniciar ruta, dejar reseña, aceptar reto), así que activePanel
+          // y fullView ya reflejan correctamente dónde estaba el usuario.
           setAuthDialogOpen(false);
-          setActivePanel("perfil");
         }}
       />
 
@@ -490,7 +503,7 @@ export default function App() {
               {showAccessibilityMenu && <AccessibilityMenu settings={accessibilitySettings} onSettingsChange={setAccessibilitySettings} onReset={() => setAccessibilitySettings(defaultAccessibilitySettings)} />}
             </div>
 
-            <Button variant="ghost" size="icon" className={cn("rounded-full hover:bg-muted p-0 overflow-hidden", isAuthenticated ? "border-2 border-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? 'mapa' : 'perfil')}>
+            <Button variant="ghost" size="icon" className={cn("rounded-full hover:bg-muted p-0 overflow-hidden", isAuthenticated ? "border-2 border-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? lastPanelBeforeProfile : 'perfil')}>
               {isAuthenticated ? (
                 <UserAvatar userProfile={userProfile} className="w-full h-full" />
               ) : (
@@ -530,13 +543,13 @@ export default function App() {
                   plannedRoutePoints={newRoutePoints}
                 />
               )}
-              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
+              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} onNavigateToAprende={() => setActivePanel('paquesepas')} rutasTematicas={rutasTematicas} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}
               {activePanel === 'reseñas' && <ResenasPanel reviews={reviews} sites={sites} />}
               {activePanel === 'rutas' && <RutasPanel query={query} rutas={userRoutes} suggestedRoutes={rutasTematicas} newPoints={newRoutePoints} allSites={sites} onAddPoint={(p) => setNewRoutePoints(prev => (prev.find(x => x.id === p.id) ? prev : [...prev, p]))} onRemovePoint={(id) => setNewRoutePoints(prev => prev.filter(x => x.id !== id))} onReorderPoints={setNewRoutePoints} onSave={saveNewRoute} onOpenDetail={openRoute} onTogglePrivacy={toggleRutaPrivacy} onDelete={deleteRoute} onUpdateDetails={updateRouteDetails} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else if (res === 'started') { setActivePanel('mapa'); } }} onCompleteRoute={completeRouteById} routesInProgress={routesInProgress} routesCompleted={routesCompleted} />}
-              {activePanel === 'perfil' && <PerfilPanel favCount={favIds.length} reviewsCount={reviews.length} rutasCount={userRoutes.length} insigniasCount={earnedInsignias.length} onOpenInsigniasModal={() => setShowInsigniasModal(true)} routesInProgressCount={routesInProgress.length} routesCompletedCount={routesCompleted.length} favoriteSiteIds={favIds} sites={sites} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} onOpenSite={openSite} />}
+              {activePanel === 'perfil' && <PerfilPanel favCount={favIds.length} reviewsCount={reviews.length} rutasCount={userRoutes.length} insigniasCount={earnedInsignias.length} onOpenInsigniasModal={() => setShowInsigniasModal(true)} routesInProgressCount={routesInProgress.length} routesCompletedCount={routesCompleted.length} favoriteSiteIds={favIds} sites={sites} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} onOpenSite={openSite} onNavigate={setActivePanel} />}
               {activePanel === 'configuracion' && <ConfiguracionPanel theme={theme} setTheme={setTheme} />}
               {activePanel === 'sobre' && <SobrePanel />}
               {activePanel === 'soporte' && <SoportePanel />}
@@ -585,10 +598,9 @@ export default function App() {
             <DialogTitle className="flex items-center gap-2 text-destructive"><AlertTriangle className="h-5 w-5" />{t('sos.title')}</DialogTitle>
             <DialogDescription className="text-foreground">{t('sos.description')}</DialogDescription>
           </DialogHeader>
-          {/* Content simplified for brevity in this full file write, assume same structure */}
           <div className="grid gap-3">
-            <Button variant="destructive" className="h-14 justify-start px-6 rounded-xl"><Phone className="mr-3 h-5 w-5" />{t('sos.emergencyLine')}</Button>
-            <Button variant="secondary" className="h-14 justify-start px-6 rounded-xl"><Shield className="mr-3 h-5 w-5 text-primary" />{t('sos.touristLine')}</Button>
+            <Button variant="destructive" className="h-14 justify-start px-6 rounded-xl" onClick={() => { window.location.href = 'tel:123'; }}><Phone className="mr-3 h-5 w-5" />{t('sos.emergencyLine')}</Button>
+            <Button variant="secondary" className="h-14 justify-start px-6 rounded-xl" onClick={() => { window.location.href = 'tel:123'; }}><Shield className="mr-3 h-5 w-5 text-primary" />{t('sos.touristLine')}</Button>
           </div>
         </DialogContent>
       </Dialog>

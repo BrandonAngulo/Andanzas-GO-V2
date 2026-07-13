@@ -45,7 +45,7 @@ const DialogTrigger: React.FC<React.PropsWithChildren<{ asChild?: boolean }>> = 
   return <div onClick={() => onOpenChange(true)}>{children}</div>;
 };
 
-const DialogContent: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => {
+const DialogContent: React.FC<React.PropsWithChildren<{ className?: string; showCloseButton?: boolean }>> = ({ children, className, showCloseButton = true }) => {
   const { open, onOpenChange } = useDialog();
   const [mounted, setMounted] = useState(false);
 
@@ -63,9 +63,11 @@ const DialogContent: React.FC<React.PropsWithChildren<{ className?: string }>> =
         onClick={() => onOpenChange(false)}
       ></div>
       <div className={cn("relative z-10 w-full max-w-lg p-6 bg-popover text-popover-foreground rounded-lg shadow-xl animate-in fade-in-0 zoom-in-95 duration-200", className)}>
-        <button onClick={() => onOpenChange(false)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground z-50">
-          <X size={24} />
-        </button>
+        {showCloseButton && (
+          <button onClick={() => onOpenChange(false)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground z-50">
+            <X size={24} />
+          </button>
+        )}
         {children}
       </div>
     </div>,

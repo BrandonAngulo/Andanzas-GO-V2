@@ -75,7 +75,9 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     React.useEffect(() => {
         if (isFinished && challengeId && sessionId) {
             challengeService.completeChallenge(challengeId, sessionId, null).then(() => {
-                window.location.href = `/challenge/${challengeId}/verdict`;
+                // El router de la app lee window.location.hash (ver App.tsx parseHash/pushHash),
+                // no la ruta de la URL, así que la navegación al veredicto debe ir por hash.
+                window.location.hash = `#/challenge/${challengeId}/verdict`;
             });
         }
     }, [isFinished, challengeId, sessionId]);
@@ -102,7 +104,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         try {
             const challenge = await challengeService.createChallenge(gameId, sessionId);
             if (challenge) {
-                const challengeUrl = `${window.location.origin}/challenge/${challenge.id}`;
+                const challengeUrl = `${window.location.origin}/#/challenge/${challenge.id}`;
                 await navigator.clipboard.writeText(`¡Te reto en Andanzas GO! ¿Puedes superar mi puntaje de ${score}?\n\nJuega aquí: ${challengeUrl}`);
                 toast.success("¡Enlace copiado al portapapeles! Compártelo con tus amigos.");
             } else {

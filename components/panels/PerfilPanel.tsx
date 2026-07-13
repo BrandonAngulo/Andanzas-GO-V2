@@ -16,7 +16,7 @@ import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
-import { UserProfile, Insignia, Review, Site, PassportStamp } from '../../types';
+import { UserProfile, Insignia, Review, Site, PassportStamp, ActivePanelType } from '../../types';
 import { reviewsService } from '../../services/reviews.service';
 import { bannerService } from '../../services/banner.service';
 import { BannerGalleryModal, AVAILABLE_BANNERS } from './BannerGalleryModal';
@@ -105,6 +105,7 @@ interface PerfilPanelProps {
     sites: Site[];
     toggleFav: (id: string) => void;
     onOpenSite: (site: Site) => void;
+    onNavigate: (panel: ActivePanelType) => void;
 }
 
 const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: number | string }) => (
@@ -117,7 +118,7 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
     </div>
 );
 
-const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite }) => {
+const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite, onNavigate }) => {
     const { t, language } = useI18n();
     const { user, signIn, signUp, logout, isAuthenticated, resetPassword, signInWithGoogle } = useAuth();
 
@@ -719,7 +720,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             <RouteIcon className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
                             <h3 className="text-lg font-bold">Mis Rutas</h3>
                             <p className="text-sm text-muted-foreground mt-2 max-w-sm">Aquí verás las rutas que tienes por andar, las que están en progreso y las que ya finalizaste.</p>
-                            <Button variant="outline" className="mt-4 rounded-full" onClick={() => {}}>Explorar Rutas</Button>
+                            <Button variant="outline" className="mt-4 rounded-full" onClick={() => onNavigate('rutas')}>Explorar Rutas</Button>
                         </div>
                     </TabsContent>
 
@@ -864,7 +865,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             <Trophy className="h-12 w-12 text-yellow-500 mb-4 opacity-80" />
                             <h3 className="text-lg font-bold">Mi Rendimiento en Juegos</h3>
                             <p className="text-sm text-muted-foreground mt-2 max-w-sm">Juega trivias en la Zona de Juegos para ganar puntos y aparecer aquí.</p>
-                            <Button variant="outline" className="mt-4 rounded-full text-purple-600 border-purple-200 hover:bg-purple-50" onClick={() => setActiveTab('games')}>Ir a Juegos</Button>
+                            <Button variant="outline" className="mt-4 rounded-full text-purple-600 border-purple-200 hover:bg-purple-50" onClick={() => onNavigate('juegos')}>Ir a Juegos</Button>
                         </div>
                     </TabsContent>
 
@@ -905,7 +906,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         </div>
                                         <p className="text-base font-bold text-primary mb-1">Aún no hay actividad reciente</p>
                                         <p className="text-sm text-muted-foreground mb-4">¡El mapa te espera! Empieza a explorar la ciudad y deja tu huella.</p>
-                                        <Button variant="default" className="rounded-full shadow-lg shadow-primary/20" onClick={() => setActiveTab('rutas')}>Descubrir Sitios</Button>
+                                        <Button variant="default" className="rounded-full shadow-lg shadow-primary/20" onClick={() => onNavigate('explorar')}>Descubrir Sitios</Button>
                                     </CardContent>
                                 </Card>
                             )}
@@ -957,7 +958,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         </div>
                                         <p className="text-sm font-bold text-pink-600 dark:text-pink-400 mb-1">Aún no tienes favoritos</p>
                                         <p className="text-xs text-muted-foreground mb-3 leading-relaxed">Guarda los sitios que más te gusten tocando el corazón. Así armarás tu propia ruta personal.</p>
-                                        <Button variant="outline" size="sm" className="border-pink-200 text-pink-600 hover:bg-pink-50 dark:border-pink-900 dark:hover:bg-pink-950 rounded-full">Encontrar favoritos</Button>
+                                        <Button variant="outline" size="sm" className="border-pink-200 text-pink-600 hover:bg-pink-50 dark:border-pink-900 dark:hover:bg-pink-950 rounded-full" onClick={() => onNavigate('explorar')}>Encontrar favoritos</Button>
                                     </CardContent>
                                 </Card>
                             )}
@@ -1019,7 +1020,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         </div>
                                         <p className="text-sm font-bold text-orange-600 dark:text-orange-400 mb-1">Sin reseñas</p>
                                         <p className="text-xs text-muted-foreground mb-3 leading-relaxed">Tus aportes ayudan a que la comunidad crezca. Deja tu opinión en los sitios que visites.</p>
-                                        <Button variant="outline" size="sm" className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-orange-900 dark:hover:bg-orange-950 rounded-full">Escribir una reseña</Button>
+                                        <Button variant="outline" size="sm" className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-orange-900 dark:hover:bg-orange-950 rounded-full" onClick={() => onNavigate('explorar')}>Escribir una reseña</Button>
                                     </CardContent>
                                 </Card>
                             )}

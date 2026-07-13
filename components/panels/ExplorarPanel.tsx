@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Site, Evento, CuriousFact } from '../../types';
+import { Site, Evento, CuriousFact, Ruta } from '../../types';
 import { curiositiesService } from '../../services/curiosities.service';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
@@ -12,28 +12,13 @@ import { Badge } from '../ui/badge';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
 import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library, Map } from 'lucide-react';
 
-const IMPERDIBLES = [
-  {
-    id: 'route-salsa',
-    title: 'Ruta de la Salsa: Obrero',
-    subtitle: 'Historia y ritmo en el corazón de Cali',
-    image: '/images/imperdibles/salsa_obrero.png',
-    tag: 'Ruta Recomendada'
-  },
-  {
-    id: 'route-food',
-    title: 'Fogones de la Memoria',
-    subtitle: 'El talento de los sabores vallecaucanos',
-    image: '/images/imperdibles/fogones_memoria.png',
-    tag: 'Ruta Gastronómica'
-  },
-  {
-    id: 'route-art',
-    title: 'Pinceles de la Calle',
-    subtitle: 'Arte urbano y memoria viva',
-    image: '/images/imperdibles/pinceles_calle.png',
-    tag: 'Ruta Visual'
-  }
+// Cada imperdible referencia el id real de una ruta publicada (ver services/routes.service.ts).
+// Se conserva la imagen/tag curados a mano; título y subtítulo se toman de la ruta real
+// para que nunca queden desincronizados si el contenido cambia en Supabase.
+const IMPERDIBLES: { routeId: string; image: string; tag: string }[] = [
+  { routeId: 'ruta1', image: '/images/imperdibles/salsa_obrero.png', tag: 'Ruta Recomendada' },
+  { routeId: 'ruta6', image: '/images/imperdibles/fogones_memoria.png', tag: 'Ruta Gastronómica' },
+  { routeId: 'ruta3', image: '/images/imperdibles/pinceles_calle.png', tag: 'Ruta Visual' },
 ];
 
 // --- Reusable Card Components for the Feed ---
@@ -87,11 +72,12 @@ interface ExplorarPanelProps {
   onNavigateToRoutes?: () => void;
   onOpenRoute?: (route: any) => void;
   onNavigateToAprende?: () => void;
+  rutasTematicas: Ruta[];
 }
 
 
 
-const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende }) => {
+const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende, rutasTematicas }) => {
   const { language } = useI18n();
 
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -206,20 +192,26 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
             </h3>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar">
-            {IMPERDIBLES.map(item => (
-              <div 
-                key={item.id} 
-                className="min-w-[280px] md:min-w-[320px] snap-center shrink-0 cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all"
-                onClick={() => onOpenRoute && onOpenRoute({ id: item.id } as any)}
-              >
-                <LazyImage src={item.image} alt={item.title} className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-4">
-                  <Badge className="w-fit mb-2 bg-primary/90 text-white border-none">{item.tag}</Badge>
-                  <h4 className="text-white font-bold text-lg leading-tight mb-1">{item.title}</h4>
-                  <p className="text-white/80 text-sm font-medium">{item.subtitle}</p>
+            {IMPERDIBLES.map(item => {
+              const route = rutasTematicas.find(r => r.id === item.routeId);
+              // Si la ruta ya no existe/cambió de id en Supabase, no se renderiza el tile
+              // en vez de llevar a una vista rota.
+              if (!route) return null;
+              return (
+                <div
+                  key={item.routeId}
+                  className="min-w-[280px] md:min-w-[320px] snap-center shrink-0 cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all"
+                  onClick={() => onOpenRoute && onOpenRoute(route)}
+                >
+                  <LazyImage src={item.image} alt={route.nombre} className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-4">
+                    <Badge className="w-fit mb-2 bg-primary/90 text-white border-none">{item.tag}</Badge>
+                    <h4 className="text-white font-bold text-lg leading-tight mb-1">{route.nombre}</h4>
+                    <p className="text-white/80 text-sm font-medium line-clamp-2">{route.descripcion}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

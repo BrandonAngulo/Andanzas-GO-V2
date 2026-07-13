@@ -67,7 +67,7 @@ export function LegalAcceptanceModal() {
     return (
         <Dialog open={isOpen} onOpenChange={() => {}}>
             {/* onOpenChange empty prevents clicking outside to close */}
-            <DialogContent className="max-w-2xl sm:max-w-3xl max-h-[90vh] flex flex-col p-6">
+            <DialogContent className="max-w-2xl sm:max-w-3xl max-h-[90vh] flex flex-col p-6" showCloseButton={false}>
                 <DialogHeader>
                     <DialogTitle className="text-2xl text-primary">Actualización de {currentDoc.title}</DialogTitle>
                     <DialogDescription>

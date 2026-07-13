@@ -201,12 +201,6 @@ const SoportePanel: React.FC = () => {
                                     )}
                                 </CardContent>
                             </Card>
-
-                            {/* Live Chat Button */}
-                            <Button variant="outline" className="w-full py-6 flex flex-col gap-1 h-auto">
-                                <MessageCircle className="h-6 w-6" />
-                                <span>{t('support.chat')}</span>
-                            </Button>
                         </div>
                     </TabsContent>
                 </Tabs>
