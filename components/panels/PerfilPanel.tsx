@@ -727,13 +727,9 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     </div>
                                                 )}
                                                 
-                                                {/* Rectangular Postal Stamp Design */}
-                                                <div className={`w-24 h-28 relative flex flex-col items-center justify-center p-1.5 transition-transform group-hover:scale-105 duration-300
-                                                    ${getStampStyle()} 
-                                                    [mask-image:radial-gradient(circle_4px_at_border-box,transparent_0,transparent_100%)]
-                                                    [mask-size:8px_8px] [mask-repeat:round] [mask-composite:exclude]
-                                                    border-4`}>
-                                                    
+                                                {/* Sello postal: doble borde (externo sólido + interno punteado) sobre esquinas redondeadas */}
+                                                <div className={`w-24 h-28 relative flex flex-col items-center justify-center p-1.5 rounded-lg border-2 overflow-hidden transition-transform group-hover:scale-105 duration-300 ${getStampStyle()}`}>
+
                                                     <div className={`w-full h-full border border-dashed rounded-sm flex flex-col items-center justify-center overflow-hidden p-1 ${isLevel3 ? 'border-yellow-500/50' : 'border-border'}`}>
                                                         <div className={`w-full h-1/2 flex items-center justify-center ${getInnerStyle()} rounded-sm mb-1 ${!hasAnyExperience ? 'grayscale opacity-40' : ''}`}>
                                                             <GameMascot icon="music" accent={isLevel3 ? '#D4A017' : '#E8600F'} size={40} />
@@ -761,7 +757,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     
                                     {/* Future region placeholder */}
                                     <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-32 opacity-40 grayscale">
-                                        <div className="w-24 h-28 border-4 border-muted border-dashed bg-muted/20 flex flex-col items-center justify-center p-2 [mask-size:8px_8px] [mask-repeat:round] border-4">
+                                        <div className="w-24 h-28 rounded-lg border-2 border-muted border-dashed bg-muted/20 overflow-hidden flex flex-col items-center justify-center p-2">
                                             <div className="w-full h-full border border-dashed border-muted rounded-sm flex items-center justify-center">
                                                 <GameMascot icon="leaf" accent="#1F9E5A" size={36} />
                                             </div>
@@ -774,13 +770,17 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     
                                     {stamps.filter(s => s.stamp_type !== 'city' && s.city !== 'Cali').map((stamp, idx) => (
                                         <div key={stamp.id} className="flex flex-col items-center gap-2 snap-center shrink-0 w-32 group cursor-pointer relative">
-                                            {/* Retro-compatibility or extra stamps */}
-                                            <div className={`w-24 h-28 border-4 flex flex-col items-center justify-center p-1.5 transition-transform group-hover:scale-105 duration-300 ${stamp.color_theme ? 'border-' + stamp.color_theme + '-500 bg-' + stamp.color_theme + '-100/50' : 'border-primary bg-primary/10'}`}>
+                                            {/* Sellos adicionales: color de acento del tema aplicado por estilo inline
+                                                (las clases Tailwind dinámicas se purgan en build, por eso no se usaban colores por clase) */}
+                                            <div
+                                                className="w-24 h-28 rounded-lg border-2 overflow-hidden flex flex-col items-center justify-center p-1.5 bg-primary/5 transition-transform group-hover:scale-105 duration-300"
+                                                style={{ borderColor: stamp.color_theme || 'hsl(var(--primary) / 0.6)' }}
+                                            >
                                                 <div className="w-full h-full border border-dashed border-border rounded-sm flex flex-col items-center justify-center overflow-hidden">
                                                     {stamp.image_url ? (
-                                                        <img src={stamp.image_url} alt={stamp.title} className="w-full h-full object-cover mix-blend-multiply opacity-80" />
+                                                        <img src={stamp.image_url} alt={stamp.title} className="w-full h-full object-cover opacity-90" />
                                                     ) : (
-                                                        <span className={`text-[10px] font-black uppercase drop-shadow-sm rotate-[-15deg] opacity-80 ${stamp.color_theme ? 'text-' + stamp.color_theme + '-600' : 'text-primary'}`}>{stamp.city || 'Sellado'}</span>
+                                                        <span className="text-[10px] font-black uppercase drop-shadow-sm rotate-[-15deg] opacity-80 text-primary">{stamp.city || 'Sellado'}</span>
                                                     )}
                                                 </div>
                                             </div>

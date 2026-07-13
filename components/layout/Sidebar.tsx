@@ -13,9 +13,10 @@ interface SidebarProps {
   onNavigate: (id: ActivePanelType) => void;
   onClose: () => void;
   activePanel: ActivePanelType;
+  onOpenSupport?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onOpenSupport }) => {
   const { t } = useI18n();
   const { logout, isAuthenticated, user } = useAuth();
   const { userProfile } = useUserData();
@@ -78,6 +79,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
           <Item id="configuracion" icon={Settings} label={t('panelTitles.configuracion')} />
           <Item id="soporte" icon={HelpCircle} label={t('panelTitles.soporte')} />
           <Item id="sobre" icon={Info} label={t('panelTitles.sobre') || 'Sobre Andanzas GO'} />
+          {onOpenSupport && (
+            <button
+              onClick={() => { onOpenSupport(); onClose(); }}
+              className="w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 transition-all duration-200 group text-pink-600 dark:text-pink-400 hover:bg-pink-500/10 font-semibold"
+            >
+              <Heart className="h-4 w-4 fill-current transition-colors" />
+              Apóyanos
+            </button>
+          )}
           {(userProfile?.role === 'admin' || user?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com') && (
             <>
               <div className="my-2 border-t border-border/40 mx-2" />
@@ -108,9 +118,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel }) =
             <User className="h-4 w-4 mr-2" /> {t('loginTitle') || "Iniciar Sesión"}
           </Button>
         )}
-        <div className="mt-2 text-[10px] text-muted-foreground text-center opacity-50">
-          DBG: {user?.email || 'no-email'} | {userProfile?.role || 'no-role'}
-        </div>
       </div>
     </div>
   );

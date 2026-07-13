@@ -24,6 +24,7 @@ import RutasPanel from "./components/panels/RutasPanel";
 import PerfilPanel from "./components/panels/PerfilPanel";
 import { UserAvatar } from "./components/shared/UserAvatar";
 import SobrePanel from "./components/panels/SobrePanel";
+import { SupportUsModal } from "./components/panels/SupportUsModal";
 import SoportePanel from "./components/panels/SoportePanel";
 import RightRail from "./components/layout/RightRail";
 import NotificationsPanel from "./components/layout/NotificationsPanel";
@@ -173,6 +174,7 @@ export default function App() {
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
   const [badgeProgress, setBadgeProgress] = useState<Record<string, number>>({});
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
@@ -642,9 +644,11 @@ export default function App() {
       {/* Menus / Modals */}
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
         <SheetContent className="w-80 p-0" showCloseButton={false}>
-          <Sidebar onNavigate={(k) => { setActivePanel(k as any); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} />
+          <Sidebar onNavigate={(k) => { setActivePanel(k as any); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} />
         </SheetContent>
       </Sheet>
+
+      <SupportUsModal isOpen={showSupportModal} onClose={() => setShowSupportModal(false)} />
 
       <InsigniasModal open={showInsigniasModal} onOpenChange={setShowInsigniasModal} earnedInsigniaIds={earnedInsignias} allInsignias={allInsignias} badgeProgress={badgeProgress} />
 
