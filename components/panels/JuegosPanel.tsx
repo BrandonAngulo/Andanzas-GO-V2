@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LeaderboardPanel } from './LeaderboardPanel';
 import GameInstructionsDialog from '../shared/GameInstructionsDialog';
 import { GameMascot } from '../views/GameMascot';
+import { GameCover, hasGameCover } from '../views/GameCover';
 import { PanelBanner } from './shared/PanelBanner';
 import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
@@ -89,19 +90,25 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {games.map(game => {
                     const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';
+                    // Portada ilustrada propia (SVG) si el juego trae una para su theme_pattern.
+                    const illustratedCover = !game.cover_image_url && hasGameCover(game.theme_pattern);
                     // Identidad visual por juego: si el juego define theme_accent, se usa ese color (inline style,
                     // no depende de que Tailwind haya generado la clase en build). Si no, se cae al cover_theme clásico.
-                    const bgTheme = !game.theme_accent ? (game.cover_theme || 'bg-primary/10') : '';
-                    const headerStyle = game.theme_accent ? { backgroundColor: game.theme_accent_soft || `${game.theme_accent}22` } : undefined;
-                    const titleStyle = (!game.cover_image_url && game.theme_accent) ? { color: game.theme_accent } : undefined;
+                    const bgTheme = (!game.theme_accent && !illustratedCover) ? (game.cover_theme || 'bg-primary/10') : '';
+                    const headerStyle = (game.theme_accent && !illustratedCover) ? { backgroundColor: game.theme_accent_soft || `${game.theme_accent}22` } : undefined;
+                    const overCover = !!game.cover_image_url || illustratedCover; // título en blanco sobre arte
+                    const titleStyle = (!overCover && game.theme_accent) ? { color: game.theme_accent } : undefined;
                     return (
                     <Card key={game.id} className="overflow-hidden border-2 border-border/50 hover:border-primary/30 hover:shadow-xl transition-all hover:-translate-y-1 bg-card rounded-2xl group flex flex-col h-full">
-                        <div className={`${game.cover_image_url ? 'h-36' : 'min-h-[9rem] h-auto'} relative flex flex-col items-center justify-center p-4 overflow-hidden ${bgTheme}`} style={headerStyle}>
+                        <div className={`${overCover ? 'h-36' : 'min-h-[9rem] h-auto'} relative flex flex-col items-center justify-center p-4 overflow-hidden ${bgTheme}`} style={headerStyle}>
                             {game.cover_image_url && (
                                 <>
                                     <div className="absolute inset-0 bg-black/40 z-10" />
                                     <LazyImage src={game.cover_image_url} alt={game.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                 </>
+                            )}
+                            {illustratedCover && (
+                                <GameCover pattern={game.theme_pattern} className="absolute inset-0 w-full h-full group-hover:scale-105 transition-transform duration-700" />
                             )}
                             <div className="text-center relative z-20 flex flex-col items-center justify-center w-full">
                                 {isUpcoming && (
@@ -113,16 +120,16 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                         )}
                                     </div>
                                 )}
-                                {!game.cover_image_url && game.theme_icon && (
+                                {!overCover && game.theme_icon && (
                                     <div className="mb-2 w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: `${game.theme_accent || '#10B981'}22` }}>
                                         <GameMascot icon={game.theme_icon} accent={game.theme_accent} size={38} />
                                     </div>
                                 )}
-                                <h3 className={`text-base sm:text-lg font-black drop-shadow-md line-clamp-2 uppercase tracking-tight leading-tight ${game.cover_image_url ? 'text-white' : 'text-primary'}`} style={titleStyle}>
+                                <h3 className={`text-base sm:text-lg font-black drop-shadow-md line-clamp-2 uppercase tracking-tight leading-tight ${overCover ? 'text-white' : 'text-primary'}`} style={titleStyle}>
                                     {game.cover_title || game.title}
                                 </h3>
                                 {(game.cover_subtitle) && (
-                                    <p className={`text-[10px] font-bold mt-1 tracking-wide line-clamp-1 ${game.cover_image_url ? 'text-white/90' : 'text-foreground/80'}`}>
+                                    <p className={`text-[10px] font-bold mt-1 tracking-wide line-clamp-1 ${overCover ? 'text-white/90' : 'text-foreground/80'}`}>
                                         {game.cover_subtitle}
                                     </p>
                                 )}
