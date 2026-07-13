@@ -273,23 +273,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const handleSelectAvatar = async (url: { id: string, image_url: string }) => {
         setLoading(true);
         try {
-            if (user?.id === 'audit-user-id') {
-                // Mock user bypass
-                setUserProfile(prev => prev ? { ...prev, avatar_url: url.image_url, selected_avatar_id: url.id } : { 
-                    id: 'audit-user-id', 
-                    email: 'audit@andanzas.com',
-                    avatar_url: url.image_url, 
-                    selected_avatar_id: url.id,
-                    full_name: 'Auditor Andanzas', 
-                    points: 0, 
-                    interests: [] 
-                } as UserProfile);
-                toast.success("¡Avatar actualizado! (Modo de prueba)");
-                setShowAvatarModal(false);
-                setLoading(false);
-                return;
-            }
-
             await userService.updateProfileData(user!.id, { avatar_url: url.image_url, selected_avatar_id: url.id });
             // Force refresh user profile
             const updatedProfile = await userService.getProfile(user!.id);
@@ -310,22 +293,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const handleSaveProfile = async () => {
         setLoading(true);
         try {
-            if (user?.id === 'audit-user-id') {
-                // Mock user bypass
-                setUserProfile(prev => prev ? { ...prev, full_name: editName, city: editCity } : { 
-                    id: 'audit-user-id', 
-                    email: 'audit@andanzas.com',
-                    full_name: editName, 
-                    city: editCity, 
-                    points: 0, 
-                    interests: [] 
-                } as UserProfile);
-                toast.success("¡Datos actualizados! (Modo de prueba)");
-                setIsEditingProfile(false);
-                setLoading(false);
-                return;
-            }
-
             await userService.updateProfileData(user!.id, {
                 full_name: editName,
                 city: editCity
@@ -507,10 +474,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     <Button variant="outline" type="button" className="w-full" onClick={handleGoogleLogin}>
                                         <Chrome className="mr-2 h-4 w-4" />
                                         Google
-                                    </Button>
-                                    <Button variant="secondary" type="button" className="w-full mt-3 bg-primary/10 text-primary hover:bg-primary/20 font-semibold border-primary/20" onClick={() => signIn('audit@andanzas.com', 'test')}>
-                                        <UserCircle className="mr-2 h-5 w-5" />
-                                        Ingreso Rápido (Modo Prueba)
                                     </Button>
                                 </>
                             )}
