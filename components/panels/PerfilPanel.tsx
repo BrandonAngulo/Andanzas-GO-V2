@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
+import { GameMascot } from '../views/GameMascot';
 import { UserAvatar } from '../shared/UserAvatar';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
@@ -138,6 +139,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
+    const [badgeProgress, setBadgeProgress] = useState<Record<string, number>>({});
     const [stamps, setStamps] = useState<PassportStamp[]>([]);
     const [dynamicBanners, setDynamicBanners] = useState(AVAILABLE_BANNERS);
     const [myReviews, setMyReviews] = useState<Review[]>([]);
@@ -196,6 +198,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     setAllBadges(all);
                     const earnedIds = await gamificationService.getUserBadgeIds(user.id);
                     setEarnedBadgeIds(earnedIds);
+                    const progress = await gamificationService.getUserBadgeProgress(user.id);
+                    setBadgeProgress(progress);
                     const userStamps = await gamificationService.getUserPassportStamps(user.id);
                     setStamps(userStamps);
                     const reviews = await reviewsService.getByUserId(user.id);
@@ -569,7 +573,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         : null;
 
     return (
-        <ScrollArea className="h-[72vh] w-full">
+        <ScrollArea className="max-h-[72vh] w-full">
             <div className="p-3 pr-5 sm:pr-6 space-y-6 w-full max-w-full overflow-x-hidden pb-12">
 
                 {/* Incomplete Profile Banner */}
@@ -682,11 +686,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
                 {/* Tabs Navigation */}
                 <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <ScrollArea className="w-full whitespace-nowrap mb-6">
+                    <ScrollArea className="relative w-full whitespace-nowrap mb-6">
                         <TabsList className="inline-flex h-12 w-full justify-start rounded-xl bg-muted/50 p-1">
                             <TabsTrigger value="overview" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Pasaporte</TabsTrigger>
                             <TabsTrigger value="rutas" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Rutas</TabsTrigger>
-                            <TabsTrigger value="stamps" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Sellos</TabsTrigger>
                             <TabsTrigger value="badges" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Insignias</TabsTrigger>
                             <TabsTrigger value="games" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Juegos</TabsTrigger>
                             <TabsTrigger value="activity" className="rounded-lg px-4 text-xs sm:text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm flex-shrink-0">Aportes</TabsTrigger>
@@ -697,14 +700,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     <TabsContent value="overview" className="space-y-6 mt-0">
                         {/* Experiencias Vividas */}
                         <div className="grid grid-cols-2 gap-3">
-                            <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-none shadow-sm">
+                            <Card className="overflow-hidden bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-none shadow-sm">
                                 <CardContent className="p-4 flex flex-col gap-2">
                                     <Map className="h-5 w-5 text-blue-500" />
                                     <span className="text-2xl font-bold">{routesCompletedCount}</span>
                                     <span className="text-xs opacity-70">Rutas Completadas</span>
                                 </CardContent>
                             </Card>
-                            <Card className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-none shadow-sm cursor-pointer hover:bg-yellow-500/20 transition-colors" onClick={() => setActiveTab('badges')}>
+                            <Card className="overflow-hidden bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-none shadow-sm cursor-pointer hover:bg-yellow-500/20 transition-colors" onClick={() => setActiveTab('badges')}>
                                 <CardContent className="p-4 flex flex-col gap-2">
                                     <Award className="h-5 w-5 text-yellow-600" />
                                     <span className="text-2xl font-bold">{insigniasCount}</span>
@@ -712,20 +715,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </CardContent>
                             </Card>
                         </div>
-                    </TabsContent>
 
-                    {/* Rutas Tab */}
-                    <TabsContent value="rutas" className="space-y-6 mt-0">
-                        <div className="flex flex-col items-center justify-center py-12 text-center">
-                            <RouteIcon className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
-                            <h3 className="text-lg font-bold">Mis Rutas</h3>
-                            <p className="text-sm text-muted-foreground mt-2 max-w-sm">Aquí verás las rutas que tienes por andar, las que están en progreso y las que ya finalizaste.</p>
-                            <Button variant="outline" className="mt-4 rounded-full" onClick={() => onNavigate('rutas')}>Explorar Rutas</Button>
-                        </div>
-                    </TabsContent>
-
-                    <TabsContent value="stamps" className="space-y-6 mt-0">
-                        {/* Pasaporte de Ciudades y Andanzas */}
+                        {/* Sellos: viven dentro del Pasaporte para mantener la coherencia del concepto */}
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
                                 <h3 className="font-semibold text-sm flex items-center gap-2">
@@ -781,8 +772,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     border-4`}>
                                                     
                                                     <div className={`w-full h-full border border-dashed rounded-sm flex flex-col items-center justify-center overflow-hidden p-1 ${isLevel3 ? 'border-yellow-500/50' : 'border-border'}`}>
-                                                        <div className={`w-full h-1/2 flex items-center justify-center ${getInnerStyle()} rounded-sm mb-1`}>
-                                                            <img src="/images/ilus_ermita.png" alt="Cali" className={`w-12 h-12 object-contain drop-shadow-sm mix-blend-multiply ${hasAnyExperience ? 'opacity-90' : 'opacity-30 grayscale'}`} />
+                                                        <div className={`w-full h-1/2 flex items-center justify-center ${getInnerStyle()} rounded-sm mb-1 ${!hasAnyExperience ? 'grayscale opacity-40' : ''}`}>
+                                                            <GameMascot icon="music" accent={isLevel3 ? '#D4A017' : '#E8600F'} size={40} />
                                                         </div>
                                                         <span className={`text-[12px] font-black uppercase drop-shadow-sm tracking-widest mt-1 ${isLevel3 ? 'text-yellow-600' : (hasAnyExperience ? 'text-foreground' : 'text-muted-foreground')}`}>
                                                             Cali
@@ -809,7 +800,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     <div className="flex flex-col items-center gap-2 snap-center shrink-0 w-32 opacity-40 grayscale">
                                         <div className="w-24 h-28 border-4 border-muted border-dashed bg-muted/20 flex flex-col items-center justify-center p-2 [mask-size:8px_8px] [mask-repeat:round] border-4">
                                             <div className="w-full h-full border border-dashed border-muted rounded-sm flex items-center justify-center">
-                                                <MapPin className="h-8 w-8 text-muted-foreground" />
+                                                <GameMascot icon="leaf" accent="#1F9E5A" size={36} />
                                             </div>
                                         </div>
                                         <div className="text-center mt-1">
@@ -841,6 +832,20 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </div>
                     </TabsContent>
 
+                    {/* Rutas Tab */}
+                    <TabsContent value="rutas" className="space-y-6 mt-0">
+                        <Card className="border-dashed border-2 border-primary/20 shadow-none bg-primary/5 hover:bg-primary/10 transition-colors">
+                            <CardContent className="p-8 text-center flex flex-col items-center justify-center">
+                                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4">
+                                    <RouteIcon className="h-8 w-8 text-primary" />
+                                </div>
+                                <p className="text-base font-bold text-primary mb-1">Mis Rutas</p>
+                                <p className="text-sm text-muted-foreground mb-4 max-w-sm">Aquí verás las rutas que tienes por andar, las que están en progreso y las que ya finalizaste.</p>
+                                <Button variant="default" className="rounded-full shadow-lg shadow-primary/20" onClick={() => onNavigate('rutas')}>Explorar Rutas</Button>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
                     <TabsContent value="badges" className="mt-0">
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {allBadges.length > 0 ? (
@@ -849,6 +854,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                         key={badge.id}
                                         insignia={badge}
                                         obtenida={earnedBadgeIds.includes(String(badge.id))}
+                                        progress={badge.family_key ? badgeProgress[badge.family_key] : undefined}
                                     />
                                 ))
                             ) : (
@@ -861,12 +867,16 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </TabsContent>
 
                     <TabsContent value="games" className="mt-0 space-y-6">
-                        <div className="flex flex-col items-center justify-center py-12 text-center">
-                            <Trophy className="h-12 w-12 text-yellow-500 mb-4 opacity-80" />
-                            <h3 className="text-lg font-bold">Mi Rendimiento en Juegos</h3>
-                            <p className="text-sm text-muted-foreground mt-2 max-w-sm">Juega trivias en la Zona de Juegos para ganar puntos y aparecer aquí.</p>
-                            <Button variant="outline" className="mt-4 rounded-full text-purple-600 border-purple-200 hover:bg-purple-50" onClick={() => onNavigate('juegos')}>Ir a Juegos</Button>
-                        </div>
+                        <Card className="border-dashed border-2 border-purple-500/20 shadow-none bg-purple-500/5 hover:bg-purple-500/10 transition-colors">
+                            <CardContent className="p-8 text-center flex flex-col items-center justify-center">
+                                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-4">
+                                    <Trophy className="h-8 w-8 text-purple-600" />
+                                </div>
+                                <p className="text-base font-bold text-purple-600 mb-1">Mi Rendimiento en Juegos</p>
+                                <p className="text-sm text-muted-foreground mb-4 max-w-sm">Juega trivias en la Zona de Juegos para ganar puntos y aparecer aquí.</p>
+                                <Button variant="outline" className="rounded-full text-purple-600 border-purple-200 hover:bg-purple-50" onClick={() => onNavigate('juegos')}>Ir a Juegos</Button>
+                            </CardContent>
+                        </Card>
                     </TabsContent>
 
                     <TabsContent value="activity" className="mt-0 space-y-6">
@@ -883,7 +893,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                             <div key={review.id} className="relative pl-4">
                                                 <div className="absolute w-3 h-3 bg-primary rounded-full -left-[23px] top-1.5 ring-4 ring-background" />
                                                 <Card className="border-none shadow-sm bg-muted/20 hover:bg-muted/40 transition-colors">
-                                                    <div className="p-3">
+                                                    <CardContent className="p-3">
                                                         <p className="text-xs text-muted-foreground mb-1">Escribiste una reseña en</p>
                                                         <h4 className="font-semibold text-sm cursor-pointer hover:text-primary transition-colors" onClick={() => site && onOpenSite(site)}>
                                                             {site ? getTranslated(site, 'nombre', language) : 'Sitio desconocido'}
@@ -892,7 +902,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                             <Star className="h-3 w-3 fill-current" />
                                                             <span>{review.rating}/5</span>
                                                         </div>
-                                                    </div>
+                                                    </CardContent>
                                                 </Card>
                                             </div>
                                         )
@@ -925,7 +935,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                             className="group overflow-hidden border-none shadow-sm bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer"
                                             onClick={() => onOpenSite(site)}
                                         >
-                                            <div className="flex p-3 gap-3">
+                                            <CardContent className="flex p-3 gap-3">
                                                 <div className="h-16 w-16 rounded-md bg-muted flex-shrink-0 overflow-hidden">
                                                     <img src={site.logoUrl} alt={site.nombre} className="h-full w-full object-cover" />
                                                 </div>
@@ -946,7 +956,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
                                                 </div>
-                                            </div>
+                                            </CardContent>
                                         </Card>
                                     ))}
                                 </div>
@@ -979,7 +989,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                 className="border-none shadow-sm bg-muted/20 cursor-pointer hover:bg-muted/40 transition-colors"
                                                 onClick={() => site && onOpenSite(site)}
                                             >
-                                                <div className="p-3 space-y-2">
+                                                <CardContent className="p-3 space-y-2">
                                                     <div className="flex justify-between items-start">
                                                         <div>
                                                             <h4 className="font-semibold text-sm">
@@ -1007,7 +1017,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     {review.text && (
                                                         <p className="text-xs text-muted-foreground line-clamp-2">"{review.text}"</p>
                                                     )}
-                                                </div>
+                                                </CardContent>
                                             </Card>
                                         );
                                     })}

@@ -88,7 +88,7 @@ export const useRouteNavigation = () => {
 
         if (isAuthenticated && user) {
             gamificationService.awardPoints(100, 'Ruta completada: ' + route.id);
-            gamificationService.unlockBadge(user.id, 'insignia-route-complete');
+            gamificationService.incrementFamilyProgress(user.id, 'route_complete');
             if (route.reward_badge_id) {
                 gamificationService.unlockBadge(user.id, route.reward_badge_id);
             }

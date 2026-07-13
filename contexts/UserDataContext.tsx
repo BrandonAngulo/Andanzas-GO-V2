@@ -81,19 +81,17 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                     await userService.addFavorite(user.id, id);
                     gamificationService.awardPoints(5, 'Favorito: ' + id);
 
-                    // We can check badges here or inside a separate effect/service
-                    // For now, mirroring App.tsx logic roughly
-                    const badgeUnlocked = await gamificationService.unlockBadge(user.id, 'insignia-fav-1');
-                    if (badgeUnlocked) {
+                    const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'fav');
+                    if (newBadge) {
                         addNotification({
                             titulo: '¡Nueva Insignia!',
                             titulo_en: 'New Badge!',
-                            descripcion: 'Has desbloqueado: Primer Favorito',
-                            descripcion_en: 'You unlocked: First Favorite',
+                            descripcion: 'Has desbloqueado: ' + newBadge.nombre,
+                            descripcion_en: 'You unlocked: ' + (newBadge.nombre_en || newBadge.nombre),
                             leida: false,
                             icono: Award as any,
                         });
-                        setEarnedInsignias(prev => [...prev, 'insignia-fav-1']);
+                        setEarnedInsignias(prev => [...prev, newBadge.id]);
                     }
                 }
             } catch (error) {
@@ -113,17 +111,17 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             try {
                 await reviewsService.addReview({ siteId, text, rating, fotos }, user.id);
                 gamificationService.awardPoints(20, 'Reseña: ' + siteId);
-                const badgeUnlocked = await gamificationService.unlockBadge(user.id, 'insignia-review-1');
-                if (badgeUnlocked) {
+                const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'review');
+                if (newBadge) {
                     addNotification({
                         titulo: '¡Nueva Insignia!',
                         titulo_en: 'New Badge!',
-                        descripcion: 'Has desbloqueado: Crítico Local',
-                        descripcion_en: 'You unlocked: Local Critic',
+                        descripcion: 'Has desbloqueado: ' + newBadge.nombre,
+                        descripcion_en: 'You unlocked: ' + (newBadge.nombre_en || newBadge.nombre),
                         leida: false,
                         icono: Award as any
                     });
-                    setEarnedInsignias(prev => [...prev, 'insignia-review-1']);
+                    setEarnedInsignias(prev => [...prev, newBadge.id]);
                 }
             } catch (e) {
                 console.error(e);

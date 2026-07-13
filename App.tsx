@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "sonner";
 import AuthRequiredDialog from "./components/shared/AuthRequiredDialog";
-import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Map, X, Settings2 } from "lucide-react";
+import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Map, X, Settings2, Award } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
@@ -44,6 +44,7 @@ import { AppTutorialModal } from "./components/views/AppTutorialModal";
 import ReviewModal from "./components/views/ReviewModal";
 import { userService } from './services/user.service';
 import { routesService } from './services/routes.service'; // Kept for updateRouteDetails which might not be in hook yet
+import { gamificationService } from './services/gamification.service';
 import PaQueSepasPanel from './components/panels/PaQueSepasPanel';
 import AdminDashboard from './components/panels/admin/AdminDashboard';
 import { GameSessionModal } from './components/views/GameSessionModal';
@@ -172,10 +173,14 @@ export default function App() {
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
+  const [badgeProgress, setBadgeProgress] = useState<Record<string, number>>({});
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
   const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
+  // Se incrementa en cada "Reintentar" para forzar un remount limpio de GameSessionModal
+  // (mismo gameId no cambia por sí solo, así que se necesita este nonce en la key).
+  const [gameSessionNonce, setGameSessionNonce] = useState(0);
 
   // Accessibility & Settings
   const [accessibilitySettings, setAccessibilitySettings] = useState(defaultAccessibilitySettings);
@@ -233,6 +238,14 @@ export default function App() {
   useEffect(() => {
     setTimeout(() => { if (mainRef.current) mainRef.current.focus(); }, 100);
   }, [activePanel]);
+
+  // Progreso de insignias por familia (favoritos/reseñas/rutas), para la barra de
+  // avance hacia el siguiente tier en InsigniasModal.
+  useEffect(() => {
+    if (showInsigniasModal && user) {
+      gamificationService.getUserBadgeProgress(user.id).then(setBadgeProgress);
+    }
+  }, [showInsigniasModal, user]);
 
   // Hash Sync
   useEffect(() => {
@@ -338,6 +351,18 @@ export default function App() {
       const savedRoute = await routesService.createRoute(ruta, user.id);
       if (savedRoute) {
         setUserRoutes(prev => prev.map(r => r.id === ruta.id ? savedRoute : r));
+      }
+      // insignia-route-1 (familia route_create) nunca se disparaba desde aquí; se conecta ahora.
+      const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'route_create');
+      if (newBadge) {
+        addNotification({
+          titulo: '¡Nueva Insignia!',
+          titulo_en: 'New Badge!',
+          descripcion: 'Has desbloqueado: ' + newBadge.nombre,
+          descripcion_en: 'You unlocked: ' + (newBadge.nombre_en || newBadge.nombre),
+          leida: false,
+          icono: Award as any,
+        });
       }
     } catch (e) {
       console.error("Error saving route", e);
@@ -621,7 +646,7 @@ export default function App() {
         </SheetContent>
       </Sheet>
 
-      <InsigniasModal open={showInsigniasModal} onOpenChange={setShowInsigniasModal} earnedInsigniaIds={earnedInsignias} allInsignias={allInsignias} />
+      <InsigniasModal open={showInsigniasModal} onOpenChange={setShowInsigniasModal} earnedInsigniaIds={earnedInsignias} allInsignias={allInsignias} badgeProgress={badgeProgress} />
 
       <ReviewModal
         isOpen={!!reviewSiteId}
@@ -644,7 +669,7 @@ export default function App() {
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />
-      {activeGameId && <GameSessionModal gameId={activeGameId} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); setActiveChallengeId(null); }} />}
+      {activeGameId && <GameSessionModal key={`${activeGameId}-${gameSessionNonce}`} gameId={activeGameId} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); setActiveChallengeId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
     </div>
   );
 }

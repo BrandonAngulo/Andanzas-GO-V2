@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useGameEngine } from '../../hooks/useGameEngine';
 import { Button } from '../ui/button';
-import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag } from 'lucide-react';
+import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { gamesService } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,10 +16,11 @@ interface GameSessionModalProps {
     gameId: string;
     onClose: () => void;
     onNavigate?: (panel: string) => void;
+    onRetry?: () => void;
     challengeId?: string;
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, challengeId }) => {
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, challengeId }) => {
     const { userProfile } = useUserData();
     const {
         game,
@@ -274,7 +275,17 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     )}
 
                     <div className="w-full space-y-4 pt-4">
-                        <Button 
+                        {onRetry && (
+                            <Button
+                                className="w-full rounded-2xl h-16 text-lg font-bold text-white border-none shadow-lg transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: accent }}
+                                onClick={onRetry}
+                            >
+                                <RotateCcw className="w-6 h-6 mr-3" />
+                                Reintentar
+                            </Button>
+                        )}
+                        <Button
                             className="w-full rounded-2xl h-16 text-lg font-bold bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-none shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:scale-[1.02]"
                             onClick={handleChallengeFriend}
                             disabled={isCreatingChallenge}
@@ -282,7 +293,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             <Users className="w-6 h-6 mr-3" />
                             {isCreatingChallenge ? "Generando Reto..." : "Retar a un amigo"}
                         </Button>
-                        <Button variant="outline" className="w-full rounded-2xl h-16 text-lg font-bold border-white/20 text-white hover:bg-white/10" onClick={onClose}>
+                        <Button variant="outline" className="w-full bg-transparent rounded-2xl h-16 text-lg font-bold border-white/20 text-white hover:bg-white/10" onClick={onClose}>
                             Volver a Inicio
                         </Button>
                     </div>
@@ -429,20 +440,29 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                     Pregunta {currentQuestionIndex + 1} de {questions.length}
                                 </span>
 
-                                {/* Puntos de progreso: una perla por pregunta de la partida */}
+                                {/* Puntos de progreso: una perla por pregunta de la partida.
+                                    Las zonas seguras (cada 5 preguntas, ver useGameEngine finishGame) se marcan
+                                    con un anillo dorado para motivar al jugador a alcanzarlas. */}
                                 <div className="flex items-center gap-1.5 flex-wrap justify-center max-w-xs">
-                                    {questions.map((_, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="rounded-full transition-all duration-300"
-                                            style={{
-                                                width: idx === currentQuestionIndex ? 10 : 6,
-                                                height: idx === currentQuestionIndex ? 10 : 6,
-                                                backgroundColor: idx < currentQuestionIndex ? accent : idx === currentQuestionIndex ? accent : 'rgba(255,255,255,0.15)',
-                                                opacity: idx <= currentQuestionIndex ? 1 : 0.5
-                                            }}
-                                        />
-                                    ))}
+                                    {questions.map((_, idx) => {
+                                        const isPast = idx < currentQuestionIndex;
+                                        const isCurrent = idx === currentQuestionIndex;
+                                        const isSafeZone = (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && (idx + 1) % 5 === 0;
+                                        const baseSize = isCurrent ? 10 : (isSafeZone ? 8 : 6);
+                                        return (
+                                            <span
+                                                key={idx}
+                                                className="rounded-full transition-all duration-300"
+                                                style={{
+                                                    width: baseSize,
+                                                    height: baseSize,
+                                                    backgroundColor: (isPast || isCurrent) ? accent : (isSafeZone ? 'rgba(250,204,21,0.3)' : 'rgba(255,255,255,0.15)'),
+                                                    opacity: idx <= currentQuestionIndex ? 1 : 0.9,
+                                                    boxShadow: isSafeZone && !isPast && !isCurrent ? '0 0 0 2px rgba(250,204,21,0.7)' : undefined
+                                                }}
+                                            />
+                                        );
+                                    })}
                                 </div>
                             </div>
 

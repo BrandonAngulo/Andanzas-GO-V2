@@ -336,6 +336,10 @@ export interface Insignia {
   icono: React.ElementType; // Fallback
   image_url?: string; // High quality illustration
   obtenida?: boolean;
+  // Insignias progresivas: varias insignias comparten family_key y se ordenan por tier
+  // (1=bronce, 2=plata, 3=oro). Insignias de campaña/comportamiento puntual dejan ambos undefined.
+  family_key?: string;
+  tier?: number;
 }
 
 export type FeedItemType = 'anuncio' | 'publicacion_sitio' | 'reseña_usuario';
