@@ -446,6 +446,62 @@ export interface DictionarySearchParams {
   offset?: number;
 }
 
+export interface DictionaryTagOption {
+  id: string;
+  key: string;
+  label: string;
+}
+
+/** Full row shape of `dictionary_entries` as used by the admin editor (base table, not the public search RPC). */
+export interface DictionaryAdminEntry {
+  id: string;
+  term: string;
+  slug: string;
+  variants: string[];
+  pronunciation: string | null;
+  word_class: string | null;
+  short_definition: string | null;
+  full_definition: string | null;
+  usage_example: string | null;
+  usage_context: string | null;
+  geographic_scope: string[];
+  social_register: string[];
+  temporal_status: string;
+  etymology: string | null;
+  notes: string | null;
+  audio_url: string | null;
+  image_url: string | null;
+  status: string;
+  is_featured: boolean;
+  publish_at: string | null;
+  created_at?: string;
+  updated_at?: string;
+  tag_ids: string[];
+}
+
+/** Writable payload for creating/updating a dictionary entry. */
+export interface DictionaryEntryInput {
+  term: string;
+  slug: string;
+  variants: string[];
+  pronunciation: string | null;
+  word_class: string | null;
+  short_definition: string | null;
+  full_definition: string | null;
+  usage_example: string | null;
+  usage_context: string | null;
+  geographic_scope: string[];
+  social_register: string[];
+  temporal_status: string;
+  etymology: string | null;
+  notes: string | null;
+  audio_url: string | null;
+  image_url: string | null;
+  status: string;
+  is_featured: boolean;
+  publish_at: string | null;
+}
+
 export interface UserProfile {
   id: string;
   email: string;

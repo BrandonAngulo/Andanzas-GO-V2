@@ -1,7 +1,17 @@
 import { supabase } from '../lib/supabaseClient';
-import type { AppFeature, DictionaryEntry, DictionaryFacets, DictionarySearchParams, DictionarySource, DictionaryTag } from '../types';
+import type { AppFeature, DictionaryAdminEntry, DictionaryEntry, DictionaryEntryInput, DictionaryFacets, DictionarySearchParams, DictionarySource, DictionaryTag, DictionaryTagOption } from '../types';
 
 export const DICTIONARY_FEATURE_KEY = 'dictionary_caleno';
+
+/** Turns a term into a URL-friendly slug (lowercase, accent-free, hyphenated). */
+export const slugifyTerm = (term: string): string =>
+  term
+    .normalize('NFD')
+    .replace(/[^\x00-\x7F]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
 const normalizeFacet = (item: unknown): { value: string; count?: number } | null => {
   if (typeof item === 'string') return { value: item };
@@ -91,5 +101,76 @@ export const dictionaryService = {
     const { data, error } = await supabase.from('app_features').update({ show_in_menu: showInMenu }).eq('feature_key', DICTIONARY_FEATURE_KEY).select().single();
     if (error) throw error;
     return data as AppFeature;
+  },
+
+  // --- Admin CRUD (requires an authenticated admin/editor session; enforced by RLS) ---
+
+  async listTags(): Promise<DictionaryTagOption[]> {
+    const { data, error } = await supabase.from('dictionary_tags').select('id, key, label').order('label');
+    if (error) throw error;
+    return (data ?? []) as DictionaryTagOption[];
+  },
+
+  async listEntries(params: { query?: string; limit?: number; offset?: number } = {}): Promise<{ entries: DictionaryAdminEntry[]; total: number }> {
+    const limit = params.limit ?? 20;
+    const offset = params.offset ?? 0;
+    let builder = supabase
+      .from('dictionary_entries')
+      .select('*, dictionary_entry_tags(tag_id)', { count: 'exact' })
+      .order('term', { ascending: true })
+      .range(offset, offset + limit - 1);
+    const query = params.query?.trim();
+    if (query) {
+      const escaped = query.replace(/[%,()]/g, ' ');
+      builder = builder.or(`term.ilike.%${escaped}%,short_definition.ilike.%${escaped}%,full_definition.ilike.%${escaped}%`);
+    }
+    const { data, error, count } = await builder;
+    if (error) throw error;
+    const entries = ((data ?? []) as any[]).map((row) => ({
+      ...row,
+      variants: row.variants ?? [],
+      geographic_scope: row.geographic_scope ?? [],
+      social_register: row.social_register ?? [],
+      tag_ids: Array.isArray(row.dictionary_entry_tags) ? row.dictionary_entry_tags.map((t: any) => t.tag_id as string) : [],
+    })) as DictionaryAdminEntry[];
+    return { entries, total: count ?? entries.length };
+  },
+
+  async createEntry(input: DictionaryEntryInput, tagIds: string[], userId?: string | null): Promise<DictionaryAdminEntry> {
+    const { data, error } = await supabase
+      .from('dictionary_entries')
+      .insert({ ...input, created_by: userId ?? null, updated_by: userId ?? null })
+      .select('id')
+      .single();
+    if (error) throw error;
+    const entryId = (data as { id: string }).id;
+    await this.replaceEntryTags(entryId, tagIds);
+    return { ...(input as unknown as DictionaryAdminEntry), id: entryId, tag_ids: tagIds };
+  },
+
+  async updateEntry(id: string, input: DictionaryEntryInput, tagIds: string[], userId?: string | null): Promise<DictionaryAdminEntry> {
+    const { error } = await supabase
+      .from('dictionary_entries')
+      .update({ ...input, updated_by: userId ?? null })
+      .eq('id', id);
+    if (error) throw error;
+    await this.replaceEntryTags(id, tagIds);
+    return { ...(input as unknown as DictionaryAdminEntry), id, tag_ids: tagIds };
+  },
+
+  async replaceEntryTags(entryId: string, tagIds: string[]): Promise<void> {
+    const { error: deleteError } = await supabase.from('dictionary_entry_tags').delete().eq('entry_id', entryId);
+    if (deleteError) throw deleteError;
+    if (tagIds.length) {
+      const rows = tagIds.map((tagId) => ({ entry_id: entryId, tag_id: tagId }));
+      const { error: insertError } = await supabase.from('dictionary_entry_tags').insert(rows);
+      if (insertError) throw insertError;
+    }
+  },
+
+  async deleteEntry(id: string): Promise<void> {
+    // dictionary_entry_tags / _sources cascade on delete of the parent entry.
+    const { error } = await supabase.from('dictionary_entries').delete().eq('id', id);
+    if (error) throw error;
   },
 };
