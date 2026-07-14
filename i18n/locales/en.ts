@@ -50,6 +50,7 @@ const en = {
         noticias: "News & Updates",
         paquesepas: "Did you know?",
         juegos: "Play Zone",
+        diccionario: "Diccionario de la caleñidad",
         admin: "Admin Dashboard"
     },
 

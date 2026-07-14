@@ -52,6 +52,7 @@ import { GameSessionModal } from './components/views/GameSessionModal';
 import { JuegosPanel } from './components/panels/JuegosPanel';
 import { ChallengeLobby } from './components/views/ChallengeLobby';
 import { ChallengeVerdict } from './components/views/ChallengeVerdict';
+import { DictionaryPanel } from './components/panels/DictionaryPanel';
 
 // New Imports
 import { useAuth } from './contexts/AuthContext';
@@ -60,6 +61,7 @@ import { useUserData } from './contexts/UserDataContext';
 import { useSearchFilter } from './hooks/useSearchFilter';
 import { useRouteNavigation } from './hooks/useRouteNavigation';
 import { useTheme } from './hooks/useTheme';
+import { useFeatures } from './contexts/FeatureContext';
 
 // Helpers
 const parseHash = () => {
@@ -126,6 +128,7 @@ export default function App() {
     userProfile
   } = useUserData();
   const { theme, setTheme } = useTheme();
+  const { dictionaryVisible } = useFeatures();
 
   // --- Search & Filter Hook ---
   const {
@@ -170,6 +173,9 @@ export default function App() {
     }
     prevActivePanelRef.current = activePanel;
   }, [activePanel]);
+  useEffect(() => {
+    if (activePanel === 'diccionario' && !dictionaryVisible) setActivePanel('mapa');
+  }, [activePanel, dictionaryVisible]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -583,6 +589,7 @@ export default function App() {
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
               {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId } }))} />}
+              {activePanel === 'diccionario' && dictionaryVisible && <DictionaryPanel />}
               {activePanel === 'admin' && <AdminDashboard />}
 
               {/* Full View inside CardContent */}
@@ -644,7 +651,7 @@ export default function App() {
       {/* Menus / Modals */}
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
         <SheetContent className="w-80 p-0" showCloseButton={false}>
-          <Sidebar onNavigate={(k) => { setActivePanel(k as any); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} />
+          <Sidebar onNavigate={(k) => { setActivePanel(k as any); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} showDictionary={dictionaryVisible} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} />
         </SheetContent>
       </Sheet>
 

@@ -14,9 +14,10 @@ interface SidebarProps {
   onClose: () => void;
   activePanel: ActivePanelType;
   onOpenSupport?: () => void;
+  showDictionary?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onOpenSupport }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onOpenSupport, showDictionary = false }) => {
   const { t } = useI18n();
   const { logout, isAuthenticated, user } = useAuth();
   const { userProfile } = useUserData();
@@ -60,6 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
           <Item id="explorar" icon={TrendingUp} label={t('panelTitles.explorar')} />
           <Item id="eventos" icon={Calendar} label={t('panelTitles.eventos')} />
           <Item id="paquesepas" icon={BookOpen} label={"Pa' que sepás"} />
+          {showDictionary && <Item id="diccionario" icon={BookOpen} label={t('panelTitles.diccionario')} />}
           <Item id="noticias" icon={ScrollText} label={t('panelTitles.noticias')} />
 
           <div className="my-2 border-t border-border/40 mx-2" />
@@ -88,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
               Apóyanos
             </button>
           )}
-          {(userProfile?.role === 'admin' || user?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com') && (
+          {((userProfile?.role === 'admin' || userProfile?.role === 'editor') || user?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com') && (
             <>
               <div className="my-2 border-t border-border/40 mx-2" />
               <div className="text-xs font-medium text-muted-foreground px-3 py-2 uppercase tracking-wider opacity-70">

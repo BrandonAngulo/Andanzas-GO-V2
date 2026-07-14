@@ -50,6 +50,7 @@ const es = {
         noticias: "Noticias y Novedades",
         paquesepas: "Pa' que sepás",
         juegos: "Zona Play",
+        diccionario: "Diccionario de la caleñidad",
         admin: "Panel de Administración"
     },
 

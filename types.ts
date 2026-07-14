@@ -376,7 +376,75 @@ export type ActivePanelType =
   | 'noticias'
   | 'paquesepas'
   | 'juegos'
+  | 'diccionario'
   | 'admin';
+
+export interface AppFeature {
+  id?: string;
+  feature_key: string;
+  status: string;
+  is_enabled: boolean;
+  show_in_menu: boolean;
+  release_at?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface DictionaryTag {
+  id?: string;
+  name: string;
+  slug?: string;
+  count?: number;
+}
+
+export interface DictionarySource {
+  id?: string;
+  title?: string;
+  name?: string;
+  author?: string;
+  author_or_organization?: string;
+  url?: string;
+  citation?: string;
+}
+
+export interface DictionaryEntry {
+  id: string;
+  term: string;
+  slug: string;
+  variants?: string[] | null;
+  word_class?: string | null;
+  short_definition?: string | null;
+  full_definition?: string | null;
+  usage_example?: string | null;
+  usage_context?: string | null;
+  geographic_scope?: string | null;
+  social_register?: string | null;
+  temporal_status?: string | null;
+  etymology?: string | null;
+  notes?: string | null;
+  image_url?: string | null;
+  audio_url?: string | null;
+  is_featured?: boolean;
+  first_letter?: string | null;
+  tags?: DictionaryTag[] | string[] | null;
+  sources?: DictionarySource[];
+  total_count?: number;
+}
+
+export interface DictionaryFacets {
+  letters: Array<{ value: string; count?: number }>;
+  tags: DictionaryTag[];
+  temporalStatuses: Array<{ value: string; count?: number }>;
+}
+
+export interface DictionarySearchParams {
+  query?: string;
+  letter?: string;
+  tag?: string;
+  temporalStatus?: string;
+  limit?: number;
+  offset?: number;
+}
 
 export interface UserProfile {
   id: string;

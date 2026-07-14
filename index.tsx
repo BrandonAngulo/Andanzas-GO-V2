@@ -5,6 +5,7 @@ import { I18nProvider } from './i18n';
 import { AuthProvider } from './contexts/AuthContext';
 import { AppDataProvider } from './contexts/AppDataContext';
 import { UserDataProvider } from './contexts/UserDataContext';
+import { FeatureProvider } from './contexts/FeatureContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -29,11 +30,13 @@ root.render(
   <React.StrictMode>
     <I18nProvider>
       <AuthProvider>
-        <AppDataProvider>
-          <UserDataProvider>
-            <App />
-          </UserDataProvider>
-        </AppDataProvider>
+        <FeatureProvider>
+          <AppDataProvider>
+            <UserDataProvider>
+              <App />
+            </UserDataProvider>
+          </AppDataProvider>
+        </FeatureProvider>
       </AuthProvider>
     </I18nProvider>
   </React.StrictMode>

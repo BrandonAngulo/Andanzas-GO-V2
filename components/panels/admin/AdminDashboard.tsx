@@ -24,6 +24,7 @@ import { CuriousFactsManager } from './CuriousFactsManager';
 import { AdminMetricas } from './AdminMetricas';
 import { AdminAvatarsManager } from './AdminAvatarsManager';
 import { AdminDocumentosLegales } from './AdminDocumentosLegales';
+import { AdminDictionary } from './AdminDictionary';
 
 const AdminOverview = () => {
     const [counts, setCounts] = useState({
@@ -251,7 +252,7 @@ const AdminOverview = () => {
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
 
     // Security Check: Only render if user is admin or editor
@@ -333,6 +334,13 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Map className="w-4 h-4 mr-2" /> Rutas
                     </Button>
+                    <Button
+                        variant={activeTab === 'dictionary' ? 'default' : 'outline'}
+                        onClick={() => setActiveTab('dictionary')}
+                        className="rounded-full whitespace-nowrap"
+                    >
+                        <BookOpen className="w-4 h-4 mr-2" /> Diccionario
+                    </Button>
                     <Button 
                         variant={activeTab === 'rutas_personalizadas' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('rutas_personalizadas')}
@@ -406,6 +414,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'avatares' && <AdminAvatarsManager />}
                     {activeTab === 'sabias_que' && <CuriousFactsManager />}
                     {activeTab === 'paquesepas' && <AdminCuriosidades />}
+                    {activeTab === 'dictionary' && <AdminDictionary />}
                     {activeTab === 'rutas' && <AdminRutas />}
                     {activeTab === 'rutas_personalizadas' && <AdminRutasPersonalizadas />}
                     {activeTab === 'sitios' && <AdminSitios />}
