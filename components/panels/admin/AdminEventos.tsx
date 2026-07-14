@@ -8,6 +8,9 @@ import { Eye, EyeOff, Search, Trash2, Edit, Plus, Megaphone } from 'lucide-react
 import { EventoForm } from './EventoForm';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
 import { BroadcastModal } from './BroadcastModal';
+import { Checkbox } from '../../ui/checkbox';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
+import { BulkActionsBar } from './BulkActionsBar';
 
 export const AdminEventos = () => {
     const [events, setEvents] = useState<Evento[]>([]);
@@ -48,6 +51,18 @@ export const AdminEventos = () => {
     };
 
     const filteredEvents = events.filter(e => e.titulo.toLowerCase().includes(searchQuery.toLowerCase()) || e.lugar.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const sel = useBulkSelection(filteredEvents);
+    const [bulkBusy, setBulkBusy] = useState(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+    const runBulk = async (fn: (id: string) => Promise<any>) => {
+        setBulkBusy(true);
+        try { await Promise.all(sel.selectedIds.map(fn)); await loadEvents(); sel.clear(); }
+        finally { setBulkBusy(false); }
+    };
+    const bulkPublish = () => runBulk(id => eventsService.update(id, { status: 'published' }));
+    const bulkUnpublish = () => runBulk(id => eventsService.update(id, { status: 'draft' }));
+    const confirmBulkDelete = async () => { await runBulk(id => eventsService.delete(id)); setBulkDeleteOpen(false); };
 
     const handleOpenCreate = () => {
         setEditingEventId(null);
@@ -92,6 +107,29 @@ export const AdminEventos = () => {
                 </div>
             </div>
 
+            <ConfirmDialog
+                open={!!deleteId}
+                onOpenChange={(open) => !open && setDeleteId(null)}
+                title="¿Eliminar este evento?"
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
+            <ConfirmDialog
+                open={bulkDeleteOpen}
+                onOpenChange={(open) => !open && setBulkDeleteOpen(false)}
+                title={`¿Eliminar ${sel.count} evento${sel.count === 1 ? '' : 's'}?`}
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmBulkDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
+
+            {!loading && filteredEvents.length > 0 && (
+                <BulkActionsBar count={sel.count} allSelected={sel.allSelected} onToggleAll={sel.toggleAll} onClear={sel.clear} busy={bulkBusy} onActivate={bulkPublish} onDeactivate={bulkUnpublish} activateLabel="Publicar" deactivateLabel="Ocultar" onDelete={() => setBulkDeleteOpen(true)} />
+            )}
+
             {loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando eventos...</div>
             ) : (
@@ -100,6 +138,7 @@ export const AdminEventos = () => {
                         <Card key={evento.id} className="overflow-hidden">
                             <CardContent className="p-0">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-4">
+                                    <Checkbox className="mt-1 self-start sm:mt-0 sm:self-center" checked={sel.isSelected(evento.id)} onChange={() => sel.toggle(evento.id)} aria-label={`Seleccionar ${evento.titulo}`} />
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${evento.status === 'published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}`}>

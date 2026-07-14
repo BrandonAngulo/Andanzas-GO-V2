@@ -6,6 +6,10 @@ import { Input } from '../../ui/input';
 import { Plus, Edit2, Trash2, Gamepad2, Globe, Lock, Search, PlayCircle, BarChart3, List } from 'lucide-react';
 import { JuegoForm } from './JuegoForm';
 import { JuegosAnalyticsPanel } from './JuegosAnalyticsPanel';
+import { ConfirmDialog } from '../../ui/confirm-dialog';
+import { Checkbox } from '../../ui/checkbox';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
+import { BulkActionsBar } from './BulkActionsBar';
 
 export const AdminJuegos = () => {
     const [games, setGames] = useState<Game[]>([]);
@@ -53,13 +57,45 @@ export const AdminJuegos = () => {
         loadGames();
     };
 
-    const filteredGames = games.filter(g => 
-        g.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const filteredGames = games.filter(g =>
+        g.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         g.type.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const sel = useBulkSelection(filteredGames);
+    const [bulkBusy, setBulkBusy] = useState(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
+    const runBulk = async (fn: (id: string) => Promise<any>) => {
+        setBulkBusy(true);
+        try { await Promise.all(sel.selectedIds.map(fn)); await loadGames(); sel.clear(); }
+        finally { setBulkBusy(false); }
+    };
+    const bulkPublish = () => runBulk(id => gamesService.updateGame(id, { status: 'published' }));
+    const bulkUnpublish = () => runBulk(id => gamesService.updateGame(id, { status: 'draft' }));
+    const confirmBulkDelete = async () => { await runBulk(id => gamesService.deleteGame(id)); setBulkDeleteOpen(false); };
+    const confirmDelete = async () => { if (deleteId) { await gamesService.deleteGame(deleteId); await loadGames(); setDeleteId(null); } };
+
     return (
         <div className="space-y-6">
+            <ConfirmDialog
+                open={!!deleteId}
+                onOpenChange={(open) => !open && setDeleteId(null)}
+                title="¿Eliminar este juego?"
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
+            <ConfirmDialog
+                open={bulkDeleteOpen}
+                onOpenChange={(open) => !open && setBulkDeleteOpen(false)}
+                title={`¿Eliminar ${sel.count} juego${sel.count === 1 ? '' : 's'}?`}
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmBulkDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="relative w-full sm:w-72">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -107,10 +143,16 @@ export const AdminJuegos = () => {
                 <div className="text-center py-10 text-muted-foreground">Cargando juegos...</div>
             ) : !isFormOpen && !showAnalytics ? (
                 <div className="grid gap-4">
+                    {filteredGames.length > 0 && (
+                        <BulkActionsBar count={sel.count} allSelected={sel.allSelected} onToggleAll={sel.toggleAll} onClear={sel.clear} busy={bulkBusy} onActivate={bulkPublish} onDeactivate={bulkUnpublish} activateLabel="Publicar" deactivateLabel="Ocultar" onDelete={() => setBulkDeleteOpen(true)} />
+                    )}
                     {filteredGames.map(game => (
                         <Card key={game.id} className="overflow-hidden">
                             <CardContent className="p-0">
                                 <div className="flex flex-col sm:flex-row">
+                                    <div className="flex items-start p-4 pb-0 sm:items-center sm:p-6 sm:pr-0">
+                                        <Checkbox checked={sel.isSelected(game.id)} onChange={() => sel.toggle(game.id)} aria-label={`Seleccionar ${game.title}`} />
+                                    </div>
                                     <div className="flex-1 p-4 sm:p-6 flex flex-col justify-center">
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
@@ -154,6 +196,9 @@ export const AdminJuegos = () => {
                                             ) : (
                                                 <><Globe className="w-4 h-4 sm:mr-2" /><span className="hidden sm:inline">Publicar</span></>
                                             )}
+                                        </Button>
+                                        <Button variant="outline" size="sm" className="w-full justify-center text-destructive hover:bg-destructive/10" onClick={() => setDeleteId(game.id)}>
+                                            <Trash2 className="w-4 h-4 sm:mr-2" /><span className="hidden sm:inline">Eliminar</span>
                                         </Button>
                                     </div>
                                 </div>

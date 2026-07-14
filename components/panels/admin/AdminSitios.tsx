@@ -8,6 +8,9 @@ import { Eye, EyeOff, Search, Trash2, Edit, Plus, Star, MapPin, Map, Megaphone }
 import { SitioForm } from './SitioForm';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
 import { BroadcastModal } from './BroadcastModal';
+import { Checkbox } from '../../ui/checkbox';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
+import { BulkActionsBar } from './BulkActionsBar';
 
 export const AdminSitios = () => {
     const [sites, setSites] = useState<Site[]>([]);
@@ -48,6 +51,18 @@ export const AdminSitios = () => {
     };
 
     const filteredSites = sites.filter(s => s.nombre.toLowerCase().includes(searchQuery.toLowerCase()) || s.tipo?.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const sel = useBulkSelection(filteredSites);
+    const [bulkBusy, setBulkBusy] = useState(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+    const runBulk = async (fn: (id: string) => Promise<any>) => {
+        setBulkBusy(true);
+        try { await Promise.all(sel.selectedIds.map(fn)); await loadSites(); sel.clear(); }
+        finally { setBulkBusy(false); }
+    };
+    const bulkPublish = () => runBulk(id => sitesService.update(id, { status: 'published' }));
+    const bulkUnpublish = () => runBulk(id => sitesService.update(id, { status: 'draft' }));
+    const confirmBulkDelete = async () => { await runBulk(id => sitesService.delete(id)); setBulkDeleteOpen(false); };
 
     const handleOpenCreate = () => {
         setEditingSiteId(null);
@@ -92,6 +107,29 @@ export const AdminSitios = () => {
                 </div>
             </div>
 
+            <ConfirmDialog
+                open={!!deleteId}
+                onOpenChange={(open) => !open && setDeleteId(null)}
+                title="¿Eliminar este sitio?"
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
+            <ConfirmDialog
+                open={bulkDeleteOpen}
+                onOpenChange={(open) => !open && setBulkDeleteOpen(false)}
+                title={`¿Eliminar ${sel.count} sitio${sel.count === 1 ? '' : 's'}?`}
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmBulkDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
+
+            {!loading && filteredSites.length > 0 && (
+                <BulkActionsBar count={sel.count} allSelected={sel.allSelected} onToggleAll={sel.toggleAll} onClear={sel.clear} busy={bulkBusy} onActivate={bulkPublish} onDeactivate={bulkUnpublish} activateLabel="Publicar" deactivateLabel="Ocultar" onDelete={() => setBulkDeleteOpen(true)} />
+            )}
+
             {loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando sitios...</div>
             ) : (
@@ -100,6 +138,7 @@ export const AdminSitios = () => {
                         <Card key={site.id} className="overflow-hidden">
                             <CardContent className="p-0">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-4">
+                                    <Checkbox className="mt-1 self-start sm:mt-0 sm:self-center" checked={sel.isSelected(site.id)} onChange={() => sel.toggle(site.id)} aria-label={`Seleccionar ${site.nombre}`} />
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${site.status === 'published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}`}>

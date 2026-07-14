@@ -110,6 +110,15 @@ export const gamesService = {
         return data as Game;
     },
 
+    async deleteGame(id: string): Promise<boolean> {
+        const { error } = await supabase.from('games').delete().eq('id', id);
+        if (error) {
+            console.error('Error deleting game:', error);
+            return false;
+        }
+        return true;
+    },
+
     // ---- QUESTIONS CRUD ----
     async getQuestionsByGame(gameId: string): Promise<GameQuestion[]> {
         const { data, error } = await supabase.from('game_questions').select('*').eq('game_id', gameId).order('created_at', { ascending: true });

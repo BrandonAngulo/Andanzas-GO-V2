@@ -6,11 +6,14 @@ import { Button } from '../../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
 import { Input } from '../../ui/input';
+import { Checkbox } from '../../ui/checkbox';
 import { dictionaryService } from '../../../services/dictionary.service';
 import { useFeatures } from '../../../contexts/FeatureContext';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
 import type { DictionaryAdminEntry, DictionaryTagOption } from '../../../types';
 import { DictionaryEntryEditor } from './DictionaryEntryEditor';
+import { BulkActionsBar } from './BulkActionsBar';
 
 type PendingAction = 'enable' | 'disable' | 'show' | 'hide' | null;
 
@@ -36,6 +39,10 @@ export function AdminDictionary(): JSX.Element {
   const [editingEntry, setEditingEntry] = useState<DictionaryAdminEntry | null>(null);
   const [entryToDelete, setEntryToDelete] = useState<DictionaryAdminEntry | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  const sel = useBulkSelection(entries);
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
   useEffect(() => {
     dictionaryService.getEntryCount().then(setEntryCount).catch(() => setEntryCount(null));
@@ -89,6 +96,24 @@ export function AdminDictionary(): JSX.Element {
       setDeleting(false);
     }
   };
+
+  const runBulk = async (action: () => Promise<void>, okMsg: string) => {
+    setBulkBusy(true);
+    try {
+      await action();
+      toast.success(okMsg);
+      refreshEntries();
+      sel.clear();
+    } catch (error) {
+      console.error('Acción en bloque fallida:', error);
+      toast.error('No se pudo completar la acción en bloque. Revisa tus permisos.');
+    } finally {
+      setBulkBusy(false);
+    }
+  };
+  const bulkPublish = () => runBulk(() => dictionaryService.bulkSetStatus(sel.selectedIds, 'published', user?.id), 'Entradas publicadas.');
+  const bulkUnpublish = () => runBulk(() => dictionaryService.bulkSetStatus(sel.selectedIds, 'draft', user?.id), 'Entradas pasadas a borrador.');
+  const confirmBulkDelete = async () => { await runBulk(() => dictionaryService.bulkDelete(sel.selectedIds), 'Entradas eliminadas.'); setBulkDeleteOpen(false); };
 
   const executeAction = async () => {
     if (!pendingAction) return;
@@ -155,9 +180,11 @@ export function AdminDictionary(): JSX.Element {
           ) : (
             <>
               <p className="text-sm text-muted-foreground">{total} {total === 1 ? 'entrada' : 'entradas'}</p>
+              <BulkActionsBar count={sel.count} allSelected={sel.allSelected} onToggleAll={sel.toggleAll} onClear={sel.clear} busy={bulkBusy} onActivate={bulkPublish} onDeactivate={bulkUnpublish} activateLabel="Publicar" deactivateLabel="Pasar a borrador" onDelete={() => setBulkDeleteOpen(true)} />
               <ul className="divide-y rounded-xl border">
                 {entries.map((entry) => (
                   <li key={entry.id} className="flex flex-wrap items-center gap-3 p-3">
+                    <Checkbox checked={sel.isSelected(entry.id)} onChange={() => sel.toggle(entry.id)} aria-label={`Seleccionar ${entry.term}`} />
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-semibold">{entry.term}</span>
@@ -196,6 +223,16 @@ export function AdminDictionary(): JSX.Element {
         confirmText="Eliminar"
         destructive
         onConfirm={() => { void confirmDelete(); }}
+      />
+
+      <ConfirmDialog
+        open={bulkDeleteOpen}
+        onOpenChange={(open) => { if (!open && !bulkBusy) setBulkDeleteOpen(false); }}
+        title={`¿Eliminar ${sel.count} entrada${sel.count === 1 ? '' : 's'}?`}
+        description="Se eliminarán de forma permanente, junto con sus categorías y fuentes asociadas."
+        confirmText="Eliminar"
+        destructive
+        onConfirm={() => { void confirmBulkDelete(); }}
       />
     </div>
   );

@@ -173,4 +173,16 @@ export const dictionaryService = {
     const { error } = await supabase.from('dictionary_entries').delete().eq('id', id);
     if (error) throw error;
   },
+
+  async bulkSetStatus(ids: string[], status: 'published' | 'draft', userId?: string | null): Promise<void> {
+    if (!ids.length) return;
+    const { error } = await supabase.from('dictionary_entries').update({ status, updated_by: userId ?? null }).in('id', ids);
+    if (error) throw error;
+  },
+
+  async bulkDelete(ids: string[]): Promise<void> {
+    if (!ids.length) return;
+    const { error } = await supabase.from('dictionary_entries').delete().in('id', ids);
+    if (error) throw error;
+  },
 };

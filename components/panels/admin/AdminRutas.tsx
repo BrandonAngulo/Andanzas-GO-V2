@@ -10,6 +10,9 @@ import { RutaForm } from './RutaForm';
 import { AdminRutaInscripciones } from './AdminRutaInscripciones';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
 import { BroadcastModal } from './BroadcastModal';
+import { Checkbox } from '../../ui/checkbox';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
+import { BulkActionsBar } from './BulkActionsBar';
 
 export const AdminRutas = () => {
     const [routes, setRoutes] = useState<Ruta[]>([]);
@@ -55,6 +58,18 @@ export const AdminRutas = () => {
     };
 
     const filteredRoutes = routes.filter(r => r.nombre.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const sel = useBulkSelection(filteredRoutes);
+    const [bulkBusy, setBulkBusy] = useState(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+    const runBulk = async (fn: (id: string) => Promise<any>) => {
+        setBulkBusy(true);
+        try { await Promise.all(sel.selectedIds.map(fn)); await loadRoutes(); sel.clear(); }
+        finally { setBulkBusy(false); }
+    };
+    const bulkPublish = () => runBulk(id => routesService.updateRoute({ id, publico: true }));
+    const bulkUnpublish = () => runBulk(id => routesService.updateRoute({ id, publico: false }));
+    const confirmBulkDelete = async () => { await runBulk(id => routesService.deleteRoute(id)); setBulkDeleteOpen(false); };
 
     const handleOpenCreate = () => {
         setEditingRouteId(null);
@@ -112,6 +127,20 @@ export const AdminRutas = () => {
                 </div>
             </div>
 
+            <ConfirmDialog
+                open={bulkDeleteOpen}
+                onOpenChange={(open) => !open && setBulkDeleteOpen(false)}
+                title={`¿Eliminar ${sel.count} ruta${sel.count === 1 ? '' : 's'}?`}
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmBulkDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
+
+            {!loading && filteredRoutes.length > 0 && (
+                <BulkActionsBar count={sel.count} allSelected={sel.allSelected} onToggleAll={sel.toggleAll} onClear={sel.clear} busy={bulkBusy} onActivate={bulkPublish} onDeactivate={bulkUnpublish} activateLabel="Publicar" deactivateLabel="Archivar" onDelete={() => setBulkDeleteOpen(true)} />
+            )}
+
             {loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando rutas...</div>
             ) : (
@@ -120,6 +149,7 @@ export const AdminRutas = () => {
                         <Card key={route.id} className="overflow-hidden">
                             <CardContent className="p-0">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-4">
+                                    <Checkbox className="mt-1 self-start sm:mt-0 sm:self-center" checked={sel.isSelected(route.id)} onChange={() => sel.toggle(route.id)} aria-label={`Seleccionar ${route.nombre}`} />
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${route.publico ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}`}>

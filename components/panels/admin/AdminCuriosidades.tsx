@@ -8,6 +8,9 @@ import { Plus, Edit2, Trash2, Eye, EyeOff, Save, X, Search } from 'lucide-react'
 import { CuriosidadForm } from './CuriosidadForm';
 import { Dialog, DialogContent } from '../../ui/dialog';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
+import { Checkbox } from '../../ui/checkbox';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
+import { BulkActionsBar } from './BulkActionsBar';
 
 export const AdminCuriosidades = () => {
     const [entries, setEntries] = useState<LearnEntry[]>([]);
@@ -71,6 +74,18 @@ export const AdminCuriosidades = () => {
 
     const filteredEntries = entries.filter(e => e.title.toLowerCase().includes(searchQuery.toLowerCase()) || e.city.toLowerCase().includes(searchQuery.toLowerCase()));
 
+    const sel = useBulkSelection(filteredEntries);
+    const [bulkBusy, setBulkBusy] = useState(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+    const runBulk = async (fn: (id: string) => Promise<any>) => {
+        setBulkBusy(true);
+        try { await Promise.all(sel.selectedIds.map(fn)); await loadEntries(); sel.clear(); }
+        finally { setBulkBusy(false); }
+    };
+    const bulkPublish = () => runBulk(id => learningService.update(id, { status: 'published' }));
+    const bulkUnpublish = () => runBulk(id => learningService.update(id, { status: 'draft' }));
+    const confirmBulkDelete = async () => { await runBulk(id => learningService.delete(id)); setBulkDeleteOpen(false); };
+
     if (isFormOpen) {
         return (
             <div className="space-y-6">
@@ -119,6 +134,20 @@ export const AdminCuriosidades = () => {
                 confirmText="Eliminar"
             />
 
+            <ConfirmDialog
+                open={bulkDeleteOpen}
+                onOpenChange={(open) => !open && setBulkDeleteOpen(false)}
+                title={`¿Eliminar ${sel.count} curiosidad${sel.count === 1 ? '' : 'es'}?`}
+                description="Esta acción no se puede deshacer."
+                onConfirm={confirmBulkDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
+
+            {!loading && filteredEntries.length > 0 && (
+                <BulkActionsBar count={sel.count} allSelected={sel.allSelected} onToggleAll={sel.toggleAll} onClear={sel.clear} busy={bulkBusy} onActivate={bulkPublish} onDeactivate={bulkUnpublish} activateLabel="Publicar" deactivateLabel="Pasar a borrador" onDelete={() => setBulkDeleteOpen(true)} />
+            )}
+
             {loading ? (
                 <div className="text-center py-10 text-muted-foreground">Cargando curiosidades...</div>
             ) : (
@@ -127,6 +156,7 @@ export const AdminCuriosidades = () => {
                         <Card key={entry.id} className="overflow-hidden">
                             <CardContent className="p-0">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-4">
+                                    <Checkbox className="mt-1 self-start sm:mt-0 sm:self-center" checked={sel.isSelected(entry.id)} onChange={() => sel.toggle(entry.id)} aria-label={`Seleccionar ${entry.title}`} />
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${entry.status === 'published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}`}>

@@ -11,6 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../ui/dialog';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
 import { BroadcastModal } from './BroadcastModal';
+import { Checkbox } from '../../ui/checkbox';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
+import { BulkActionsBar } from './BulkActionsBar';
 
 export const AdminAvatarsManager: React.FC = () => {
     const [avatars, setAvatars] = useState<any[]>([]);
@@ -64,6 +67,18 @@ export const AdminAvatarsManager: React.FC = () => {
         await userService.updateAvatarPreset(avatar.id, { active: !avatar.active });
         loadAvatars();
     };
+
+    const sel = useBulkSelection(avatars as { id: string }[]);
+    const [bulkBusy, setBulkBusy] = useState(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+    const runBulk = async (fn: (id: string) => Promise<any>) => {
+        setBulkBusy(true);
+        try { await Promise.all(sel.selectedIds.map(fn)); await loadAvatars(); sel.clear(); }
+        finally { setBulkBusy(false); }
+    };
+    const bulkActivate = () => runBulk(id => userService.updateAvatarPreset(id, { active: true }));
+    const bulkDeactivate = () => runBulk(id => userService.updateAvatarPreset(id, { active: false }));
+    const confirmBulkDelete = async () => { await runBulk(id => userService.deleteAvatarPreset(id)); setBulkDeleteOpen(false); };
 
     const openCreate = () => {
         setCurrentAvatar({
@@ -127,6 +142,15 @@ export const AdminAvatarsManager: React.FC = () => {
                 destructive={true}
                 confirmText="Eliminar"
             />
+            <ConfirmDialog
+                open={bulkDeleteOpen}
+                onOpenChange={(open) => !open && setBulkDeleteOpen(false)}
+                title={`¿Eliminar ${sel.count} avatar${sel.count === 1 ? '' : 'es'}?`}
+                description="Esto podría afectar a los usuarios que ya los tienen seleccionados."
+                onConfirm={confirmBulkDelete}
+                destructive={true}
+                confirmText="Eliminar"
+            />
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h3 className="text-xl font-bold flex items-center gap-2">
@@ -143,6 +167,10 @@ export const AdminAvatarsManager: React.FC = () => {
                 </div>
             </div>
 
+            {!loading && avatars.length > 0 && (
+                <BulkActionsBar count={sel.count} allSelected={sel.allSelected} onToggleAll={sel.toggleAll} onClear={sel.clear} busy={bulkBusy} onActivate={bulkActivate} onDeactivate={bulkDeactivate} activateLabel="Activar" deactivateLabel="Desactivar" onDelete={() => setBulkDeleteOpen(true)} />
+            )}
+
             {loading ? (
                 <div className="text-center py-10 animate-pulse">Cargando avatares...</div>
             ) : (
@@ -150,6 +178,9 @@ export const AdminAvatarsManager: React.FC = () => {
                     {avatars.map(avatar => (
                         <Card key={avatar.id} className={`overflow-hidden transition-all ${!avatar.active ? 'opacity-70 grayscale-[50%]' : ''}`}>
                             <CardContent className="p-5 flex flex-col items-center text-center relative">
+                                <div className="absolute top-4 left-4">
+                                    <Checkbox checked={sel.isSelected(avatar.id)} onChange={() => sel.toggle(avatar.id)} aria-label={`Seleccionar ${avatar.name}`} />
+                                </div>
                                 <div className="absolute top-4 right-4 flex gap-1">
                                     <Switch 
                                         checked={avatar.active} 
