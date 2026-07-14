@@ -185,4 +185,62 @@ export const dictionaryService = {
     const { error } = await supabase.from('dictionary_entries').delete().in('id', ids);
     if (error) throw error;
   },
+
+  // --- Palabra del día ---
+
+  /** Devuelve la entrada destacada del día (misma para todos, rota a diario). */
+  async getWordOfTheDay(): Promise<DictionaryEntry | null> {
+    const selectPublished = (featuredOnly: boolean) => {
+      let q = supabase.from('dictionary_entries').select('*').eq('status', 'published').order('id', { ascending: true });
+      if (featuredOnly) q = q.eq('is_featured', true);
+      return q;
+    };
+    let { data, error } = await selectPublished(true);
+    if (error) throw error;
+    if (!data || data.length === 0) {
+      ({ data, error } = await selectPublished(false));
+      if (error) throw error;
+    }
+    if (!data || data.length === 0) return null;
+    const dayNumber = Math.floor(Date.now() / 86_400_000); // día UTC desde epoch
+    const row = data[dayNumber % data.length] as any;
+    return {
+      ...row,
+      variants: Array.isArray(row.variants) ? row.variants : [],
+      geographic_scope: Array.isArray(row.geographic_scope) ? row.geographic_scope.join(', ') : row.geographic_scope,
+      social_register: Array.isArray(row.social_register) ? row.social_register.join(', ') : row.social_register,
+    } as DictionaryEntry;
+  },
+
+  /** Reclama la palabra del día (una vez por día): otorga puntos y actualiza la racha. */
+  async claimWordOfTheDay(): Promise<{ ok: boolean; alreadyClaimed: boolean; awardedPoints: number; streak: number; bestStreak: number }> {
+    const { data, error } = await supabase.rpc('claim_word_of_the_day');
+    if (error) throw error;
+    const r = (data ?? {}) as Record<string, unknown>;
+    return {
+      ok: Boolean(r.ok),
+      alreadyClaimed: Boolean(r.already_claimed),
+      awardedPoints: Number(r.awarded_points ?? 0),
+      streak: Number(r.streak ?? 0),
+      bestStreak: Number(r.best_streak ?? 0),
+    };
+  },
+
+  /** Racha actual del usuario para la palabra del día (para mostrarla en la tarjeta). */
+  async getWordStreak(userId: string): Promise<{ currentStreak: number; bestStreak: number; claimedToday: boolean } | null> {
+    if (!userId) return null;
+    const { data, error } = await supabase
+      .from('user_word_of_day')
+      .select('current_streak, best_streak, last_claim_date')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (error) { console.error('No se pudo leer la racha:', error); return null; }
+    if (!data) return { currentStreak: 0, bestStreak: 0, claimedToday: false };
+    const today = new Date().toISOString().slice(0, 10);
+    return {
+      currentStreak: data.current_streak ?? 0,
+      bestStreak: data.best_streak ?? 0,
+      claimedToday: data.last_claim_date === today,
+    };
+  },
 };

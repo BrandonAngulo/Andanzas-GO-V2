@@ -4,6 +4,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { DictionaryCard } from '../dictionary/DictionaryCard';
 import { DictionaryDetail } from '../dictionary/DictionaryDetail';
+import { WordOfTheDayCard } from '../dictionary/WordOfTheDayCard';
 import { dictionaryService } from '../../services/dictionary.service';
 import type { DictionaryEntry, DictionaryFacets } from '../../types';
 
@@ -71,6 +72,8 @@ export function DictionaryPanel(): JSX.Element {
           <Input value={query} onChange={(event) => setQuery(event.target.value)} className="pl-9" placeholder="Buscar una palabra o definición" aria-label="Buscar en el diccionario" />
         </div>
       </header>
+
+      <WordOfTheDayCard onOpen={setSelectedEntry} />
 
       <section className="space-y-4 rounded-2xl border bg-card p-4" aria-label="Filtros del diccionario">
         <div><h2 className="mb-2 text-sm font-semibold">Letra inicial</h2><div className="flex flex-wrap gap-1.5"><Button size="sm" variant={!letter ? 'default' : 'outline'} onClick={() => setLetter('')}>Todas</Button>{facets.letters.map((item) => <Button key={item.value} size="sm" variant={letter === item.value ? 'default' : 'outline'} onClick={() => setLetter(item.value)} aria-pressed={letter === item.value}>{item.value}</Button>)}</div></div>
