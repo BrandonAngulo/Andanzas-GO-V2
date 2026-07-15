@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AlertCircle, BookOpen, Loader2, Search } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { ScrollArea } from '../ui/scroll-area';
 import { DictionaryCard } from '../dictionary/DictionaryCard';
 import { DictionaryDetail } from '../dictionary/DictionaryDetail';
 import { WordOfTheDayCard } from '../dictionary/WordOfTheDayCard';
@@ -63,7 +64,8 @@ export function DictionaryPanel(): JSX.Element {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-6 p-1 md:p-4">
+    <ScrollArea className="h-[72vh]">
+    <div className="mx-auto w-full max-w-6xl space-y-6 p-1 pb-20 md:p-4 md:pb-20">
       <header className="rounded-2xl border bg-card p-6 shadow-sm">
         <div className="flex items-center gap-3"><BookOpen className="h-8 w-8 text-primary" /><h1 className="text-3xl font-bold tracking-tight">Diccionario de la caleñidad</h1></div>
         <p className="mt-2 text-muted-foreground">Palabras que cuentan cómo hablamos, vivimos y recordamos a Cali</p>
@@ -89,5 +91,6 @@ export function DictionaryPanel(): JSX.Element {
       {!loading && entries.length < total && <div className="flex justify-center"><Button onClick={loadMore} disabled={loadingMore}>{loadingMore && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Cargar más</Button></div>}
       <DictionaryDetail entry={selectedEntry} onClose={() => setSelectedEntry(null)} />
     </div>
+    </ScrollArea>
   );
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { AlertTriangle, BookOpen, Eye, EyeOff, Loader2, Pencil, Plus, Search, Star, Trash2 } from 'lucide-react';
+import { AlertTriangle, BookOpen, Loader2, Pencil, Plus, Search, Star, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Badge } from '../../ui/badge';
 import { Button } from '../../ui/button';
@@ -150,10 +150,9 @@ export function AdminDictionary(): JSX.Element {
         <Card><CardHeader><CardTitle>Estado de la función</CardTitle><CardDescription>Clave: dictionary_caleno</CardDescription></CardHeader><CardContent className="space-y-3"><div className="flex flex-wrap gap-2"><Badge variant={dictionaryFeature?.status === 'published' ? 'default' : 'secondary'}>{dictionaryFeature?.status ?? 'no disponible'}</Badge><Badge variant={dictionaryFeature?.is_enabled ? 'default' : 'outline'}>{dictionaryFeature?.is_enabled ? 'Habilitada' : 'Deshabilitada'}</Badge><Badge variant={dictionaryFeature?.show_in_menu ? 'default' : 'outline'}>{dictionaryFeature?.show_in_menu ? 'Visible en menú' : 'Oculta del menú'}</Badge></div>{dictionaryFeature?.release_at && <p className="text-sm text-muted-foreground">Fecha de publicación: {new Date(dictionaryFeature.release_at).toLocaleString('es-CO')}</p>}</CardContent></Card>
         <Card><CardHeader><CardTitle>Entradas disponibles</CardTitle><CardDescription>Contenido almacenado en Supabase</CardDescription></CardHeader><CardContent><p className="text-4xl font-bold">{entryCount ?? '—'}</p><p className="mt-2 text-sm text-muted-foreground">Gestiona el contenido en la sección de abajo.</p></CardContent></Card>
       </div>
-      <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4"><div className="flex gap-3"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-700 dark:text-amber-300" /><div><p className="font-semibold">Activar hará visible el diccionario</p><p className="text-sm text-muted-foreground">La activación publica, habilita y muestra la herramienta en el menú en una sola acción.</p></div></div></div>
+      <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4"><div className="flex gap-3"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-700 dark:text-amber-300" /><div><p className="font-semibold">Un solo interruptor</p><p className="text-sm text-muted-foreground">Activar publica, habilita y muestra el Diccionario en el menú en una sola acción. Desactivar lo oculta por completo. (El diccionario solo se consulta desde el menú, así que no hace falta un control separado de visibilidad.)</p></div></div></div>
       <div className="flex flex-wrap gap-3">
-        <Button onClick={() => setPendingAction(isEnabled ? 'disable' : 'enable')} variant={isEnabled ? 'destructive' : 'default'} disabled={loading}>{loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{isEnabled ? 'Desactivar' : 'Activar y publicar'}</Button>
-        <Button onClick={() => setPendingAction(dictionaryFeature?.show_in_menu ? 'hide' : 'show')} variant="outline" disabled={loading || !dictionaryFeature}>{dictionaryFeature?.show_in_menu ? <EyeOff className="mr-2 h-4 w-4" /> : <Eye className="mr-2 h-4 w-4" />}{dictionaryFeature?.show_in_menu ? 'Ocultar del menú' : 'Mostrar en el menú'}</Button>
+        <Button onClick={() => setPendingAction(isEnabled ? 'disable' : 'enable')} variant={isEnabled ? 'destructive' : 'default'} disabled={loading}>{loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{isEnabled ? 'Desactivar diccionario' : 'Activar diccionario'}</Button>
       </div>
 
       {/* --- Gestión de entradas --- */}
