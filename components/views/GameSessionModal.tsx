@@ -65,7 +65,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     const [isShuffling, setIsShuffling] = useState(false);
     const [shuffledCategory, setShuffledCategory] = useState("Salsa");
-    const categories = ["Historia", "Arte", "Salsa", "Naturaleza", "Gastronomía", "Literatura", "General"];
+    // Categorías reales del banco cargado (para la animación de mezcla); respaldo si aún no hay preguntas.
+    const categories = (() => {
+        const fromQuestions = Array.from(new Set(questions.map(q => q.category).filter(Boolean))) as string[];
+        return fromQuestions.length > 0 ? fromQuestions : ["Historia", "Arte", "Salsa", "Naturaleza", "Gastronomía", "Literatura", "General"];
+    })();
     const [streakBurst, setStreakBurst] = useState(false);
 
     // Términos del diccionario para auto-enlazar en la retroalimentación de cada pregunta.

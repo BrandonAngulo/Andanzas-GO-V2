@@ -114,6 +114,28 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             return;
         }
 
+        // Antirrepetición básica: preguntas que este usuario ya respondió en sus últimas
+        // partidas de este juego, para preferir contenido no visto al componer la partida.
+        let recentlySeen = new Set<string>();
+        if (userId) {
+            const { data: recentSessions } = await supabase
+                .from('game_sessions')
+                .select('id')
+                .eq('user_id', userId)
+                .eq('game_id', gameId)
+                .order('started_at', { ascending: false })
+                .limit(30);
+            const sessionIds = (recentSessions || []).map((s: any) => s.id);
+            if (sessionIds.length > 0) {
+                const { data: seen } = await supabase
+                    .from('game_answers')
+                    .select('question_id')
+                    .in('session_id', sessionIds)
+                    .limit(500);
+                recentlySeen = new Set((seen || []).map((r: any) => r.question_id).filter(Boolean));
+            }
+        }
+
         let questions: GameQuestion[] = [];
         if (questionsData && questionsData.length > 0) {
             // Filtro por tema: sin tema ('Todo') usa solo el núcleo del juego (sin campaña);
@@ -124,12 +146,20 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 : questionsData.filter(q => !(q as any).campaign);
             const source = themed.length > 0 ? themed : questionsData; // salvaguarda: nunca dejar la partida vacía
 
+            // Ordena una lista poniendo primero las no vistas recientemente (cada grupo barajado).
+            const freshFirst = (arr: any[]) => {
+                const unseen = arr.filter(q => !recentlySeen.has(q.id));
+                const seen = arr.filter(q => recentlySeen.has(q.id));
+                const sh = (a: any[]) => [...a].sort(() => Math.random() - 0.5);
+                return [...sh(unseen), ...sh(seen)];
+            };
+
             const groupByLevelShuffled = (arr: any[]) => {
                 const byLevel: Record<number, any[]> = {};
                 for (const q of arr) { const lv = q.level || 1; (byLevel[lv] = byLevel[lv] || []).push(q); }
                 const ordered: any[] = [];
                 Object.keys(byLevel).map(Number).sort((a, b) => a - b).forEach(lv => {
-                    ordered.push(...[...byLevel[lv]].sort(() => Math.random() - 0.5));
+                    ordered.push(...freshFirst(byLevel[lv]));
                 });
                 return ordered;
             };
@@ -150,14 +180,16 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                     const count = dist[lvl.toString()] || 0;
                     if (count > 0) {
                         const lvlQs = source.filter(q => q.level === lvl);
-                        const shuffled = [...lvlQs].sort(() => Math.random() - 0.5);
+                        const shuffled = freshFirst(lvlQs); // preferir no vistas recientemente
                         selected.push(...shuffled.slice(0, count));
                     }
                 }
                 // Progresivo por nivel.
                 finalQuestions = selected.sort((a, b) => (a.level || 1) - (b.level || 1));
             } else {
-                finalQuestions = [...source].sort((a, b) => (a.level || 1) - (b.level || 1));
+                // Sin distribución por nivel: respeta questions_per_match (antes cargaba TODO el banco).
+                const qpm = game.questions_per_match || 15;
+                finalQuestions = [...source].sort((a, b) => (a.level || 1) - (b.level || 1)).slice(0, qpm);
             }
 
             questions = finalQuestions.map((q: any) => {
@@ -270,11 +302,14 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             await supabase.from('game_answers').insert({
                 session_id: state.sessionId,
                 question_id: currentQ.id,
+                question_order: state.currentQuestionIndex, // orden explícito (para cortes por zona segura)
                 is_correct: isCorrect,
                 time_to_answer_ms: timeToAnswerMs,
                 selected_answer: selectedAnswer,
                 correct_answer_snapshot: currentQ.correct_answer,
-                question_snapshot: currentQ,
+                // Snapshot ligero: solo lo que consume la analítica. Evita copiar opciones/explicación
+                // completas por cada respuesta de cada jugador (ahorro de memoria a escala).
+                question_snapshot: { id: currentQ.id, question_text: currentQ.question_text, category: currentQ.category },
                 points_possible: currentQ.points_reward,
                 points_earned: pointsEarned,
                 streak_bonus_points: streakBonus,
@@ -328,10 +363,12 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
     const finishGame = async (isAborted: boolean = false) => {
         if (!state.sessionId) return;
         
-        // Calculate final stats
+        // Calculate final stats. Orden explícito por question_order: el corte por zona
+        // segura (slice) depende del orden cronológico real, no del orden de la BD.
         const { data: answers } = await supabase
             .from('game_answers')
-            .select('is_correct, points_earned')
+            .select('is_correct, points_earned, question_order')
+            .order('question_order', { ascending: true, nullsFirst: true })
             .eq('session_id', state.sessionId);
 
         let correctCount = 0;
