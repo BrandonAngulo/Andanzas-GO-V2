@@ -525,12 +525,37 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                     return (
                                         <>
                                             <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8 font-medium">
-                                                {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} Has perdido la partida. 
+                                                {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} Has perdido la partida.
                                                 {(!game?.mechanic_type || game.mechanic_type === 'safe_zones') && ' Tu racha se guardará hasta la última zona segura.'}
                                             </p>
+                                            {/* Aun al perder, mostramos la respuesta correcta y la explicación: el momento de mayor aprendizaje. */}
+                                            {typeof currentQuestion?.correct_answer === 'string' && currentQuestion.correct_answer && (
+                                                <p className="text-white/90 text-base sm:text-lg mb-3">
+                                                    <span className="font-bold text-emerald-300">Respuesta correcta:</span> {currentQuestion.correct_answer}
+                                                </p>
+                                            )}
+                                            {currentQuestion?.explanation && (
+                                                <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8">
+                                                    <TextWithDictionaryLinks
+                                                        text={currentQuestion.explanation}
+                                                        entries={dictEntries}
+                                                        onOpen={setDictSelected}
+                                                        linkClassName="cursor-pointer font-semibold text-white underline decoration-dotted underline-offset-2"
+                                                    />
+                                                </p>
+                                            )}
                                             <div className="flex flex-col sm:flex-row gap-4">
-                                                <Button 
-                                                    className="w-full rounded-2xl h-14 font-bold bg-white text-slate-900 hover:bg-white/90 border-none shadow-lg text-lg" 
+                                                {currentQuestion?.related_learn_id && (
+                                                    <Button
+                                                        variant="outline"
+                                                        className="flex-1 rounded-2xl h-14 font-bold border-white/20 text-white hover:bg-white/10 text-lg"
+                                                        onClick={() => onNavigate?.('paquesepas')}
+                                                    >
+                                                        Saber más
+                                                    </Button>
+                                                )}
+                                                <Button
+                                                    className="flex-1 rounded-2xl h-14 font-bold bg-white text-slate-900 hover:bg-white/90 border-none shadow-lg text-lg"
                                                     onClick={() => finishGame(true)}
                                                 >
                                                     Ver Resultados Finales
