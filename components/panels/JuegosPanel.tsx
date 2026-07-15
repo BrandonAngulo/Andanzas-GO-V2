@@ -23,15 +23,6 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [loading, setLoading] = useState(true);
     const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
     const [modeChoiceGame, setModeChoiceGame] = useState<Game | null>(null);
-    const [themes, setThemes] = useState<{ category: string; isCampaign: boolean }[]>([]);
-    const [selectedTheme, setSelectedTheme] = useState<string>('all');
-
-    useEffect(() => {
-        if (!modeChoiceGame) return;
-        setSelectedTheme('all');
-        setThemes([]);
-        gamesService.getGameThemes(modeChoiceGame.id).then(setThemes).catch(() => setThemes([]));
-    }, [modeChoiceGame]);
 
     const launchGame = (game: Game) => {
         // Las trivias ofrecen elegir modo (corto por niveles / Leyenda). El resto arranca directo.
@@ -217,23 +208,10 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         <DialogTitle>¿Cómo querés jugar?</DialogTitle>
                         <DialogDescription>{modeChoiceGame?.title}</DialogDescription>
                     </DialogHeader>
-                    {themes.length > 0 && (
-                        <div className="mb-1">
-                            <div className="mb-2 text-sm font-semibold">Tema</div>
-                            <div className="flex flex-wrap gap-1.5">
-                                <Button size="sm" variant={selectedTheme === 'all' ? 'default' : 'outline'} onClick={() => setSelectedTheme('all')}>Todo</Button>
-                                {themes.map((t) => (
-                                    <Button key={t.category} size="sm" variant={selectedTheme === t.category ? 'default' : 'outline'} onClick={() => setSelectedTheme(t.category)}>
-                                        {t.isCampaign && <Flame className="mr-1 h-3.5 w-3.5 text-orange-500" />}{t.category}
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                     <div className="space-y-3">
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; const th = selectedTheme; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', th); }}
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels'); }}
                             className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-primary hover:bg-primary/5"
                         >
                             <div className="rounded-xl bg-primary/10 p-3 text-primary"><Layers className="h-6 w-6" /></div>
@@ -245,7 +223,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </button>
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; const th = selectedTheme; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend', th); }}
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend'); }}
                             className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-orange-500 hover:bg-orange-500/5"
                         >
                             <div className="rounded-xl bg-orange-500/10 p-3 text-orange-500"><Flame className="h-6 w-6" /></div>
