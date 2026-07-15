@@ -3,6 +3,22 @@ import type { AppFeature, DictionaryAdminEntry, DictionaryEntry, DictionaryEntry
 
 export const DICTIONARY_FEATURE_KEY = 'dictionary_caleno';
 
+/**
+ * Etiqueta de vigencia pensada para el usuario final. Solo se muestra cuando aporta:
+ * 'vigente' es la norma esperada (no se muestra) y 'por_verificar' es un estado interno.
+ */
+export const vigenciaLabel = (status?: string | null): string | null => {
+  switch (status) {
+    case 'historica': return 'En desuso';
+    case 'juvenil': return 'Uso juvenil';
+    default: return null;
+  }
+};
+
+/** Une valores de arreglos (alcance geográfico, registro social) en un texto legible. */
+export const joinScope = (value?: string | string[] | null): string =>
+  Array.isArray(value) ? value.filter(Boolean).join(', ') : (value || '');
+
 /** Turns a term into a URL-friendly slug (lowercase, accent-free, hyphenated). */
 export const slugifyTerm = (term: string): string =>
   term

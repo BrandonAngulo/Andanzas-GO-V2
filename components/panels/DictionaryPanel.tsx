@@ -18,6 +18,8 @@ export function DictionaryPanel(): JSX.Element {
   const [letter, setLetter] = useState('');
   const [tag, setTag] = useState('');
   const [temporalStatus, setTemporalStatus] = useState('');
+  const [showAllCats, setShowAllCats] = useState(false);
+  const CATS_COLLAPSED = 12;
   const [entries, setEntries] = useState<DictionaryEntry[]>([]);
   const [facets, setFacets] = useState<DictionaryFacets>(EMPTY_FACETS);
   const [total, setTotal] = useState(0);
@@ -79,8 +81,18 @@ export function DictionaryPanel(): JSX.Element {
 
       <section className="space-y-4 rounded-2xl border bg-card p-4" aria-label="Filtros del diccionario">
         <div><h2 className="mb-2 text-sm font-semibold">Letra inicial</h2><div className="flex flex-wrap gap-1.5"><Button size="sm" variant={!letter ? 'default' : 'outline'} onClick={() => setLetter('')}>Todas</Button>{facets.letters.map((item) => <Button key={item.value} size="sm" variant={letter === item.value ? 'default' : 'outline'} onClick={() => setLetter(item.value)} aria-pressed={letter === item.value}>{item.value}</Button>)}</div></div>
-        {!!facets.tags.length && <div><h2 className="mb-2 text-sm font-semibold">Categoría</h2><div className="flex flex-wrap gap-1.5"><Button size="sm" variant={!tag ? 'default' : 'outline'} onClick={() => setTag('')}>Todas</Button>{facets.tags.map((item) => <Button key={item.slug || item.name} size="sm" variant={tag === (item.slug || item.name) ? 'default' : 'outline'} onClick={() => setTag(item.slug || item.name)} aria-pressed={tag === (item.slug || item.name)}>{item.name}{typeof item.count === 'number' ? ` (${item.count})` : ''}</Button>)}</div></div>}
-        {!!facets.temporalStatuses.length && <div><h2 className="mb-2 text-sm font-semibold">Vigencia</h2><div className="flex flex-wrap gap-1.5"><Button size="sm" variant={!temporalStatus ? 'default' : 'outline'} onClick={() => setTemporalStatus('')}>Todas</Button>{facets.temporalStatuses.map((item) => <Button key={item.value} size="sm" variant={temporalStatus === item.value ? 'default' : 'outline'} onClick={() => setTemporalStatus(item.value)} aria-pressed={temporalStatus === item.value}>{item.value}</Button>)}</div></div>}
+        {!!facets.tags.length && <div>
+          <h2 className="mb-2 text-sm font-semibold">Categoría</h2>
+          <div className="flex flex-wrap gap-1.5">
+            <Button size="sm" variant={!tag ? 'default' : 'outline'} onClick={() => setTag('')}>Todas</Button>
+            {(showAllCats ? facets.tags : facets.tags.slice(0, CATS_COLLAPSED)).map((item) => <Button key={item.slug || item.name} size="sm" variant={tag === (item.slug || item.name) ? 'default' : 'outline'} onClick={() => setTag(item.slug || item.name)} aria-pressed={tag === (item.slug || item.name)}>{item.name}{typeof item.count === 'number' ? ` (${item.count})` : ''}</Button>)}
+            {facets.tags.length > CATS_COLLAPSED && (
+              <Button size="sm" variant="ghost" className="text-primary" onClick={() => setShowAllCats((v) => !v)}>
+                {showAllCats ? 'Ver menos' : `Ver todas (+${facets.tags.length - CATS_COLLAPSED})`}
+              </Button>
+            )}
+          </div>
+        </div>}
       </section>
 
       <p className="text-sm text-muted-foreground" aria-live="polite">{loading ? 'Consultando palabras…' : `${total} ${total === 1 ? 'resultado' : 'resultados'}`}</p>

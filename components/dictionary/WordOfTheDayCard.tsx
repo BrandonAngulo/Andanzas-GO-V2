@@ -89,7 +89,6 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
           <h2 className="truncate text-2xl font-bold text-foreground">{entry.term}</h2>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             {entry.word_class && <Badge variant="secondary">{entry.word_class}</Badge>}
-            {entry.temporal_status && <Badge variant="outline">{entry.temporal_status}</Badge>}
           </div>
           {claimedToday && entry.short_definition && (
             <p className="mt-2 line-clamp-2 max-w-xl text-sm text-muted-foreground">{entry.short_definition}</p>

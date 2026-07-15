@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Badge } from '../ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { dictionaryService } from '../../services/dictionary.service';
+import { dictionaryService, joinScope, vigenciaLabel } from '../../services/dictionary.service';
 import type { DictionaryEntry, DictionarySource, DictionaryTag } from '../../types';
 
 interface DictionaryDetailProps {
@@ -38,7 +38,9 @@ export function DictionaryDetail({ entry, onClose }: DictionaryDetailProps): JSX
             <DialogTitle className="pr-8 text-3xl text-primary">{entry.term}</DialogTitle>
             <div className="flex flex-wrap gap-2 pt-2">
               {entry.word_class && <Badge variant="secondary">{entry.word_class}</Badge>}
-              {entry.temporal_status && <Badge variant="outline">{entry.temporal_status}</Badge>}
+              {vigenciaLabel(entry.temporal_status) && (
+                <span className="inline-flex items-center rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">{vigenciaLabel(entry.temporal_status)}</span>
+              )}
               {entry.tags?.map((tag) => <Badge key={tagName(tag)} variant="outline">{tagName(tag)}</Badge>)}
             </div>
           </DialogHeader>
@@ -46,8 +48,8 @@ export function DictionaryDetail({ entry, onClose }: DictionaryDetailProps): JSX
             {field('Definición completa', entry.full_definition || entry.short_definition)}
             {field('Ejemplo de uso', entry.usage_example)}
             {field('Contexto de uso', entry.usage_context)}
-            {field('Alcance geográfico', entry.geographic_scope)}
-            {field('Registro social', entry.social_register)}
+            {field('Alcance geográfico', joinScope(entry.geographic_scope))}
+            {field('Registro social', joinScope(entry.social_register))}
             {field('Etimología', entry.etymology)}
             {field('Notas', entry.notes)}
             {!!entry.variants?.length && field('Variantes', entry.variants.join(', '))}
