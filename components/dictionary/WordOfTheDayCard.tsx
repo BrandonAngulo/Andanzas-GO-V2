@@ -55,6 +55,9 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
           setClaimedToday(true);
           setStreak(result.streak);
           toast.success(`+${result.awardedPoints} puntos · Racha de ${result.streak} día${result.streak === 1 ? '' : 's'} 🔥`);
+          if (result.badgeUnlocked) {
+            toast.success(`¡Insignia desbloqueada: ${result.badgeName ?? 'Caleñólogo'}! 🏅`);
+          }
         } else if (result.alreadyClaimed) {
           setClaimedToday(true);
           setStreak(result.streak);

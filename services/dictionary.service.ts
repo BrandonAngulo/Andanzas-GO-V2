@@ -223,8 +223,8 @@ export const dictionaryService = {
     })) as DictionaryEntry[];
   },
 
-  /** Reclama la palabra del día (una vez por día): otorga puntos y actualiza la racha. */
-  async claimWordOfTheDay(): Promise<{ ok: boolean; alreadyClaimed: boolean; awardedPoints: number; streak: number; bestStreak: number }> {
+  /** Reclama la palabra del día (una vez por día): otorga puntos, racha y, a los 7 días, la insignia Caleñólogo. */
+  async claimWordOfTheDay(): Promise<{ ok: boolean; alreadyClaimed: boolean; awardedPoints: number; streak: number; bestStreak: number; badgeUnlocked: boolean; badgeName: string | null }> {
     const { data, error } = await supabase.rpc('claim_word_of_the_day');
     if (error) throw error;
     const r = (data ?? {}) as Record<string, unknown>;
@@ -234,6 +234,8 @@ export const dictionaryService = {
       awardedPoints: Number(r.awarded_points ?? 0),
       streak: Number(r.streak ?? 0),
       bestStreak: Number(r.best_streak ?? 0),
+      badgeUnlocked: Boolean(r.badge_unlocked),
+      badgeName: (r.badge_name as string | null) ?? null,
     };
   },
 

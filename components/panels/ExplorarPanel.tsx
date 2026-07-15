@@ -96,9 +96,10 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
       try {
         const facts = await curiositiesService.getPublished('home');
         if (facts && facts.length > 0) {
-          // Select a random fact from the available ones for the home
-          const randomIndex = Math.floor(Math.random() * facts.length);
-          setRandomFact(facts[randomIndex]);
+          // Dato del día: determinista por fecha (UTC) para que sea el mismo todo el día,
+          // cambie a diario y recorra todo el pool antes de repetir.
+          const dayNumber = Math.floor(Date.now() / 86_400_000);
+          setRandomFact(facts[dayNumber % facts.length]);
         }
       } catch (err) {
         console.error("Failed to load random fact", err);
