@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGameEngine } from '../../hooks/useGameEngine';
+import { useGameEngine, checkAnswerCorrectness, TIMED_ROUND_SECONDS } from '../../hooks/useGameEngine';
 import { Button } from '../ui/button';
 import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
@@ -167,12 +167,16 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     const handleAnswerSelect = async (answer: any) => {
         if (isChecking) return;
-        
+
+        // Determinamos la corrección de forma síncrona y la fijamos ANTES de mostrar el panel,
+        // para que se pinte directo del color correcto (verde/rojo) sin el parpadeo al color contrario.
+        const correct = game?.type === 'quiz' ? true : (currentQuestion ? checkAnswerCorrectness(currentQuestion, answer) : false);
         setSelectedOption(answer);
-        setIsChecking(true);
-        
-        const correct = await submitAnswer(answer, false);
         setIsCorrect(correct);
+        setIsChecking(true);
+
+        // Persistimos y actualizamos el motor (puntos, racha, fin) en segundo plano.
+        await submitAnswer(answer, false);
     };
 
     const handleNext = async () => {
@@ -433,12 +437,12 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                             <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
                                             <motion.circle
                                                 cx="48" cy="48" r="42" fill="none"
-                                                stroke={timeRemaining <= 5 ? '#EF4444' : accent}
+                                                stroke={(isTimed ? timeRemaining <= 10 : timeRemaining <= 5) ? '#EF4444' : accent}
                                                 strokeWidth="6" strokeLinecap="round"
                                                 strokeDasharray={2 * Math.PI * 42}
-                                                animate={{ strokeDashoffset: 2 * Math.PI * 42 * (1 - timeRemaining / (currentQuestion?.time_limit_sec || 30)) }}
+                                                animate={{ strokeDashoffset: 2 * Math.PI * 42 * (1 - timeRemaining / (isTimed ? TIMED_ROUND_SECONDS : (currentQuestion?.time_limit_sec || 30))) }}
                                                 transition={{ duration: 1, ease: 'linear' }}
-                                                style={{ filter: `drop-shadow(0 0 6px ${timeRemaining <= 5 ? '#EF4444' : accent})` }}
+                                                style={{ filter: `drop-shadow(0 0 6px ${(isTimed ? timeRemaining <= 10 : timeRemaining <= 5) ? '#EF4444' : accent})` }}
                                             />
                                         </svg>
                                     )}
@@ -453,7 +457,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                                     : `0 0 16px -2px ${accent}4D`
                                         }}
                                     >
-                                        <GameMascot icon={game?.theme_icon} accent={accent} size={44} state={mascotState} />
+                                        {isTimed ? (
+                                            <span className={`text-2xl font-black tabular-nums ${timeRemaining <= 10 ? 'text-red-400' : 'text-white'}`}>{timeRemaining}</span>
+                                        ) : (
+                                            <GameMascot icon={game?.theme_icon} accent={accent} size={44} state={mascotState} />
+                                        )}
                                     </div>
                                 </div>
 
