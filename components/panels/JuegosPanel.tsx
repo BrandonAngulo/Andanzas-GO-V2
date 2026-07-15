@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Game, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Layers, ChevronRight } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { LeaderboardPanel } from './LeaderboardPanel';
 import GameInstructionsDialog from '../shared/GameInstructionsDialog';
 import { GameMascot } from '../views/GameMascot';
@@ -14,13 +15,20 @@ import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
 
 interface JuegosPanelProps {
-    onPlayGame: (gameId: string) => void;
+    onPlayGame: (gameId: string, mode?: 'levels' | 'legend') => void;
 }
 
 export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
+    const [modeChoiceGame, setModeChoiceGame] = useState<Game | null>(null);
+
+    const launchGame = (game: Game) => {
+        // Las trivias ofrecen elegir modo (corto por niveles / Leyenda). El resto arranca directo.
+        if (game.type === 'trivia') setModeChoiceGame(game);
+        else onPlayGame(game.id);
+    };
 
     useEffect(() => {
         loadGames();
@@ -161,9 +169,9 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                     >
                                         <Info className="w-5 h-5 text-primary" />
                                     </Button>
-                                    <Button 
+                                    <Button
                                         className="col-span-4 shadow-md hover:shadow-lg transition-shadow group-hover:bg-primary/90"
-                                        onClick={() => onPlayGame(game.id)}
+                                        onClick={() => launchGame(game)}
                                     >
                                         <PlayCircle className="w-5 h-5 mr-2" />
                                         Jugar Ahora
@@ -187,12 +195,47 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
             </Tabs>
 
             {activeInstructionsGame && (
-                <GameInstructionsDialog 
+                <GameInstructionsDialog
                     open={!!activeInstructionsGame}
                     onOpenChange={(open) => !open && setActiveInstructionsGame(null)}
                     game={activeInstructionsGame}
                 />
             )}
+
+            <Dialog open={!!modeChoiceGame} onOpenChange={(open) => !open && setModeChoiceGame(null)}>
+                <DialogContent className="max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>¿Cómo querés jugar?</DialogTitle>
+                        <DialogDescription>{modeChoiceGame?.title}</DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-3">
+                        <button
+                            type="button"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels'); }}
+                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-primary hover:bg-primary/5"
+                        >
+                            <div className="rounded-xl bg-primary/10 p-3 text-primary"><Layers className="h-6 w-6" /></div>
+                            <div className="flex-1">
+                                <div className="font-bold">Partida corta por niveles</div>
+                                <div className="text-sm text-muted-foreground">15 preguntas con dificultad en ascenso. Ideal para una ronda rápida.</div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend'); }}
+                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-orange-500 hover:bg-orange-500/5"
+                        >
+                            <div className="rounded-xl bg-orange-500/10 p-3 text-orange-500"><Flame className="h-6 w-6" /></div>
+                            <div className="flex-1">
+                                <div className="font-bold">Modo Leyenda</div>
+                                <div className="text-sm text-muted-foreground">Sin fin: seguí respondiendo mientras te queden vidas (3). ¿Hasta dónde llegás?</div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        </button>
+                    </div>
+                </DialogContent>
+            </Dialog>
             </div>
         </ScrollArea>
     );

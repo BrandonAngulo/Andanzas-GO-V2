@@ -22,9 +22,11 @@ interface GameSessionModalProps {
     onNavigate?: (panel: string) => void;
     onRetry?: () => void;
     challengeId?: string;
+    mode?: 'levels' | 'legend';
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, challengeId }) => {
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, challengeId, mode = 'levels' }) => {
+    const isLegend = mode === 'legend';
     const { userProfile } = useUserData();
     const {
         game,
@@ -45,7 +47,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         worstCategory,
         sessionId,
         livesRemaining
-    } = useGameEngine(gameId, userProfile?.id);
+    } = useGameEngine(gameId, userProfile?.id, mode);
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
 
@@ -336,11 +338,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         <Star className="w-5 h-5 text-yellow-400 fill-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" /> {score}
                     </div>
 
-                    {game?.mechanic_type === 'lives' && (
+                    {(isLegend || game?.mechanic_type === 'lives') && (
                         <>
                             <div className="h-6 w-[1px] bg-white/20" />
                             <div className="flex items-center gap-1.5 text-red-500">
-                                {Array.from({ length: Math.max(3, game.lives_count || 3) }).map((_, i) => (
+                                {Array.from({ length: Math.max(3, game?.lives_count || 3) }).map((_, i) => (
                                     <Heart key={i} className={`w-5 h-5 transition-all duration-300 ${i < livesRemaining ? 'fill-current text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)] scale-110' : 'fill-transparent stroke-white/30 text-transparent scale-90'}`} strokeWidth={2} />
                                 ))}
                             </div>
@@ -450,14 +452,15 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 </div>
 
                                 <span className="text-white/50 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3">
-                                    Pregunta {currentQuestionIndex + 1} de {questions.length}
+                                    {isLegend ? `Modo Leyenda · Pregunta ${currentQuestionIndex + 1}` : `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`}
                                 </span>
 
                                 {/* Puntos de progreso: una perla por pregunta de la partida.
                                     Las zonas seguras (cada 5 preguntas, ver useGameEngine finishGame) se marcan
-                                    con un anillo dorado para motivar al jugador a alcanzarlas. */}
+                                    con un anillo dorado para motivar al jugador a alcanzarlas.
+                                    En Modo Leyenda no hay total fijo, así que se omite. */}
                                 <div className="flex items-center gap-1.5 flex-wrap justify-center max-w-xs">
-                                    {questions.map((_, idx) => {
+                                    {!isLegend && questions.map((_, idx) => {
                                         const isPast = idx < currentQuestionIndex;
                                         const isCurrent = idx === currentQuestionIndex;
                                         const isSafeZone = (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && (idx + 1) % 5 === 0;
@@ -517,16 +520,18 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             
                             {(() => {
                                 const isGameEnding = (!isCorrect || hasTimedOut) && (
-                                    (!game?.mechanic_type || game.mechanic_type === 'safe_zones' || game.mechanic_type === 'sudden_death') ||
-                                    (game.mechanic_type === 'lives' && livesRemaining <= 0)
+                                    isLegend
+                                        ? livesRemaining <= 0
+                                        : ((!game?.mechanic_type || game.mechanic_type === 'safe_zones' || game.mechanic_type === 'sudden_death') ||
+                                           (game.mechanic_type === 'lives' && livesRemaining <= 0))
                                 );
 
                                 if (isGameEnding && (hasTimedOut || !isCorrect)) {
                                     return (
                                         <>
                                             <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8 font-medium">
-                                                {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} Has perdido la partida.
-                                                {(!game?.mechanic_type || game.mechanic_type === 'safe_zones') && ' Tu racha se guardará hasta la última zona segura.'}
+                                                {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} {isLegend ? 'Te quedaste sin vidas.' : 'Has perdido la partida.'}
+                                                {!isLegend && (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && ' Tu racha se guardará hasta la última zona segura.'}
                                             </p>
                                             {/* Aun al perder, mostramos la respuesta correcta y la explicación: el momento de mayor aprendizaje. */}
                                             {typeof currentQuestion?.correct_answer === 'string' && currentQuestion.correct_answer && (

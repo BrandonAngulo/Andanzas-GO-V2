@@ -56,7 +56,7 @@ export const checkAnswerCorrectness = (question: GameQuestion, selectedAnswer: a
     }
 };
 
-export const useGameEngine = (gameId: string, userId: string | undefined) => {
+export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' = 'levels') => {
     const [state, setState] = useState<GameEngineState>({
         game: null,
         questions: [],
@@ -79,13 +79,16 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const questionStartTimeRef = useRef<number>(0);
+    // Modo activo (levels = partida corta por niveles; legend = sin fin con vidas).
+    const modeRef = useRef<'levels' | 'legend'>(mode);
+    modeRef.current = mode;
 
     useEffect(() => {
         if (gameId && userId) {
             initGame();
         }
         return () => stopTimer();
-    }, [gameId, userId]);
+    }, [gameId, userId, mode]);
 
     useEffect(() => {
         if (state.questions.length > 0 && !state.isFinished && state.currentQuestionIndex < state.questions.length) {
@@ -115,8 +118,18 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         if (questionsData && questionsData.length > 0) {
             let finalQuestions = questionsData;
 
-            // Apply Level Distribution logic if defined
-            if (game.level_distribution) {
+            if (mode === 'legend') {
+                // Modo Leyenda: usa TODO el banco publicado, con dificultad ascendente
+                // (barajado dentro de cada nivel). No hay tope por partida: la partida
+                // continúa mientras queden vidas.
+                const byLevel: Record<number, any[]> = {};
+                for (const q of questionsData) { const lv = q.level || 1; (byLevel[lv] = byLevel[lv] || []).push(q); }
+                const ordered: any[] = [];
+                Object.keys(byLevel).map(Number).sort((a, b) => a - b).forEach(lv => {
+                    ordered.push(...[...byLevel[lv]].sort(() => Math.random() - 0.5));
+                });
+                finalQuestions = ordered;
+            } else if (game.level_distribution) {
                 const dist = game.level_distribution;
                 const selected: any[] = [];
                 for (let lvl = 1; lvl <= 5; lvl++) {
@@ -261,10 +274,12 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
         let isGameEnding = false;
         let finalLives = state.livesRemaining;
 
+        // En Modo Leyenda la mecánica efectiva es de vidas, sin importar la del juego.
+        const effectiveMechanic = modeRef.current === 'legend' ? 'lives' : state.game?.mechanic_type;
         if (!isCorrect) {
-            if (state.game?.mechanic_type === 'sudden_death') {
+            if (effectiveMechanic === 'sudden_death') {
                 isGameEnding = true;
-            } else if (state.game?.mechanic_type === 'lives') {
+            } else if (effectiveMechanic === 'lives') {
                 finalLives = state.livesRemaining - 1;
                 if (finalLives <= 0) {
                     isGameEnding = true;
@@ -323,7 +338,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined) => {
             finalScore = answersToCount.reduce((sum, a) => sum + (a.points_earned || 0), 0);
         }
 
-        const accuracy = state.questions.length > 0 ? (correctCount / state.questions.length) * 100 : 0;
+        const accuracy = answeredCount > 0 ? (correctCount / answeredCount) * 100 : 0;
 
         // Calculate categories
         const categoryStats = state.userAnswers.reduce((acc, curr) => {

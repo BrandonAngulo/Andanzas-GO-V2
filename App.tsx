@@ -188,6 +188,7 @@ export default function App() {
   const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
   const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
+  const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend'>('levels');
   // Se incrementa en cada "Reintentar" para forzar un remount limpio de GameSessionModal
   // (mismo gameId no cambia por sí solo, así que se necesita este nonce en la key).
   const [gameSessionNonce, setGameSessionNonce] = useState(0);
@@ -298,7 +299,10 @@ export default function App() {
     document.addEventListener("mousedown", handleClickOutside);
 
     const handleOpenGame = (e: CustomEvent) => {
-      if (e.detail?.gameId) setActiveGameId(e.detail.gameId);
+      if (e.detail?.gameId) {
+        setActiveGameMode(e.detail.mode === 'legend' ? 'legend' : 'levels');
+        setActiveGameId(e.detail.gameId);
+      }
     };
     window.addEventListener('open-game' as any, handleOpenGame);
 
@@ -590,7 +594,7 @@ export default function App() {
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} />}
-              {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId } }))} />}
+              {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId, mode) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode } }))} />}
               {activePanel === 'diccionario' && dictionaryVisible && <DictionaryPanel />}
               {activePanel === 'admin' && <AdminDashboard />}
 
@@ -682,7 +686,7 @@ export default function App() {
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />
-      {activeGameId && <GameSessionModal key={`${activeGameId}-${gameSessionNonce}`} gameId={activeGameId} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); setActiveChallengeId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
+      {activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); setActiveChallengeId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
     </div>
   );
 }
