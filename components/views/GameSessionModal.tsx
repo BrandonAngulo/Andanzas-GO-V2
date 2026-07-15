@@ -381,18 +381,20 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         className="absolute inset-0 z-[10000] bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
                     >
                         <div className="bg-slate-900/90 backdrop-blur-xl border border-white/10 p-8 rounded-3xl max-w-sm w-full shadow-2xl text-center">
-                            <h3 className="text-2xl font-bold mb-3 text-white">¿Abandonar juego?</h3>
+                            <h3 className="text-2xl font-bold mb-3 text-white">¿Terminar la ronda?</h3>
                             <p className="text-white/60 mb-8 leading-relaxed">
-                                {(!game?.mechanic_type || game.mechanic_type === 'safe_zones') 
-                                    ? 'Tu progreso desde la última zona segura se perderá.' 
-                                    : 'Perderás el progreso de la partida actual.'}
+                                {isTimed
+                                    ? 'Verás tu resumen. Conservás los puntos según hasta dónde llegaste (la racha se asegura desde la pregunta 11).'
+                                    : (!game?.mechanic_type || game.mechanic_type === 'safe_zones')
+                                        ? 'Verás tu resumen. Conservás los puntos hasta tu última zona segura.'
+                                        : 'Verás tu resumen con los puntos que llevás acumulados.'}
                             </p>
                             <div className="flex flex-col gap-3">
-                                <Button 
+                                <Button
                                     className="w-full bg-red-500 hover:bg-red-600 text-white rounded-xl h-14 text-lg font-bold border-none"
-                                    onClick={async () => { await finishGame(true); onClose(); }}
+                                    onClick={async () => { setShowExitConfirm(false); await finishGame(true); }}
                                 >
-                                    Sí, salir
+                                    Terminar y ver resumen
                                 </Button>
                                 <Button variant="outline" className="w-full bg-transparent border-white/20 text-white hover:bg-white/10 rounded-xl h-14 text-lg font-bold" onClick={() => setShowExitConfirm(false)}>
                                     Continuar jugando
