@@ -11,6 +11,7 @@ interface PanelBannerProps {
     andiMessage?: string;
     gradientClass?: string;
     children?: React.ReactNode; // For extra content like CategoryCarousel
+    marginClass?: string; // Margen horizontal externo; se alinea con el gutter del panel
 }
 
 export const PanelBanner: React.FC<PanelBannerProps> = ({
@@ -20,7 +21,8 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
     description,
     andiMessage,
     gradientClass = "from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent",
-    children
+    children,
+    marginClass = "mx-2"
 }) => {
     const [bgImage, setBgImage] = useState(defaultImage);
 
@@ -35,7 +37,7 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
     }, [panelKey]);
 
     return (
-        <div className="relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10 mx-2">
+        <div className={cn("relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10", marginClass)}>
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 {/* Full-width banner background */}
                 <img 

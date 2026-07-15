@@ -162,6 +162,8 @@ export default function App() {
   // --- Local UI State ---
   const [openMenu, setOpenMenu] = useState(false);
   const [activePanel, setActivePanel] = useState<ActivePanelType>("mapa");
+  // Entrada de "Pa' que sepás" a abrir directamente al navegar (p. ej. desde un dato curioso).
+  const [pendingLearnEntryId, setPendingLearnEntryId] = useState<string | null>(null);
   // Recuerda cuál era el panel activo justo antes de entrar a 'perfil' (sin importar la
   // entrada: avatar del header, Sidebar, BottomNav o clic en notificación), para que el
   // botón de "cerrar perfil" regrese ahí en vez de saltar siempre al mapa.
@@ -576,7 +578,7 @@ export default function App() {
                   plannedRoutePoints={newRoutePoints}
                 />
               )}
-              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} onNavigateToAprende={() => setActivePanel('paquesepas')} rutasTematicas={rutasTematicas} />}
+              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} onNavigateToAprende={() => setActivePanel('paquesepas')} onOpenLearnEntry={(id) => { setPendingLearnEntryId(id); setActivePanel('paquesepas'); }} rutasTematicas={rutasTematicas} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}
@@ -587,7 +589,7 @@ export default function App() {
               {activePanel === 'sobre' && <SobrePanel />}
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
-              {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} />}
+              {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} />}
               {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId } }))} />}
               {activePanel === 'diccionario' && dictionaryVisible && <DictionaryPanel />}
               {activePanel === 'admin' && <AdminDashboard />}

@@ -268,7 +268,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     <div className="absolute inset-0 bg-primary/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {(route.content_only || !route.puntos || route.puntos.length === 0) ? (
                             <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                <Lock className="w-5 h-5" /> {language === 'es' ? 'En ConstrucciÃ³n' : 'Coming Soon'}
+                                <Lock className="w-5 h-5" /> {language === 'es' ? 'En Construcción' : 'Coming Soon'}
                             </span>
                         ) : (
                             <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -326,7 +326,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             </h2>
                         </>
                     }
-                    description={language === 'es' ? 'Explora circuitos diseÃ±ados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
+                    description={language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
                 />
 
                 <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -446,7 +446,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                 {/* Search Section */}
                                 <div className="space-y-3">
                                     <label className="text-sm font-medium flex items-center gap-2">
-                                        <Search className="h-4 w-4" /> Buscar sitios para aÃ±adir
+                                        <Search className="h-4 w-4" /> Buscar sitios para añadir
                                     </label>
                                     <div className="relative">
                                         <Input
@@ -648,7 +648,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                     </h4>
                                     <div className="space-y-2">
                                         <label className="text-xs text-muted-foreground flex items-center gap-2">
-                                            <Search className="h-3 w-3" /> AÃ±adir nuevos puntos
+                                            <Search className="h-3 w-3" /> Añadir nuevos puntos
                                         </label>
                                         <Input
                                             placeholder="Buscar sitios..."

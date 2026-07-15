@@ -72,13 +72,21 @@ interface ExplorarPanelProps {
   onNavigateToRoutes?: () => void;
   onOpenRoute?: (route: any) => void;
   onNavigateToAprende?: () => void;
+  onOpenLearnEntry?: (entryId: string) => void;
   rutasTematicas: Ruta[];
 }
 
 
 
-const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende, rutasTematicas }) => {
+const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende, onOpenLearnEntry, rutasTematicas }) => {
   const { language } = useI18n();
+
+  // Abre la historia de "Pa' que sepás" ligada al dato curioso; si no hay vínculo,
+  // (o la historia ya no existe) cae a la vista general de Pa' que sepás.
+  const openRelatedStory = () => {
+    if (randomFact?.related_entry_id && onOpenLearnEntry) onOpenLearnEntry(randomFact.related_entry_id);
+    else onNavigateToAprende?.();
+  };
 
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [randomFact, setRandomFact] = useState<CuriousFact | null>(null);
@@ -152,6 +160,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
         <PanelBanner
           panelKey="explorar"
           defaultImage="/images/banner_explorar.png"
+          marginClass="mx-4 md:mx-8"
           gradientClass="from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
           title={
             <>
@@ -218,10 +227,10 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
 
       {/* Sabías que Banner */}
       {!query && !categoryFilter && randomFact && (
-        <div className="px-5 md:px-8 mb-8">
+        <div className="px-4 md:px-8 mb-8">
           <div 
             className="bg-card border border-primary/20 rounded-2xl p-5 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-4 relative overflow-hidden"
-            onClick={onNavigateToAprende}
+            onClick={openRelatedStory}
           >
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
               <BookOpen className="w-24 h-24 text-primary" />

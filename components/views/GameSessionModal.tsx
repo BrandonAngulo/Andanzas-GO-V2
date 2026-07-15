@@ -11,6 +11,10 @@ import { challengeService } from '../../services/challenge.service';
 import { QuestionRenderer } from './QuestionRenderer';
 import { GameMascot, MascotState } from './GameMascot';
 import ReactConfetti from 'react-confetti';
+import { dictionaryService } from '../../services/dictionary.service';
+import { DictionaryDetail } from '../dictionary/DictionaryDetail';
+import { TextWithDictionaryLinks } from '../shared/TextWithDictionaryLinks';
+import type { DictionaryEntry } from '../../types';
 
 interface GameSessionModalProps {
     gameId: string;
@@ -60,6 +64,15 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     const [shuffledCategory, setShuffledCategory] = useState("Salsa");
     const categories = ["Historia", "Arte", "Salsa", "Naturaleza", "Gastronomía", "Literatura", "General"];
     const [streakBurst, setStreakBurst] = useState(false);
+
+    // Términos del diccionario para auto-enlazar en la retroalimentación de cada pregunta.
+    const [dictEntries, setDictEntries] = useState<DictionaryEntry[]>([]);
+    const [dictSelected, setDictSelected] = useState<DictionaryEntry | null>(null);
+    React.useEffect(() => {
+        let active = true;
+        dictionaryService.listPublishedForLinking().then((e) => { if (active) setDictEntries(e); }).catch(() => undefined);
+        return () => { active = false; };
+    }, []);
 
     // Reacción visual de la mascota del juego según el estado de la pregunta actual
     const mascotState: MascotState = !isChecking ? 'idle' : (game?.type === 'quiz' ? 'idle' : (isCorrect ? 'correct' : 'wrong'));
@@ -531,7 +544,12 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 <>
                                     {currentQuestion?.explanation && (
                                         <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8">
-                                            {currentQuestion.explanation}
+                                            <TextWithDictionaryLinks
+                                                text={currentQuestion.explanation}
+                                                entries={dictEntries}
+                                                onOpen={setDictSelected}
+                                                linkClassName="cursor-pointer font-semibold text-white underline decoration-dotted underline-offset-2"
+                                            />
                                         </p>
                                     )}
                                     <div className="flex flex-col sm:flex-row gap-4">
@@ -558,6 +576,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     )}
                 </AnimatePresence>
             </div>
+            <DictionaryDetail entry={dictSelected} onClose={() => setDictSelected(null)} />
         </div>
     );
 };

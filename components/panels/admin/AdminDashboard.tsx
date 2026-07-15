@@ -262,7 +262,7 @@ const AdminDashboard: React.FC = () => {
                 <ShieldAlert className="h-16 w-16 text-destructive mb-4" />
                 <h2 className="text-2xl font-bold mb-2">Acceso Denegado</h2>
                 <p className="text-muted-foreground">
-                    No tienes los permisos necesarios para ver esta pÃ¡gina. Requiere rol de Administrador o Editor.
+                    No tienes los permisos necesarios para ver esta página. Requiere rol de Administrador o Editor.
                 </p>
             </div>
         );

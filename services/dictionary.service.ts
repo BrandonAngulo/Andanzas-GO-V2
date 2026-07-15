@@ -188,19 +188,14 @@ export const dictionaryService = {
 
   // --- Palabra del día ---
 
-  /** Devuelve la entrada destacada del día (misma para todos, rota a diario). */
+  /** Devuelve la palabra del día: cualquier entrada publicada del diccionario, misma para todos y rotando a diario. */
   async getWordOfTheDay(): Promise<DictionaryEntry | null> {
-    const selectPublished = (featuredOnly: boolean) => {
-      let q = supabase.from('dictionary_entries').select('*').eq('status', 'published').order('id', { ascending: true });
-      if (featuredOnly) q = q.eq('is_featured', true);
-      return q;
-    };
-    let { data, error } = await selectPublished(true);
+    const { data, error } = await supabase
+      .from('dictionary_entries')
+      .select('*')
+      .eq('status', 'published')
+      .order('id', { ascending: true });
     if (error) throw error;
-    if (!data || data.length === 0) {
-      ({ data, error } = await selectPublished(false));
-      if (error) throw error;
-    }
     if (!data || data.length === 0) return null;
     const dayNumber = Math.floor(Date.now() / 86_400_000); // día UTC desde epoch
     const row = data[dayNumber % data.length] as any;
@@ -210,6 +205,22 @@ export const dictionaryService = {
       geographic_scope: Array.isArray(row.geographic_scope) ? row.geographic_scope.join(', ') : row.geographic_scope,
       social_register: Array.isArray(row.social_register) ? row.social_register.join(', ') : row.social_register,
     } as DictionaryEntry;
+  },
+
+  /** Todas las entradas publicadas (para auto-enlazar términos en textos como las trivias). */
+  async listPublishedForLinking(): Promise<DictionaryEntry[]> {
+    const { data, error } = await supabase
+      .from('dictionary_entries')
+      .select('*')
+      .eq('status', 'published')
+      .order('term', { ascending: true });
+    if (error) { console.error('No se pudieron cargar términos del diccionario:', error); return []; }
+    return ((data ?? []) as any[]).map((row) => ({
+      ...row,
+      variants: Array.isArray(row.variants) ? row.variants : [],
+      geographic_scope: Array.isArray(row.geographic_scope) ? row.geographic_scope.join(', ') : row.geographic_scope,
+      social_register: Array.isArray(row.social_register) ? row.social_register.join(', ') : row.social_register,
+    })) as DictionaryEntry[];
   },
 
   /** Reclama la palabra del día (una vez por día): otorga puntos y actualiza la racha. */

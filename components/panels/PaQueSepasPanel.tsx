@@ -15,12 +15,23 @@ interface PaQueSepasPanelProps {
     entries: LearnEntry[];
     onOpenSite?: (siteId: string) => void;
     isLoading?: boolean;
+    initialEntryId?: string | null;
+    onInitialConsumed?: () => void;
 }
 
-const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, isLoading }) => {
+const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, isLoading, initialEntryId, onInitialConsumed }) => {
     const { t, language } = useI18n();
     const [selectedEntry, setSelectedEntry] = useState<LearnEntry | null>(null);
     const [relatedGames, setRelatedGames] = useState<Game[]>([]);
+
+    // Al entrar con una entrada objetivo (p. ej. desde un dato curioso), la abre directamente.
+    // Si no existe entre las entradas cargadas, se queda en la vista general (fallback).
+    React.useEffect(() => {
+        if (!initialEntryId) return;
+        const found = entries.find(e => e.id === initialEntryId);
+        if (found) setSelectedEntry(found);
+        onInitialConsumed?.();
+    }, [initialEntryId, entries]);
 
     React.useEffect(() => {
         if (selectedEntry) {
