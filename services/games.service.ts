@@ -53,6 +53,8 @@ export interface GameQuestion {
     // | 'elimination' = "¿cuál no pertenece?"
     question_format?: 'standard' | 'true_false' | 'fill_blank' | 'elimination';
     category?: string;
+    // Campaña/paquete temático (ej. 'vocabulario'). NULL = contenido núcleo del juego.
+    campaign?: string | null;
     level: number;
     // Estructura de 'options' según question_type:
     // - multiple_choice / multi_select: string[]
@@ -108,6 +110,27 @@ export const gamesService = {
             return null;
         }
         return data as Game;
+    },
+
+    // Temas jugables de un juego: categorías del núcleo + campañas (para el selector).
+    async getGameThemes(gameId: string): Promise<{ category: string; isCampaign: boolean }[]> {
+        const { data, error } = await supabase
+            .from('game_questions')
+            .select('category, campaign')
+            .eq('game_id', gameId)
+            .eq('status', 'published');
+        if (error) { console.error('Error fetching game themes:', error); return []; }
+        const map = new Map<string, boolean>();
+        for (const row of (data || []) as any[]) {
+            const cat = row.category as string | null;
+            if (!cat) continue;
+            const isCampaign = !!row.campaign;
+            // Si una categoría aparece como campaña en alguna fila, la marcamos como campaña.
+            map.set(cat, (map.get(cat) || false) || isCampaign);
+        }
+        return Array.from(map.entries())
+            .map(([category, isCampaign]) => ({ category, isCampaign }))
+            .sort((a, b) => Number(a.isCampaign) - Number(b.isCampaign) || a.category.localeCompare(b.category));
     },
 
     async deleteGame(id: string): Promise<boolean> {

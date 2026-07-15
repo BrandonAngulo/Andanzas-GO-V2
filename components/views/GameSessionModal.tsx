@@ -23,9 +23,10 @@ interface GameSessionModalProps {
     onRetry?: () => void;
     challengeId?: string;
     mode?: 'levels' | 'legend';
+    theme?: string;
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, challengeId, mode = 'levels' }) => {
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, challengeId, mode = 'levels', theme }) => {
     const isLegend = mode === 'legend';
     const { userProfile } = useUserData();
     const {
@@ -47,7 +48,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         worstCategory,
         sessionId,
         livesRemaining
-    } = useGameEngine(gameId, userProfile?.id, mode);
+    } = useGameEngine(gameId, userProfile?.id, mode, theme);
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
 

@@ -56,7 +56,7 @@ export const checkAnswerCorrectness = (question: GameQuestion, selectedAnswer: a
     }
 };
 
-export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' = 'levels') => {
+export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' = 'levels', theme?: string) => {
     const [state, setState] = useState<GameEngineState>({
         game: null,
         questions: [],
@@ -88,7 +88,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             initGame();
         }
         return () => stopTimer();
-    }, [gameId, userId, mode]);
+    }, [gameId, userId, mode, theme]);
 
     useEffect(() => {
         if (state.questions.length > 0 && !state.isFinished && state.currentQuestionIndex < state.questions.length) {
@@ -116,36 +116,48 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
         let questions: GameQuestion[] = [];
         if (questionsData && questionsData.length > 0) {
-            let finalQuestions = questionsData;
+            // Filtro por tema: sin tema ('Todo') usa solo el núcleo del juego (sin campaña);
+            // un tema específico usa esa categoría (incluye campañas como Vocabulario).
+            const activeTheme = (theme && theme !== 'all') ? theme : null;
+            const themed = activeTheme
+                ? questionsData.filter(q => q.category === activeTheme)
+                : questionsData.filter(q => !(q as any).campaign);
+            const source = themed.length > 0 ? themed : questionsData; // salvaguarda: nunca dejar la partida vacía
 
-            if (mode === 'legend') {
-                // Modo Leyenda: usa TODO el banco publicado, con dificultad ascendente
-                // (barajado dentro de cada nivel). No hay tope por partida: la partida
-                // continúa mientras queden vidas.
+            const groupByLevelShuffled = (arr: any[]) => {
                 const byLevel: Record<number, any[]> = {};
-                for (const q of questionsData) { const lv = q.level || 1; (byLevel[lv] = byLevel[lv] || []).push(q); }
+                for (const q of arr) { const lv = q.level || 1; (byLevel[lv] = byLevel[lv] || []).push(q); }
                 const ordered: any[] = [];
                 Object.keys(byLevel).map(Number).sort((a, b) => a - b).forEach(lv => {
                     ordered.push(...[...byLevel[lv]].sort(() => Math.random() - 0.5));
                 });
-                finalQuestions = ordered;
+                return ordered;
+            };
+
+            let finalQuestions = source;
+
+            if (mode === 'legend') {
+                // Modo Leyenda: todo el pool del tema, dificultad ascendente, sin tope.
+                finalQuestions = groupByLevelShuffled(source);
+            } else if (activeTheme) {
+                // Tema específico (corto): hasta questions_per_match, dificultad ascendente.
+                const qpm = game.questions_per_match || 15;
+                finalQuestions = groupByLevelShuffled(source).slice(0, qpm);
             } else if (game.level_distribution) {
                 const dist = game.level_distribution;
                 const selected: any[] = [];
                 for (let lvl = 1; lvl <= 5; lvl++) {
                     const count = dist[lvl.toString()] || 0;
                     if (count > 0) {
-                        const lvlQs = questionsData.filter(q => q.level === lvl);
-                        // Shuffle lvlQs
+                        const lvlQs = source.filter(q => q.level === lvl);
                         const shuffled = [...lvlQs].sort(() => Math.random() - 0.5);
                         selected.push(...shuffled.slice(0, count));
                     }
                 }
-                // Sort the selected questions by level so it gets progressively harder
+                // Progresivo por nivel.
                 finalQuestions = selected.sort((a, b) => (a.level || 1) - (b.level || 1));
             } else {
-                // Classic sort by level
-                finalQuestions = questionsData.sort((a, b) => (a.level || 1) - (b.level || 1));
+                finalQuestions = [...source].sort((a, b) => (a.level || 1) - (b.level || 1));
             }
 
             questions = finalQuestions.map((q: any) => {
