@@ -22,12 +22,13 @@ interface GameSessionModalProps {
     onNavigate?: (panel: string) => void;
     onRetry?: () => void;
     challengeId?: string;
-    mode?: 'levels' | 'legend';
+    mode?: 'levels' | 'legend' | 'timed';
     theme?: string;
 }
 
 export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, challengeId, mode = 'levels', theme }) => {
     const isLegend = mode === 'legend';
+    const isTimed = mode === 'timed';
     const { userProfile } = useUserData();
     const {
         game,
@@ -354,14 +355,14 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         </>
                     )}
 
-                    {streak >= 3 && (
+                    {(streak >= 3 || (isTimed && streak >= 1)) && (
                         <>
                             <div className="h-6 w-[1px] bg-white/20" />
-                            <motion.div 
+                            <motion.div
                                 initial={{ scale: 0 }} animate={{ scale: 1 }}
                                 className="flex items-center gap-1 text-orange-400 font-bold"
                             >
-                                <Flame className="w-5 h-5 fill-orange-400 drop-shadow-[0_0_8px_rgba(2fb,146,60,0.5)]" /> x{game?.mechanic_type === 'multiplier' ? Math.min(streak, 5) : streak}
+                                <Flame className="w-5 h-5 fill-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.5)]" /> x{game?.mechanic_type === 'multiplier' ? Math.min(streak, 5) : streak}
                             </motion.div>
                         </>
                     )}
@@ -525,18 +526,20 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             
                             {(() => {
                                 const isGameEnding = (!isCorrect || hasTimedOut) && (
-                                    isLegend
-                                        ? livesRemaining <= 0
-                                        : ((!game?.mechanic_type || game.mechanic_type === 'safe_zones' || game.mechanic_type === 'sudden_death') ||
-                                           (game.mechanic_type === 'lives' && livesRemaining <= 0))
+                                    isTimed
+                                        ? true
+                                        : isLegend
+                                            ? livesRemaining <= 0
+                                            : ((!game?.mechanic_type || game.mechanic_type === 'safe_zones' || game.mechanic_type === 'sudden_death') ||
+                                               (game.mechanic_type === 'lives' && livesRemaining <= 0))
                                 );
 
                                 if (isGameEnding && (hasTimedOut || !isCorrect)) {
                                     return (
                                         <>
                                             <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8 font-medium">
-                                                {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} {isLegend ? 'Te quedaste sin vidas.' : 'Has perdido la partida.'}
-                                                {!isLegend && (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && ' Tu racha se guardará hasta la última zona segura.'}
+                                                {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} {isTimed ? 'Se acabó tu carrera contrarreloj.' : isLegend ? 'Te quedaste sin vidas.' : 'Has perdido la partida.'}
+                                                {!isLegend && !isTimed && (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && ' Tu racha se guardará hasta la última zona segura.'}
                                             </p>
                                             {/* Aun al perder, mostramos la respuesta correcta y la explicación: el momento de mayor aprendizaje. */}
                                             {typeof currentQuestion?.correct_answer === 'string' && currentQuestion.correct_answer && (

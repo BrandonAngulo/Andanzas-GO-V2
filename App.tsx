@@ -188,7 +188,7 @@ export default function App() {
   const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
   const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
-  const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend'>('levels');
+  const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend' | 'timed'>('levels');
   const [activeGameTheme, setActiveGameTheme] = useState<string | undefined>(undefined);
   // Se incrementa en cada "Reintentar" para forzar un remount limpio de GameSessionModal
   // (mismo gameId no cambia por sí solo, así que se necesita este nonce en la key).
@@ -301,7 +301,8 @@ export default function App() {
 
     const handleOpenGame = (e: CustomEvent) => {
       if (e.detail?.gameId) {
-        setActiveGameMode(e.detail.mode === 'legend' ? 'legend' : 'levels');
+        const m = e.detail.mode;
+        setActiveGameMode(m === 'legend' || m === 'timed' ? m : 'levels');
         setActiveGameTheme(e.detail.theme && e.detail.theme !== 'all' ? e.detail.theme : undefined);
         setActiveGameId(e.detail.gameId);
       }

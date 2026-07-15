@@ -56,7 +56,10 @@ export const checkAnswerCorrectness = (question: GameQuestion, selectedAnswer: a
     }
 };
 
-export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' = 'levels', theme?: string) => {
+// Segundos totales de una ronda Contrarreloj (15 preguntas contra un solo reloj).
+export const TIMED_ROUND_SECONDS = 120;
+
+export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' | 'timed' = 'levels', theme?: string) => {
     const [state, setState] = useState<GameEngineState>({
         game: null,
         questions: [],
@@ -79,9 +82,11 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const questionStartTimeRef = useRef<number>(0);
-    // Modo activo (levels = partida corta por niveles; legend = sin fin con vidas).
-    const modeRef = useRef<'levels' | 'legend'>(mode);
+    // Modo activo (levels = corto por niveles; legend = sin fin con vidas; timed = contrarreloj).
+    const modeRef = useRef<'levels' | 'legend' | 'timed'>(mode);
     modeRef.current = mode;
+    const globalTimerStartedRef = useRef(false);
+    const finishedRef = useRef(false); // evita finalizar la partida dos veces (p. ej. reloj + acción del usuario)
 
     useEffect(() => {
         if (gameId && userId) {
@@ -90,8 +95,21 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         return () => stopTimer();
     }, [gameId, userId, mode, theme]);
 
+    // Contrarreloj: un único cronómetro global para toda la ronda.
+    useEffect(() => {
+        if (mode === 'timed' && state.sessionId && state.questions.length > 0 && !globalTimerStartedRef.current && !state.isFinished) {
+            globalTimerStartedRef.current = true;
+            startGlobalTimer(TIMED_ROUND_SECONDS);
+        }
+    }, [mode, state.sessionId, state.questions.length, state.isFinished]);
+
     useEffect(() => {
         if (state.questions.length > 0 && !state.isFinished && state.currentQuestionIndex < state.questions.length) {
+            // En Contrarreloj el reloj es global (no se reinicia por pregunta).
+            if (mode === 'timed') {
+                questionStartTimeRef.current = Date.now();
+                return;
+            }
             startTimer(state.questions[state.currentQuestionIndex].time_limit_sec || 30);
         }
     }, [state.currentQuestionIndex, state.questions, state.isFinished]);
@@ -262,8 +280,26 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         submitAnswer(null, true);
     };
 
-    const submitAnswer = async (selectedAnswer: any, isTimeout: boolean = false) => {
+    // Contrarreloj: un solo cronómetro para toda la ronda. Al llegar a 0, termina la ronda.
+    const startGlobalTimer = (seconds: number) => {
         stopTimer();
+        questionStartTimeRef.current = Date.now();
+        setState(prev => ({ ...prev, timeRemaining: seconds }));
+        timerRef.current = setInterval(() => {
+            setState(prev => {
+                if (prev.timeRemaining <= 1) {
+                    stopTimer();
+                    finishGame(true);
+                    return { ...prev, timeRemaining: 0 };
+                }
+                return { ...prev, timeRemaining: prev.timeRemaining - 1 };
+            });
+        }, 1000);
+    };
+
+    const submitAnswer = async (selectedAnswer: any, isTimeout: boolean = false) => {
+        // En Contrarreloj el reloj es global y no se detiene entre preguntas.
+        if (modeRef.current !== 'timed') stopTimer();
         const timeToAnswerMs = Date.now() - questionStartTimeRef.current;
         const currentQ = state.questions[state.currentQuestionIndex];
         
@@ -290,8 +326,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 }
             }
 
-            // Time bonus (faster = more points) if enabled
-            if (state.game?.bonus_time_enabled && timeToAnswerMs < (currentQ.time_limit_sec * 1000) / 2) {
+            // Time bonus (faster = more points) if enabled. En Contrarreloj no aplica: el
+            // premio es el x2 al completar, no bonos por pregunta.
+            if (modeRef.current !== 'timed' && state.game?.bonus_time_enabled && timeToAnswerMs < (currentQ.time_limit_sec * 1000) / 2) {
                 timeBonus = 20;
                 pointsEarned += timeBonus;
             }
@@ -321,8 +358,10 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         let isGameEnding = false;
         let finalLives = state.livesRemaining;
 
-        // En Modo Leyenda la mecánica efectiva es de vidas, sin importar la del juego.
-        const effectiveMechanic = modeRef.current === 'legend' ? 'lives' : state.game?.mechanic_type;
+        // Mecánica efectiva: Leyenda = vidas; Contrarreloj = un fallo termina la ronda.
+        const effectiveMechanic = modeRef.current === 'legend' ? 'lives'
+            : modeRef.current === 'timed' ? 'sudden_death'
+            : state.game?.mechanic_type;
         if (!isCorrect) {
             if (effectiveMechanic === 'sudden_death') {
                 isGameEnding = true;
@@ -344,8 +383,10 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             userAnswers: [...prev.userAnswers, { questionId: currentQ.id, isCorrect, category: currentQ.category || 'General' }]
         }));
 
+        // Si la ronda termina por este fallo, detenemos el reloj (relevante en Contrarreloj,
+        // cuyo cronómetro global sigue corriendo durante la retroalimentación).
         if (isGameEnding) {
-            // Need to save first then finish
+            stopTimer();
         }
 
         return isCorrect;
@@ -362,12 +403,15 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
     const finishGame = async (isAborted: boolean = false) => {
         if (!state.sessionId) return;
-        
+        if (finishedRef.current) return; // ya se finalizó (evita doble conteo de puntos)
+        finishedRef.current = true;
+        stopTimer(); // detiene el reloj (global en Contrarreloj) al cerrar la ronda
+
         // Calculate final stats. Orden explícito por question_order: el corte por zona
         // segura (slice) depende del orden cronológico real, no del orden de la BD.
         const { data: answers } = await supabase
             .from('game_answers')
-            .select('is_correct, points_earned, question_order')
+            .select('is_correct, points_earned, streak_bonus_points, question_order')
             .order('question_order', { ascending: true, nullsFirst: true })
             .eq('session_id', state.sessionId);
 
@@ -375,7 +419,20 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         let finalScore = state.score;
         let answeredCount = 0;
 
-        if (answers) {
+        if (modeRef.current === 'timed' && answers) {
+            // Contrarreloj: puntuación por tramos según hasta dónde se llegó, y x2 al completar.
+            const total = state.questions.length; // 15
+            const correct = answers.filter(a => a.is_correct);
+            const racha = correct.reduce((s, a) => s + (a.streak_bonus_points || 0), 0);
+            const base = correct.reduce((s, a) => s + ((a.points_earned || 0) - (a.streak_bonus_points || 0)), 0);
+            const reached = answers.length;
+            const completed = correct.length >= total; // las 15 correctas
+            if (completed) finalScore = (base + racha) * 2;        // ✔ completó → doble
+            else if (reached >= 11) finalScore = base + racha;     // 11–14 → racha asegurada
+            else finalScore = base;                                // 1–10 → solo base
+            answeredCount = reached;
+            correctCount = correct.length;
+        } else if (answers) {
             let answersToCount = answers;
             if (isAborted && (!state.game?.mechanic_type || state.game?.mechanic_type === 'safe_zones')) {
                 const safeZoneCount = Math.floor((state.currentQuestionIndex) / 5) * 5;

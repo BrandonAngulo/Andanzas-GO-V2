@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Game, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Layers, ChevronRight } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Timer, ChevronRight } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
@@ -15,7 +15,7 @@ import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
 
 interface JuegosPanelProps {
-    onPlayGame: (gameId: string, mode?: 'levels' | 'legend', theme?: string) => void;
+    onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string) => void;
 }
 
 export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
@@ -211,25 +211,25 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     <div className="space-y-3">
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels'); }}
-                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-primary hover:bg-primary/5"
-                        >
-                            <div className="rounded-xl bg-primary/10 p-3 text-primary"><Layers className="h-6 w-6" /></div>
-                            <div className="flex-1">
-                                <div className="font-bold">Partida corta por niveles</div>
-                                <div className="text-sm text-muted-foreground">15 preguntas con dificultad en ascenso. Ideal para una ronda rápida.</div>
-                            </div>
-                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                        </button>
-                        <button
-                            type="button"
                             onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend'); }}
                             className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-orange-500 hover:bg-orange-500/5"
                         >
                             <div className="rounded-xl bg-orange-500/10 p-3 text-orange-500"><Flame className="h-6 w-6" /></div>
                             <div className="flex-1">
                                 <div className="font-bold">Modo Leyenda</div>
-                                <div className="text-sm text-muted-foreground">Sin fin: seguí respondiendo mientras te queden vidas (3). ¿Hasta dónde llegás?</div>
+                                <div className="text-sm text-muted-foreground">Sin fin: subí de nivel respondiendo mientras te queden vidas (3). ¿Hasta dónde llegás?</div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'timed'); }}
+                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-sky-500 hover:bg-sky-500/5"
+                        >
+                            <div className="rounded-xl bg-sky-500/10 p-3 text-sky-500"><Timer className="h-6 w-6" /></div>
+                            <div className="flex-1">
+                                <div className="font-bold">Contrarreloj</div>
+                                <div className="text-sm text-muted-foreground">15 preguntas contra el reloj (2 min). Un fallo te elimina; completalas y ¡duplicás tus puntos!</div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-muted-foreground" />
                         </button>
