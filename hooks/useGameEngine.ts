@@ -154,6 +154,15 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             }
         }
 
+        // Piso de dificultad según la experiencia del jugador (nivel del perfil): a mayor
+        // nivel, se saltan los niveles más fáciles. Conservador (máx. 3) para no agotar el banco.
+        let difficultyFloor = 1;
+        if (userId) {
+            const { data: prof } = await supabase.from('profiles').select('level').eq('id', userId).maybeSingle();
+            const userLevel = (prof?.level as number) || 1;
+            difficultyFloor = Math.min(1 + Math.floor(Math.max(0, userLevel - 1) / 3), 3);
+        }
+
         let questions: GameQuestion[] = [];
         if (questionsData && questionsData.length > 0) {
             // Filtro por tema: sin tema ('Todo') usa solo el núcleo del juego (sin campaña);
@@ -172,6 +181,30 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 return [...sh(unseen), ...sh(seen)];
             };
 
+            // Cola de dificultad ASCENDENTE para Modo Leyenda: arranca en 'floor' (experiencia)
+            // y sube el techo cada pocas preguntas, sirviendo el nivel más alto disponible de la
+            // ventana. Así no se vuelca lo fácil al principio: la dificultad trepa rápido y se
+            // sostiene arriba (y recicla lo más difícil cuando se agota).
+            const buildRampQueue = (pool: any[], floor: number) => {
+                const byLevel: Record<number, any[]> = {};
+                for (const q of pool) { const lv = Math.min(Math.max(q.level || 1, 1), 5); (byLevel[lv] = byLevel[lv] || []).push(q); }
+                for (let lv = 1; lv <= 5; lv++) if (byLevel[lv]) byLevel[lv] = freshFirst(byLevel[lv]);
+                const cursor: Record<number, number> = {};
+                const availAt = (lv: number) => (byLevel[lv]?.length || 0) - (cursor[lv] || 0);
+                const takeFrom = (lv: number) => { const i = cursor[lv] || 0; cursor[lv] = i + 1; return byLevel[lv][i]; };
+                const queue: any[] = [];
+                while (queue.length < pool.length) {
+                    const cap = Math.min(5, floor + Math.floor(queue.length / 4)); // el techo sube cada 4
+                    let placed = false;
+                    for (let lv = cap; lv >= floor; lv--) { if (availAt(lv) > 0) { queue.push(takeFrom(lv)); placed = true; break; } }
+                    if (!placed) { // agotada la ventana [floor, cap]: toma cualquier nivel restante (prefiere difícil)
+                        for (let lv = 5; lv >= 1; lv--) { if (availAt(lv) > 0) { queue.push(takeFrom(lv)); placed = true; break; } }
+                    }
+                    if (!placed) break;
+                }
+                return queue;
+            };
+
             const groupByLevelShuffled = (arr: any[]) => {
                 const byLevel: Record<number, any[]> = {};
                 for (const q of arr) { const lv = q.level || 1; (byLevel[lv] = byLevel[lv] || []).push(q); }
@@ -185,8 +218,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             let finalQuestions = source;
 
             if (mode === 'legend') {
-                // Modo Leyenda: todo el pool del tema, dificultad ascendente, sin tope.
-                finalQuestions = groupByLevelShuffled(source);
+                // Modo Leyenda: pool completo con dificultad ascendente (piso según experiencia),
+                // sin tope. La partida sigue mientras queden vidas.
+                finalQuestions = buildRampQueue(source, difficultyFloor);
             } else if (activeTheme) {
                 // Tema específico (corto): hasta questions_per_match, dificultad ascendente.
                 const qpm = game.questions_per_match || 15;
