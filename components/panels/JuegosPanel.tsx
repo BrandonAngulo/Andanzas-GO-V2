@@ -217,7 +217,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             <div className="rounded-xl bg-orange-500/10 p-3 text-orange-500"><Flame className="h-6 w-6" /></div>
                             <div className="flex-1">
                                 <div className="font-bold">Modo Leyenda</div>
-                                <div className="text-sm text-muted-foreground">Sin fin: subí de nivel respondiendo mientras te queden vidas (3). ¿Hasta dónde llegás?</div>
+                                <div className="text-sm text-muted-foreground">Nivel tras nivel, sin final a la vista y solo 3 vidas. Pocos llegan lejos… ¿te la jugás por ser leyenda?</div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-muted-foreground" />
                         </button>
@@ -229,7 +229,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             <div className="rounded-xl bg-sky-500/10 p-3 text-sky-500"><Timer className="h-6 w-6" /></div>
                             <div className="flex-1">
                                 <div className="font-bold">Contrarreloj</div>
-                                <div className="text-sm text-muted-foreground">15 preguntas contra el reloj (2 min). Un fallo te elimina; completalas y ¡duplicás tus puntos!</div>
+                                <div className="text-sm text-muted-foreground">2 minutos, 15 preguntas y un solo error te saca. Llegá al final y duplicás todo. ¿Le corrés al reloj?</div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-muted-foreground" />
                         </button>
