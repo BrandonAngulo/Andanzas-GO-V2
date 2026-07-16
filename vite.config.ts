@@ -9,6 +9,17 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 750,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          supabase: ['@supabase/supabase-js'],
+          maps: ['@vis.gl/react-google-maps'],
+          motion: ['framer-motion'],
+          markdown: ['react-markdown', 'remark-gfm'],
+        },
+      },
+    },
   }
 });

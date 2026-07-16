@@ -3,8 +3,19 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Andanzas GO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andanzas GO | Explora, aprende y juega en Cali</title>
+  <meta name="description" content="Descubre Cali mediante rutas culturales, lugares, historias, experiencias y juegos que conectan con la memoria y la diversidad de la ciudad." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="application-name" content="Andanzas GO" />
+  <meta property="og:locale" content="es_CO" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Andanzas GO" />
+  <meta property="og:title" content="Andanzas GO | Explora, aprende y juega en Cali" />
+  <meta property="og:description" content="Rutas culturales, lugares, historias, experiencias y juegos para descubrir Cali." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Andanzas GO | Explora, aprende y juega en Cali" />
+  <meta name="twitter:description" content="Rutas culturales, lugares, historias, experiencias y juegos para descubrir Cali." />
   <meta name="theme-color" content="#1eb866" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -18,237 +29,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    :root {
-      /* Premium Teal Scheme */
-      --background: 210 20% 98%;
-      --foreground: 224 71.4% 4.1%;
-      --card: 0 0% 100%;
-      --card-foreground: 224 71.4% 4.1%;
-      --popover: 0 0% 100%;
-      --popover-foreground: 224 71.4% 4.1%;
-      --primary: 152 75% 35%; /* Vibrant Green Andanzas GO */
-      --primary-foreground: 0 0% 100%;
-      --secondary: 220 14.3% 95.9%;
-      --secondary-foreground: 220.9 39.3% 11%;
-      --muted: 220 14.3% 95.9%;
-      --muted-foreground: 220 8.9% 46.1%;
-      --accent: 220 14.3% 95.9%;
-      --accent-foreground: 220.9 39.3% 11%;
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 0 0% 98%;
-      --border: 220 13% 91%;
-      --input: 220 13% 91%;
-      --ring: 152 75% 35%;
-      --radius: 1rem;
-
-      --font-size-multiplier: 1;
-      --line-height-multiplier: 1;
-    }
-
-    .dark {
-      /* Sleek Cyber Dark Scheme */
-      --background: 224 25% 6%;
-      --foreground: 210 20% 98%;
-      --card: 224 20% 10%;
-      --card-foreground: 210 20% 98%;
-      --popover: 224 20% 9%;
-      --popover-foreground: 210 20% 98%;
-      --primary: 152 75% 35%;
-      --primary-foreground: 0 0% 100%;
-      --secondary: 224 15% 15%;
-      --secondary-foreground: 210 20% 98%;
-      --muted: 224 15% 15%;
-      --muted-foreground: 217.9 10.6% 64.9%;
-      --accent: 224 15% 15%;
-      --accent-foreground: 210 20% 98%;
-      --destructive: 0 62.8% 30.6%;
-      --destructive-foreground: 0 0% 98%;
-      --border: 224 15% 16%;
-      --input: 224 15% 16%;
-      --ring: 152 75% 35%;
-    }
-
-    html {
-      font-size: calc(16px * var(--font-size-multiplier));
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: var(--line-height-multiplier);
-    }
-
-    h1, h2, h3, h4, h5, h6, .font-heading {
-      font-family: 'Outfit', sans-serif !important;
-    }
-
-    /* Grayscale Mode */
-    html[data-grayscale="true"] {
-      filter: grayscale(100%);
-    }
-
-    /* High Contrast Mode */
-    html[data-high-contrast="true"] {
-      --background: 0 0% 0%;
-      --foreground: 0 0% 100%;
-      --card: 0 0% 5%;
-      --card-foreground: 0 0% 100%;
-      --popover: 0 0% 5%;
-      --popover-foreground: 0 0% 100%;
-      --primary: 60 100% 50%;
-      --primary-foreground: 0 0% 0%;
-      --secondary: 0 0% 20%;
-      --secondary-foreground: 0 0% 100%;
-      --muted: 0 0% 20%;
-      --muted-foreground: 0 0% 80%;
-      --accent: 0 0% 20%;
-      --accent-foreground: 0 0% 100%;
-      --destructive: 0 100% 50%;
-      --destructive-foreground: 0 0% 100%;
-      --border: 0 0% 100%;
-      --input: 0 0% 100%;
-      --ring: 60 100% 50%;
-    }
-
-    html[data-high-contrast="true"] * {
-      border-color: #fff !important;
-    }
-
-    html[data-high-contrast="true"] .text-muted-foreground {
-      color: #ddd !important;
-    }
-
-    /* ESTILOS DE SCROLLBAR */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(160, 160, 160, 0.25);
-      border-radius: 99px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(160, 160, 160, 0.45);
-    }
-
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(160, 160, 160, 0.25) transparent;
-    }
-
-    /* Marcadores personalizados del mapa */
-    .emoji-marker {
-      background-color: white;
-      border: 3px solid hsl(var(--primary));
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .emoji-marker:hover {
-      transform: translateY(-4px) scale(1.15);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
-      z-index: 1000 !important;
-    }
-
-    /* Premium Custom Classes */
-    .glass-panel {
-      background-color: rgba(255, 255, 255, 0.75) !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    }
-
-    .dark .glass-panel {
-      background-color: rgba(10, 15, 30, 0.7) !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .card-hover {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-4px) scale(1.01) !important;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03) !important;
-      border-color: hsl(var(--primary) / 0.4) !important;
-    }
-
-    .dark .card-hover:hover {
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
-      border-color: hsl(var(--primary) / 0.6) !important;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, hsl(var(--primary)) 0%, #8b5cf6 100%) !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
-    }
-
-    .neon-glow {
-      box-shadow: 0 0 20px -3px hsl(var(--primary) / 0.3) !important;
-    }
-  </style>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            heading: ['Outfit', 'sans-serif'],
-          },
-          colors: {
-            border: 'hsl(var(--border))',
-            input: 'hsl(var(--input))',
-            ring: 'hsl(var(--ring))',
-            background: 'hsl(var(--background))',
-            foreground: 'hsl(var(--foreground))',
-            primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
-            secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
-            destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
-            muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
-            accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
-            popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
-            card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
-          },
-          borderRadius: {
-            lg: `var(--radius)`,
-            md: `calc(var(--radius) - 2px)`,
-            sm: `calc(var(--radius) - 4px)`,
-          }
-        },
-      },
-    };
-  </script>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "vite": "https://esm.sh/vite@^7.3.0",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
-  }
-}
-</script>
   <link rel="stylesheet" href="/index.css">
 </head>
 
