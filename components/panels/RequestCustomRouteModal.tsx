@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -6,10 +6,11 @@ import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useAuth } from '../../contexts/AuthContext';
 import { customRoutesService } from '../../services/customRoutes.service';
+import { settingsService } from '../../services/settings.service';
 import { Compass, CheckCircle2, AlertCircle, CalendarClock, Contact, Users, Accessibility, ShieldCheck } from 'lucide-react';
 
 interface Props { open: boolean; onOpenChange: (open: boolean) => void }
-const MIN_NOTICE_DAYS = 7;
+const DEFAULT_MIN_NOTICE_DAYS = 7;
 const initialForm = {
     contact_name: '', contact_email: '', contact_phone: '', preferred_contact_method: 'whatsapp',
     route_category: '', cultural_approach: '', group_type: '', institution_name: '', group_size: '', age_range: '',
@@ -23,9 +24,18 @@ export const RequestCustomRouteModal: React.FC<Props> = ({ open, onOpenChange })
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
+    const [minNoticeDays, setMinNoticeDays] = useState(DEFAULT_MIN_NOTICE_DAYS);
     const set = (key: keyof typeof form, value: string | boolean) => setForm(previous => ({ ...previous, [key]: value }));
     const requiresInstitution = ['Institucional', 'Colegio'].includes(form.group_type);
-    const minDate = new Date(Date.now() + MIN_NOTICE_DAYS * 86400000).toISOString().slice(0, 10);
+    const minDate = new Date(Date.now() + minNoticeDays * 86400000).toISOString().slice(0, 10);
+
+    useEffect(() => {
+        if (!open) return;
+        let active = true;
+        void settingsService.getOperationalSetting('custom_route_min_notice_days', DEFAULT_MIN_NOTICE_DAYS)
+            .then(value => { if (active) setMinNoticeDays(Math.max(1, Math.round(value))); });
+        return () => { active = false; };
+    }, [open]);
 
     const close = (next: boolean) => {
         if (!next) setTimeout(() => { setForm({ ...initialForm, contact_name: user?.user_metadata?.full_name || '', contact_email: user?.email || '' }); setSuccess(false); setError(''); }, 250);
@@ -53,7 +63,7 @@ export const RequestCustomRouteModal: React.FC<Props> = ({ open, onOpenChange })
             setSuccess(true);
         } catch (reason: any) {
             const message = String(reason?.message || '');
-            setError(message.includes('MIN_NOTICE') ? 'La fecha debe tener al menos 7 días de anticipación.' : 'No fue posible enviar la solicitud. Revisa los datos e inténtalo nuevamente.');
+            setError(message.includes('MIN_NOTICE') ? `La fecha debe tener al menos ${minNoticeDays} días de anticipación.` : 'No fue posible enviar la solicitud. Revisa los datos e inténtalo nuevamente.');
         } finally { setSubmitting(false); }
     };
 
@@ -62,7 +72,7 @@ export const RequestCustomRouteModal: React.FC<Props> = ({ open, onOpenChange })
         {success ? <div className="py-10 text-center space-y-4"><CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" /><h3 className="text-xl font-bold">Solicitud recibida</h3><p className="text-sm text-muted-foreground max-w-md mx-auto">Revisaremos viabilidad y disponibilidad. El siguiente paso será contactarte y, si procede, enviar cotización y propuesta de diseño.</p><Button onClick={() => close(false)}>Entendido</Button></div> :
         <form onSubmit={submit} className="space-y-6 mt-4">
             {error && <div role="alert" className="p-3 bg-red-500/10 text-red-700 rounded-xl flex gap-2 text-sm"><AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{error}</div>}
-            <div className="rounded-2xl border bg-amber-500/5 border-amber-500/20 p-4 flex gap-3"><CalendarClock className="w-5 h-5 text-amber-600 shrink-0" /><div><p className="font-semibold text-sm">Anticipación mínima: {MIN_NOTICE_DAYS} días</p><p className="text-xs text-muted-foreground">La solicitud no garantiza disponibilidad. Para grupos grandes, instituciones o necesidades especiales recomendamos más anticipación.</p></div></div>
+            <div className="rounded-2xl border bg-amber-500/5 border-amber-500/20 p-4 flex gap-3"><CalendarClock className="w-5 h-5 text-amber-600 shrink-0" /><div><p className="font-semibold text-sm">Anticipación mínima: {minNoticeDays} días</p><p className="text-xs text-muted-foreground">La solicitud no garantiza disponibilidad. Para grupos grandes, instituciones o necesidades especiales recomendamos más anticipación.</p></div></div>
 
             <fieldset className="space-y-3"><legend className="font-bold flex items-center gap-2"><Contact className="w-4 h-4 text-primary" />Datos de contacto</legend><div className="grid sm:grid-cols-2 gap-3">
                 <Input required placeholder="Nombre de quien solicita" value={form.contact_name} onChange={e => set('contact_name',e.target.value)} />
