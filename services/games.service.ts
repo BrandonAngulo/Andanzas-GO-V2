@@ -151,19 +151,42 @@ export const gamesService = {
 
     async createQuestion(question: Partial<GameQuestion>): Promise<GameQuestion | null> {
         const { data, error } = await supabase.from('game_questions').insert(question).select().single();
-        if (error) return null;
+        if (error) throw error;
         return data as GameQuestion;
     },
 
     async updateQuestion(id: string, question: Partial<GameQuestion>): Promise<GameQuestion | null> {
         const { data, error } = await supabase.from('game_questions').update(question).eq('id', id).select().single();
-        if (error) return null;
+        if (error) throw error;
         return data as GameQuestion;
+    },
+
+    async updateQuestionsStatus(ids: string[], status: GameQuestion['status']): Promise<number> {
+        if (ids.length === 0) return 0;
+        const { data, error } = await supabase
+            .from('game_questions')
+            .update({ status, updated_at: new Date().toISOString() })
+            .in('id', ids)
+            .select('id');
+        if (error) throw error;
+        return data?.length || 0;
+    },
+
+    async deleteQuestions(ids: string[]): Promise<number> {
+        if (ids.length === 0) return 0;
+        const { data, error } = await supabase
+            .from('game_questions')
+            .delete()
+            .in('id', ids)
+            .select('id');
+        if (error) throw error;
+        return data?.length || 0;
     },
 
     async deleteQuestion(id: string): Promise<boolean> {
         const { error } = await supabase.from('game_questions').delete().eq('id', id);
-        return !error;
+        if (error) throw error;
+        return true;
     },
 
     // ---- REPORTS ----
