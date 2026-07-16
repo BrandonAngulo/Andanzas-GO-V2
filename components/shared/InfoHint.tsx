@@ -3,11 +3,49 @@ import { HelpCircle } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 
+/**
+ * Renders a plain-text help body: blank lines separate paragraphs and lines
+ * starting with "- " become a bulleted list.
+ */
+export const HelpBody: React.FC<{ text: string }> = ({ text }) => {
+    const lines = (text || '').split('\n');
+    const blocks: React.ReactNode[] = [];
+    let bullets: string[] = [];
+
+    const flushBullets = () => {
+        if (bullets.length) {
+            blocks.push(
+                <ul key={`ul-${blocks.length}`} className="list-disc pl-5 space-y-1">
+                    {bullets.map((b, i) => <li key={i}>{b}</li>)}
+                </ul>
+            );
+            bullets = [];
+        }
+    };
+
+    lines.forEach((raw) => {
+        const line = raw.trimEnd();
+        if (/^[-•]\s+/.test(line)) {
+            bullets.push(line.replace(/^[-•]\s+/, ''));
+        } else if (line.trim() === '') {
+            flushBullets();
+        } else {
+            flushBullets();
+            blocks.push(<p key={`p-${blocks.length}`}>{line}</p>);
+        }
+    });
+    flushBullets();
+
+    return <>{blocks}</>;
+};
+
 interface InfoHintProps {
     /** Dialog title. */
     title: string;
-    /** Rich body content shown inside the dialog. */
-    children: React.ReactNode;
+    /** Plain-text body (paragraphs + "- " bullets). Used when `children` is absent. */
+    body?: string;
+    /** Rich body content shown inside the dialog (overrides `body`). */
+    children?: React.ReactNode;
     /** Accessible label / tooltip for the trigger button. */
     label?: string;
     /** Optional icon override (defaults to a help circle). */
@@ -26,6 +64,7 @@ interface InfoHintProps {
  */
 export const InfoHint: React.FC<InfoHintProps> = ({
     title,
+    body,
     children,
     label = 'Más información',
     icon,
@@ -61,7 +100,7 @@ export const InfoHint: React.FC<InfoHintProps> = ({
                     <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
                 <div className="text-sm text-muted-foreground leading-relaxed space-y-3 pt-1">
-                    {children}
+                    {children ?? (body ? <HelpBody text={body} /> : null)}
                 </div>
             </DialogContent>
         </Dialog>

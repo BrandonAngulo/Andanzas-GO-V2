@@ -20,6 +20,7 @@ import { AdminSettings } from './AdminSettings';
 import { AdminUsuarios } from './AdminUsuarios';
 import { AdminInstitucional } from './AdminInstitucional';
 import { AdminBanners } from './AdminBanners';
+import { AdminHelpContent } from './AdminHelpContent';
 import { CuriousFactsManager } from './CuriousFactsManager';
 import { AdminMetricas } from './AdminMetricas';
 import { AdminAvatarsManager } from './AdminAvatarsManager';
@@ -252,7 +253,7 @@ const AdminOverview = () => {
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
 
     // Security Check: Only render if user is admin or editor
@@ -390,6 +391,13 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Image className="w-4 h-4 mr-2" /> Banners
                     </Button>
+                    <Button
+                        variant={activeTab === 'ayuda' ? 'default' : 'outline'}
+                        onClick={() => setActiveTab('ayuda')}
+                        className="rounded-full whitespace-nowrap"
+                    >
+                        <HelpCircle className="w-4 h-4 mr-2" /> Textos de Ayuda
+                    </Button>
                     <Button 
                         variant={activeTab === 'legal' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('legal')}
@@ -425,6 +433,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'legal' && <AdminDocumentosLegales />}
                     {activeTab === 'usuarios' && <AdminUsuarios />}
                     {activeTab === 'banners' && <AdminBanners />}
+                    {activeTab === 'ayuda' && <AdminHelpContent />}
                     {activeTab === 'settings' && <AdminSettings />}
                 </div>
             </div>

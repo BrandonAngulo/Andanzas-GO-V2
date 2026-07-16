@@ -32,6 +32,7 @@ import FullView from "./components/views/FullView";
 import InsigniasModal from "./components/panels/InsigniasModal";
 import ActiveRouteBanner from './components/shared/ActiveRouteBanner';
 import { InfoHint } from "./components/shared/InfoHint";
+import { useHelpContent } from "./hooks/useHelpContent";
 import RouteIntroModal from "./components/views/RouteIntroModal";
 import Logo from "./components/layout/Logo";
 import AccessibilityMenu from "./components/layout/AccessibilityMenu";
@@ -110,6 +111,7 @@ export default function App() {
   if (path === '/terms') return <TermsOfService />;
 
   const { t, language } = useI18n();
+  const { getHelp } = useHelpContent();
   const { isAuthenticated, user, signIn, signUp } = useAuth();
 
   // --- Global State via Contexts ---
@@ -563,11 +565,10 @@ export default function App() {
             <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
               <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">
                 {panelTitle}
-                {['mapa', 'favoritos', 'reseñas', 'tendencias', 'noticias', 'diccionario', 'perfil'].includes(activePanel) && (
-                  <InfoHint size="sm" title={t(`panelInfo.${activePanel}.title`)} label={t(`panelInfo.${activePanel}.title`)}>
-                    {((t(`panelInfo.${activePanel}.body`) as unknown as string[]) || []).map((p, i) => <p key={i}>{p}</p>)}
-                  </InfoHint>
-                )}
+                {['mapa', 'favoritos', 'reseñas', 'tendencias', 'noticias', 'diccionario', 'perfil'].includes(activePanel) && (() => {
+                  const help = getHelp(activePanel);
+                  return <InfoHint size="sm" title={help.title} label={help.title} body={help.body} />;
+                })()}
               </CardTitle>
               {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {language === 'es' ? 'Vivir / Crear Ruta' : 'Live / Create Route'}</Button>}
             </CardHeader>

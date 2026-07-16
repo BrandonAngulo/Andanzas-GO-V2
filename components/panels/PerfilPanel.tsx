@@ -13,6 +13,7 @@ import { BadgeCard } from '../shared/BadgeCard';
 import { GameMascot } from '../views/GameMascot';
 import { UserAvatar } from '../shared/UserAvatar';
 import { InfoHint } from '../shared/InfoHint';
+import { useHelpContent } from '../../hooks/useHelpContent';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
@@ -122,6 +123,7 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
 
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite, onNavigate }) => {
     const { t, language } = useI18n();
+    const { getHelp } = useHelpContent();
     const { user, signIn, signUp, logout, isAuthenticated, resetPassword, signInWithGoogle } = useAuth();
 
     const [isRegistering, setIsRegistering] = useState(false);
@@ -517,6 +519,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     }
 
     const displayName = userProfile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Explorador";
+    const economyHelp = getHelp('economy');
 
     const getLevelTitle = (lvl: number) => {
         if (!lvl || lvl < 3) return language === 'es' ? 'Explorador Novato' : 'Novice Explorer';
@@ -657,39 +660,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </div>
 
                         <InfoHint
-                            title={t('economyHelp.title')}
+                            title={economyHelp.title}
+                            body={economyHelp.body}
                             trigger={
                                 <button type="button" className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline">
                                     <Info className="w-3.5 h-3.5" /> {language === 'es' ? '¿Cómo funcionan los puntos?' : 'How do points work?'}
                                 </button>
                             }
-                        >
-                            <p>{t('economyHelp.intro')}</p>
-                            <div className="space-y-3">
-                                <div className="flex gap-3">
-                                    <Trophy className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                                    <div><strong className="text-foreground block">{t('economyHelp.levelTitle')}</strong>{t('economyHelp.levelBody')}</div>
-                                </div>
-                                <div className="flex gap-3">
-                                    <Sparkles className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                                    <div><strong className="text-foreground block">{t('economyHelp.pointsTitle')}</strong>{t('economyHelp.pointsBody')}</div>
-                                </div>
-                                <div className="flex gap-3">
-                                    <Coins className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
-                                    <div><strong className="text-foreground block">{t('economyHelp.coinsTitle')}</strong>{t('economyHelp.coinsBody')}</div>
-                                </div>
-                            </div>
-                            <div>
-                                <strong className="text-foreground block mb-1.5">{t('economyHelp.earnTitle')}</strong>
-                                <ul className="list-disc pl-5 space-y-1">
-                                    {((t('economyHelp.earn') as unknown as string[]) || []).map((item, i) => <li key={i}>{item}</li>)}
-                                </ul>
-                            </div>
-                            <div className="rounded-xl bg-primary/10 border border-primary/20 p-3 text-primary flex gap-2">
-                                <Gem className="w-4 h-4 shrink-0 mt-0.5" />
-                                <div><strong className="uppercase text-[10px] tracking-wider block">{t('economyHelp.soonLabel')}</strong>{t('economyHelp.soonBody')}</div>
-                            </div>
-                        </InfoHint>
+                        />
                     </div>
                 </div>
 
