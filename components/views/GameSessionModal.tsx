@@ -48,6 +48,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         bestCategory,
         worstCategory,
         categoryProgress,
+        rewards,
         sessionId,
         livesRemaining
     } = useGameEngine(gameId, userProfile?.id, mode, theme);
@@ -285,6 +286,18 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                     <span className="text-sm sm:text-base font-bold text-orange-400 text-center">{worstCategory}</span>
                                 </div>
                             )}
+                        </div>
+                    )}
+
+                    {rewards && (
+                        <div className="w-full bg-slate-900/50 border border-white/10 p-5 rounded-3xl">
+                            <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-3">Recompensas de la partida</p>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                                <div><strong className="block text-xl text-violet-300">+{rewards.xp}</strong><span className="text-xs text-white/50">XP de perfil</span></div>
+                                <div><strong className="block text-xl text-emerald-300">+{rewards.appPoints}</strong><span className="text-xs text-white/50">Puntos Andanzas</span></div>
+                                <div><strong className="block text-xl text-yellow-300">+{rewards.coins}</strong><span className="text-xs text-white/50">Monedas</span></div>
+                                <div><strong className="block text-xl text-cyan-300">+{rewards.gems}</strong><span className="text-xs text-white/50">Gemas</span></div>
+                            </div>
                         </div>
                     )}
 

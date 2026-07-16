@@ -512,6 +512,8 @@ export interface UserProfile {
   language?: string;
   avatar_url?: string;
   points: number;
+  experience_points?: number;
+  lifetime_points?: number;
   level?: number;
   interests: string[];
   travel_style?: string;

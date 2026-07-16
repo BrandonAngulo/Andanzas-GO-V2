@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon } from 'lucide-react';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
 import { GameMascot } from '../views/GameMascot';
@@ -136,6 +136,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [successMsg, setSuccessMsg] = useState('');
     const [loading, setLoading] = useState(false);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const [economy, setEconomy] = useState<{ level: number; experience_points: number; level_start_xp: number; next_level_xp: number; app_points: number; coins: number; gems: number } | null>(null);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
@@ -190,6 +191,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     setEditCity(profile.city || user.user_metadata?.city || "");
                 }
             });
+            gamificationService.getEconomySummary().then(setEconomy);
 
             // Load badges
             const loadBadges = async () => {
@@ -523,10 +525,13 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     };
 
     // Gamification Progress Math
-    const currentLevel = userProfile?.level || 1;
-    const currentPoints = userProfile?.points || 0;
-    const pointsForNextLevel = currentLevel * 100;
-    const progressPercent = Math.min(100, Math.round((currentPoints / pointsForNextLevel) * 100));
+    const currentLevel = economy?.level || userProfile?.level || 1;
+    const currentXp = economy?.experience_points || userProfile?.experience_points || 0;
+    const levelStartXp = economy?.level_start_xp || (100 * Math.pow(currentLevel - 1, 2));
+    const nextLevelXp = economy?.next_level_xp || (100 * Math.pow(currentLevel, 2));
+    const xpWithinLevel = Math.max(0, currentXp - levelStartXp);
+    const xpNeededThisLevel = Math.max(1, nextLevelXp - levelStartXp);
+    const progressPercent = Math.min(100, Math.round((xpWithinLevel / xpNeededThisLevel) * 100));
 
     const currentAvatarUrl = userProfile?.selected_avatar_id || userProfile?.avatar_url || user?.user_metadata?.avatar_url;
     
@@ -631,7 +636,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             {getLevelTitle(currentLevel)}
                         </p>
                         <p className="text-xs text-primary font-medium flex items-center justify-center gap-1.5 mb-5 bg-primary/10 px-3 py-1 rounded-full">
-                            {currentPoints} / {pointsForNextLevel} XP
+                            {xpWithinLevel} / {xpNeededThisLevel} XP para el siguiente nivel
                         </p>
 
                         <div className="flex gap-4 w-full max-w-sm justify-center">
@@ -643,6 +648,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <span className="text-xl font-bold text-foreground">{myReviews.length + myFavorites.length}</span>
                                 <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Aportes</span>
                             </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 w-full max-w-sm mt-4">
+                            <div className="rounded-xl border bg-background/60 p-2"><Sparkles className="w-4 h-4 mx-auto text-emerald-500" /><strong className="block text-sm">{economy?.app_points ?? userProfile?.points ?? 0}</strong><span className="text-[9px] text-muted-foreground">Puntos Andanzas</span></div>
+                            <div className="rounded-xl border bg-background/60 p-2"><Coins className="w-4 h-4 mx-auto text-yellow-500" /><strong className="block text-sm">{economy?.coins ?? 0}</strong><span className="text-[9px] text-muted-foreground">Monedas</span></div>
+                            <div className="rounded-xl border bg-background/60 p-2"><Gem className="w-4 h-4 mx-auto text-cyan-500" /><strong className="block text-sm">{economy?.gems ?? 0}</strong><span className="text-[9px] text-muted-foreground">Gemas</span></div>
                         </div>
                     </div>
                 </div>

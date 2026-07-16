@@ -30,6 +30,18 @@ const iconMap: Record<string, any> = {
 };
 
 export const gamificationService = {
+    async getEconomySummary() {
+        const { data, error } = await supabase.rpc('get_my_economy_summary');
+        if (error) {
+            console.error('Error fetching economy summary:', error);
+            return null;
+        }
+        return data as {
+            level: number; experience_points: number; level_start_xp: number; next_level_xp: number;
+            app_points: number; coins: number; gems: number;
+        };
+    },
+
     async getAllBadges(): Promise<Insignia[]> {
         const { data, error } = await supabase
             .from('badges')

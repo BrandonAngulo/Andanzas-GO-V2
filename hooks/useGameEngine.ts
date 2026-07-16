@@ -21,6 +21,7 @@ export interface GameEngineState {
     bestCategory: string | null;
     worstCategory: string | null;
     categoryProgress: { category: string; xp: number; level: number; mastery: number }[];
+    rewards: { xp: number; appPoints: number; coins: number; gems: number } | null;
 }
 
 // Verifica si una respuesta es correcta según el tipo de pregunta.
@@ -79,7 +80,8 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         userAnswers: [],
         bestCategory: null,
         worstCategory: null,
-        categoryProgress: []
+        categoryProgress: [],
+        rewards: null
     });
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -542,11 +544,12 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             max_correct_streak: state.maxStreak
         }).eq('id', state.sessionId);
 
-        // Award global points
-        await supabase.rpc('award_points', {
-            points_to_add: finalScore,
-            reason_text: `Trivia: ${state.game?.title}`
+        // El puntaje de la partida no es XP global: el servidor lo convierte en
+        // recompensas limitadas e idempotentes según el resultado de la sesión.
+        const { data: rewardData, error: rewardError } = await supabase.rpc('award_game_rewards', {
+            game_session_id: state.sessionId
         });
+        if (rewardError) console.error('Error awarding game rewards:', rewardError);
 
         let categoryProgress: { category: string; xp: number; level: number; mastery: number }[] = [];
         if (userId) {
@@ -572,7 +575,13 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             score: finalScore,
             bestCategory,
             worstCategory,
-            categoryProgress
+            categoryProgress,
+            rewards: rewardData ? {
+                xp: Number(rewardData.xp_awarded || 0),
+                appPoints: Number(rewardData.app_points_awarded || 0),
+                coins: Number(rewardData.coins_awarded || 0),
+                gems: Number(rewardData.gems_awarded || 0)
+            } : null
         }));
     };
 
