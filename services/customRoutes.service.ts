@@ -7,7 +7,7 @@ export const customRoutesService = {
             .from('custom_route_requests')
             .select(`
                 *,
-                profile:user_id (nombre, avatar_url, email)
+                profile:user_id (full_name, avatar_url, email)
             `)
             .order('created_at', { ascending: false });
 
@@ -55,6 +55,16 @@ export const customRoutesService = {
             return false;
         }
 
+        return true;
+    },
+
+    async updateManagement(id: string, updates: Partial<CustomRouteRequest>): Promise<boolean> {
+        const { id: _id, user_id: _userId, created_at: _createdAt, ...safeUpdates } = updates as CustomRouteRequest;
+        const { error } = await supabase.from('custom_route_requests').update(safeUpdates).eq('id', id);
+        if (error) {
+            console.error('Error updating route request management:', error);
+            throw error;
+        }
         return true;
     }
 };

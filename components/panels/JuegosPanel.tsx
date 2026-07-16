@@ -131,7 +131,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                     </div>
                                 )}
                                 <h3 className={`text-base sm:text-lg font-black drop-shadow-md line-clamp-2 uppercase tracking-tight leading-tight ${overCover ? 'text-white' : 'text-primary'}`} style={titleStyle}>
-                                    {game.cover_title || game.title}
+                                    {game.cover_title?.trim() || game.title?.trim() || 'Juego cultural'}
                                 </h3>
                                 {(game.cover_subtitle) && (
                                     <p className={`text-[10px] font-bold mt-1 tracking-wide line-clamp-1 ${overCover ? 'text-white/90' : 'text-foreground/80'}`}>
@@ -157,21 +157,21 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             </div>
                             
                             {game.status === 'published' ? (
-                                <div className="grid grid-cols-5 gap-2 w-full">
+                                <div className="grid grid-cols-2 gap-2 w-full">
                                     <Button 
                                         variant="outline" 
-                                        className="col-span-1 shadow-md hover:shadow-lg transition-shadow bg-background px-0"
+                                        className="shadow-md hover:shadow-lg transition-shadow bg-background"
                                         onClick={() => setActiveInstructionsGame(game)}
                                         title="Cómo Jugar"
                                     >
-                                        <Info className="w-5 h-5 text-primary" />
+                                        <Info className="w-4 h-4 mr-2 text-primary" /> Cómo jugar
                                     </Button>
                                     <Button
-                                        className="col-span-4 shadow-md hover:shadow-lg transition-shadow group-hover:bg-primary/90"
+                                        className="shadow-md hover:shadow-lg transition-shadow group-hover:bg-primary/90"
                                         onClick={() => launchGame(game)}
                                     >
                                         <PlayCircle className="w-5 h-5 mr-2" />
-                                        Jugar Ahora
+                                        Jugar
                                     </Button>
                                 </div>
                             ) : (

@@ -1,199 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CustomRouteRequest } from '../../../types';
 import { customRoutesService } from '../../../services/customRoutes.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
-import { Map, Mail, Users, CheckCircle2, XCircle, Clock, Save, FileText, Search } from 'lucide-react';
+import { Map, Mail, Users, Clock, Save, FileText, Search, Phone, Building2, Accessibility, CalendarClock, Banknote, RefreshCcw } from 'lucide-react';
 import { Textarea } from '../../ui/textarea';
 import { Input } from '../../ui/input';
+import { toast } from 'sonner';
+
+type RequestWithProfile = CustomRouteRequest & { profile?: { full_name?: string; avatar_url?: string; email?: string } };
+const STATUS = {
+    requested: 'Solicitada', under_review: 'En revisión', accepted: 'Aceptada', rejected: 'Rechazada',
+    quote_sent: 'Cotización enviada', design_sent: 'Diseño enviado', client_approved: 'Aprobada por cliente',
+    scheduled: 'Citada / programada', completed: 'Realizada', canceled: 'Cancelada', rescheduled: 'Movida / reprogramada'
+} as const;
+const statusTone: Record<string,string> = { requested:'bg-amber-100 text-amber-800',under_review:'bg-blue-100 text-blue-800',accepted:'bg-emerald-100 text-emerald-800',rejected:'bg-red-100 text-red-800',quote_sent:'bg-violet-100 text-violet-800',design_sent:'bg-indigo-100 text-indigo-800',client_approved:'bg-teal-100 text-teal-800',scheduled:'bg-sky-100 text-sky-800',completed:'bg-green-100 text-green-800',canceled:'bg-slate-200 text-slate-700',rescheduled:'bg-orange-100 text-orange-800' };
 
 export const AdminRutasPersonalizadas: React.FC = () => {
-    const [requests, setRequests] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [filterStatus, setFilterStatus] = useState<string>('all');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [requests,setRequests] = useState<RequestWithProfile[]>([]);
+    const [loading,setLoading] = useState(true);
+    const [filter,setFilter] = useState('all');
+    const [search,setSearch] = useState('');
+    const [drafts,setDrafts] = useState<Record<string,Partial<CustomRouteRequest>>>({});
+    const [saving,setSaving] = useState<string|null>(null);
+    const load = async () => { setLoading(true); setRequests(await customRoutesService.getAllAdmin() as RequestWithProfile[]); setLoading(false); };
+    useEffect(() => { load(); }, []);
+    const patchDraft = (id:string,key:keyof CustomRouteRequest,value:any) => setDrafts(old => ({...old,[id]:{...old[id],[key]:value}}));
+    const value = <K extends keyof CustomRouteRequest>(request:RequestWithProfile,key:K) => (drafts[request.id]?.[key] ?? request[key]) as CustomRouteRequest[K];
+    const save = async (request:RequestWithProfile) => { const updates=drafts[request.id]; if(!updates)return; setSaving(request.id); try{await customRoutesService.updateManagement(request.id,updates); toast.success('Gestión actualizada'); setDrafts(old=>{const next={...old};delete next[request.id];return next}); await load();}catch{toast.error('No fue posible guardar los cambios');}finally{setSaving(null);} };
+    const visible=requests.filter(r=>{const text=`${r.contact_name} ${r.contact_email} ${r.contact_phone} ${r.institution_name} ${r.category} ${r.group_type}`.toLowerCase();return(filter==='all'||r.status===filter)&&text.includes(search.toLowerCase())});
 
-    const loadRequests = async () => {
-        setLoading(true);
-        const data = await customRoutesService.getAllAdmin();
-        setRequests(data);
-        setLoading(false);
-    };
-
-    useEffect(() => {
-        loadRequests();
-    }, []);
-
-    const handleUpdateStatus = async (id: string, status: string) => {
-        await customRoutesService.updateStatus(id, status);
-        setRequests(requests.map(r => r.id === id ? { ...r, status } : r));
-    };
-
-    const handleUpdateDetails = async (id: string, details: string) => {
-        await customRoutesService.updateDetails(id, details);
-        // Alert o feedback sutil podría ir aquí
-    };
-
-    const getStatusBadge = (status: string) => {
-        switch(status) {
-            case 'pending': return <span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><Clock className="w-3 h-3" /> Pendiente</span>;
-            case 'reviewed': return <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><Search className="w-3 h-3" /> En Revisión</span>;
-            case 'contacted': return <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><Mail className="w-3 h-3" /> Contactado</span>;
-            case 'accepted': return <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Aceptada</span>;
-            case 'rejected': return <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><XCircle className="w-3 h-3" /> Rechazada</span>;
-            default: return null;
-        }
-    };
-
-    const filteredRequests = requests.filter(r => {
-        const matchesStatus = filterStatus === 'all' || r.status === filterStatus;
-        const searchStr = searchQuery.toLowerCase();
-        const matchesSearch = 
-            (r.profile?.nombre || '').toLowerCase().includes(searchStr) ||
-            (r.profile?.email || '').toLowerCase().includes(searchStr) ||
-            (r.category || '').toLowerCase().includes(searchStr) ||
-            (r.group_type || '').toLowerCase().includes(searchStr);
-        return matchesStatus && matchesSearch;
-    });
-
-    return (
-        <div className="space-y-6 pb-24 min-h-[85vh]">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h3 className="text-xl font-bold flex items-center gap-2">
-                        <Map className="w-6 h-6 text-primary" /> Solicitudes de Rutas
-                    </h3>
-                    <p className="text-muted-foreground text-sm">Gestiona las peticiones de rutas personalizadas hechas por los usuarios.</p>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <div className="relative w-full sm:w-64">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                            placeholder="Buscar usuario o plan..." 
-                            className="pl-9"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                    <Select value={filterStatus} onValueChange={setFilterStatus}>
-                        <SelectTrigger className="w-full sm:w-[180px]">
-                            <SelectValue placeholder="Estado" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Todos los estados</SelectItem>
-                            <SelectItem value="pending">Pendientes</SelectItem>
-                            <SelectItem value="reviewed">En Revisión</SelectItem>
-                            <SelectItem value="contacted">Contactados</SelectItem>
-                            <SelectItem value="accepted">Aceptadas</SelectItem>
-                            <SelectItem value="rejected">Rechazadas</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
+    return <div className="space-y-6 pb-24 min-h-[85vh]">
+        <div className="flex flex-col lg:flex-row justify-between gap-4"><div><h3 className="text-xl font-bold flex items-center gap-2"><Map className="w-6 h-6 text-primary" />Operación de rutas personalizadas</h3><p className="text-sm text-muted-foreground">Seguimiento desde la solicitud hasta la realización, cancelación o reprogramación.</p></div><div className="flex flex-col sm:flex-row gap-2"><div className="relative"><Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground"/><Input className="pl-9 sm:w-72" placeholder="Contacto, institución o ruta…" value={search} onChange={e=>setSearch(e.target.value)}/></div><Select value={filter} onValueChange={setFilter}><SelectTrigger className="sm:w-52"><SelectValue/></SelectTrigger><SelectContent><SelectItem value="all">Todos los estados</SelectItem>{Object.entries(STATUS).map(([key,label])=><SelectItem key={key} value={key}>{label}</SelectItem>)}</SelectContent></Select><Button variant="outline" onClick={load}><RefreshCcw className="w-4 h-4"/></Button></div></div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">{['requested','under_review','quote_sent','scheduled'].map(key=><Card key={key}><CardContent className="p-4"><p className="text-xs text-muted-foreground">{STATUS[key as keyof typeof STATUS]}</p><p className="text-2xl font-black">{requests.filter(r=>r.status===key).length}</p></CardContent></Card>)}</div>
+        {loading?<div className="py-12 text-center animate-pulse">Cargando solicitudes…</div>:visible.length===0?<div className="py-12 text-center border-2 border-dashed rounded-2xl text-muted-foreground">No hay solicitudes con estos filtros.</div>:<div className="grid xl:grid-cols-2 gap-5">{visible.map(req=><Card key={req.id} className="overflow-hidden"><CardContent className="p-0">
+            <div className="p-4 border-b bg-muted/30 flex justify-between gap-3"><div><h4 className="font-bold">{req.contact_name||req.profile?.full_name||'Sin nombre'}</h4><div className="flex flex-wrap gap-x-3 text-xs text-muted-foreground mt-1"><span className="flex gap-1"><Mail className="w-3 h-3"/>{req.contact_email||req.profile?.email}</span><span className="flex gap-1"><Phone className="w-3 h-3"/>{req.contact_phone||'Sin teléfono'}</span></div></div><div className="text-right"><span className={`inline-block px-2 py-1 rounded-full text-[11px] font-bold ${statusTone[req.status]}`}>{STATUS[req.status]}</span><p className="text-[10px] text-muted-foreground mt-1">{new Date(req.created_at).toLocaleDateString('es-CO')}</p></div></div>
+            <div className="p-4 space-y-4">
+                <div className="grid grid-cols-2 gap-3 text-sm"><div><p className="text-xs text-muted-foreground">Grupo</p><p className="font-medium flex gap-1"><Users className="w-4 h-4"/>{req.group_type} · {req.group_size}</p></div><div><p className="text-xs text-muted-foreground">Institución</p><p className="font-medium flex gap-1"><Building2 className="w-4 h-4"/>{req.institution_name||'No aplica'}</p></div><div><p className="text-xs text-muted-foreground">Ruta</p><p className="font-medium">{req.category} · {req.difficulty||'Sin dificultad'}</p></div><div><p className="text-xs text-muted-foreground">Duración y edades</p><p className="font-medium"><Clock className="inline w-4 h-4 mr-1"/>{req.duration_minutes?`${req.duration_minutes/60} h`:'—'} · {req.age_range||'—'}</p></div><div><p className="text-xs text-muted-foreground">Fecha solicitada</p><p className="font-medium flex gap-1"><CalendarClock className="w-4 h-4"/>{req.preferred_date?new Date(`${req.preferred_date}T12:00:00`).toLocaleDateString('es-CO'):'Flexible'} {req.preferred_start_time?.slice(0,5)}</p></div><div><p className="text-xs text-muted-foreground">Presupuesto</p><p className="font-medium flex gap-1"><Banknote className="w-4 h-4"/>{req.budget_range||'Por definir'}</p></div></div>
+                {(req.mobility_needs||req.accessibility_needs)&&<div className="rounded-xl bg-sky-500/10 p-3 text-sm"><p className="font-semibold flex gap-1"><Accessibility className="w-4 h-4"/>Movilidad y accesibilidad</p><p className="text-xs mt-1">{[req.mobility_needs,req.accessibility_needs].filter(Boolean).join(' · ')}</p></div>}
+                {req.additional_notes&&<div className="text-sm"><p className="text-xs text-muted-foreground">Detalles solicitados</p><p>{req.additional_notes}</p></div>}
+                <div className="grid sm:grid-cols-2 gap-3 border-t pt-4"><div><label className="text-xs font-semibold">Estado operativo</label><Select value={String(value(req,'status'))} onValueChange={v=>patchDraft(req.id,'status',v)}><SelectTrigger><SelectValue/></SelectTrigger><SelectContent>{Object.entries(STATUS).map(([key,label])=><SelectItem key={key} value={key}>{label}</SelectItem>)}</SelectContent></Select></div><div><label className="text-xs font-semibold">Valor cotizado (COP)</label><Input type="number" min="0" value={String(value(req,'quote_amount')||'')} onChange={e=>patchDraft(req.id,'quote_amount',e.target.value?Number(e.target.value):undefined)}/></div><div className="sm:col-span-2"><label className="text-xs font-semibold">Fecha y hora acordadas</label><Input type="datetime-local" value={value(req,'scheduled_at')?String(value(req,'scheduled_at')).slice(0,16):''} onChange={e=>patchDraft(req.id,'scheduled_at',e.target.value?new Date(e.target.value).toISOString():undefined)}/></div><div className="sm:col-span-2"><label className="text-xs font-semibold flex gap-1"><FileText className="w-3 h-3"/>Notas internas y próximos pasos</label><Textarea value={String(value(req,'internal_notes')||'')} onChange={e=>patchDraft(req.id,'internal_notes',e.target.value)} placeholder="Contacto, condiciones, cambios, responsables…"/></div>{value(req,'status')==='rejected'&&<div className="sm:col-span-2"><label className="text-xs font-semibold">Motivo de rechazo</label><Textarea value={String(value(req,'rejection_reason')||'')} onChange={e=>patchDraft(req.id,'rejection_reason',e.target.value)}/></div>}</div>
+                <Button className="w-full" disabled={!drafts[req.id]||saving===req.id} onClick={()=>save(req)}><Save className="w-4 h-4 mr-2"/>{saving===req.id?'Guardando…':'Guardar gestión'}</Button>
             </div>
-
-            {loading ? (
-                <div className="text-center py-10 animate-pulse">Cargando solicitudes...</div>
-            ) : filteredRequests.length === 0 ? (
-                <div className="text-center py-10 border-2 border-dashed rounded-xl text-muted-foreground">
-                    No se encontraron solicitudes.
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-                    {filteredRequests.map(req => (
-                        <Card key={req.id} className="overflow-hidden border shadow-sm">
-                            <CardContent className="p-0 flex flex-col h-full">
-                                <div className="p-4 bg-muted/30 border-b flex justify-between items-start gap-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-primary/10 overflow-hidden shrink-0 flex items-center justify-center">
-                                            {req.profile?.avatar_url ? (
-                                                <img src={req.profile.avatar_url} alt={req.profile.nombre} className="w-full h-full object-cover" />
-                                            ) : (
-                                                <span className="font-bold text-primary">{req.profile?.nombre?.charAt(0) || 'U'}</span>
-                                            )}
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-base leading-tight">{req.profile?.nombre || 'Usuario Desconocido'}</h4>
-                                            <p className="text-xs text-muted-foreground">{req.profile?.email || 'Sin correo'}</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        {getStatusBadge(req.status)}
-                                        <p className="text-[10px] text-muted-foreground text-right mt-1">
-                                            {new Date(req.created_at).toLocaleDateString()}
-                                        </p>
-                                    </div>
-                                </div>
-                                
-                                <div className="p-4 grid grid-cols-2 gap-4 text-sm flex-grow">
-                                    <div>
-                                        <p className="text-muted-foreground text-xs mb-1">Categoría</p>
-                                        <p className="font-medium">{req.category}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-muted-foreground text-xs mb-1">Tipo de Grupo</p>
-                                        <p className="font-medium flex items-center gap-1"><Users className="w-3 h-3" /> {req.group_type} ({req.group_size} pers.)</p>
-                                    </div>
-                                    
-                                    {req.themes && req.themes.length > 0 && (
-                                        <div className="col-span-2">
-                                            <p className="text-muted-foreground text-xs mb-1">Temáticas de Interés</p>
-                                            <div className="flex gap-1 flex-wrap">
-                                                {req.themes.map((t: string) => (
-                                                    <span key={t} className="bg-secondary/50 border px-1.5 py-0.5 rounded text-[10px]">{t}</span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {req.cultural_approach && req.cultural_approach.length > 0 && (
-                                        <div className="col-span-2">
-                                            <p className="text-muted-foreground text-xs mb-1">Aproximación Cultural</p>
-                                            <div className="flex gap-1 flex-wrap">
-                                                {req.cultural_approach.map((t: string) => (
-                                                    <span key={t} className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border px-1.5 py-0.5 rounded text-[10px]">{t}</span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="p-4 bg-muted/10 border-t space-y-3">
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-semibold flex items-center gap-1"><FileText className="w-3 h-3"/> Notas Administrativas</label>
-                                        <div className="flex gap-2">
-                                            <Textarea 
-                                                defaultValue={req.details || ''}
-                                                className="text-xs min-h-[60px]"
-                                                placeholder="Añade notas sobre el contacto con el usuario, cotizaciones, etc..."
-                                                onBlur={(e) => handleUpdateDetails(req.id, e.target.value)}
-                                            />
-                                        </div>
-                                        <p className="text-[10px] text-muted-foreground text-right">Se guarda al salir del cuadro</p>
-                                    </div>
-
-                                    <div className="flex items-center gap-2 justify-between pt-2 border-t">
-                                        <span className="text-xs font-medium">Cambiar estado:</span>
-                                        <Select value={req.status} onValueChange={(v) => handleUpdateStatus(req.id, v)}>
-                                            <SelectTrigger className="h-8 text-xs w-[140px]">
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="pending">Pendiente</SelectItem>
-                                                <SelectItem value="reviewed">En Revisión</SelectItem>
-                                                <SelectItem value="contacted">Contactado</SelectItem>
-                                                <SelectItem value="accepted">Aceptada</SelectItem>
-                                                <SelectItem value="rejected">Rechazada</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
+        </CardContent></Card>)}</div>}
+    </div>;
 };

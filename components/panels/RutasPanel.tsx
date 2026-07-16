@@ -400,21 +400,24 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
 
                     <TabsContent value="mis-rutas" className="mt-0 animate-in fade-in duration-300">
                         {enableCustomRouteRequest && (
-                            <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-primary/5 border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-                                <div>
-                                    <h3 className="font-bold text-lg text-emerald-800 dark:text-emerald-200">¿Quieres una ruta exclusiva?</h3>
-                                    <p className="text-sm text-muted-foreground">Déjanos diseñar un recorrido guiado perfecto para ti y tu grupo.</p>
+                            <div className="mb-6 relative overflow-hidden p-6 rounded-3xl bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-700 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+                                <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white/10" />
+                                <div className="relative max-w-xl">
+                                    <p className="text-xs font-bold uppercase tracking-widest text-emerald-100 mb-1">Experiencia acompañada y a la medida</p>
+                                    <h3 className="font-black text-2xl">¿Necesitas una ruta exclusiva?</h3>
+                                    <p className="text-sm text-emerald-50 mt-2">Diseñamos el recorrido según tu grupo, edades, tiempo, dificultad, movilidad e intereses.</p>
+                                    <div className="flex flex-wrap gap-2 mt-3 text-xs"><span className="rounded-full bg-white/15 px-3 py-1">Solicitud mínima: 7 días antes</span><span className="rounded-full bg-white/15 px-3 py-1">Sujeta a disponibilidad y cotización</span></div>
                                 </div>
-                                <Button className="shrink-0 rounded-full" onClick={() => setShowRequestModal(true)}>
-                                    <Compass className="w-4 h-4 mr-2" /> Solicitar Ruta
+                                <Button className="relative shrink-0 rounded-full bg-white text-emerald-800 hover:bg-emerald-50 shadow-lg" onClick={() => setShowRequestModal(true)}>
+                                    <Compass className="w-4 h-4 mr-2" /> Solicitar ruta guiada
                                 </Button>
                             </div>
                         )}
 
                         <div className="mb-4 flex justify-between items-center">
                             <h3 className="font-bold">Mis Creaciones</h3>
-                            <Button size="sm" onClick={() => setActiveTab("crear")}>
-                                <Plus className="w-4 h-4 mr-2" /> Crear Nueva
+                            <Button size="sm" variant="outline" className="border-indigo-500 text-indigo-700 hover:bg-indigo-500/10" onClick={() => setActiveTab("crear")}>
+                                <Plus className="w-4 h-4 mr-2" /> Crear mi propia ruta
                             </Button>
                         </div>
                         <div className="grid gap-4">

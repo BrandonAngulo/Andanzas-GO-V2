@@ -91,7 +91,7 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({ open, o
 
                     <div className="grid grid-cols-2 gap-4 mb-6">
                         <div className="flex items-center justify-center gap-2 text-sm font-medium p-3 bg-muted/50 rounded-xl">
-                            <Clock className="w-4 h-4 text-primary" /> Contra Reloj
+                            <Clock className="w-4 h-4 text-primary" /> Contrarreloj
                         </div>
                         <div className="flex items-center justify-center gap-2 text-sm font-medium p-3 bg-muted/50 rounded-xl">
                             <Flame className="w-4 h-4 text-orange-500" /> Racha de Puntos
