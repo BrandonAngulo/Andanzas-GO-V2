@@ -159,17 +159,14 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     panelKey="paquesepas"
                     defaultImage="/images/banner_aprende.png"
                     gradientClass="from-indigo-50/95 via-indigo-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
-                    title={
-                        <>
-                            <div className="bg-indigo-600 p-2.5 rounded-2xl shadow-md text-white">
-                                <BookOpen className="h-6 w-6" />
-                            </div>
-                            <h2 className="text-4xl font-extrabold tracking-tight text-indigo-950 dark:text-indigo-50">
-                                Pa' que sepás
-                            </h2>
-                        </>
+                    icon={
+                        <div className="bg-indigo-600 p-2.5 rounded-2xl shadow-md text-white">
+                            <BookOpen className="h-6 w-6" />
+                        </div>
                     }
-                    description="Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves."
+                    titleClassName="text-4xl font-extrabold tracking-tight text-indigo-950 dark:text-indigo-50"
+                    defaultTitle={language === 'es' ? "Pa' que sepás" : 'Did you know?'}
+                    defaultSubtitle={language === 'es' ? 'Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.' : 'Learn about the culture, history and best-kept secrets of the city. Why what you see matters.'}
                     andiMessage="¡Ey andante! La ciudad está llena de historias escondidas. Aquí te dejo mis favoritas para que las leás con un buen champús o cafecito."
                 />
 

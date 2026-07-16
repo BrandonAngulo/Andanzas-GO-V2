@@ -65,7 +65,7 @@ const AdminOverview = () => {
                     supabase.from('game_questions').select('*', { count: 'exact', head: true }),
                     supabase.from('curious_facts').select('*', { count: 'exact', head: true }),
                     supabase.from('avatar_presets').select('*', { count: 'exact', head: true }),
-                    supabase.from('institutional_content').select('*', { count: 'exact', head: true }).like('section_key', 'banner_%')
+                    supabase.from('app_banners').select('*', { count: 'exact', head: true })
                 ]);
                 
                 setCounts({

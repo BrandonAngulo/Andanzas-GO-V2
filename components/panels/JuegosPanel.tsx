@@ -70,17 +70,14 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     panelKey="juegos"
                     defaultImage="/images/banner_juegos.png"
                     gradientClass="from-purple-50/95 via-purple-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
-                    title={
-                        <>
-                            <div className="bg-purple-600 p-2.5 rounded-2xl shadow-md text-white">
-                                <Gamepad2 className="h-6 w-6" />
-                            </div>
-                            <h2 className="text-4xl font-extrabold tracking-tight text-purple-950 dark:text-purple-50">
-                                Zona de Juegos
-                            </h2>
-                        </>
+                    icon={
+                        <div className="bg-purple-600 p-2.5 rounded-2xl shadow-md text-white">
+                            <Gamepad2 className="h-6 w-6" />
+                        </div>
                     }
-                description="Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global."
+                    titleClassName="text-4xl font-extrabold tracking-tight text-purple-950 dark:text-purple-50"
+                    defaultTitle="Zona de Juegos"
+                    defaultSubtitle="Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global."
             />
 
             <Tabs defaultValue="juegos" className="w-full">

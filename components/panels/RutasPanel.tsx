@@ -316,17 +316,14 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     panelKey="rutas"
                     defaultImage="/images/banner_rutas.png"
                     gradientClass="from-emerald-50/95 via-emerald-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
-                    title={
-                        <>
-                            <div className="bg-emerald-600 p-2.5 rounded-2xl shadow-md text-white">
-                                <Compass className="h-6 w-6" />
-                            </div>
-                            <h2 className="text-4xl font-extrabold tracking-tight text-emerald-950 dark:text-emerald-50">
-                                {language === 'es' ? 'Pasaporte de Rutas' : 'Route Passport'}
-                            </h2>
-                        </>
+                    icon={
+                        <div className="bg-emerald-600 p-2.5 rounded-2xl shadow-md text-white">
+                            <Compass className="h-6 w-6" />
+                        </div>
                     }
-                    description={language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
+                    titleClassName="text-4xl font-extrabold tracking-tight text-emerald-950 dark:text-emerald-50"
+                    defaultTitle={language === 'es' ? 'Pasaporte de Rutas' : 'Route Passport'}
+                    defaultSubtitle={language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
                 />
 
                 <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">

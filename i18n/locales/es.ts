@@ -26,7 +26,8 @@ const es = {
         routes: "Rutas",
         news: "Noticias",
         events: "Eventos",
-        games: "Zona de Juegos",
+        games: "Juegos",
+        aprende: "Aprende",
     },
     searchPlaceholder: "Buscar museos, teatros, murales…",
     ai: "IA",
@@ -52,6 +53,82 @@ const es = {
         juegos: "Zona Play",
         diccionario: "Diccionario de la caleñidad",
         admin: "Panel de Administración"
+    },
+
+    // Explicaciones contextuales por panel (ícono "?" junto al título)
+    panelInfo: {
+        mapa: {
+            title: "El mapa vivo",
+            body: [
+                "Es un mapa interactivo de los sitios culturales de Cali: museos, teatros, murales, iglesias, bibliotecas y más.",
+                "Usa los filtros para acotar por categoría, valoración o accesibilidad, y toca un pin para ver los detalles del lugar.",
+                "Con el botón «Vivir / Crear Ruta» puedes armar tu propio recorrido o seguir una ruta guiada paso a paso."
+            ]
+        },
+        favoritos: {
+            title: "Tus favoritos",
+            body: [
+                "Aquí se guardan los sitios que marcaste con el corazón.",
+                "Úsalos como tu lista personal para volver rápido o armar una ruta a tu medida."
+            ]
+        },
+        reseñas: {
+            title: "Mis reseñas",
+            body: [
+                "Reúne todas las opiniones y valoraciones que has dejado en los sitios.",
+                "Tus aportes ayudan a la comunidad y suman puntos a tu perfil."
+            ]
+        },
+        tendencias: {
+            title: "Tendencias",
+            body: [
+                "Lo que está sonando en la ciudad ahora mismo: los sitios y planes más visitados y comentados por la comunidad."
+            ]
+        },
+        noticias: {
+            title: "Noticias y novedades",
+            body: [
+                "Anuncios, novedades culturales y avisos del equipo de Andanzas.",
+                "Entérate de nuevos eventos, rutas y funciones de la app."
+            ]
+        },
+        diccionario: {
+            title: "Diccionario de la caleñidad",
+            body: [
+                "Un glosario del habla y la cultura caleña.",
+                "Toca cualquier palabra resaltada en la app para conocer su significado."
+            ]
+        },
+        perfil: {
+            title: "Tu perfil",
+            body: [
+                "Tu pasaporte de explorador: nivel, puntos, insignias, sellos, rutas y aportes.",
+                "Completa tu perfil para guardar rutas, ganar recompensas y personalizar tu experiencia."
+            ]
+        }
+    },
+
+    // Explicación del sistema de puntos/economía en el perfil
+    economyHelp: {
+        title: "Tu progreso en Andanzas",
+        intro: "Cada cosa que haces en la app suma. Así funciona tu progreso:",
+        levelTitle: "Nivel y XP",
+        levelBody: "Ganas experiencia (XP) con tu actividad y subes de nivel, desde «Explorador Novato» hasta «Leyenda de Cali». Tu nivel se muestra junto a tu avatar.",
+        pointsTitle: "Puntos Andanzas",
+        pointsBody: "Son tu puntaje principal como explorador y reflejan todo lo que has recorrido y aportado.",
+        coinsTitle: "Monedas y Gemas",
+        coinsBody: "Son recompensas que acumulas con tu actividad en la app.",
+        earnTitle: "Cómo ganar puntos y recompensas",
+        earn: [
+            "Completar rutas guiadas",
+            "Dejar reseñas en los sitios que visitas",
+            "Jugar trivias y retos en la Zona de Juegos",
+            "Asistir a eventos culturales",
+            "Guardar sitios en favoritos",
+            "Compartir tus descubrimientos"
+        ],
+        soonLabel: "Próximamente",
+        soonBody: "Podrás canjear tus Monedas y Gemas por beneficios y experiencias exclusivas."
     },
 
     // Map

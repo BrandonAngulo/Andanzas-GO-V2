@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../ui/card';
+import { Card, CardHeader, CardTitle, CardDescription } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { toast } from 'sonner';
-import { Save, Image as ImageIcon, Loader2, Edit, Check } from 'lucide-react';
+import { Save, Image as ImageIcon, Loader2, Edit } from 'lucide-react';
 import { bannerService, Banner } from '../../../services/banner.service';
 import { Switch } from '../../ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
@@ -22,17 +22,30 @@ const APP_PANELS = [
     { key: 'eventos', label: 'Cartelera Cultural', defaultImg: '/images/banner_eventos.png' }
 ];
 
+interface EditingBanner {
+    key: string;
+    label: string;
+    isProfile: boolean;
+    image_url: string;
+    is_active: boolean;
+    title_es: string;
+    subtitle_es: string;
+    title_en: string;
+    subtitle_en: string;
+    defaultImg: string;
+}
+
 export const AdminBanners = () => {
     const [loading, setLoading] = useState(false);
     const [banners, setBanners] = useState<Record<string, Banner>>({});
     const [profileBanners, setProfileBanners] = useState<Record<string, Banner>>({});
-    
+
     // Edit Modal State
     const [editModalOpen, setEditModalOpen] = useState(false);
-    const [editingBanner, setEditingBanner] = useState<any>(null); // holds data being edited
+    const [editingBanner, setEditingBanner] = useState<EditingBanner | null>(null);
     const [savingEdit, setSavingEdit] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
-    
+
     const [broadcastOpen, setBroadcastOpen] = useState(false);
 
     useEffect(() => {
@@ -41,26 +54,18 @@ export const AdminBanners = () => {
 
     const loadBanners = async () => {
         setLoading(true);
-        // Load App Banners
-        const { data } = await supabase
-            .from('institutional_content')
-            .select('*')
-            .like('section_key', 'banner_%');
-            
-        if (data) {
-            const map: Record<string, Banner> = {};
-            data.forEach(b => {
-                const panelKey = b.section_key.replace('banner_', '');
-                map[panelKey] = b as Banner;
-            });
-            setBanners(map);
-        }
 
-        // Load Profile Banners
+        // App banners (scope='app'), keyed by panel key.
+        const appBanners = await bannerService.getAppBanners();
+        const map: Record<string, Banner> = {};
+        appBanners.forEach(b => { map[b.key] = b; });
+        setBanners(map);
+
+        // Profile banners (scope='profile'), keyed by the bare banner id.
         const pBanners = await bannerService.getProfileBanners();
         const pMap: Record<string, Banner> = {};
         pBanners.forEach(b => {
-            const idKey = b.section_key.replace('profile_banner_', '');
+            const idKey = b.key.replace('profile_banner_', '');
             pMap[idKey] = b;
         });
         setProfileBanners(pMap);
@@ -70,11 +75,18 @@ export const AdminBanners = () => {
 
     const handleToggleActive = async (key: string, isActive: boolean, isProfile: boolean = false) => {
         if (isProfile) {
-            const current = profileBanners[key] || {};
-            await bannerService.updateProfileBanner(key, current.title || '', current.content_text || '', current.image_url || '', isActive);
+            const current = profileBanners[key] || ({} as Banner);
+            await bannerService.updateProfileBanner(
+                key,
+                current.title_es || '',
+                current.subtitle_es || '',
+                current.image_url || '',
+                isActive,
+                current.title_en,
+                current.subtitle_en,
+            );
         } else {
-            const currentImageUrl = banners[key]?.image_url || '';
-            await bannerService.updateBanner(key, currentImageUrl, isActive);
+            await bannerService.updateAppBanner(key, { is_active: isActive });
         }
         loadBanners();
         toast.success(`Estado actualizado`);
@@ -82,13 +94,7 @@ export const AdminBanners = () => {
 
     const openEditModal = (key: string, label: string, defaultImg: string, isProfile: boolean) => {
         const currentData = isProfile ? profileBanners[key] : banners[key];
-        let initialTitle = '';
-        let initialDesc = '';
-        if (isProfile) {
-            const hd = AVAILABLE_BANNERS.find(b => b.id === key);
-            initialTitle = currentData?.title || hd?.title || '';
-            initialDesc = currentData?.content_text || hd?.unlock_condition || '';
-        }
+        const hd = isProfile ? AVAILABLE_BANNERS.find(b => b.id === key) : undefined;
 
         setEditingBanner({
             key,
@@ -96,8 +102,10 @@ export const AdminBanners = () => {
             isProfile,
             image_url: currentData?.image_url || defaultImg,
             is_active: currentData ? currentData.is_active : true,
-            title: initialTitle,
-            description: initialDesc,
+            title_es: currentData?.title_es ?? hd?.title ?? '',
+            subtitle_es: currentData?.subtitle_es ?? hd?.unlock_condition ?? '',
+            title_en: currentData?.title_en ?? '',
+            subtitle_en: currentData?.subtitle_en ?? '',
             defaultImg
         });
         setEditModalOpen(true);
@@ -138,23 +146,28 @@ export const AdminBanners = () => {
         try {
             if (editingBanner.isProfile) {
                 await bannerService.updateProfileBanner(
-                    editingBanner.key, 
-                    editingBanner.title, 
-                    editingBanner.description, 
-                    editingBanner.image_url, 
-                    editingBanner.is_active
+                    editingBanner.key,
+                    editingBanner.title_es,
+                    editingBanner.subtitle_es,
+                    editingBanner.image_url,
+                    editingBanner.is_active,
+                    editingBanner.title_en,
+                    editingBanner.subtitle_en,
                 );
             } else {
-                await bannerService.updateBanner(
-                    editingBanner.key, 
-                    editingBanner.image_url, 
-                    editingBanner.is_active
-                );
+                await bannerService.updateAppBanner(editingBanner.key, {
+                    title_es: editingBanner.title_es,
+                    subtitle_es: editingBanner.subtitle_es,
+                    title_en: editingBanner.title_en,
+                    subtitle_en: editingBanner.subtitle_en,
+                    image_url: editingBanner.image_url,
+                    is_active: editingBanner.is_active,
+                });
             }
             toast.success('Cambios guardados exitosamente');
             setEditModalOpen(false);
             loadBanners();
-        } catch(e) {
+        } catch (e) {
             toast.error("Error al guardar cambios");
         } finally {
             setSavingEdit(false);
@@ -164,15 +177,15 @@ export const AdminBanners = () => {
     const renderBannerCard = (key: string, label: string, defaultImg: string, isProfile: boolean) => {
         const currentBanner = isProfile ? profileBanners[key] : banners[key];
         const displayImg = (currentBanner?.is_active && currentBanner?.image_url) ? currentBanner.image_url : defaultImg;
-        
+
         return (
             <Card key={key} className="overflow-hidden">
                 <div className="h-32 bg-muted relative border-b overflow-hidden group">
                     <img src={displayImg} alt={label} className="w-full h-full object-cover object-right opacity-80 transition-transform group-hover:scale-105" />
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="bg-background/90 backdrop-blur-md px-4 py-1.5 rounded-full border shadow-sm pointer-events-auto flex items-center gap-2">
-                            <Switch 
-                                checked={currentBanner?.is_active ?? true} 
+                            <Switch
+                                checked={currentBanner?.is_active ?? true}
                                 onChange={(e) => handleToggleActive(key, e.target.checked, isProfile)}
                             />
                             <span className="text-xs font-bold">{currentBanner?.is_active ?? true ? 'Activo' : 'Inactivo'}</span>
@@ -182,7 +195,7 @@ export const AdminBanners = () => {
                 <CardHeader className="py-4 pb-2">
                     <div className="flex justify-between items-start">
                         <div>
-                            <CardTitle className="text-lg">{label}</CardTitle>
+                            <CardTitle className="text-lg">{currentBanner?.title_es || label}</CardTitle>
                             <CardDescription className="font-mono text-[10px] mt-1">{key}</CardDescription>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => openEditModal(key, label, defaultImg, isProfile)}>
@@ -202,7 +215,7 @@ export const AdminBanners = () => {
                         <ImageIcon className="w-6 h-6 text-primary" /> Gestión de Banners
                     </h3>
                     <p className="text-muted-foreground text-sm">
-                        Administra las imágenes de cabecera de las vistas y las recompensas del perfil.
+                        Edita las imágenes y los textos (título y subtítulo) de las cabeceras de las vistas, y las recompensas del perfil.
                     </p>
                 </div>
                 <Button variant="outline" onClick={() => setBroadcastOpen(true)} className="shrink-0 text-blue-600 hover:text-blue-700">
@@ -216,7 +229,7 @@ export const AdminBanners = () => {
                     <TabsTrigger value="app">Banners de la App</TabsTrigger>
                     <TabsTrigger value="profile">Banners de Perfil (Recompensas)</TabsTrigger>
                 </TabsList>
-                
+
                 {loading ? (
                     <div className="py-12 flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>
                 ) : (
@@ -238,7 +251,7 @@ export const AdminBanners = () => {
 
             {/* Edit Modal */}
             <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
-                <DialogContent className="sm:max-w-[500px]">
+                <DialogContent className="sm:max-w-[520px] max-h-[85vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Editar {editingBanner?.label}</DialogTitle>
                     </DialogHeader>
@@ -257,27 +270,50 @@ export const AdminBanners = () => {
                                 </div>
                             </div>
 
-                            {editingBanner.isProfile && (
-                                <>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium">Título del Banner</label>
-                                        <Input 
-                                            value={editingBanner.title} 
-                                            onChange={(e) => setEditingBanner({...editingBanner, title: e.target.value})} 
-                                            placeholder="Ej. Bulevar del Río"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium">Condición de Desbloqueo (Descripción)</label>
-                                        <Textarea 
-                                            value={editingBanner.description} 
-                                            onChange={(e) => setEditingBanner({...editingBanner, description: e.target.value})} 
-                                            placeholder="Ej. Deja tu primera reseña"
-                                            rows={2}
-                                        />
-                                    </div>
-                                </>
-                            )}
+                            {/* Spanish */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">Título (Español)</label>
+                                <Input
+                                    value={editingBanner.title_es}
+                                    onChange={(e) => setEditingBanner({ ...editingBanner, title_es: e.target.value })}
+                                    placeholder={editingBanner.isProfile ? "Ej. Bulevar del Río" : "Ej. Pasaporte de Rutas"}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">
+                                    {editingBanner.isProfile ? 'Condición de Desbloqueo (Español)' : 'Subtítulo (Español)'}
+                                </label>
+                                <Textarea
+                                    value={editingBanner.subtitle_es}
+                                    onChange={(e) => setEditingBanner({ ...editingBanner, subtitle_es: e.target.value })}
+                                    placeholder={editingBanner.isProfile ? "Ej. Deja tu primera reseña" : "Descripción corta del banner"}
+                                    rows={2}
+                                />
+                            </div>
+
+                            {/* English */}
+                            <div className="pt-2 border-t space-y-4">
+                                <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Versión en Inglés (opcional)</p>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Title (English)</label>
+                                    <Input
+                                        value={editingBanner.title_en}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, title_en: e.target.value })}
+                                        placeholder="Leave empty to fall back to Spanish"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">
+                                        {editingBanner.isProfile ? 'Unlock Condition (English)' : 'Subtitle (English)'}
+                                    </label>
+                                    <Textarea
+                                        value={editingBanner.subtitle_en}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, subtitle_en: e.target.value })}
+                                        placeholder="Leave empty to fall back to Spanish"
+                                        rows={2}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     )}
                     <DialogFooter>

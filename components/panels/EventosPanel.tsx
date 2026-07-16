@@ -215,17 +215,14 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
             panelKey="eventos"
             defaultImage="/images/banner_eventos.png"
             gradientClass="from-orange-50/95 via-orange-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
-            title={
-                <>
-                    <div className="bg-orange-600 p-2.5 rounded-2xl shadow-md text-white">
-                        <Calendar className="h-6 w-6" />
-                    </div>
-                    <h2 className="text-4xl font-extrabold tracking-tight text-orange-950 dark:text-orange-50">
-                        Cartelera Cultural
-                    </h2>
-                </>
+            icon={
+                <div className="bg-orange-600 p-2.5 rounded-2xl shadow-md text-white">
+                    <Calendar className="h-6 w-6" />
+                </div>
             }
-            description="Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida."
+            titleClassName="text-4xl font-extrabold tracking-tight text-orange-950 dark:text-orange-50"
+            defaultTitle={language === 'es' ? 'Cartelera Cultural' : 'Cultural Billboard'}
+            defaultSubtitle={language === 'es' ? 'Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida.' : 'Cali pulses with culture every day. Explore what is happening today, what is coming, or the perfect plan for you.'}
         />
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">

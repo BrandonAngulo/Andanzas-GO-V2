@@ -26,7 +26,8 @@ const en = {
         routes: "Routes",
         news: "News",
         events: "Events",
-        games: "Play Zone",
+        games: "Games",
+        aprende: "Learn",
     },
     searchPlaceholder: "Search museums, theaters, murals…",
     ai: "AI",
@@ -52,6 +53,82 @@ const en = {
         juegos: "Play Zone",
         diccionario: "Diccionario de la caleñidad",
         admin: "Admin Dashboard"
+    },
+
+    // Contextual per-panel explanations (the "?" icon next to the title)
+    panelInfo: {
+        mapa: {
+            title: "The live map",
+            body: [
+                "An interactive map of Cali's cultural sites: museums, theaters, murals, churches, libraries and more.",
+                "Use the filters to narrow by category, rating or accessibility, and tap a pin to see a place's details.",
+                "With the \"Live / Create Route\" button you can build your own tour or follow a guided route step by step."
+            ]
+        },
+        favoritos: {
+            title: "Your favorites",
+            body: [
+                "The sites you marked with a heart are saved here.",
+                "Use them as your personal list to come back quickly or build a route your way."
+            ]
+        },
+        reseñas: {
+            title: "My reviews",
+            body: [
+                "All the opinions and ratings you have left on sites, in one place.",
+                "Your contributions help the community and earn points for your profile."
+            ]
+        },
+        tendencias: {
+            title: "Trends",
+            body: [
+                "What's buzzing in the city right now: the sites and plans most visited and talked about by the community."
+            ]
+        },
+        noticias: {
+            title: "News & updates",
+            body: [
+                "Announcements, cultural news and messages from the Andanzas team.",
+                "Find out about new events, routes and app features."
+            ]
+        },
+        diccionario: {
+            title: "Dictionary of caleñidad",
+            body: [
+                "A glossary of Cali's slang and culture.",
+                "Tap any highlighted word in the app to learn what it means."
+            ]
+        },
+        perfil: {
+            title: "Your profile",
+            body: [
+                "Your explorer passport: level, points, badges, stamps, routes and contributions.",
+                "Complete your profile to save routes, earn rewards and personalize your experience."
+            ]
+        }
+    },
+
+    // Explanation of the points / economy system in the profile
+    economyHelp: {
+        title: "Your progress in Andanzas",
+        intro: "Everything you do in the app counts. Here's how your progress works:",
+        levelTitle: "Level & XP",
+        levelBody: "You earn experience (XP) through your activity and level up, from \"Novice Explorer\" to \"Legend of Cali\". Your level shows next to your avatar.",
+        pointsTitle: "Andanzas Points",
+        pointsBody: "Your main explorer score, reflecting everything you have toured and contributed.",
+        coinsTitle: "Coins & Gems",
+        coinsBody: "Rewards you accumulate through your activity in the app.",
+        earnTitle: "How to earn points and rewards",
+        earn: [
+            "Complete guided routes",
+            "Leave reviews on the sites you visit",
+            "Play trivia and challenges in the Play Zone",
+            "Attend cultural events",
+            "Save sites to favorites",
+            "Share your discoveries"
+        ],
+        soonLabel: "Coming soon",
+        soonBody: "You'll be able to redeem your Coins and Gems for exclusive benefits and experiences."
     },
 
     // Map

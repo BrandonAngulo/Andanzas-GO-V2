@@ -31,6 +31,7 @@ import NotificationsPanel from "./components/layout/NotificationsPanel";
 import FullView from "./components/views/FullView";
 import InsigniasModal from "./components/panels/InsigniasModal";
 import ActiveRouteBanner from './components/shared/ActiveRouteBanner';
+import { InfoHint } from "./components/shared/InfoHint";
 import RouteIntroModal from "./components/views/RouteIntroModal";
 import Logo from "./components/layout/Logo";
 import AccessibilityMenu from "./components/layout/AccessibilityMenu";
@@ -474,9 +475,9 @@ export default function App() {
               { id: 'rutas', label: 'nav.routes' },
               { id: 'eventos', label: 'nav.events' },
               { id: 'juegos', label: 'nav.games' },
-              { id: 'paquesepas', label: 'panelTitles.paquesepas' }
+              { id: 'paquesepas', label: 'nav.aprende' }
             ].map(item => (
-              <Button key={item.id} size="sm" className="rounded-full px-4" variant={activePanel === item.id ? "default" : "ghost"} onClick={() => setActivePanel(item.id as any)}>{t(item.label)}</Button>
+              <Button key={item.id} size="sm" className="rounded-full px-4 whitespace-nowrap" variant={activePanel === item.id ? "default" : "ghost"} onClick={() => setActivePanel(item.id as any)}>{t(item.label)}</Button>
             ))}
           </nav>
 
@@ -560,7 +561,14 @@ export default function App() {
         <section className="relative h-full flex flex-col min-h-0 w-full">
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
-              <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">{panelTitle}</CardTitle>
+              <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">
+                {panelTitle}
+                {['mapa', 'favoritos', 'reseñas', 'tendencias', 'noticias', 'diccionario', 'perfil'].includes(activePanel) && (
+                  <InfoHint size="sm" title={t(`panelInfo.${activePanel}.title`)} label={t(`panelInfo.${activePanel}.title`)}>
+                    {((t(`panelInfo.${activePanel}.body`) as unknown as string[]) || []).map((p, i) => <p key={i}>{p}</p>)}
+                  </InfoHint>
+                )}
+              </CardTitle>
               {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {language === 'es' ? 'Vivir / Crear Ruta' : 'Live / Create Route'}</Button>}
             </CardHeader>
             <CardContent className="p-0 flex-1 relative">

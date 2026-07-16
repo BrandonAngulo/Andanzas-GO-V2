@@ -163,18 +163,15 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
           defaultImage="/images/banner_explorar.png"
           marginClass="mx-4 md:mx-8"
           gradientClass="from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
-          title={
-            <>
-              <div className="bg-blue-600 p-2.5 rounded-2xl shadow-md text-white">
-                <Compass className="h-6 w-6" />
-              </div>
-              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-blue-950 dark:text-blue-50">
-                {language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
-              </h2>
-            </>
+          icon={
+            <div className="bg-blue-600 p-2.5 rounded-2xl shadow-md text-white">
+              <Compass className="h-6 w-6" />
+            </div>
           }
-          description={
-            language === 'es' 
+          titleClassName="text-2xl md:text-3xl font-extrabold tracking-tight text-blue-950 dark:text-blue-50"
+          defaultTitle={language === 'es' ? '¿Qué querés vivir hoy en Cali?' : 'What do you want to experience today?'}
+          defaultSubtitle={
+            language === 'es'
               ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
               : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'
           }
