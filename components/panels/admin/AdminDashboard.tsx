@@ -26,6 +26,8 @@ import { AdminMetricas } from './AdminMetricas';
 import { AdminAvatarsManager } from './AdminAvatarsManager';
 import { AdminDocumentosLegales } from './AdminDocumentosLegales';
 import { AdminDictionary } from './AdminDictionary';
+import { JuegosAnalyticsPanel } from './JuegosAnalyticsPanel';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 
 const AdminOverview = () => {
     const [counts, setCounts] = useState({
@@ -250,10 +252,23 @@ const AdminOverview = () => {
     );
 };
 
+const AdminGeneral = () => (
+    <Tabs defaultValue="indicadores" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3 h-auto p-1">
+            <TabsTrigger value="indicadores" className="py-2">Indicadores</TabsTrigger>
+            <TabsTrigger value="inventario" className="py-2">Inventario</TabsTrigger>
+            <TabsTrigger value="juegos" className="py-2">Analítica de juegos</TabsTrigger>
+        </TabsList>
+        <TabsContent value="indicadores"><AdminMetricas /></TabsContent>
+        <TabsContent value="inventario"><AdminOverview /></TabsContent>
+        <TabsContent value="juegos"><JuegosAnalyticsPanel /></TabsContent>
+    </Tabs>
+);
+
 const AdminDashboard: React.FC = () => {
     const { userProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'metricas' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
 
     // Security Check: Only render if user is admin or editor
@@ -285,7 +300,7 @@ const AdminDashboard: React.FC = () => {
                     </p>
                 </div>
 
-                <div className="flex space-x-2 mb-6 overflow-x-auto pb-2">
+                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 flex flex-wrap gap-2 mb-6 p-3 rounded-2xl border bg-background/90 backdrop-blur-md shadow-sm">
                     <Button 
                         variant={activeTab === 'overview' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('overview')}
@@ -306,13 +321,6 @@ const AdminDashboard: React.FC = () => {
                         className="rounded-full whitespace-nowrap"
                     >
                         <Settings className="w-4 h-4 mr-2" /> Ajustes
-                    </Button>
-                    <Button 
-                        variant={activeTab === 'metricas' ? 'default' : 'outline'} 
-                        onClick={() => setActiveTab('metricas')}
-                        className="rounded-full whitespace-nowrap"
-                    >
-                        <Activity className="w-4 h-4 mr-2" /> Actividad
                     </Button>
                     <Button 
                         variant={activeTab === 'sabias_que' ? 'default' : 'outline'} 
@@ -414,11 +422,10 @@ const AdminDashboard: React.FC = () => {
                             <Users className="w-4 h-4 mr-2" /> Usuarios
                         </Button>
                     )}
-                </div>
+                </nav>
 
                 <div className="bg-card rounded-xl border p-4 md:p-6 shadow-sm min-h-[500px]">
-                    {activeTab === 'overview' && <AdminOverview />}
-                    {activeTab === 'metricas' && <AdminMetricas />}
+                    {activeTab === 'overview' && <AdminGeneral />}
                     {activeTab === 'avatares' && <AdminAvatarsManager />}
                     {activeTab === 'sabias_que' && <CuriousFactsManager />}
                     {activeTab === 'paquesepas' && <AdminCuriosidades />}

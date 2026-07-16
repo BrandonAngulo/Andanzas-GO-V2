@@ -6,7 +6,7 @@ import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Switch } from '../../ui/switch';
-import { Plus, Edit, Trash2, RefreshCcw, Smile, Megaphone } from 'lucide-react';
+import { Plus, Edit, Trash2, RefreshCcw, Smile, Megaphone, Upload, ImageOff } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../ui/dialog';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
@@ -15,11 +15,20 @@ import { Checkbox } from '../../ui/checkbox';
 import { useBulkSelection } from '../../../hooks/useBulkSelection';
 import { BulkActionsBar } from './BulkActionsBar';
 
+interface AvatarPreset {
+    id: string; name: string; type: 'human' | 'animal' | 'object'; image_url: string;
+    personality_title: string; phrase: string; active: boolean; order_index: number;
+}
+
+const slugify = (value: string) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+
 export const AdminAvatarsManager: React.FC = () => {
-    const [avatars, setAvatars] = useState<any[]>([]);
+    const [avatars, setAvatars] = useState<AvatarPreset[]>([]);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
-    const [currentAvatar, setCurrentAvatar] = useState<any>(null);
+    const [currentAvatar, setCurrentAvatar] = useState<AvatarPreset | null>(null);
+    const [isCreating, setIsCreating] = useState(false);
+    const [imageFailed, setImageFailed] = useState(false);
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
     const [broadcastOpen, setBroadcastOpen] = useState(false);
@@ -37,14 +46,19 @@ export const AdminAvatarsManager: React.FC = () => {
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!currentAvatar) return;
         try {
-            if (currentAvatar.id && avatars.find(a => a.id === currentAvatar.id)) {
-                await userService.updateAvatarPreset(currentAvatar.id, currentAvatar);
+            if (!currentAvatar.image_url) { toast.error('Selecciona una imagen o escribe una URL válida.'); return; }
+            const payload = { ...currentAvatar, id: slugify(currentAvatar.id || currentAvatar.name) };
+            if (!payload.id) { toast.error('El avatar necesita un identificador válido.'); return; }
+            if (!isCreating) {
+                await userService.updateAvatarPreset(currentAvatar.id, payload);
             } else {
-                await userService.createAvatarPreset(currentAvatar);
+                await userService.createAvatarPreset(payload);
             }
             setIsEditing(false);
-            loadAvatars();
+            toast.success(isCreating ? 'Avatar creado y disponible en el perfil.' : 'Avatar actualizado.');
+            await loadAvatars();
         } catch (err) {
             console.error("Error saving avatar:", err);
             toast.error("Error al guardar el avatar. Verifica que el ID sea único.");
@@ -81,11 +95,13 @@ export const AdminAvatarsManager: React.FC = () => {
     const confirmBulkDelete = async () => { await runBulk(id => userService.deleteAvatarPreset(id)); setBulkDeleteOpen(false); };
 
     const openCreate = () => {
+        setIsCreating(true);
+        setImageFailed(false);
         setCurrentAvatar({
             id: '',
             name: '',
             type: 'human',
-            image_url: '/images/avatars/',
+            image_url: '',
             personality_title: '',
             phrase: '',
             active: true,
@@ -95,6 +111,8 @@ export const AdminAvatarsManager: React.FC = () => {
     };
 
     const openEdit = (avatar: any) => {
+        setIsCreating(false);
+        setImageFailed(false);
         setCurrentAvatar({ ...avatar });
         setIsEditing(true);
     };
@@ -103,10 +121,12 @@ export const AdminAvatarsManager: React.FC = () => {
         try {
             if (!e.target.files || e.target.files.length === 0) return;
             const file = e.target.files[0];
+            if (file.size > 5 * 1024 * 1024) { toast.error('La imagen no puede superar 5 MB.'); return; }
             setUploadingImage(true);
             
             const fileExt = file.name.split('.').pop();
-            const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+            const baseName = slugify(currentAvatar?.id || currentAvatar?.name || 'avatar');
+            const fileName = `presets/${baseName}_${Date.now()}.${fileExt}`;
             
             const { error: uploadError } = await supabase.storage
                 .from('avatars')
@@ -123,7 +143,9 @@ export const AdminAvatarsManager: React.FC = () => {
                 .from('avatars')
                 .getPublicUrl(fileName);
                 
-            setCurrentAvatar({ ...currentAvatar, image_url: publicUrl });
+            setCurrentAvatar(current => current ? { ...current, image_url: publicUrl } : current);
+            setImageFailed(false);
+            toast.success('Imagen cargada. Guarda el avatar para terminar.');
             setUploadingImage(false);
         } catch (err: any) {
             toast.error("Error de subida: " + err.message);
@@ -190,7 +212,7 @@ export const AdminAvatarsManager: React.FC = () => {
                                 </div>
                                 
                                 <div className="w-24 h-24 rounded-full border-4 border-muted overflow-hidden mb-3 bg-card shadow-sm">
-                                    <img src={avatar.image_url} alt={avatar.name} className="w-full h-full object-cover" />
+                                    <img src={avatar.image_url} alt={avatar.name} className="w-full h-full object-cover" onError={(event) => { event.currentTarget.src = '/images/avatars/exploradora.png'; }} />
                                 </div>
                                 <h4 className="font-bold text-lg">{avatar.name}</h4>
                                 <p className="text-xs text-primary font-medium mb-1">{avatar.personality_title || avatar.type}</p>
@@ -213,7 +235,7 @@ export const AdminAvatarsManager: React.FC = () => {
             <Dialog open={isEditing} onOpenChange={setIsEditing}>
                 <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>{currentAvatar?.id && avatars.find(a => a.id === currentAvatar.id) ? 'Editar Avatar' : 'Nuevo Avatar'}</DialogTitle>
+                        <DialogTitle>{isCreating ? 'Crear nuevo avatar' : 'Editar avatar'}</DialogTitle>
                     </DialogHeader>
                     {currentAvatar && (
                         <form onSubmit={handleSave} className="space-y-4 py-4">
@@ -223,14 +245,15 @@ export const AdminAvatarsManager: React.FC = () => {
                                     value={currentAvatar.id} 
                                     onChange={e => setCurrentAvatar({...currentAvatar, id: e.target.value})} 
                                     required 
-                                    disabled={!!avatars.find(a => a.id === currentAvatar.id)}
+                                    disabled={!isCreating}
+                                    placeholder="Se genera desde el nombre"
                                 />
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium">Nombre Público</label>
                                 <Input 
                                     value={currentAvatar.name} 
-                                    onChange={e => setCurrentAvatar({...currentAvatar, name: e.target.value})} 
+                                    onChange={e => setCurrentAvatar({...currentAvatar, name: e.target.value, id: isCreating ? slugify(e.target.value) : currentAvatar.id})}
                                     required 
                                 />
                             </div>
@@ -252,7 +275,7 @@ export const AdminAvatarsManager: React.FC = () => {
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium">Tipo</label>
-                                <Select value={currentAvatar.type} onValueChange={(v) => setCurrentAvatar({...currentAvatar, type: v})}>
+                                <Select value={currentAvatar.type} onValueChange={(v) => setCurrentAvatar({...currentAvatar, type: v as AvatarPreset['type']})}>
                                     <SelectTrigger><SelectValue /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="human">Humano</SelectItem>
@@ -262,8 +285,12 @@ export const AdminAvatarsManager: React.FC = () => {
                                 </Select>
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-sm font-medium">URL de Imagen</label>
+                                <label className="text-sm font-medium">Imagen del avatar</label>
+                                <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 border-muted bg-muted grid place-items-center">
+                                    {currentAvatar.image_url && !imageFailed ? <img src={currentAvatar.image_url} alt="Vista previa" className="w-full h-full object-cover" onError={() => setImageFailed(true)} /> : <ImageOff className="w-8 h-8 text-muted-foreground" />}
+                                </div>
                                 <div className="flex flex-col gap-2">
+                                    <span className="text-xs font-medium flex items-center gap-1"><Upload className="w-3 h-3" />Subir archivo recomendado</span>
                                     <Input 
                                         type="file" 
                                         accept="image/*" 
@@ -301,7 +328,7 @@ export const AdminAvatarsManager: React.FC = () => {
                             
                             <DialogFooter>
                                 <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>Cancelar</Button>
-                                <Button type="submit">Guardar Avatar</Button>
+                                <Button type="submit" disabled={uploadingImage}>{isCreating ? 'Crear avatar' : 'Guardar cambios'}</Button>
                             </DialogFooter>
                         </form>
                     )}

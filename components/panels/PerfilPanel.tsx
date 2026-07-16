@@ -214,7 +214,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 }
             };
             const loadAvatars = async () => {
-                setAvailableAvatars(HARDCODED_AVATARS);
+                const databaseAvatars = await userService.getAvatarPresets();
+                setAvailableAvatars(databaseAvatars.length > 0 ? databaseAvatars : HARDCODED_AVATARS);
             };
             loadBadges();
             loadAvatars();

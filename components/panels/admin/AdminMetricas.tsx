@@ -1,151 +1,69 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { supabase } from '../../../lib/supabaseClient';
-import { BarChart, Activity, Users, MousePointerClick, CalendarDays } from 'lucide-react';
+import { Activity, Users, MousePointerClick, CalendarDays, Gamepad2, Gauge, Coins, Gem, Heart, Sparkles, FileWarning, ShoppingBag, RefreshCcw } from 'lucide-react';
+import { Button } from '../../ui/button';
 
-interface MetricsSummary {
-    totalSessions: number;
-    totalEvents: number;
-    activeUsersToday: number;
-    topEvents: { name: string; count: number }[];
+interface ManagementMetrics {
+    users: { total: number; suspended: number; active_today: number; active_7d: number; average_level: number; average_xp: number };
+    activity: { sessions: number; events: number; events_7d: number; top_events: { name: string; count: number }[] };
+    games: { sessions: number; completed: number; active: number; average_accuracy: number; questions_published: number; questions_review: number; questions_draft: number; reports_open: number };
+    economy: { points_in_wallets: number; coins_in_wallets: number; gems_in_wallets: number; available_lives: number; transactions_30d: number; shop_purchases_30d: number; gems_awarded_30d: number; coins_awarded_30d: number };
+}
+
+const EMPTY: ManagementMetrics = {
+    users: { total: 0, suspended: 0, active_today: 0, active_7d: 0, average_level: 0, average_xp: 0 },
+    activity: { sessions: 0, events: 0, events_7d: 0, top_events: [] },
+    games: { sessions: 0, completed: 0, active: 0, average_accuracy: 0, questions_published: 0, questions_review: 0, questions_draft: 0, reports_open: 0 },
+    economy: { points_in_wallets: 0, coins_in_wallets: 0, gems_in_wallets: 0, available_lives: 0, transactions_30d: 0, shop_purchases_30d: 0, gems_awarded_30d: 0, coins_awarded_30d: 0 }
+};
+
+function MetricCard({ title, value, detail, icon: Icon, tone = 'default' }: { title: string; value: number | string; detail: string; icon: React.ElementType; tone?: 'default' | 'warning' | 'success' }) {
+    const toneClass = tone === 'warning' ? 'bg-amber-500/10 border-amber-500/20' : tone === 'success' ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-muted/30';
+    return <Card className={toneClass}><CardContent className="p-4"><div className="flex items-start justify-between gap-3"><div><p className="text-xs font-medium text-muted-foreground">{title}</p><p className="text-2xl font-black mt-1">{value}</p><p className="text-[11px] text-muted-foreground mt-1">{detail}</p></div><Icon className="w-5 h-5 text-primary" /></div></CardContent></Card>;
 }
 
 export const AdminMetricas: React.FC = () => {
     const [loading, setLoading] = useState(true);
-    const [metrics, setMetrics] = useState<MetricsSummary>({
-        totalSessions: 0,
-        totalEvents: 0,
-        activeUsersToday: 0,
-        topEvents: []
-    });
-
-    useEffect(() => {
-        loadMetrics();
-    }, []);
+    const [metrics, setMetrics] = useState<ManagementMetrics>(EMPTY);
 
     const loadMetrics = async () => {
         setLoading(true);
-        try {
-            // Get total sessions
-            const { count: sessionsCount } = await supabase
-                .from('user_sessions')
-                .select('*', { count: 'exact', head: true });
-
-            // Get total events
-            const { count: eventsCount } = await supabase
-                .from('analytics_events')
-                .select('*', { count: 'exact', head: true });
-
-            // Get active users today
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            
-            const { count: activeUsers } = await supabase
-                .from('user_sessions')
-                .select('user_id', { count: 'exact', head: true })
-                .gte('started_at', today.toISOString())
-                .not('user_id', 'is', null);
-
-            // Get top events
-            const { data: eventsData } = await supabase
-                .from('analytics_events')
-                .select('event_name');
-
-            const eventCounts: Record<string, number> = {};
-            if (eventsData) {
-                eventsData.forEach(e => {
-                    eventCounts[e.event_name] = (eventCounts[e.event_name] || 0) + 1;
-                });
-            }
-            
-            const topEventsList = Object.entries(eventCounts)
-                .map(([name, count]) => ({ name, count }))
-                .sort((a, b) => b.count - a.count)
-                .slice(0, 5);
-
-            setMetrics({
-                totalSessions: sessionsCount || 0,
-                totalEvents: eventsCount || 0,
-                activeUsersToday: activeUsers || 0,
-                topEvents: topEventsList
-            });
-        } catch (error) {
-            console.error("Error loading metrics:", error);
-        } finally {
-            setLoading(false);
-        }
+        const { data, error } = await supabase.rpc('get_admin_management_metrics');
+        if (error) console.error('Error loading management metrics:', error);
+        else if (data) setMetrics(data as ManagementMetrics);
+        setLoading(false);
     };
 
-    if (loading) {
-        return <div className="py-20 text-center text-muted-foreground animate-pulse">Cargando métricas...</div>;
-    }
+    useEffect(() => { loadMetrics(); }, []);
 
-    return (
-        <div className="space-y-6">
-            <div>
-                <h3 className="text-xl font-bold mb-1 flex items-center gap-2">
-                    <BarChart className="w-5 h-5 text-primary" />
-                    Gestión y Actividad
-                </h3>
-                <p className="text-muted-foreground text-sm">Resumen de la interacción de los usuarios en la plataforma.</p>
-            </div>
+    if (loading) return <div className="py-20 text-center text-muted-foreground animate-pulse">Actualizando indicadores de gestión…</div>;
+    const completionRate = metrics.games.sessions ? Math.round((metrics.games.completed / metrics.games.sessions) * 100) : 0;
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="bg-primary/5 border-primary/20">
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                            <Activity className="w-4 h-4" /> Sesiones Totales
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-black text-primary">{metrics.totalSessions}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                            <MousePointerClick className="w-4 h-4" /> Eventos Registrados
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-black">{metrics.totalEvents}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                            <Users className="w-4 h-4" /> Usuarios Activos Hoy
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-black">{metrics.activeUsersToday}</div>
-                    </CardContent>
-                </Card>
-            </div>
+    return <div className="space-y-8">
+        <div className="flex items-start justify-between gap-4"><div><h3 className="text-xl font-bold flex items-center gap-2"><Gauge className="w-5 h-5 text-primary" />Indicadores de gestión</h3><p className="text-sm text-muted-foreground">Uso, calidad editorial, progresión y economía en una sola lectura.</p></div><Button variant="outline" size="sm" onClick={loadMetrics}><RefreshCcw className="w-4 h-4 mr-2" />Actualizar</Button></div>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-lg">Eventos más frecuentes</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {metrics.topEvents.length > 0 ? (
-                        <div className="space-y-4">
-                            {metrics.topEvents.map((ev, index) => (
-                                <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                                    <div className="font-medium">{ev.name}</div>
-                                    <div className="bg-primary/10 text-primary font-bold px-3 py-1 rounded-full text-sm">
-                                        {ev.count}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center py-10 text-muted-foreground">
-                            Aún no hay eventos registrados en la base de datos.
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
-    );
+        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Users className="w-4 h-4" />Usuarios y uso</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <MetricCard title="Usuarios" value={metrics.users.total} detail={`${metrics.users.suspended} suspendidos`} icon={Users} />
+            <MetricCard title="Activos hoy" value={metrics.users.active_today} detail={`${metrics.users.active_7d} en los últimos 7 días`} icon={CalendarDays} />
+            <MetricCard title="Sesiones de navegación" value={metrics.activity.sessions} detail={`${metrics.activity.events_7d} eventos esta semana`} icon={Activity} />
+            <MetricCard title="Progresión promedio" value={`Nivel ${metrics.users.average_level}`} detail={`${metrics.users.average_xp} XP promedio`} icon={Sparkles} />
+        </div></section>
+
+        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Gamepad2 className="w-4 h-4" />Juegos y calidad editorial</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <MetricCard title="Partidas" value={metrics.games.sessions} detail={`${completionRate}% completadas`} icon={Gamepad2} />
+            <MetricCard title="Precisión promedio" value={`${metrics.games.average_accuracy}%`} detail={`${metrics.games.active} partidas activas`} icon={Gauge} />
+            <MetricCard title="Preguntas publicadas" value={metrics.games.questions_published} detail={`${metrics.games.questions_draft} borradores`} icon={MousePointerClick} tone="success" />
+            <MetricCard title="Revisión editorial" value={metrics.games.questions_review} detail={`${metrics.games.reports_open} reportes abiertos`} icon={FileWarning} tone={metrics.games.questions_review ? 'warning' : 'default'} />
+        </div></section>
+
+        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Coins className="w-4 h-4" />Economía y recompensas</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <MetricCard title="Puntos Andanzas" value={metrics.economy.points_in_wallets} detail="Saldo total de usuarios" icon={Sparkles} />
+            <MetricCard title="Monedas" value={metrics.economy.coins_in_wallets} detail={`${metrics.economy.coins_awarded_30d} entregadas en 30 días`} icon={Coins} />
+            <MetricCard title="Gemas" value={metrics.economy.gems_in_wallets} detail={`${metrics.economy.gems_awarded_30d} entregadas en 30 días`} icon={Gem} />
+            <MetricCard title="Vidas disponibles" value={metrics.economy.available_lives} detail={`${metrics.economy.shop_purchases_30d} compras en 30 días`} icon={Heart} />
+        </div></section>
+
+        <div className="grid lg:grid-cols-2 gap-4"><Card><CardHeader><CardTitle className="text-base">Eventos más frecuentes</CardTitle></CardHeader><CardContent className="space-y-2">{metrics.activity.top_events.length ? metrics.activity.top_events.map(ev => <div key={ev.name} className="flex justify-between rounded-lg bg-muted/40 px-3 py-2 text-sm"><span>{ev.name}</span><strong>{ev.count}</strong></div>) : <p className="text-sm text-muted-foreground">Todavía no hay eventos registrados.</p>}</CardContent></Card><Card><CardHeader><CardTitle className="text-base">Movimiento económico</CardTitle></CardHeader><CardContent><div className="flex items-center gap-3"><ShoppingBag className="w-8 h-8 text-primary" /><div><p className="text-2xl font-black">{metrics.economy.transactions_30d}</p><p className="text-xs text-muted-foreground">movimientos auditados en los últimos 30 días</p></div></div></CardContent></Card></div>
+    </div>;
 };
