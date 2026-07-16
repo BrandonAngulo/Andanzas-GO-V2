@@ -14,7 +14,7 @@ const initialForm = {
     contact_name: '', contact_email: '', contact_phone: '', preferred_contact_method: 'whatsapp',
     route_category: '', cultural_approach: '', group_type: '', institution_name: '', group_size: '', age_range: '',
     difficulty: '', duration_minutes: '', mobility_needs: '', accessibility_needs: '', preferred_date: '',
-    preferred_start_time: '', date_flexibility: '', meeting_area: '', budget_range: '', additional_notes: '', rules_accepted: false
+    preferred_start_time: '', date_flexibility: '', meeting_area: '', additional_notes: '', rules_accepted: false
 };
 
 export const RequestCustomRouteModal: React.FC<Props> = ({ open, onOpenChange }) => {
@@ -47,7 +47,7 @@ export const RequestCustomRouteModal: React.FC<Props> = ({ open, onOpenChange })
                 difficulty: form.difficulty, duration_minutes: Number(form.duration_minutes), mobility_needs: form.mobility_needs || null,
                 accessibility_needs: form.accessibility_needs || null, preferred_date: form.preferred_date || null,
                 preferred_start_time: form.preferred_start_time || null, date_flexibility: form.date_flexibility || null,
-                meeting_area: form.meeting_area || null, budget_range: form.budget_range || null,
+                meeting_area: form.meeting_area || null,
                 additional_notes: form.additional_notes || null, rules_accepted_at: new Date().toISOString(), status: 'requested'
             });
             setSuccess(true);
@@ -76,7 +76,6 @@ export const RequestCustomRouteModal: React.FC<Props> = ({ open, onOpenChange })
                 <Input required type="number" min="1" max="500" placeholder="Número de participantes *" value={form.group_size} onChange={e => set('group_size',e.target.value)} />
                 {requiresInstitution && <Input required className="sm:col-span-2" placeholder="Nombre de la empresa, colegio o universidad *" value={form.institution_name} onChange={e => set('institution_name',e.target.value)} />}
                 <Select value={form.age_range} onValueChange={v => set('age_range',v)}><SelectTrigger><SelectValue placeholder="Rango de edades *" /></SelectTrigger><SelectContent><SelectItem value="children">Principalmente niños</SelectItem><SelectItem value="teens">Adolescentes</SelectItem><SelectItem value="adults">Adultos</SelectItem><SelectItem value="seniors">Adultos mayores</SelectItem><SelectItem value="mixed">Edades mixtas</SelectItem></SelectContent></Select>
-                <Select value={form.budget_range} onValueChange={v => set('budget_range',v)}><SelectTrigger><SelectValue placeholder="Presupuesto orientativo" /></SelectTrigger><SelectContent><SelectItem value="open">Quiero recibir propuesta</SelectItem><SelectItem value="basic">Hasta $500.000</SelectItem><SelectItem value="standard">$500.000–$1.500.000</SelectItem><SelectItem value="premium">Más de $1.500.000</SelectItem></SelectContent></Select>
             </div></fieldset>
 
             <fieldset className="space-y-3"><legend className="font-bold flex items-center gap-2"><Compass className="w-4 h-4 text-primary" />Características de la ruta</legend><div className="grid sm:grid-cols-2 gap-3">
@@ -84,7 +83,7 @@ export const RequestCustomRouteModal: React.FC<Props> = ({ open, onOpenChange })
                 <Select value={form.cultural_approach} onValueChange={v => set('cultural_approach',v)}><SelectTrigger><SelectValue placeholder="Enfoque cultural *" /></SelectTrigger><SelectContent>{['Música y Danza','Literatura y Poesía','Arte Urbano','Arquitectura','Religioso / Espiritual','General'].map(value => <SelectItem key={value} value={value}>{value}</SelectItem>)}</SelectContent></Select>
                 <Select value={form.difficulty} onValueChange={v => set('difficulty',v)}><SelectTrigger><SelectValue placeholder="Dificultad esperada *" /></SelectTrigger><SelectContent><SelectItem value="low">Suave, pocas pendientes</SelectItem><SelectItem value="medium">Moderada</SelectItem><SelectItem value="high">Exigente</SelectItem><SelectItem value="adapted">Debe ser adaptada</SelectItem></SelectContent></Select>
                 <Select value={form.duration_minutes} onValueChange={v => set('duration_minutes',v)}><SelectTrigger><SelectValue placeholder="Duración aproximada *" /></SelectTrigger><SelectContent><SelectItem value="120">2 horas</SelectItem><SelectItem value="180">3 horas</SelectItem><SelectItem value="240">4 horas</SelectItem><SelectItem value="360">6 horas</SelectItem><SelectItem value="480">Jornada completa</SelectItem></SelectContent></Select>
-                <Input placeholder="Zona de encuentro o sectores preferidos" value={form.meeting_area} onChange={e => set('meeting_area',e.target.value)} />
+                <label className="text-xs font-medium">Zona o lugar de encuentro <span className="font-normal text-muted-foreground">(opcional; Andanzas puede sugerirlo)</span><Input className="mt-1" placeholder="Déjalo vacío si prefieres nuestra recomendación" value={form.meeting_area} onChange={e => set('meeting_area',e.target.value)} /></label>
                 <Select value={form.date_flexibility} onValueChange={v => set('date_flexibility',v)}><SelectTrigger><SelectValue placeholder="Flexibilidad de fecha" /></SelectTrigger><SelectContent><SelectItem value="fixed">Fecha indispensable</SelectItem><SelectItem value="plus_minus_3">± 3 días</SelectItem><SelectItem value="same_month">Cualquier fecha del mes</SelectItem></SelectContent></Select>
                 <label className="text-xs font-medium">Fecha propuesta *<Input className="mt-1" type="date" min={minDate} value={form.preferred_date} onChange={e => set('preferred_date',e.target.value)} /></label>
                 <label className="text-xs font-medium">Hora preferida<Input className="mt-1" type="time" value={form.preferred_start_time} onChange={e => set('preferred_start_time',e.target.value)} /></label>
