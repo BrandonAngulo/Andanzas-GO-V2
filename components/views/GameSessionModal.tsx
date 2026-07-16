@@ -249,12 +249,12 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                 <div className="max-w-lg w-full bg-slate-900 border border-white/10 rounded-3xl p-7 text-center shadow-2xl">
                     <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
                     <h2 className="text-3xl font-black mb-2">Tus vidas se agotaron</h2>
-                    <p className="text-white/60 mb-2">Recuperas una vida cada 4 horas, hasta completar {economy?.max_lives || 5}.</p>
+                    <p className="text-white/60 mb-2">Recuperas una vida cada 4 horas, hasta completar {economy?.max_lives || 3}.</p>
                     {economy?.next_life_at && <p className="text-sm text-primary mb-6">Próxima vida: {new Date(economy.next_life_at).toLocaleString('es-CO')}</p>}
                     <div className="flex justify-center gap-5 mb-5 text-sm"><span className="flex gap-1"><Coins className="w-4 h-4 text-yellow-400" /> {economy?.coins || 0}</span><span className="flex gap-1"><Gem className="w-4 h-4 text-cyan-400" /> {economy?.gems || 0}</span></div>
                     <div className="grid grid-cols-2 gap-3">
                         {(economy?.shop_offers || []).map(offer => (
-                            <Button key={offer.key} disabled={!!purchasingOffer} onClick={() => buyLives(offer.key)} className="h-auto py-4 rounded-xl flex-col">
+                            <Button key={offer.key} disabled={!!purchasingOffer || offer.quantity > ((economy?.max_lives || 3) - (economy?.lives || 0))} onClick={() => buyLives(offer.key)} className="h-auto py-4 rounded-xl flex-col">
                                 <span>{offer.title}</span><small>{offer.price} {offer.currency === 'coin' ? 'monedas' : 'gemas'}</small>
                             </Button>
                         ))}
@@ -638,7 +638,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                                 {(isLegend || game?.mechanic_type === 'lives') && economy && (
                                                     <div className="w-full grid grid-cols-2 gap-2 mb-2 sm:col-span-2">
                                                         {economy.shop_offers.map(offer => (
-                                                            <Button key={offer.key} variant="outline" disabled={!!purchasingOffer} onClick={() => buyLives(offer.key)} className="h-auto py-3 border-white/20 text-white">
+                                                            <Button key={offer.key} variant="outline" disabled={!!purchasingOffer || offer.quantity > (economy.max_lives - economy.lives)} onClick={() => buyLives(offer.key)} className="h-auto py-3 border-white/20 text-white">
                                                                 +{offer.quantity} {offer.quantity === 1 ? 'vida' : 'vidas'} · {offer.price} {offer.currency === 'coin' ? 'monedas' : 'gemas'}
                                                             </Button>
                                                         ))}
