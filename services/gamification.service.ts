@@ -11,6 +11,13 @@ export const FAMILY_TIER_THRESHOLDS: Record<string, number[]> = {
     route_complete: [1, 5, 10],
 };
 
+export interface EconomySummary {
+    level: number; experience_points: number; level_start_xp: number; next_level_xp: number;
+    app_points: number; coins: number; gems: number; lives: number; max_lives: number;
+    next_life_at: string | null; gem_coin_reference_value: number; life_recharge_minutes: number;
+    shop_offers: { key: string; title: string; quantity: number; currency: 'coin' | 'gem'; price: number }[];
+}
+
 const iconMap: Record<string, any> = {
     'Heart': Heart,
     'PenTool': PenTool,
@@ -36,10 +43,7 @@ export const gamificationService = {
             console.error('Error fetching economy summary:', error);
             return null;
         }
-        return data as {
-            level: number; experience_points: number; level_start_xp: number; next_level_xp: number;
-            app_points: number; coins: number; gems: number;
-        };
+        return data as EconomySummary;
     },
 
     async getAllBadges(): Promise<Insignia[]> {

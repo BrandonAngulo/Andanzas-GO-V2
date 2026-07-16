@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { Game, GameQuestion, gamesService } from '../services/games.service';
+import type { EconomySummary } from '../services/gamification.service';
 
 export interface GameEngineState {
     game: Game | null;
@@ -22,6 +23,7 @@ export interface GameEngineState {
     worstCategory: string | null;
     categoryProgress: { category: string; xp: number; level: number; mastery: number }[];
     rewards: { xp: number; appPoints: number; coins: number; gems: number } | null;
+    economy: EconomySummary | null;
 }
 
 // Verifica si una respuesta es correcta según el tipo de pregunta.
@@ -81,7 +83,8 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         bestCategory: null,
         worstCategory: null,
         categoryProgress: [],
-        rewards: null
+        rewards: null,
+        economy: null
     });
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -294,12 +297,20 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
             if (sessionError) throw sessionError;
 
+            const usesPersistentLives = mode === 'legend' || game.mechanic_type === 'lives';
+            let economy: EconomySummary | null = null;
+            if (userId && usesPersistentLives) {
+                const { data } = await supabase.rpc('get_my_economy_summary');
+                economy = data as EconomySummary | null;
+            }
+
             setState(prev => ({
                 ...prev,
                 game,
                 questions,
                 sessionId: sessionData.id,
-                livesRemaining: game.lives_count || 3,
+                livesRemaining: usesPersistentLives ? Number(economy?.lives || 0) : (game.lives_count || 3),
+                economy,
                 loading: false
             }));
 
@@ -414,6 +425,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
         let isGameEnding = false;
         let finalLives = state.livesRemaining;
+        let lifeWalletUpdate: { lives: number; next_life_at?: string | null } | null = null;
 
         // Mecánica efectiva: Leyenda = vidas; Contrarreloj = un fallo termina la ronda.
         const effectiveMechanic = modeRef.current === 'legend' ? 'lives'
@@ -423,7 +435,11 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             if (effectiveMechanic === 'sudden_death') {
                 isGameEnding = true;
             } else if (effectiveMechanic === 'lives') {
-                finalLives = state.livesRemaining - 1;
+                const { data: lifeData, error: lifeError } = state.sessionId
+                    ? await supabase.rpc('consume_game_life', { game_session_id: state.sessionId, question_id: currentQ.id })
+                    : { data: null, error: new Error('Missing session') };
+                finalLives = lifeError ? 0 : Number(lifeData?.lives ?? Math.max(0, state.livesRemaining - 1));
+                if (!lifeError && lifeData) lifeWalletUpdate = { lives: finalLives, next_life_at: lifeData.next_life_at || null };
                 if (finalLives <= 0) {
                     isGameEnding = true;
                 }
@@ -437,6 +453,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             maxStreak: Math.max(prev.maxStreak, newStreak),
             totalTimeMs: prev.totalTimeMs + timeToAnswerMs,
             livesRemaining: finalLives,
+            economy: prev.economy && lifeWalletUpdate ? { ...prev.economy, ...lifeWalletUpdate } : prev.economy,
             userAnswers: [...prev.userAnswers, { questionId: currentQ.id, isCorrect, category: currentQ.category || 'General' }]
         }));
 
@@ -447,6 +464,15 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         }
 
         return isCorrect;
+    };
+
+    const purchaseLives = async (offerKey: string) => {
+        const requestKey = crypto.randomUUID();
+        const { data, error } = await supabase.rpc('purchase_game_item', { offer_key: offerKey, request_key: requestKey });
+        if (error) throw error;
+        const economy = data as EconomySummary;
+        setState(prev => ({ ...prev, economy, livesRemaining: economy.lives }));
+        return economy;
     };
 
     const nextQuestion = async () => {
@@ -590,6 +616,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         submitAnswer,
         nextQuestion,
         finishGame,
+        purchaseLives,
         currentQuestion: state.questions[state.currentQuestionIndex]
     };
 };

@@ -139,7 +139,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [successMsg, setSuccessMsg] = useState('');
     const [loading, setLoading] = useState(false);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-    const [economy, setEconomy] = useState<{ level: number; experience_points: number; level_start_xp: number; next_level_xp: number; app_points: number; coins: number; gems: number } | null>(null);
+    const [economy, setEconomy] = useState<{ level: number; experience_points: number; level_start_xp: number; next_level_xp: number; app_points: number; coins: number; gems: number; lives: number; max_lives: number } | null>(null);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
@@ -653,10 +653,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Aportes</span>
                             </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-2 w-full max-w-sm mt-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-md mt-4">
                             <div className="rounded-xl border bg-background/60 p-2"><Sparkles className="w-4 h-4 mx-auto text-emerald-500" /><strong className="block text-sm">{economy?.app_points ?? userProfile?.points ?? 0}</strong><span className="text-[9px] text-muted-foreground">Puntos Andanzas</span></div>
                             <div className="rounded-xl border bg-background/60 p-2"><Coins className="w-4 h-4 mx-auto text-yellow-500" /><strong className="block text-sm">{economy?.coins ?? 0}</strong><span className="text-[9px] text-muted-foreground">Monedas</span></div>
                             <div className="rounded-xl border bg-background/60 p-2"><Gem className="w-4 h-4 mx-auto text-cyan-500" /><strong className="block text-sm">{economy?.gems ?? 0}</strong><span className="text-[9px] text-muted-foreground">Gemas</span></div>
+                            <div className="rounded-xl border bg-background/60 p-2"><Heart className="w-4 h-4 mx-auto text-red-500" /><strong className="block text-sm">{economy?.lives ?? 0}/{economy?.max_lives ?? 5}</strong><span className="text-[9px] text-muted-foreground">Vidas</span></div>
                         </div>
 
                         <InfoHint

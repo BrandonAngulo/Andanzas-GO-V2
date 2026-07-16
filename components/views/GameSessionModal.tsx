@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useGameEngine, checkAnswerCorrectness, TIMED_ROUND_SECONDS } from '../../hooks/useGameEngine';
 import { Button } from '../ui/button';
-import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw } from 'lucide-react';
+import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw, Coins, Gem } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { gamesService } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -49,11 +49,27 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         worstCategory,
         categoryProgress,
         rewards,
+        economy,
+        purchaseLives,
         sessionId,
         livesRemaining
     } = useGameEngine(gameId, userProfile?.id, mode, theme);
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
+    const [purchasingOffer, setPurchasingOffer] = useState<string | null>(null);
+
+    const buyLives = async (offerKey: string) => {
+        setPurchasingOffer(offerKey);
+        try {
+            const updated = await purchaseLives(offerKey);
+            toast.success(`¡Listo! Ahora tienes ${updated.lives} vidas.`);
+        } catch (error: any) {
+            const message = String(error?.message || '');
+            toast.error(message.includes('INSUFFICIENT') ? 'No tienes saldo suficiente para esta compra.' : 'No fue posible comprar las vidas.');
+        } finally {
+            setPurchasingOffer(null);
+        }
+    };
 
     const [selectedOption, setSelectedOption] = useState<any>(null);
     const [isChecking, setIsChecking] = useState(false);
@@ -221,6 +237,29 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     <h3 className="text-2xl font-bold mb-3 text-white">Error al cargar</h3>
                     <p className="text-white/60 mb-8 leading-relaxed">{error || 'No se pudo cargar el juego.'}</p>
                     <Button onClick={onClose} className="w-full bg-white text-slate-900 hover:bg-white/90 rounded-xl h-14 font-bold text-lg">Cerrar</Button>
+                </div>
+            </div>
+        );
+    }
+
+    const usesWalletLives = isLegend || game.mechanic_type === 'lives';
+    if (usesWalletLives && livesRemaining <= 0 && !isFinished && !isChecking) {
+        return (
+            <div className="fixed inset-0 bg-slate-950 text-white grid place-items-center p-5 overflow-y-auto" style={{ zIndex: 99999 }}>
+                <div className="max-w-lg w-full bg-slate-900 border border-white/10 rounded-3xl p-7 text-center shadow-2xl">
+                    <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
+                    <h2 className="text-3xl font-black mb-2">Tus vidas se agotaron</h2>
+                    <p className="text-white/60 mb-2">Recuperas una vida cada 4 horas, hasta completar {economy?.max_lives || 5}.</p>
+                    {economy?.next_life_at && <p className="text-sm text-primary mb-6">Próxima vida: {new Date(economy.next_life_at).toLocaleString('es-CO')}</p>}
+                    <div className="flex justify-center gap-5 mb-5 text-sm"><span className="flex gap-1"><Coins className="w-4 h-4 text-yellow-400" /> {economy?.coins || 0}</span><span className="flex gap-1"><Gem className="w-4 h-4 text-cyan-400" /> {economy?.gems || 0}</span></div>
+                    <div className="grid grid-cols-2 gap-3">
+                        {(economy?.shop_offers || []).map(offer => (
+                            <Button key={offer.key} disabled={!!purchasingOffer} onClick={() => buyLives(offer.key)} className="h-auto py-4 rounded-xl flex-col">
+                                <span>{offer.title}</span><small>{offer.price} {offer.currency === 'coin' ? 'monedas' : 'gemas'}</small>
+                            </Button>
+                        ))}
+                    </div>
+                    <Button variant="ghost" onClick={onClose} className="mt-5 text-white/70">Volver a juegos</Button>
                 </div>
             </div>
         );
@@ -596,6 +635,15 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                                 </p>
                                             )}
                                             <div className="flex flex-col sm:flex-row gap-4">
+                                                {(isLegend || game?.mechanic_type === 'lives') && economy && (
+                                                    <div className="w-full grid grid-cols-2 gap-2 mb-2 sm:col-span-2">
+                                                        {economy.shop_offers.map(offer => (
+                                                            <Button key={offer.key} variant="outline" disabled={!!purchasingOffer} onClick={() => buyLives(offer.key)} className="h-auto py-3 border-white/20 text-white">
+                                                                +{offer.quantity} {offer.quantity === 1 ? 'vida' : 'vidas'} · {offer.price} {offer.currency === 'coin' ? 'monedas' : 'gemas'}
+                                                            </Button>
+                                                        ))}
+                                                    </div>
+                                                )}
                                                 {currentQuestion?.related_learn_id && (
                                                     <Button
                                                         variant="outline"
