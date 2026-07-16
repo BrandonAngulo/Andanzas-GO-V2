@@ -47,6 +47,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         accuracyPercent,
         bestCategory,
         worstCategory,
+        categoryProgress,
         sessionId,
         livesRemaining
     } = useGameEngine(gameId, userProfile?.id, mode, theme);
@@ -284,6 +285,20 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                     <span className="text-sm sm:text-base font-bold text-orange-400 text-center">{worstCategory}</span>
                                 </div>
                             )}
+                        </div>
+                    )}
+
+                    {categoryProgress.length > 0 && (
+                        <div className="w-full bg-slate-900/40 backdrop-blur-md border border-white/5 p-5 rounded-3xl text-left">
+                            <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-3">Tu progreso por categoría</p>
+                            <div className="space-y-3">
+                                {categoryProgress.map(progress => (
+                                    <div key={progress.category} className="space-y-1">
+                                        <div className="flex justify-between text-sm"><span className="font-semibold text-white">{progress.category}</span><span className="text-primary font-bold">Nivel {progress.level} · {progress.xp} XP</span></div>
+                                        <div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(4, Math.min(100, progress.mastery * 100))}%` }} /></div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 

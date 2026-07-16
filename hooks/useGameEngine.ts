@@ -20,6 +20,7 @@ export interface GameEngineState {
     userAnswers: { questionId: string; isCorrect: boolean; category: string }[];
     bestCategory: string | null;
     worstCategory: string | null;
+    categoryProgress: { category: string; xp: number; level: number; mastery: number }[];
 }
 
 // Verifica si una respuesta es correcta según el tipo de pregunta.
@@ -77,7 +78,8 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         livesRemaining: 3,
         userAnswers: [],
         bestCategory: null,
-        worstCategory: null
+        worstCategory: null,
+        categoryProgress: []
     });
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -119,12 +121,30 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             const game = await gamesService.getGameById(gameId);
             if (!game) throw new Error("Juego no encontrado");
 
-            // Create a session in DB
-            let { data: questionsData, error: qError } = await supabase
-            .from('game_questions')
-            .select('*')
-            .eq('game_id', gameId)
-            .eq('status', 'published');
+            // El compositor del servidor pondera dominio por concepto, dificultad empírica y
+            // exposición reciente. Si no está disponible, conservamos el selector histórico.
+            // Se solicita un pool amplio para que la distribución configurada por niveles siga
+            // teniendo candidatos suficientes; el recorte final ocurre más abajo.
+            const adaptiveLimit = 500;
+            const { data: adaptiveData, error: adaptiveError } = await supabase.rpc('compose_game_questions', {
+                p_game_id: gameId,
+                p_user_id: userId,
+                p_limit: adaptiveLimit,
+                p_theme: theme && theme !== 'all' ? theme : null
+            });
+            let questionsData: any[] | null = adaptiveData as any[] | null;
+            let qError = adaptiveError;
+            const adaptivelyComposed = !adaptiveError && !!adaptiveData?.length;
+
+            if (!adaptivelyComposed) {
+                const fallback = await supabase
+                    .from('game_questions')
+                    .select('*')
+                    .eq('game_id', gameId)
+                    .eq('status', 'published');
+                questionsData = fallback.data as any[] | null;
+                qError = fallback.error;
+            }
 
         if (qError) {
             console.error('Error cargando preguntas:', qError);
@@ -175,6 +195,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
             // Ordena una lista poniendo primero las no vistas recientemente (cada grupo barajado).
             const freshFirst = (arr: any[]) => {
+                if (adaptivelyComposed) return arr;
                 const unseen = arr.filter(q => !recentlySeen.has(q.id));
                 const seen = arr.filter(q => recentlySeen.has(q.id));
                 const sh = (a: any[]) => [...a].sort(() => Math.random() - 0.5);
@@ -527,13 +548,31 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             reason_text: `Trivia: ${state.game?.title}`
         });
 
+        let categoryProgress: { category: string; xp: number; level: number; mastery: number }[] = [];
+        if (userId) {
+            const { data: progress } = await supabase
+                .from('user_category_progress')
+                .select('category, xp, level, mastery')
+                .eq('user_id', userId)
+                .eq('game_id', gameId)
+                .order('xp', { ascending: false })
+                .limit(3);
+            categoryProgress = (progress || []).map((row: any) => ({
+                category: row.category,
+                xp: Number(row.xp || 0),
+                level: Number(row.level || 1),
+                mastery: Number(row.mastery || 0.5)
+            }));
+        }
+
         setState(prev => ({
             ...prev,
             isFinished: true,
             accuracyPercent: accuracy,
             score: finalScore,
             bestCategory,
-            worstCategory
+            worstCategory,
+            categoryProgress
         }));
     };
 

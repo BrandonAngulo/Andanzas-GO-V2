@@ -1,13 +1,13 @@
 import { toast } from "sonner";
 import React, { useState, useEffect, useMemo } from 'react';
-import { GameQuestion, gamesService } from '../../../services/games.service';
+import { GameQuestion, QuestionEditorialCheck, gamesService } from '../../../services/games.service';
 import { learningService } from '../../../services/learning.service';
 import { LearnEntry } from '../../../types';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
-import { Save, X, Plus, Trash2, Edit2, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Save, X, Plus, Trash2, Edit2, Search, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const PreguntasForm = ({ gameId }: { gameId: string }) => {
@@ -25,6 +25,7 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [bulkStatus, setBulkStatus] = useState<GameQuestion['status']>('review');
     const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
     const [actionLoading, setActionLoading] = useState(false);
+    const [editorialChecks, setEditorialChecks] = useState<Record<string, QuestionEditorialCheck>>({});
 
     const pageSize = 50;
 
@@ -83,6 +84,12 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
         setLoading(true);
         const data = await gamesService.getQuestionsByGame(gameId);
         setQuestions(data);
+        try {
+            const checks = await gamesService.getQuestionEditorialChecks(data.map(q => q.id));
+            setEditorialChecks(Object.fromEntries(checks.map(check => [check.question_id, check])));
+        } catch (error) {
+            console.error('No se pudieron cargar las validaciones editoriales:', error);
+        }
         setLoading(false);
     };
 
@@ -171,6 +178,10 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const handleBulkStatus = async () => {
         const ids = Array.from(selectedIds);
         if (!ids.length) return;
+        if (bulkStatus === 'published' && ids.some(id => (editorialChecks[id]?.issues?.length || 0) > 0)) {
+            toast.error('La selección contiene preguntas con errores editoriales. Corrígelas antes de publicar.');
+            return;
+        }
         setActionLoading(true);
         try {
             const updated = await gamesService.updateQuestionsStatus(ids, bulkStatus);
@@ -204,6 +215,10 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
 
     const changeSingleStatus = async (question: GameQuestion, status: GameQuestion['status']) => {
         if (question.status === status) return;
+        if (status === 'published' && (editorialChecks[question.id]?.issues?.length || 0) > 0) {
+            toast.error('Esta pregunta tiene errores editoriales que deben corregirse antes de publicarla.');
+            return;
+        }
         try {
             await gamesService.updateQuestion(question.id, { status, updated_at: new Date().toISOString() } as Partial<GameQuestion>);
             setQuestions(current => current.map(q => q.id === question.id ? { ...q, status } : q));
@@ -211,6 +226,20 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
         } catch (error) {
             console.error(error);
             toast.error('No se pudo cambiar el estado de publicación.');
+        }
+    };
+
+    const runEditorialChecks = async () => {
+        setActionLoading(true);
+        try {
+            const checked = await gamesService.refreshQuestionEditorialChecks(gameId);
+            toast.success(`${checked} preguntas validadas.`);
+            await loadQuestions();
+        } catch (error) {
+            console.error(error);
+            toast.error('No se pudieron ejecutar las validaciones editoriales.');
+        } finally {
+            setActionLoading(false);
         }
     };
 
@@ -328,9 +357,12 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
             <div className="flex justify-between items-center mb-4">
                 <h4 className="font-semibold text-foreground">Preguntas del Juego</h4>
                 {!editingQuestion && (
+                    <div className="flex gap-2">
+                    <Button onClick={runEditorialChecks} size="sm" variant="outline" disabled={actionLoading}><ShieldCheck className="w-4 h-4 mr-2" /> Validar banco</Button>
                     <Button onClick={handleAddNew} size="sm" variant="outline">
                         <Plus className="w-4 h-4 mr-2" /> Añadir Pregunta
                     </Button>
+                    </div>
                 )}
             </div>
 
@@ -354,7 +386,7 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                     <p className="text-xs text-muted-foreground">Mostrando {pageQuestions.length} de {filteredQuestions.length} preguntas filtradas. Solo las publicadas están activas para el juego.</p>
                     {questions.length === 0 ? <p className="text-sm text-muted-foreground text-center py-4">No hay preguntas configuradas.</p> : filteredQuestions.length === 0 ? <p className="text-sm text-muted-foreground text-center py-8">No hay preguntas que coincidan con los filtros.</p> : pageQuestions.map((q, i) => (
                         <div key={q.id} className={`flex flex-col md:flex-row md:justify-between md:items-center gap-3 p-3 border rounded-lg bg-background ${selectedIds.has(q.id) ? 'border-primary ring-1 ring-primary/20' : 'border-border'}`}>
-                            <div className="flex items-start gap-3 min-w-0"><input type="checkbox" className="mt-1" checked={selectedIds.has(q.id)} onChange={() => toggleSelected(q.id)} aria-label={`Seleccionar pregunta: ${q.question_text}`} /><div className="min-w-0"><span className="font-medium text-sm mr-2">{(page - 1) * pageSize + i + 1}.</span><span className="text-sm">{q.question_text}</span><div className="flex flex-wrap gap-1.5 mt-2"><span className={`text-[10px] uppercase tracking-wide font-bold px-1.5 py-0.5 rounded ${statusClasses[q.status]}`}>{statusLabels[q.status]}</span><span className="text-[10px] uppercase tracking-wide font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{({ multiple_choice: 'Opción múltiple', multi_select: 'Selección múltiple', ordering: 'Ordenar', matching: 'Relacionar', image_choice: 'Imagen' } as Record<string, string>)[q.question_type] || q.question_type}</span><span className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Nivel {q.level}</span>{q.category && <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{q.category}</span>}</div></div></div>
+                            <div className="flex items-start gap-3 min-w-0"><input type="checkbox" className="mt-1" checked={selectedIds.has(q.id)} onChange={() => toggleSelected(q.id)} aria-label={`Seleccionar pregunta: ${q.question_text}`} /><div className="min-w-0"><span className="font-medium text-sm mr-2">{(page - 1) * pageSize + i + 1}.</span><span className="text-sm">{q.question_text}</span><div className="flex flex-wrap gap-1.5 mt-2"><span className={`text-[10px] uppercase tracking-wide font-bold px-1.5 py-0.5 rounded ${statusClasses[q.status]}`}>{statusLabels[q.status]}</span>{editorialChecks[q.id] && <span title={[...(editorialChecks[q.id].issues || []), ...(editorialChecks[q.id].warnings || [])].join(' · ')} className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${editorialChecks[q.id].issues?.length ? 'bg-red-100 text-red-800' : editorialChecks[q.id].warnings?.length ? 'bg-orange-100 text-orange-800' : 'bg-emerald-100 text-emerald-800'}`}>Calidad {editorialChecks[q.id].score}/100</span>}<span className="text-[10px] uppercase tracking-wide font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{({ multiple_choice: 'Opción múltiple', multi_select: 'Selección múltiple', ordering: 'Ordenar', matching: 'Relacionar', image_choice: 'Imagen' } as Record<string, string>)[q.question_type] || q.question_type}</span><span className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Nivel {q.level}</span>{q.category && <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{q.category}</span>}</div></div></div>
                             <div className="flex items-center gap-2 shrink-0"><Select value={q.status} onValueChange={value => changeSingleStatus(q, value as GameQuestion['status'])}><SelectTrigger className="w-[135px] h-8" aria-label={`Estado de ${q.question_text}`}><SelectValue /></SelectTrigger><SelectContent>{(['draft', 'review', 'published', 'archived'] as GameQuestion['status'][]).map(s => <SelectItem key={s} value={s}>{statusLabels[s]}</SelectItem>)}</SelectContent></Select><Button size="icon" variant="ghost" onClick={() => handleEdit(q)} aria-label="Editar pregunta"><Edit2 className="w-4 h-4" /></Button><Button size="icon" variant="ghost" className="text-red-500 hover:text-red-600" onClick={() => handleDelete(q.id)} aria-label="Eliminar pregunta"><Trash2 className="w-4 h-4" /></Button></div>
                         </div>
                     ))}

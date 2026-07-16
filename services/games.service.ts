@@ -77,6 +77,14 @@ export interface GameQuestion {
     related_news_id?: string;
 }
 
+export interface QuestionEditorialCheck {
+    question_id: string;
+    score: number;
+    issues: string[];
+    warnings: string[];
+    checked_at: string;
+}
+
 export const gamesService = {
     // ---- ADMIN / GAMES CRUD ----
     async getAllGames(): Promise<Game[]> {
@@ -181,6 +189,22 @@ export const gamesService = {
             .select('id');
         if (error) throw error;
         return data?.length || 0;
+    },
+
+    async refreshQuestionEditorialChecks(gameId: string): Promise<number> {
+        const { data, error } = await supabase.rpc('refresh_question_editorial_checks', { p_game_id: gameId });
+        if (error) throw error;
+        return Number(data || 0);
+    },
+
+    async getQuestionEditorialChecks(questionIds: string[]): Promise<QuestionEditorialCheck[]> {
+        if (!questionIds.length) return [];
+        const { data, error } = await supabase
+            .from('question_editorial_checks')
+            .select('*')
+            .in('question_id', questionIds);
+        if (error) throw error;
+        return (data || []) as QuestionEditorialCheck[];
     },
 
     async deleteQuestion(id: string): Promise<boolean> {
