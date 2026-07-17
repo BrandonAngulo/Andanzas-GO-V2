@@ -25,7 +25,8 @@ import { bannerService } from '../../services/banner.service';
 import { BannerGalleryModal, AVAILABLE_BANNERS } from './BannerGalleryModal';
 import { RewardUnlockModal } from './RewardUnlockModal';
 
-import { getTranslated, getMacroCategory } from '../../lib/utils';
+import { InfoTooltip } from '../ui/tooltip';
+import { getTranslated, getMacroCategory, cn } from '../../lib/utils';
 import { COLOMBIAN_CITIES } from '../../lib/locations';
 
 // Hardcoded avatars for immediate rendering in UI
@@ -128,8 +129,50 @@ const ECONOMY_HELP = {
     lives: { title: 'Vidas', body: 'Permiten continuar en modos de juego que tienen riesgo. Tienes un máximo de 3; se recargan automáticamente o pueden recuperarse con monedas o gemas.' }
 } as const;
 
-function EconomyTile({ icon, value, label, help }: { icon: React.ReactNode; value: string | number; label: string; help: { title: string; body: string } }) {
-    return <InfoHint title={help.title} body={help.body} trigger={<button type="button" className="flex w-full items-center gap-2 rounded-lg border bg-background/70 px-2 py-1.5 text-left shadow-sm transition-all hover:border-primary/40 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}><span className="shrink-0">{icon}</span><span className="min-w-0 leading-tight"><strong className="block text-sm leading-none">{value}</strong><span className="block truncate text-[10px] text-muted-foreground">{label}</span></span></button>} />;
+// Metadatos visuales por recurso: icono, color y micro-animación (keyframes en index.css).
+const ECONOMY_META = {
+    points: { icon: Sparkles, color: 'text-emerald-500', ring: 'bg-emerald-500/10', hoverAnim: 'group-hover:animate-[sparkle_1.6s_ease-in-out_infinite] motion-reduce:animate-none', anim: 'animate-[sparkle_2.4s_ease-in-out_infinite] motion-reduce:animate-none' },
+    coins: { icon: Coins, color: 'text-yellow-500', ring: 'bg-yellow-500/10', hoverAnim: 'group-hover:animate-[coinBob_1.4s_ease-in-out_infinite] motion-reduce:animate-none', anim: 'animate-[coinBob_1.8s_ease-in-out_infinite] motion-reduce:animate-none' },
+    gems: { icon: Gem, color: 'text-cyan-500', ring: 'bg-cyan-500/10', hoverAnim: 'group-hover:animate-[floaty_2.4s_ease-in-out_infinite] motion-reduce:animate-none', anim: 'animate-[floaty_3s_ease-in-out_infinite] motion-reduce:animate-none' },
+    lives: { icon: Heart, color: 'text-red-500', ring: 'bg-red-500/10', hoverAnim: 'group-hover:animate-[heartbeat_1.4s_ease-in-out_infinite] motion-reduce:animate-none', anim: 'animate-[heartbeat_1.8s_ease-in-out_infinite] motion-reduce:animate-none' },
+} as const;
+
+function EconomyTile({ icon, value, label, help, animOnHover }: { icon: React.ReactNode; value: string | number; label: string; help: { title: string; body: string }; animOnHover?: string }) {
+    return (
+        <InfoTooltip title={help.title} body={help.body}>
+            <button type="button" className="group flex w-full items-center gap-2 rounded-lg border bg-background/70 px-2 py-1.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}>
+                <span className={cn('shrink-0', animOnHover)}>{icon}</span>
+                <span className="min-w-0 leading-tight">
+                    <strong className="block text-sm leading-none">{value}</strong>
+                    <span className="block truncate text-[10px] text-muted-foreground">{label}</span>
+                </span>
+            </button>
+        </InfoTooltip>
+    );
+}
+
+// Guía animada de recursos usada dentro del diálogo "¿Cómo funcionan los puntos?".
+function EconomyResourceCards() {
+    return (
+        <div className="grid gap-2.5 sm:grid-cols-2">
+            {(Object.keys(ECONOMY_HELP) as (keyof typeof ECONOMY_HELP)[]).map(key => {
+                const meta = ECONOMY_META[key];
+                const item = ECONOMY_HELP[key];
+                const Icon = meta.icon;
+                return (
+                    <div key={key} className="flex gap-3 rounded-2xl border bg-gradient-to-br from-muted/50 to-transparent p-3 shadow-sm">
+                        <span className={cn('grid h-10 w-10 shrink-0 place-items-center rounded-xl', meta.ring)}>
+                            <Icon className={cn('h-5 w-5', meta.color, meta.anim)} />
+                        </span>
+                        <div className="min-w-0">
+                            <h4 className="font-semibold text-foreground">{item.title}</h4>
+                            <p className="mt-0.5 text-xs leading-snug">{item.body}</p>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
 }
 
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite, onNavigate }) => {
@@ -656,10 +699,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     <aside className="absolute right-6 top-1/2 z-10 hidden w-56 -translate-y-1/2 rounded-2xl border bg-background/75 p-3 shadow-sm backdrop-blur-md xl:block">
                         <p className="mb-2 text-left text-[11px] font-bold uppercase tracking-widest text-primary">Tus recursos</p>
                         <div className="grid grid-cols-2 gap-1.5">
-                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} />
-                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} />
-                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} />
-                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} />
+                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />
+                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} animOnHover={ECONOMY_META.coins.hoverAnim} />
+                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} animOnHover={ECONOMY_META.gems.hoverAnim} />
+                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} animOnHover={ECONOMY_META.lives.hoverAnim} />
                         </div>
                     </aside>
 
@@ -712,10 +755,10 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             </div>
                         </div>
                         <div className="mt-4 grid w-full max-w-md grid-cols-2 gap-2 sm:grid-cols-4 xl:hidden">
-                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} />
-                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} />
-                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} />
-                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} />
+                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />
+                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} animOnHover={ECONOMY_META.coins.hoverAnim} />
+                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} animOnHover={ECONOMY_META.gems.hoverAnim} />
+                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} animOnHover={ECONOMY_META.lives.hoverAnim} />
                         </div>
 
                         <InfoHint
@@ -726,11 +769,17 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </button>
                             }
                         >
-                            <p>{economyHelp.body}</p>
-                            <div className="grid gap-3 sm:grid-cols-2">
-                                {Object.values(ECONOMY_HELP).map(item => <div key={item.title} className="rounded-xl border bg-muted/30 p-3"><h4 className="font-semibold text-foreground">{item.title}</h4><p className="mt-1 text-xs">{item.body}</p></div>)}
+                            <div className="-mx-1 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-4">
+                                <p className="text-sm leading-relaxed text-foreground/90">{economyHelp.body}</p>
                             </div>
-                            <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs">En los juegos, las vidas representan intentos; las monedas atienden compras frecuentes y las gemas beneficios de mayor valor. Tu máximo actual es de 3 vidas.</div>
+                            <div>
+                                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Tus recursos</p>
+                                <EconomyResourceCards />
+                            </div>
+                            <div className="flex items-start gap-2.5 rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs leading-snug">
+                                <Gamepad2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                                <span>En los juegos, las <strong className="font-semibold">vidas</strong> representan intentos; las <strong className="font-semibold">monedas</strong> atienden compras frecuentes y las <strong className="font-semibold">gemas</strong>, beneficios de mayor valor. Tu máximo actual es de 3 vidas.</span>
+                            </div>
                         </InfoHint>
                     </div>
                 </div>
