@@ -175,6 +175,44 @@ function EconomyResourceCards() {
     );
 }
 
+// Qué guarda el perfil: contenido del diálogo "Tu memoria de ciudad".
+const CITY_MEMORY_ITEMS = [
+    { icon: MapPin, tone: 'text-primary bg-primary/10', title: 'Pasaporte y sellos', text: 'Los territorios que vas explorando quedan marcados, sello a sello.' },
+    { icon: RouteIcon, tone: 'text-blue-500 bg-blue-500/10', title: 'Rutas y andanzas', text: 'Lo que ya caminaste, lo que está en progreso y lo que te espera.' },
+    { icon: Award, tone: 'text-yellow-600 bg-yellow-500/10', title: 'Insignias y nivel', text: 'Reconocen tu curiosidad y tu constancia como explorador.' },
+    { icon: Heart, tone: 'text-red-500 bg-red-500/10', title: 'Tus aportes', text: 'Reseñas, fotos y hallazgos que dejás para toda la comunidad.' },
+    { icon: Sparkles, tone: 'text-emerald-500 bg-emerald-500/10', title: 'Tu avatar', text: 'Le pone rostro y personalidad a toda esta experiencia.' },
+] as const;
+
+function CityMemoryGuide() {
+    return (
+        <div className="space-y-4">
+            <p className="text-sm leading-relaxed text-foreground/90">
+                No es una cuenta más: es la <strong className="font-semibold text-foreground">memoria de tu ciudad</strong>. Aquí queda viva la huella de lo que recorrés, descubrís y compartís en Cali.
+            </p>
+            <ul className="space-y-2">
+                {CITY_MEMORY_ITEMS.map(item => {
+                    const Icon = item.icon;
+                    return (
+                        <li key={item.title} className="flex items-start gap-3">
+                            <span className={cn('grid h-9 w-9 shrink-0 place-items-center rounded-xl', item.tone)}>
+                                <Icon className="h-4 w-4" />
+                            </span>
+                            <div className="min-w-0">
+                                <p className="text-sm font-semibold leading-tight text-foreground">{item.title}</p>
+                                <p className="text-xs leading-snug text-muted-foreground">{item.text}</p>
+                            </div>
+                        </li>
+                    );
+                })}
+            </ul>
+            <p className="rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs leading-snug text-foreground/80">
+                Cada cosa que hacés en Andanzas suma a esta memoria: mientras más recorrés, más rica se vuelve tu historia con la ciudad.
+            </p>
+        </div>
+    );
+}
+
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite, onNavigate }) => {
     const { t, language } = useI18n();
     const { getHelp } = useHelpContent();
@@ -692,8 +730,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             </button>
                         }
                     >
-                        <p className="font-semibold text-foreground">Mucho más que una cuenta</p>
-                        <p>Este perfil guarda la huella de lo que recorrés, aprendés y compartís: rutas, cultura, artes, juegos, aportes, logros y recuerdos. Tu avatar le da imagen a esa experiencia.</p>
+                        <CityMemoryGuide />
                     </InfoHint>
 
                     <aside className="absolute right-6 top-1/2 z-10 hidden w-56 -translate-y-1/2 rounded-2xl border bg-background/75 p-3 shadow-sm backdrop-blur-md xl:block">
