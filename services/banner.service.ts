@@ -56,8 +56,7 @@ export const bannerService = {
     async updateAppBanner(key: string, patch: BannerTextPatch): Promise<Banner | null> {
         const { data, error } = await supabase
             .from('app_banners')
-            .update({ ...patch, updated_at: new Date().toISOString() })
-            .eq('key', key)
+            .upsert({ key, scope: 'app', ...patch, updated_at: new Date().toISOString() }, { onConflict: 'key' })
             .select()
             .maybeSingle();
         if (error) {

@@ -20,6 +20,7 @@ export const AdminCuriosidades = () => {
     const [currentEntry, setCurrentEntry] = useState<LearnEntry | undefined>(undefined);
     const [searchQuery, setSearchQuery] = useState('');
     const [deleteId, setDeleteId] = useState<string | null>(null);
+    const statusLabel: Record<string, string> = { draft: 'Borrador', review: 'En revisión', ready: 'Lista', scheduled: 'Programada', published: 'Publicada', archived: 'Archivada' };
 
     useEffect(() => {
         loadEntries();
@@ -159,13 +160,14 @@ export const AdminCuriosidades = () => {
                                     <Checkbox className="mt-1 self-start sm:mt-0 sm:self-center" checked={sel.isSelected(entry.id)} onChange={() => sel.toggle(entry.id)} aria-label={`Seleccionar ${entry.title}`} />
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${entry.status === 'published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}`}>
-                                                {entry.status === 'published' ? 'Publicado' : 'Borrador'}
+                                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${entry.status === 'published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : entry.status === 'scheduled' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}`}>
+                                                {statusLabel[entry.status || 'draft'] || 'Borrador'}
                                             </span>
                                             <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{entry.city}</span>
                                         </div>
                                         <h4 className="font-semibold text-base">{entry.title}</h4>
                                         <p className="text-sm text-muted-foreground line-clamp-1">{entry.content_full || entry.content_simple}</p>
+                                        {entry.publish_at && <p className="mt-1 text-xs text-blue-700">Publicación: {new Date(entry.publish_at).toLocaleString('es-CO')}</p>}
                                     </div>
                                     <div className="flex items-center gap-2 shrink-0">
                                         <Button 

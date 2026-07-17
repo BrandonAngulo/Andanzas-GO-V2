@@ -314,7 +314,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
             <div className="p-4 max-w-5xl mx-auto">
                 <PanelBanner
                     panelKey="rutas"
-                    defaultImage="/images/banner_rutas.png"
+                    defaultImage="/images/banners/unified/rutas-v2.webp"
                     gradientClass="from-emerald-50/95 via-emerald-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
                     icon={
                         <div className="bg-emerald-600 p-2.5 rounded-2xl shadow-md text-white">

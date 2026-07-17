@@ -164,9 +164,17 @@ export const CuriosidadForm: React.FC<CuriosidadFormProps> = ({ entry, onSave, o
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="draft">Borrador</SelectItem>
+                                    <SelectItem value="review">En revisión</SelectItem>
+                                    <SelectItem value="ready">Lista para publicar</SelectItem>
+                                    <SelectItem value="scheduled">Programada</SelectItem>
                                     <SelectItem value="published">Publicado</SelectItem>
                                 </SelectContent>
                             </Select>
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                            <label className="text-sm font-medium">Fecha y hora de publicación</label>
+                            <Input type="datetime-local" value={formData.publish_at ? new Date(formData.publish_at).toISOString().slice(0, 16) : ''} onChange={(event) => setFormData(prev => ({ ...prev, publish_at: event.target.value ? new Date(event.target.value).toISOString() : null }))} />
+                            <p className="text-xs text-muted-foreground">Úsala con el estado “Programada”. El contenido no será público antes de esta fecha.</p>
                         </div>
                     </div>
                 </TabsContent>

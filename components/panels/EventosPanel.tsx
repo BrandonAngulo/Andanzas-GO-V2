@@ -213,7 +213,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
         {/* Header Hero */}
         <PanelBanner
             panelKey="eventos"
-            defaultImage="/images/banner_eventos.png"
+            defaultImage="/images/banners/unified/eventos-v2.webp"
             gradientClass="from-orange-50/95 via-orange-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
             icon={
                 <div className="bg-orange-600 p-2.5 rounded-2xl shadow-md text-white">

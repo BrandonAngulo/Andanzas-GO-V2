@@ -95,10 +95,10 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
             <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-relaxed text-emerald-50/85">{entry.short_definition}</p>
           )}
         </div>
-        <Button onClick={() => void discover()} disabled={busy} className="shrink-0 rounded-full bg-white text-emerald-900 hover:bg-emerald-50">
+        <Button onClick={() => void discover()} disabled={busy} className="shrink-0 rounded-full !bg-white !text-emerald-950 hover:!bg-emerald-50 shadow-lg">
           {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {!busy && <BookOpen className="mr-2 h-4 w-4" />}
-          {claimedToday ? 'Ver ficha' : 'Descubrir'}
+          {claimedToday ? 'Explorar la palabra' : 'Descubrir la palabra'}
           <ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>

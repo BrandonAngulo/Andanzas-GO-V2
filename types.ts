@@ -90,6 +90,7 @@ export interface LearnEntry {
   curiosity?: string;
   // Editorial status
   status?: 'draft' | 'review' | 'ready' | 'scheduled' | 'published' | 'archived';
+  publish_at?: string | null;
   visibility_flags?: {
     show_in_home?: boolean;
     show_as_notification?: boolean;

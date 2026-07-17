@@ -47,7 +47,8 @@ export const AppDataProvider: React.FC<{ children: ReactNode }> = ({ children })
             setRutasTematicas(r.filter((item: Ruta) => item.status === 'published' || item.publico === true));
             setAllInsignias(i);
             setFeed(f.filter((item: FeedItem) => item.status === 'published' || item.status === undefined));
-            setLearnEntries(l.filter((item: LearnEntry) => item.status === 'published' || item.status === undefined));
+            const now = Date.now();
+            setLearnEntries(l.filter((item: LearnEntry) => item.status === 'published' || item.status === undefined || (item.status === 'scheduled' && !!item.publish_at && new Date(item.publish_at).getTime() <= now)));
 
             // Retry if we only got local sites (fallback mode) and we haven't retried yet
             if (s.length <= 40 && retryCount < 2) {

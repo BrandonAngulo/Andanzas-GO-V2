@@ -13,6 +13,7 @@ import { GameCover, hasGameCover } from '../views/GameCover';
 import { PanelBanner } from './shared/PanelBanner';
 import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
+import { bannerService, Banner } from '../../services/banner.service';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string) => void;
@@ -23,6 +24,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [loading, setLoading] = useState(true);
     const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
     const [modeChoiceGame, setModeChoiceGame] = useState<Game | null>(null);
+    const [musicContent, setMusicContent] = useState<Banner | null>(null);
+    const [storiesContent, setStoriesContent] = useState<Banner | null>(null);
 
     const launchGame = (game: Game) => {
         // Las trivias ofrecen elegir modo (corto por niveles / Leyenda). El resto arranca directo.
@@ -32,6 +35,13 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
 
     useEffect(() => {
         loadGames();
+        Promise.all([
+            bannerService.getBanner('entertainment_music'),
+            bannerService.getBanner('entertainment_stories'),
+        ]).then(([music, stories]) => {
+            setMusicContent(music?.is_active ? music : null);
+            setStoriesContent(stories?.is_active ? stories : null);
+        });
     }, []);
 
     const loadGames = async () => {
@@ -70,7 +80,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                 <div className="pointer-events-none absolute -right-20 top-96 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
                 <PanelBanner
                     panelKey="juegos"
-                    defaultImage="/images/banner_juegos.png"
+                    defaultImage="/images/banners/unified/entretenimiento-v2.webp"
                     gradientClass="from-purple-50/95 via-purple-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
                     icon={
                         <div className="bg-purple-600 p-2.5 rounded-2xl shadow-md text-white">
@@ -194,8 +204,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     <div className="relative overflow-hidden rounded-3xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-950 via-purple-900 to-indigo-900 p-8 text-white shadow-xl">
                         <Music className="mb-5 h-10 w-10 text-fuchsia-300" />
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-200">Música para andar</p>
-                        <h3 className="mt-2 text-3xl font-black">Una playlist para cada recorrido</h3>
-                        <p className="mt-3 max-w-2xl text-white/75">Estamos preparando selecciones musicales para acompañar caminatas, visitas y rutas sin convertir la app todavía en una plataforma de audio.</p>
+                        <h3 className="mt-2 text-3xl font-black">{musicContent?.title_es || 'Una playlist para cada recorrido'}</h3>
+                        <p className="mt-3 max-w-2xl text-white/80">{musicContent?.subtitle_es || 'Muy pronto vas a encontrar selecciones musicales para ponerle ritmo a tus caminatas, visitas y rutas.'}</p>
                         <div className="mt-6 inline-flex items-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold"><Headphones className="mr-2 h-4 w-4" /> Próximamente</div>
                     </div>
                 </TabsContent>
@@ -203,9 +213,9 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                 <TabsContent value="podcasts">
                     <div className="rounded-3xl border border-dashed border-orange-500/30 bg-orange-500/5 p-8 text-center">
                         <Mic2 className="mx-auto mb-4 h-10 w-10 text-orange-500" />
-                        <h3 className="text-2xl font-bold">Relatos, pódcast y voces de la ciudad</h3>
-                        <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">Este espacio queda preparado para futuras narraciones, entrevistas y audios de historias. Se activará cuando exista contenido propio o curado con permisos claros.</p>
-                        <span className="mt-5 inline-block rounded-full bg-orange-500/10 px-4 py-2 text-sm font-semibold text-orange-700">En preparación</span>
+                        <h3 className="text-2xl font-bold">{storiesContent?.title_es || 'Relatos, pódcast y voces de la ciudad'}</h3>
+                        <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">{storiesContent?.subtitle_es || 'Muy pronto podrás escuchar historias, voces y relatos que le dan vida a Cali mientras andás.'}</p>
+                        <span className="mt-5 inline-block rounded-full bg-orange-500/10 px-4 py-2 text-sm font-semibold text-orange-700">Próximamente</span>
                     </div>
                 </TabsContent>
 

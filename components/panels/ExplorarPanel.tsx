@@ -160,7 +160,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
       {!query && (
         <PanelBanner
           panelKey="explorar"
-          defaultImage="/images/banner_explorar.png"
+          defaultImage="/images/banners/unified/explorar-v2.webp"
           marginClass="mx-4 md:mx-8"
           gradientClass="from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
           icon={

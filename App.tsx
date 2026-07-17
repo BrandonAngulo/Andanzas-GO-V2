@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "sonner";
 import AuthRequiredDialog from "./components/shared/AuthRequiredDialog";
-import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Map, X, Settings2, Award } from "lucide-react";
+import { Menu, Search, Route, User, Bell, Sparkles, Shield, AlertTriangle, Maximize2, Minimize2, Share2, Star, Phone, Map, X, Settings2, Award, ArrowLeft } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
@@ -166,6 +166,24 @@ export default function App() {
   // --- Local UI State ---
   const [openMenu, setOpenMenu] = useState(false);
   const [activePanel, setActivePanel] = useState<ActivePanelType>("mapa");
+  const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
+  useEffect(() => {
+    if (!window.history.state?.andanzasPanel) {
+      window.history.replaceState({ ...window.history.state, andanzasPanel: 'mapa' }, '', window.location.href);
+    }
+    const handlePopState = (event: PopStateEvent) => {
+      const destination = event.state?.andanzasPanel as ActivePanelType | undefined;
+      setActivePanel(destination || 'mapa');
+      setFullView(null);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+  useEffect(() => {
+    if (window.history.state?.andanzasPanel !== activePanel) {
+      window.history.pushState({ ...window.history.state, andanzasPanel: activePanel }, '', window.location.href);
+    }
+  }, [activePanel]);
   // Entrada de "Pa' que sepás" a abrir directamente al navegar (p. ej. desde un dato curioso).
   const [pendingLearnEntryId, setPendingLearnEntryId] = useState<string | null>(null);
   // Recuerda cuál era el panel activo justo antes de entrar a 'perfil' (sin importar la
@@ -197,7 +215,6 @@ export default function App() {
   const [showSupportModal, setShowSupportModal] = useState(false);
   const [badgeProgress, setBadgeProgress] = useState<Record<string, number>>({});
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
-  const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
   const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
   const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend' | 'timed'>('levels');
@@ -598,6 +615,11 @@ export default function App() {
           <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
               <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">
+                {activePanel !== 'mapa' && (
+                  <Button type="button" size="icon" variant="ghost" className="-ml-3 rounded-full" aria-label="Volver al panel anterior" title="Volver" onClick={() => window.history.back()}>
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                )}
                 {panelTitle}
                 {['mapa', 'favoritos', 'reseñas', 'tendencias', 'noticias', 'diccionario', 'perfil'].includes(activePanel) && (() => {
                   const help = getHelp(activePanel);

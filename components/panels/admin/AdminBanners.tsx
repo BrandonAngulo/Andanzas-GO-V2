@@ -15,11 +15,13 @@ import { BroadcastModal } from './BroadcastModal';
 import { Megaphone } from 'lucide-react';
 
 const APP_PANELS = [
-    { key: 'explorar', label: 'Explorar Sitios', defaultImg: '/images/banner_explorar.png' },
-    { key: 'juegos', label: 'Zona de Juegos', defaultImg: '/images/banner_juegos.png' },
-    { key: 'paquesepas', label: 'Pa\' que sepás', defaultImg: '/images/banner_aprende.png' },
-    { key: 'rutas', label: 'Pasaporte de Rutas', defaultImg: '/images/banner_rutas.png' },
-    { key: 'eventos', label: 'Cartelera Cultural', defaultImg: '/images/banner_eventos.png' }
+    { key: 'explorar', label: 'Explorar Sitios', defaultImg: '/images/banners/unified/explorar-v2.webp' },
+    { key: 'juegos', label: 'Entretenimiento', defaultImg: '/images/banners/unified/entretenimiento-v2.webp' },
+    { key: 'paquesepas', label: 'Aprende', defaultImg: '/images/banners/unified/aprende-v2.webp' },
+    { key: 'rutas', label: 'Pasaporte de Rutas', defaultImg: '/images/banners/unified/rutas-v2.webp' },
+    { key: 'eventos', label: 'Cartelera Cultural', defaultImg: '/images/banners/unified/eventos-v2.webp' },
+    { key: 'entertainment_music', label: 'Entretenimiento · Música', defaultImg: '/images/banners/unified/entretenimiento-v2.webp' },
+    { key: 'entertainment_stories', label: 'Entretenimiento · Relatos', defaultImg: '/images/banners/unified/aprende-v2.webp' }
 ];
 
 interface EditingBanner {

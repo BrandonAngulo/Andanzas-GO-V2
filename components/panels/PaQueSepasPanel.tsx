@@ -25,6 +25,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
     const { t, language } = useI18n();
     const [selectedEntry, setSelectedEntry] = useState<LearnEntry | null>(null);
     const [relatedGames, setRelatedGames] = useState<Game[]>([]);
+    const storiesRef = React.useRef<HTMLDivElement>(null);
 
     // Al entrar con una entrada objetivo (p. ej. desde un dato curioso), la abre directamente.
     // Si no existe entre las entradas cargadas, se queda en la vista general (fallback).
@@ -159,7 +160,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
             <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
                 <PanelBanner
                     panelKey="paquesepas"
-                    defaultImage="/images/banner_aprende.png"
+                    defaultImage="/images/banners/unified/aprende-v2.webp"
                     gradientClass="from-indigo-50/95 via-indigo-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
                     icon={
                         <div className="bg-indigo-600 p-2.5 rounded-2xl shadow-md text-white">
@@ -175,13 +176,13 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                 <section className="mb-8">
                     <div className="mb-4"><p className="text-xs font-bold uppercase tracking-widest text-indigo-600">Herramientas para aprender</p><h2 className="text-2xl font-bold">Explorá la ciudad desde distintas voces</h2></div>
                     <div className="grid gap-4 md:grid-cols-3">
-                        <div className="rounded-2xl border bg-card p-5 shadow-sm"><BookOpen className="mb-3 h-6 w-6 text-indigo-600" /><h3 className="font-bold">Historias y saberes</h3><p className="mt-1 text-sm text-muted-foreground">Relatos, personajes y claves para entender lo que ves mientras andás.</p></div>
+                        <button type="button" onClick={() => storiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/15 via-violet-500/10 to-sky-500/10 p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><BookOpen className="mb-3 h-6 w-6 text-indigo-600" /><h3 className="font-bold">Historias y saberes</h3><p className="mt-1 text-sm text-muted-foreground">Relatos, personajes y claves para entender lo que ves mientras andás.</p><span className="mt-3 inline-flex items-center text-xs font-bold text-indigo-700">Explorar historias <ChevronRight className="h-4 w-4" /></span></button>
                         {dictionaryVisible && <button type="button" onClick={onOpenDictionary} className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><Library className="mb-3 h-6 w-6 text-emerald-600" /><h3 className="font-bold">Diccionario de la caleñidad</h3><p className="mt-1 text-sm text-muted-foreground">Palabras, expresiones, usos y contextos para comprender cómo habla la ciudad.</p><span className="mt-3 inline-flex items-center text-xs font-bold text-emerald-700">Abrir diccionario <ChevronRight className="h-4 w-4" /></span></button>}
-                        <div className="rounded-2xl border border-dashed bg-muted/20 p-5"><Headphones className="mb-3 h-6 w-6 text-muted-foreground" /><h3 className="font-bold">Narraciones y audios</h3><p className="mt-1 text-sm text-muted-foreground">Próximamente: historias contadas para escuchar durante tus recorridos.</p></div>
+                        <div className="rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-500/12 via-amber-500/10 to-rose-500/10 p-5"><Headphones className="mb-3 h-6 w-6 text-orange-600" /><h3 className="font-bold">Narraciones y audios</h3><p className="mt-1 text-sm text-muted-foreground">Próximamente: historias contadas para disfrutar mientras recorrés la ciudad.</p><span className="mt-3 inline-flex rounded-full bg-orange-500/10 px-3 py-1 text-xs font-bold text-orange-700">Próximamente</span></div>
                     </div>
                 </section>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div ref={storiesRef} className="grid scroll-mt-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {entries.map(entry => (
                         <div 
                             key={entry.id} 
