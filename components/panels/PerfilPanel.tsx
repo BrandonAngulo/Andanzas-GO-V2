@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2 } from 'lucide-react';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2, Calendar, Gift, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
 import { GameMascot } from '../views/GameMascot';
@@ -171,6 +171,61 @@ function EconomyResourceCards() {
                     </div>
                 );
             })}
+        </div>
+    );
+}
+
+// Formas de sumar puntos y recompensas (diálogo "Tu progreso en Andanzas").
+const EARN_WAYS = [
+    { icon: RouteIcon, label: 'Completar rutas guiadas' },
+    { icon: Star, label: 'Dejar reseñas en los sitios' },
+    { icon: Gamepad2, label: 'Jugar trivias y retos' },
+    { icon: Calendar, label: 'Asistir a eventos culturales' },
+    { icon: Heart, label: 'Guardar sitios en favoritos' },
+    { icon: Share2, label: 'Compartir tus descubrimientos' },
+] as const;
+
+// Guía completa de progreso: reemplaza el bloque de texto denso por secciones claras.
+function EconomyGuide() {
+    return (
+        <div className="space-y-4">
+            <div className="flex gap-3 rounded-2xl border bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-4">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary"><TrendingUp className="h-5 w-5" /></span>
+                <div className="min-w-0">
+                    <h4 className="font-semibold text-foreground">Nivel y experiencia (XP)</h4>
+                    <p className="mt-0.5 text-xs leading-snug text-muted-foreground">Cada actividad te da XP y te hace subir de nivel, desde <strong className="font-semibold text-foreground">Explorador Novato</strong> hasta <strong className="font-semibold text-foreground">Leyenda de Cali</strong>. Tu nivel acompaña siempre a tu avatar.</p>
+                </div>
+            </div>
+
+            <div>
+                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Tus recursos</p>
+                <EconomyResourceCards />
+            </div>
+
+            <div>
+                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Cómo sumar puntos y recompensas</p>
+                <ul className="grid gap-1.5 sm:grid-cols-2">
+                    {EARN_WAYS.map(w => {
+                        const Icon = w.icon;
+                        return (
+                            <li key={w.label} className="flex items-center gap-2 rounded-lg border bg-muted/30 px-2.5 py-2 text-xs font-medium">
+                                <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
+                                <span className="leading-tight">{w.label}</span>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+
+            <div className="flex items-start gap-2.5 rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs leading-snug">
+                <Gamepad2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <span>En los juegos, las <strong className="font-semibold">vidas</strong> son intentos; las <strong className="font-semibold">monedas</strong> cubren compras frecuentes y las <strong className="font-semibold">gemas</strong>, beneficios de mayor valor. Tu máximo actual es de 3 vidas.</span>
+            </div>
+
+            <div className="flex items-start gap-2.5 rounded-xl border border-dashed border-primary/30 bg-primary/5 p-3 text-xs leading-snug">
+                <Gift className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <span><strong className="font-semibold">Próximamente:</strong> vas a poder canjear tus Monedas y Gemas por beneficios y experiencias exclusivas.</span>
+            </div>
         </div>
     );
 }
@@ -806,17 +861,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </button>
                             }
                         >
-                            <div className="-mx-1 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-4">
-                                <p className="text-sm leading-relaxed text-foreground/90">{economyHelp.body}</p>
-                            </div>
-                            <div>
-                                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Tus recursos</p>
-                                <EconomyResourceCards />
-                            </div>
-                            <div className="flex items-start gap-2.5 rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs leading-snug">
-                                <Gamepad2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                                <span>En los juegos, las <strong className="font-semibold">vidas</strong> representan intentos; las <strong className="font-semibold">monedas</strong> atienden compras frecuentes y las <strong className="font-semibold">gemas</strong>, beneficios de mayor valor. Tu máximo actual es de 3 vidas.</span>
-                            </div>
+                            <EconomyGuide />
                         </InfoHint>
                     </div>
                 </div>
