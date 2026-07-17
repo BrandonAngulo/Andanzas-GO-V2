@@ -5,6 +5,7 @@ import { userService } from '../services/user.service';
 import { reviewsService } from '../services/reviews.service';
 import { notificationsService } from '../services/notifications.service';
 import { gamificationService } from '../services/gamification.service';
+import { routesService } from '../services/routes.service';
 import { Star, Award } from 'lucide-react'; // Using Lucide names purely for type consistency if needed, though mostly strings here
 
 // Type for the icon in notifications - usually passed as a component or string
@@ -42,26 +43,34 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [earnedInsignias, setEarnedInsignias] = useState<string[]>([]);
     const [notifications, setNotifications] = useState<Notificacion[]>([]);
 
-    // Local state for routes progress (synced with storage in the future or DB)
+    // Route progress is kept locally for immediate UI feedback and persisted in Supabase.
     const [routesInProgress, setRoutesInProgress] = useState<string[]>([]);
     const [routesCompleted, setRoutesCompleted] = useState<string[]>([]);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
     useEffect(() => {
+        let active = true;
         if (isAuthenticated && user) {
             userService.getFavorites(user.id).then(setFavIds);
             reviewsService.getByUserId(user.id).then(setReviews);
             notificationsService.getUserNotifications(user.id).then(setNotifications);
             gamificationService.getUserBadgeIds(user.id).then(setEarnedInsignias);
             userService.getProfile(user.id).then(setUserProfile);
-            // Routes progress loading would go here if fetched from DB
+            routesService.getUserRouteProgress(user.id).then(progress => {
+                if (!active) return;
+                setRoutesInProgress(progress.inProgress);
+                setRoutesCompleted(progress.completed);
+            });
         } else {
             setFavIds([]);
             setReviews([]);
             setEarnedInsignias([]);
             setNotifications([]);
+            setRoutesInProgress([]);
+            setRoutesCompleted([]);
             setUserProfile(null);
         }
+        return () => { active = false; };
     }, [isAuthenticated, user]);
 
     const addNotification = (notif: Omit<Notificacion, 'id' | 'fecha'>) => {
@@ -135,7 +144,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
     const updateRouteProgress = (inProgress: string[], completed: string[]) => {
         setRoutesInProgress(inProgress);
         setRoutesCompleted(completed);
-        // Here we could sync with DB if that feature existed in services
+        if (isAuthenticated && user) void routesService.syncUserRouteProgress(user.id, inProgress, completed);
     };
 
     return (

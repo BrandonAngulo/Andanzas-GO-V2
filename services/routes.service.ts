@@ -2,6 +2,41 @@ import { supabase } from '../lib/supabaseClient';
 import { Ruta } from '../types';
 
 export const routesService = {
+    async getUserRouteProgress(userId: string): Promise<{ inProgress: string[]; completed: string[] }> {
+        const { data, error } = await supabase
+            .from('user_route_progress')
+            .select('route_id, status')
+            .eq('user_id', userId);
+
+        if (error) {
+            console.error('Error fetching route progress:', error);
+            return { inProgress: [], completed: [] };
+        }
+
+        return {
+            inProgress: (data || []).filter(item => item.status === 'in_progress').map(item => item.route_id),
+            completed: (data || []).filter(item => item.status === 'completed').map(item => item.route_id),
+        };
+    },
+
+    async syncUserRouteProgress(userId: string, inProgress: string[], completed: string[]): Promise<boolean> {
+        const rows = [
+            ...inProgress.map(routeId => ({ user_id: userId, route_id: routeId, status: 'in_progress', updated_at: new Date().toISOString() })),
+            ...completed.map(routeId => ({ user_id: userId, route_id: routeId, status: 'completed', updated_at: new Date().toISOString() })),
+        ];
+        if (rows.length === 0) return true;
+
+        const { error } = await supabase
+            .from('user_route_progress')
+            .upsert(rows, { onConflict: 'user_id,route_id' });
+
+        if (error) {
+            console.error('Error syncing route progress:', error);
+            return false;
+        }
+        return true;
+    },
+
     async getAll(): Promise<Ruta[]> {
         const { data, error } = await supabase
             .from('routes')
