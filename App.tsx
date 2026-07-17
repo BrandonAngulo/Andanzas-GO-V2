@@ -179,8 +179,11 @@ export default function App() {
     prevActivePanelRef.current = activePanel;
   }, [activePanel]);
   useEffect(() => {
-    if (activePanel === 'diccionario' && !dictionaryVisible) setActivePanel('mapa');
-  }, [activePanel, dictionaryVisible]);
+    if (activePanel === 'diccionario' && (!dictionaryVisible || !isAuthenticated)) {
+      setActivePanel('mapa');
+      if (dictionaryVisible && !isAuthenticated) setAuthDialogOpen(true);
+    }
+  }, [activePanel, dictionaryVisible, isAuthenticated]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -607,7 +610,7 @@ export default function App() {
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} />}
               {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId, mode, theme) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme } }))} />}
-              {activePanel === 'diccionario' && dictionaryVisible && <DictionaryPanel />}
+              {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && <DictionaryPanel />}
               {activePanel === 'admin' && <AdminDashboard />}
 
               {/* Full View inside CardContent */}
@@ -669,7 +672,7 @@ export default function App() {
       {/* Menus / Modals */}
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
         <SheetContent className="w-80 p-0" showCloseButton={false}>
-          <Sidebar onNavigate={(k) => { setActivePanel(k as any); setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} showDictionary={dictionaryVisible} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} />
+          <Sidebar onNavigate={(k) => { if (k === 'diccionario' && !isAuthenticated) { setAuthDialogOpen(true); } else { setActivePanel(k as any); } setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} showDictionary={dictionaryVisible} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} />
         </SheetContent>
       </Sheet>
 

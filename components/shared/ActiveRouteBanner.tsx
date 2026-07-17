@@ -137,7 +137,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
           setIsCorrect(true);
           onPointVisited(currentPoint.id);
           if (user && challenge) {
-            await gamificationService.awardPoints(challenge.points_reward, `Llegada: ${currentPoint.nombre}`);
+            await gamificationService.claimActionPoints('route_challenge', route.id, currentPoint.id);
           }
           toast.success(language === 'es' ? '¡Llegaste al punto!' : 'You have arrived!');
         } else {
@@ -175,7 +175,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   };
 
   // Verify Trivia
-  const verifyTriviaLogic = async (data: any, points: number, typeLabel: string) => {
+  const verifyTriviaLogic = async (data: any, actionType: 'route_challenge' | 'route_challenge_manual') => {
     if (!userAnswer || !data) return;
 
     const correct = getTranslated(data, 'correct_answer', language);
@@ -184,7 +184,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
       setIsCorrect(true);
       onPointVisited(currentPoint.id);
       if (user) {
-        await gamificationService.awardPoints(points, `${typeLabel}: ${currentPoint.nombre}`);
+        await gamificationService.claimActionPoints(actionType, route.id, currentPoint.id);
       }
       toast.success(language === 'es' ? '¡Respuesta correcta!' : 'Correct answer!');
     } else {
@@ -194,10 +194,10 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   };
 
   const handleVerifyTrivia = () =>
-    verifyTriviaLogic(challenge?.quiz_data, challenge?.points_reward || 50, 'Trivia');
+    verifyTriviaLogic(challenge?.quiz_data, 'route_challenge');
 
   const handleVerifyManualTrivia = () =>
-    verifyTriviaLogic(challenge?.manual_trivia_data, (challenge?.points_reward || 50) / 2, 'Validación Manual');
+    verifyTriviaLogic(challenge?.manual_trivia_data, 'route_challenge_manual');
 
   const handleNextStep = () => {
     if (isLast) {

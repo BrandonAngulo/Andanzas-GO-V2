@@ -66,6 +66,9 @@ export const useRouteNavigation = () => {
         });
         setReviewSiteId(siteId); // Trigger review prompt
         setShowRouteModal(false);
+        if (isAuthenticated && activeGuidedRoute) {
+            void gamificationService.claimActionPoints('route_stop', activeGuidedRoute.id, siteId);
+        }
     };
 
     const handleReviewClose = () => {
@@ -87,7 +90,7 @@ export const useRouteNavigation = () => {
         const defaultMsg = language === 'es' ? '¡Felicitaciones! Has completado una andanza.' : 'Congratulations! You have completed a journey.';
 
         if (isAuthenticated && user) {
-            gamificationService.awardPoints(100, 'Ruta completada: ' + route.id);
+            void gamificationService.claimActionPoints('route_complete', route.id);
             gamificationService.incrementFamilyProgress(user.id, 'route_complete');
             if (route.reward_badge_id) {
                 gamificationService.unlockBadge(user.id, route.reward_badge_id);

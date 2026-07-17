@@ -87,14 +87,15 @@ export const gamificationService = {
         }));
     },
 
-    async awardPoints(amount: number, reason: string) {
-        const { data, error } = await supabase.rpc('award_points', {
-            points_to_add: amount,
-            reason_text: reason
+    async claimActionPoints(actionType: 'favorite' | 'review' | 'route_stop' | 'route_challenge' | 'route_challenge_manual' | 'route_complete', entityId: string, contextId?: string) {
+        const { data, error } = await supabase.rpc('claim_verified_action_points', {
+            action_type: actionType,
+            entity_id: entityId,
+            context_id: contextId || null,
         });
 
         if (error) {
-            console.error('Error awarding points:', error);
+            console.error(`Error claiming reward for ${actionType}:`, error);
             return null;
         }
         return data;
@@ -119,10 +120,6 @@ export const gamificationService = {
             return false;
         }
         return true;
-    },
-
-    async addPoints(userId: string, amount: number) {
-        return this.awardPoints(amount, 'Generic Action');
     },
 
     // Suma 1 al contador de progreso de una familia de insignias (favoritos, reseñas,

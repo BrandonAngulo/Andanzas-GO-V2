@@ -79,7 +79,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                     await userService.removeFavorite(user.id, id);
                 } else {
                     await userService.addFavorite(user.id, id);
-                    gamificationService.awardPoints(5, 'Favorito: ' + id);
+                    await gamificationService.claimActionPoints('favorite', id);
 
                     const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'fav');
                     if (newBadge) {
@@ -109,8 +109,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
 
         if (isAuthenticated && user) {
             try {
-                await reviewsService.addReview({ siteId, text, rating, fotos }, user.id);
-                gamificationService.awardPoints(20, 'Reseña: ' + siteId);
+                const savedReview = await reviewsService.addReview({ siteId, text, rating, fotos }, user.id);
+                if (savedReview) await gamificationService.claimActionPoints('review', savedReview.id);
                 const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'review');
                 if (newBadge) {
                     addNotification({
