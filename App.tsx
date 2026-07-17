@@ -727,7 +727,7 @@ export default function App() {
       {/* Menus / Modals */}
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
         <SheetContent className="w-80 p-0" showCloseButton={false}>
-          <Sidebar onNavigate={(k) => { if (k === 'diccionario' && !isAuthenticated) { setAuthDialogOpen(true); } else { setActivePanel(k as any); } setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} showDictionary={dictionaryVisible} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} />
+          <Sidebar onNavigate={(k) => { if (k === 'diccionario' && !isAuthenticated) { setAuthDialogOpen(true); } else { setActivePanel(k as any); } setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} showDictionary={dictionaryVisible} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} onOpenAlliances={() => { setShowAlliancesModal(true); setOpenMenu(false); }} />
         </SheetContent>
       </Sheet>
 

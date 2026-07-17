@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Compass, TrendingUp, Calendar, Heart, Star, Route, User, Info, HelpCircle, LogOut, Wand2, X, ScrollText, Settings, BookOpen, ShieldAlert } from 'lucide-react';
+import { Compass, TrendingUp, Calendar, Heart, Star, Route, User, Info, HelpCircle, LogOut, Wand2, X, ScrollText, Settings, BookOpen, ShieldAlert, Handshake } from 'lucide-react';
 import { Button } from '../ui/button';
 import { ActivePanelType } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
@@ -14,10 +14,11 @@ interface SidebarProps {
   onClose: () => void;
   activePanel: ActivePanelType;
   onOpenSupport?: () => void;
+  onOpenAlliances?: () => void;
   showDictionary?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onOpenSupport, showDictionary = false }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onOpenSupport, onOpenAlliances, showDictionary = false }) => {
   const { t } = useI18n();
   const { logout, isAuthenticated, user } = useAuth();
   const { userProfile } = useUserData();
@@ -81,6 +82,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
           <Item id="configuracion" icon={Settings} label={t('panelTitles.configuracion')} />
           <Item id="soporte" icon={HelpCircle} label={t('panelTitles.soporte')} />
           <Item id="sobre" icon={Info} label={t('panelTitles.sobre') || 'Sobre Andanzas GO'} />
+          {onOpenAlliances && (
+            <button
+              onClick={() => { onOpenAlliances(); onClose(); }}
+              className="w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 transition-all duration-200 group text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 font-semibold"
+            >
+              <Handshake className="h-4 w-4 transition-colors" />
+              Alianzas
+            </button>
+          )}
           {onOpenSupport && (
             <button
               onClick={() => { onOpenSupport(); onClose(); }}
