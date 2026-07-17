@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useRef, useState } from 'react';
 import { useAppData } from '../contexts/AppDataContext';
 import { useUserData } from '../contexts/UserDataContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +7,7 @@ import { Ruta, Site } from '../types';
 import { gamificationService } from '../services/gamification.service';
 import { getTranslated } from '../lib/utils';
 import { Route } from 'lucide-react';
+import { toast } from 'sonner';
 
 export const useRouteNavigation = () => {
     const { sites, rutasTematicas } = useAppData();
@@ -27,6 +28,7 @@ export const useRouteNavigation = () => {
     const [currentRouteStep, setCurrentRouteStep] = useState(0);
     const [showRouteModal, setShowRouteModal] = useState(false);
     const [reviewSiteId, setReviewSiteId] = useState<string | null>(null);
+    const pendingStopClaimRef = useRef<Promise<unknown> | null>(null);
 
     // Helpers
     const getSiteById = (id: string) => sites.find(s => s.id === id);
@@ -67,7 +69,11 @@ export const useRouteNavigation = () => {
         setReviewSiteId(siteId); // Trigger review prompt
         setShowRouteModal(false);
         if (isAuthenticated && activeGuidedRoute) {
-            void gamificationService.claimActionPoints('route_stop', activeGuidedRoute.id, siteId);
+            const claim = gamificationService.claimActionPoints('route_stop', activeGuidedRoute.id, siteId).then(result => {
+                const points = Number(result?.points_awarded || 0);
+                if (points > 0) toast.success(`+${points} puntos por visitar esta parada`);
+            });
+            pendingStopClaimRef.current = claim;
         }
     };
 
@@ -75,7 +81,8 @@ export const useRouteNavigation = () => {
         setReviewSiteId(null);
         // Auto-complete check
         if (activeGuidedRoute && activeGuidedRoute.puntos.every(p => visitedRoutePoints.includes(p))) {
-            completeRoute(activeGuidedRoute);
+            const route = activeGuidedRoute;
+            void (pendingStopClaimRef.current || Promise.resolve()).finally(() => completeRoute(route));
         }
     };
 
@@ -90,11 +97,11 @@ export const useRouteNavigation = () => {
         const defaultMsg = language === 'es' ? '¡Felicitaciones! Has completado una andanza.' : 'Congratulations! You have completed a journey.';
 
         if (isAuthenticated && user) {
-            void gamificationService.claimActionPoints('route_complete', route.id);
+            void gamificationService.claimActionPoints('route_complete', route.id).then(result => {
+                const points = Number(result?.points_awarded || 0);
+                if (points > 0) toast.success(`Bono final de ruta: +${points} puntos`);
+            });
             gamificationService.incrementFamilyProgress(user.id, 'route_complete');
-            if (route.reward_badge_id) {
-                gamificationService.unlockBadge(user.id, route.reward_badge_id);
-            }
         }
 
         addNotification({

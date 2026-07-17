@@ -179,6 +179,11 @@ export default function App() {
     prevActivePanelRef.current = activePanel;
   }, [activePanel]);
   useEffect(() => {
+    if (activePanel === 'juegos' && !isAuthenticated) {
+      setActivePanel('mapa');
+      setAuthDialogOpen(true);
+      return;
+    }
     if (activePanel === 'diccionario' && (!dictionaryVisible || !isAuthenticated)) {
       setActivePanel('mapa');
       if (dictionaryVisible && !isAuthenticated) setAuthDialogOpen(true);
@@ -307,6 +312,10 @@ export default function App() {
 
     const handleOpenGame = (e: CustomEvent) => {
       if (e.detail?.gameId) {
+        if (!isAuthenticated) {
+          setAuthDialogOpen(true);
+          return;
+        }
         const m = e.detail.mode;
         setActiveGameMode(m === 'legend' || m === 'timed' ? m : 'levels');
         setActiveGameTheme(e.detail.theme && e.detail.theme !== 'all' ? e.detail.theme : undefined);
@@ -319,7 +328,13 @@ export default function App() {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener('open-game' as any, handleOpenGame);
     };
-  }, []);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) return;
+    setActiveGameId(null);
+    setActiveChallengeId(null);
+  }, [isAuthenticated]);
 
   // --- Handlers ---
   const handleResetFilter = () => { clearFilters(); if (activePanel !== 'mapa') setActivePanel('mapa'); };
@@ -609,7 +624,7 @@ export default function App() {
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} />}
-              {activePanel === 'juegos' && <JuegosPanel onPlayGame={(gameId, mode, theme) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme } }))} />}
+              {activePanel === 'juegos' && isAuthenticated && <JuegosPanel onPlayGame={(gameId, mode, theme) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme } }))} />}
               {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && <DictionaryPanel />}
               {activePanel === 'admin' && <AdminDashboard />}
 
@@ -701,7 +716,7 @@ export default function App() {
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />
-      {activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as any); setActiveGameId(null); setActiveChallengeId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
+      {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); setActiveChallengeId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
     </div>
   );
 }
