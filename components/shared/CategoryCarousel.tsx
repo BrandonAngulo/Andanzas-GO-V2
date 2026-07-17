@@ -46,16 +46,15 @@ export const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   return (
     <div className={cn("relative group mb-6", className)}>
       {showLeftArrow && (
-        <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-10 flex items-center justify-start pointer-events-none md:pointer-events-auto">
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="w-8 h-8 rounded-full shadow-md bg-background/80 backdrop-blur-sm pointer-events-auto hover:bg-background hidden md:flex"
-            onClick={() => scroll('left')}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label="Desplazar a la izquierda"
+          className="absolute left-1 top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 rounded-full border-border/50 bg-background/80 shadow-md backdrop-blur-sm hover:bg-background md:flex"
+          onClick={() => scroll('left')}
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
       )}
       
       <div 
@@ -84,16 +83,15 @@ export const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       </div>
 
       {showRightArrow && (
-        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent z-10 flex items-center justify-end pointer-events-none md:pointer-events-auto">
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="w-8 h-8 rounded-full shadow-md bg-background/80 backdrop-blur-sm pointer-events-auto hover:bg-background hidden md:flex"
-            onClick={() => scroll('right')}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label="Desplazar a la derecha"
+          className="absolute right-1 top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 rounded-full border-border/50 bg-background/80 shadow-md backdrop-blur-sm hover:bg-background md:flex"
+          onClick={() => scroll('right')}
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
       )}
     </div>
   );

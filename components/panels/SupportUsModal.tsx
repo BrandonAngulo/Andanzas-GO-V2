@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
-import { Heart, Share2, Coffee, Star, CreditCard, Copy, CheckCircle2 } from 'lucide-react';
+import { Heart, Share2, Star, Copy, CheckCircle2, Users, MapPin, Handshake, Megaphone } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface SupportUsModalProps {
     isOpen: boolean;
     onClose: () => void;
+    /** Puente hacia el formulario de alianzas (organizaciones, instituciones, creadores). */
+    onOpenAlliances?: () => void;
 }
 
-export function SupportUsModal({ isOpen, onClose }: SupportUsModalProps) {
+export function SupportUsModal({ isOpen, onClose, onOpenAlliances }: SupportUsModalProps) {
     const [copiedDaviplata, setCopiedDaviplata] = useState(false);
     const [copiedNequi, setCopiedNequi] = useState(false);
 
@@ -59,7 +61,7 @@ export function SupportUsModal({ isOpen, onClose }: SupportUsModalProps) {
                 <div className="px-6 pt-10 pb-6 text-center space-y-2">
                     <DialogTitle className="text-2xl font-bold">¡Apoya a Andanzas GO!</DialogTitle>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                        Andanzas GO es un proyecto en crecimiento. Tu apoyo nos permite mantener los servidores, mejorar los mapas y crear nuevas experiencias para descubrir la ciudad.
+                        Andanzas GO crece con la gente. Hay muchas formas de sumar: aportar económicamente, difundir, enriquecer el mapa, poner tu talento o proponer una alianza. Elige la que va contigo.
                     </p>
                 </div>
 
@@ -111,19 +113,65 @@ export function SupportUsModal({ isOpen, onClose }: SupportUsModalProps) {
                             </Button>
                         </div>
 
-                        {/* Apoyo Comunitario */}
+                        {/* Contenido y comunidad */}
                         <div className="space-y-3 pt-4 border-t">
-                            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">3. Comunidad 🌟</h4>
-                            <div className="p-4 rounded-2xl bg-muted/50 flex gap-4 items-center">
-                                <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-full">
-                                    <Star className="w-6 h-6" />
+                            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">3. Enriquece el mapa 🌟</h4>
+                            <div className="grid gap-2">
+                                <div className="p-3 rounded-2xl bg-muted/50 flex gap-3 items-center">
+                                    <div className="p-2.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-full shrink-0">
+                                        <Star className="w-5 h-5" />
+                                    </div>
+                                    <div className="flex-1 text-sm">
+                                        <span className="font-semibold block">Reseñas y fotos</span>
+                                        <span className="text-muted-foreground leading-tight text-xs">Comparte tus vivencias en cada lugar y ayuda a que otros descubran la ciudad.</span>
+                                    </div>
                                 </div>
-                                <div className="flex-1 text-sm">
-                                    <span className="font-semibold block mb-1">¡Deja reseñas y fotos!</span>
-                                    <span className="text-muted-foreground leading-tight">Cada vez que enriqueces el mapa con tus vivencias, ayudas a que la plataforma sea mejor para todos.</span>
+                                <div className="p-3 rounded-2xl bg-muted/50 flex gap-3 items-center">
+                                    <div className="p-2.5 bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 rounded-full shrink-0">
+                                        <MapPin className="w-5 h-5" />
+                                    </div>
+                                    <div className="flex-1 text-sm">
+                                        <span className="font-semibold block">Sugiere y corrige</span>
+                                        <span className="text-muted-foreground leading-tight text-xs">Propón lugares que faltan o avísanos de datos por actualizar.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Talento y voluntariado */}
+                        <div className="space-y-3 pt-4 border-t">
+                            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">4. Tu talento y tiempo 🙌</h4>
+                            <div className="p-3 rounded-2xl bg-muted/50 flex gap-3 items-center">
+                                <div className="p-2.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full shrink-0">
+                                    <Users className="w-5 h-5" />
+                                </div>
+                                <div className="flex-1 text-sm">
+                                    <span className="font-semibold block">Voluntariado y creación</span>
+                                    <span className="text-muted-foreground leading-tight text-xs">¿Quieres ser guía, apoyar eventos o aportar contenido cultural? Cuéntanos desde Alianzas.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Alianzas */}
+                        {onOpenAlliances && (
+                            <div className="space-y-3 pt-4 border-t">
+                                <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">5. Alianzas 🤝</h4>
+                                <button
+                                    type="button"
+                                    onClick={onOpenAlliances}
+                                    className="w-full rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 text-left transition-colors hover:bg-emerald-500/10 flex gap-3 items-center group"
+                                >
+                                    <div className="p-2.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full shrink-0">
+                                        <Handshake className="w-5 h-5" />
+                                    </div>
+                                    <div className="flex-1 text-sm">
+                                        <span className="font-semibold block">¿Representas una organización?</span>
+                                        <span className="text-muted-foreground leading-tight text-xs">Colaboración, instituciones, creación o investigación: propón una alianza y te contactamos.</span>
+                                    </div>
+                                    <Megaphone className="w-4 h-4 text-emerald-600 shrink-0 transition-transform group-hover:scale-110" />
+                                </button>
+                            </div>
+                        )}
 
                     </div>
                 </ScrollArea>

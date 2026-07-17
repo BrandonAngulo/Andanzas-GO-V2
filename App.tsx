@@ -25,6 +25,7 @@ import PerfilPanel from "./components/panels/PerfilPanel";
 import { UserAvatar } from "./components/shared/UserAvatar";
 import SobrePanel from "./components/panels/SobrePanel";
 import { SupportUsModal } from "./components/panels/SupportUsModal";
+import { AlliancesModal } from "./components/panels/AlliancesModal";
 import SoportePanel from "./components/panels/SoportePanel";
 import RightRail from "./components/layout/RightRail";
 import NotificationsPanel from "./components/layout/NotificationsPanel";
@@ -213,6 +214,7 @@ export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showInsigniasModal, setShowInsigniasModal] = useState(false);
   const [showSupportModal, setShowSupportModal] = useState(false);
+  const [showAlliancesModal, setShowAlliancesModal] = useState(false);
   const [badgeProgress, setBadgeProgress] = useState<Record<string, number>>({});
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
@@ -729,7 +731,13 @@ export default function App() {
         </SheetContent>
       </Sheet>
 
-      <SupportUsModal isOpen={showSupportModal} onClose={() => setShowSupportModal(false)} />
+      <SupportUsModal
+        isOpen={showSupportModal}
+        onClose={() => setShowSupportModal(false)}
+        onOpenAlliances={() => { setShowSupportModal(false); setTimeout(() => setShowAlliancesModal(true), 150); }}
+      />
+
+      <AlliancesModal isOpen={showAlliancesModal} onClose={() => setShowAlliancesModal(false)} />
 
       <InsigniasModal open={showInsigniasModal} onOpenChange={setShowInsigniasModal} earnedInsigniaIds={earnedInsignias} allInsignias={allInsignias} badgeProgress={badgeProgress} />
 

@@ -633,3 +633,21 @@ export interface CustomRouteRequest {
   updated_at?: string;
   created_at: string;
 }
+
+export type AllianceType = 'colaboracion' | 'institucional' | 'creacion' | 'investigacion' | 'otra';
+export type AllianceStatus = 'new' | 'in_review' | 'contacted' | 'accepted' | 'declined' | 'archived';
+
+export interface AllianceRequest {
+  id: string;
+  user_id?: string | null;
+  alliance_type: AllianceType;
+  contact_name: string;
+  organization?: string;
+  contact_email: string;
+  contact_phone?: string;
+  message: string;
+  status: AllianceStatus;
+  internal_notes?: string;
+  created_at: string;
+  updated_at?: string;
+}

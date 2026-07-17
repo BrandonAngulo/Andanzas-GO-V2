@@ -98,6 +98,10 @@ html[data-high-contrast="true"] .text-muted-foreground { color: #ddd !important;
 ::-webkit-scrollbar-thumb:hover { background: rgba(160, 160, 160, 0.45); }
 * { scrollbar-width: thin; scrollbar-color: rgba(160, 160, 160, 0.25) transparent; }
 
+/* Oculta por completo la barra de scroll (carruseles horizontales, chips, etc.) */
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
 .emoji-marker {
   background-color: white;
   border: 3px solid hsl(var(--primary));

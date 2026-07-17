@@ -5,12 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar, Smile, MessageSquare, UserX, Image, HelpCircle, User } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar, Smile, MessageSquare, UserX, Image, HelpCircle, User, Handshake } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
 import { AdminRutas } from './AdminRutas';
 import { AdminRutasPersonalizadas } from './AdminRutasPersonalizadas';
+import { AdminAlianzas } from './AdminAlianzas';
 import { AdminJuegos } from './AdminJuegos';
 import { AdminSitios } from './AdminSitios';
 import { AdminEventos } from './AdminEventos';
@@ -272,7 +273,7 @@ const AdminGeneral = () => (
 const AdminDashboard: React.FC = () => {
     const { userProfile, setUserProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'alianzas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
     const isAdmin = userProfile?.role === 'admin' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com';
     const hasManagementAccess = isAdmin || userProfile?.role === 'editor' || user?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com';
@@ -387,8 +388,15 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Map className="w-4 h-4 mr-2" /> Solicitudes Rutas
                     </Button>
-                    <Button 
-                        variant={activeTab === 'sitios' ? 'default' : 'outline'} 
+                    <Button
+                        variant={activeTab === 'alianzas' ? 'default' : 'outline'}
+                        onClick={() => setActiveTab('alianzas')}
+                        className="rounded-full whitespace-nowrap border-primary/30"
+                    >
+                        <Handshake className="w-4 h-4 mr-2" /> Alianzas
+                    </Button>
+                    <Button
+                        variant={activeTab === 'sitios' ? 'default' : 'outline'}
                         onClick={() => setActiveTab('sitios')}
                         className="rounded-full whitespace-nowrap"
                     >
@@ -462,6 +470,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'dictionary' && <AdminDictionary />}
                     {activeTab === 'rutas' && <AdminRutas />}
                     {activeTab === 'rutas_personalizadas' && <AdminRutasPersonalizadas />}
+                    {activeTab === 'alianzas' && <AdminAlianzas />}
                     {activeTab === 'sitios' && <AdminSitios />}
                     {activeTab === 'eventos' && <AdminEventos />}
                     {activeTab === 'noticias' && <AdminNoticias />}

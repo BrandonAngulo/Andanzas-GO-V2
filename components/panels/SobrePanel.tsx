@@ -2,18 +2,20 @@ import React from 'react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Instagram, Facebook, Globe, Heart, Sun, Map, Users, Info, Loader2 } from 'lucide-react';
+import { Instagram, Facebook, Globe, Heart, Sun, Map, Users, Info, Loader2, Handshake } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import Logo from '../layout/Logo';
 import { institutionalService } from '../../services/institutional.service';
 import { InstitutionalContent } from '../../types';
 import { SupportUsModal } from './SupportUsModal';
+import { AlliancesModal } from './AlliancesModal';
 
 const SobrePanel: React.FC = () => {
     const { t } = useI18n();
     const [content, setContent] = React.useState<Record<string, InstitutionalContent>>({});
     const [loading, setLoading] = React.useState(true);
     const [isSupportModalOpen, setIsSupportModalOpen] = React.useState(false);
+    const [isAlliancesModalOpen, setIsAlliancesModalOpen] = React.useState(false);
 
     React.useEffect(() => {
         const load = async () => {
@@ -49,13 +51,23 @@ const SobrePanel: React.FC = () => {
                         <span className="text-xs font-mono text-muted-foreground">v1.0.2 Public Beta</span>
                     </div>
 
-                    <Button 
-                        onClick={() => setIsSupportModalOpen(true)}
-                        className="mt-6 font-semibold shadow-lg shadow-pink-500/20 bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 border-none text-white rounded-xl flex items-center gap-2"
-                    >
-                        <Heart className="w-5 h-5 fill-current" />
-                        ¡Apóyanos!
-                    </Button>
+                    <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                        <Button
+                            onClick={() => setIsSupportModalOpen(true)}
+                            className="font-semibold shadow-lg shadow-pink-500/20 bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 border-none text-white rounded-xl flex items-center gap-2"
+                        >
+                            <Heart className="w-5 h-5 fill-current" />
+                            ¡Apóyanos!
+                        </Button>
+                        <Button
+                            onClick={() => setIsAlliancesModalOpen(true)}
+                            variant="outline"
+                            className="font-semibold rounded-xl flex items-center gap-2 border-emerald-500/40 text-emerald-700 hover:bg-emerald-50 dark:text-emerald-300 dark:hover:bg-emerald-950/30"
+                        >
+                            <Handshake className="w-5 h-5" />
+                            Alianzas
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="grid gap-4">
@@ -136,7 +148,12 @@ const SobrePanel: React.FC = () => {
                 </section>
             </div>
             
-            <SupportUsModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />
+            <SupportUsModal
+                isOpen={isSupportModalOpen}
+                onClose={() => setIsSupportModalOpen(false)}
+                onOpenAlliances={() => { setIsSupportModalOpen(false); setTimeout(() => setIsAlliancesModalOpen(true), 150); }}
+            />
+            <AlliancesModal isOpen={isAlliancesModalOpen} onClose={() => setIsAlliancesModalOpen(false)} />
         </ScrollArea>
     );
 };
