@@ -1,6 +1,12 @@
 import { supabase } from '../lib/supabaseClient';
 import { Ruta } from '../types';
 
+export interface RouteRegistrationResult {
+    success: boolean;
+    status?: 'confirmed' | 'waitlist';
+    already_registered?: boolean;
+}
+
 export const routesService = {
     async getUserRouteProgress(userId: string): Promise<{ inProgress: string[]; completed: string[] }> {
         const { data, error } = await supabase
@@ -146,40 +152,35 @@ export const routesService = {
         return true;
     },
 
-    async registerForRoute(routeId: string, userId: string): Promise<boolean> {
-        const { error } = await supabase
-            .from('ruta_registrations')
-            .insert({ ruta_id: routeId, user_id: userId, status: 'confirmed' });
-        
+    async registerForRoute(routeId: string): Promise<RouteRegistrationResult> {
+        const { data, error } = await supabase.rpc('register_for_route', { p_route_id: routeId });
         if (error) {
             console.error('Error registering for route:', error);
-            return false;
+            return { success: false };
         }
-        return true;
+        return data as RouteRegistrationResult;
     },
 
-    async cancelRegistration(routeId: string, userId: string): Promise<boolean> {
-        const { error } = await supabase
-            .from('ruta_registrations')
-            .update({ status: 'cancelled' })
-            .eq('ruta_id', routeId)
-            .eq('user_id', userId);
-        
+    async cancelRegistration(routeId: string, userId?: string): Promise<boolean> {
+        const { data, error } = await supabase.rpc('cancel_route_registration', {
+            p_route_id: routeId,
+            p_user_id: userId || null,
+        });
         if (error) {
             console.error('Error cancelling route registration:', error);
             return false;
         }
-        return true;
+        return Boolean(data);
     },
 
     async getRegistrations(routeId: string): Promise<any[]> {
         const { data, error } = await supabase
-            .from('ruta_registrations')
+            .from('route_registrations')
             .select(`
-                id, status, created_at,
+                id, user_id, status, created_at,
                 profiles:user_id (id, full_name, email)
             `)
-            .eq('ruta_id', routeId)
+            .eq('route_id', routeId)
             .neq('status', 'cancelled');
         
         if (error) {

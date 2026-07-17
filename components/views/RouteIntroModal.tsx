@@ -23,16 +23,15 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
     const { t, language } = useI18n();
     const { isAuthenticated, user } = useAuth();
     const [isVisible, setIsVisible] = useState(false);
-    const [isRegistered, setIsRegistered] = useState(false);
+    const [registrationStatus, setRegistrationStatus] = useState<'confirmed' | 'waitlist' | null>(null);
     const [isRegistering, setIsRegistering] = useState(false);
 
     useEffect(() => {
         setIsVisible(true);
         if (isAuthenticated && user && route.requires_registration) {
             routesService.getRegistrations(route.id).then(regs => {
-                if (regs.some(r => r.profiles?.id === user.id || r.user_id === user.id)) {
-                    setIsRegistered(true);
-                }
+                const ownRegistration = regs.find(r => r.profiles?.id === user.id || r.user_id === user.id);
+                setRegistrationStatus(ownRegistration?.status === 'waitlist' ? 'waitlist' : ownRegistration ? 'confirmed' : null);
             });
         }
 
@@ -59,12 +58,25 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
             return;
         }
         setIsRegistering(true);
-        const success = await routesService.registerForRoute(route.id, user.id);
+        const result = await routesService.registerForRoute(route.id);
         setIsRegistering(false);
-        if (success) {
-            setIsRegistered(true);
+        if (result.success && result.status) {
+            setRegistrationStatus(result.status);
+            toast.success(result.status === 'confirmed' ? 'Inscripción confirmada.' : 'Te agregamos a la lista de espera.');
         } else {
             toast.error('Error al inscribirse a la ruta.');
+        }
+    };
+
+    const handleCancelRegistration = async () => {
+        setIsRegistering(true);
+        const cancelled = await routesService.cancelRegistration(route.id);
+        setIsRegistering(false);
+        if (cancelled) {
+            setRegistrationStatus(null);
+            toast.success('Inscripción cancelada.');
+        } else {
+            toast.error('No fue posible cancelar la inscripción.');
         }
     };
 
@@ -205,17 +217,23 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                         </ScrollArea>
 
                         <div className="mt-auto pt-6 border-t border-border/50 animate-slide-up-fade" style={{ animationDelay: '200ms' }}>
-                            {route.requires_registration && !isRegistered ? (
+                            {route.requires_registration && !registrationStatus ? (
                                 <Button
                                     className="w-full h-14 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_30px_rgba(var(--primary),0.5)] transition-all transform hover:-translate-y-1"
                                     onClick={handleRegister}
-                                    disabled={isRegistering || Boolean(route.max_capacity && route.current_registrations !== undefined && route.current_registrations >= route.max_capacity)}
+                                    disabled={isRegistering}
                                 >
                                     {isRegistering ? 'Procesando...' : 
                                     (route.max_capacity && route.current_registrations !== undefined && route.current_registrations >= route.max_capacity) 
-                                        ? 'Cupos Llenos' 
+                                        ? 'Unirme a la lista de espera'
                                         : 'Inscribirse a esta ruta'}
                                 </Button>
+                            ) : route.requires_registration && registrationStatus === 'waitlist' ? (
+                                <div className="rounded-xl border border-amber-400/40 bg-amber-500/10 p-4 text-center">
+                                    <p className="font-semibold text-amber-700 dark:text-amber-300">Estás en lista de espera</p>
+                                    <p className="mt-1 text-xs text-muted-foreground">Si se libera un cupo, tu inscripción se confirmará automáticamente.</p>
+                                    <Button className="mt-3" variant="outline" size="sm" disabled={isRegistering} onClick={() => void handleCancelRegistration()}>Salir de la lista</Button>
+                                </div>
                             ) : (
                                 <>
                                     <Button
@@ -228,6 +246,9 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                     <p className="text-center text-xs text-muted-foreground mt-3">
                                         {language === 'es' ? 'Esta función utiliza tu ubicación en el mapa para guiarte durante el recorrido.' : 'This feature uses your location on the map to guide you during the route.'}
                                     </p>
+                                    {route.requires_registration && registrationStatus === 'confirmed' && (
+                                        <Button className="mt-2 w-full" variant="ghost" size="sm" disabled={isRegistering} onClick={() => void handleCancelRegistration()}>Cancelar inscripción</Button>
+                                    )}
                                 </>
                             )}
                         </div>

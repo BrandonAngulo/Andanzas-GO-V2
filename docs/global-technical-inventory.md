@@ -27,8 +27,8 @@ Este inventario precede cualquier eliminación. Un elemento solo podrá retirars
 
 1. El progreso de rutas existía solo en estado React y se perdía al recargar. La tabla `user_route_progress` estaba vacía y sin uso. Se activa como fuente persistente.
 2. El resumen antiguo del panel consultaba nombres inexistentes: `ruta_registrations`, `rutas` y `news`. Los nombres canónicos actuales son `user_route_progress`, `routes` y `feed_items`.
-3. `routes.service.ts` todavía usa `ruta_registrations` para inscripciones a rutas con cupo. Esa tabla no existe en el proyecto activo; esta función debe reconstruirse o sustituirse antes de ofrecer inscripciones.
-4. Las métricas avanzadas dependen de `analytics_events` y `user_sessions`, pero `analytics.service.ts` no tiene consumidores y ambas tablas están vacías. Por eso “actividad hoy” no puede producir información útil todavía.
+3. Las inscripciones con cupo se reconstruyen sobre `route_registrations`, separadas de `user_route_progress`, con confirmación atómica, lista de espera y promoción automática al liberarse un cupo.
+4. Las métricas avanzadas dependían de tablas vacías. Se activa instrumentación mínima autenticada para aperturas de sesión y vistas de panel, sin consultas, ubicación ni texto escrito por el usuario.
 
 ### Duplicados o candidatos de consolidación
 

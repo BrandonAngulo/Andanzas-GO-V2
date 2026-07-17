@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { supabase } from '../../../lib/supabaseClient';
-import { Activity, Users, MousePointerClick, CalendarDays, Gamepad2, Gauge, Coins, Gem, Heart, Sparkles, FileWarning, ShoppingBag, RefreshCcw } from 'lucide-react';
+import { Activity, Users, MousePointerClick, CalendarDays, Gamepad2, Gauge, Coins, Gem, Heart, Sparkles, FileWarning, ShoppingBag, RefreshCcw, Map, ClipboardCheck } from 'lucide-react';
 import { Button } from '../../ui/button';
 
 interface ManagementMetrics {
     users: { total: number; suspended: number; active_today: number; active_7d: number; average_level: number; average_xp: number };
     activity: { sessions: number; events: number; events_7d: number; top_events: { name: string; count: number }[] };
     games: { sessions: number; completed: number; active: number; average_accuracy: number; questions_published: number; questions_review: number; questions_draft: number; reports_open: number };
+    routes: { total: number; active_progress: number; completed_progress: number; confirmed_registrations: number; waitlist_registrations: number; custom_requests_open: number };
     economy: { points_in_wallets: number; coins_in_wallets: number; gems_in_wallets: number; available_lives: number; transactions_30d: number; shop_purchases_30d: number; gems_awarded_30d: number; coins_awarded_30d: number };
 }
 
@@ -15,6 +16,7 @@ const EMPTY: ManagementMetrics = {
     users: { total: 0, suspended: 0, active_today: 0, active_7d: 0, average_level: 0, average_xp: 0 },
     activity: { sessions: 0, events: 0, events_7d: 0, top_events: [] },
     games: { sessions: 0, completed: 0, active: 0, average_accuracy: 0, questions_published: 0, questions_review: 0, questions_draft: 0, reports_open: 0 },
+    routes: { total: 0, active_progress: 0, completed_progress: 0, confirmed_registrations: 0, waitlist_registrations: 0, custom_requests_open: 0 },
     economy: { points_in_wallets: 0, coins_in_wallets: 0, gems_in_wallets: 0, available_lives: 0, transactions_30d: 0, shop_purchases_30d: 0, gems_awarded_30d: 0, coins_awarded_30d: 0 }
 };
 
@@ -48,6 +50,13 @@ export const AdminMetricas: React.FC = () => {
             <MetricCard title="Activos hoy" value={metrics.users.active_today} detail={`${metrics.users.active_7d} en los últimos 7 días`} icon={CalendarDays} />
             <MetricCard title="Sesiones de navegación" value={metrics.activity.sessions} detail={`${metrics.activity.events_7d} eventos esta semana`} icon={Activity} />
             <MetricCard title="Progresión promedio" value={`Nivel ${metrics.users.average_level}`} detail={`${metrics.users.average_xp} XP promedio`} icon={Sparkles} />
+        </div></section>
+
+        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Map className="w-4 h-4" />Rutas, avance e inscripciones</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <MetricCard title="Rutas disponibles" value={metrics.routes.total} detail="Rutas registradas en el sistema" icon={Map} />
+            <MetricCard title="Recorridos activos" value={metrics.routes.active_progress} detail={`${metrics.routes.completed_progress} completados`} icon={Activity} />
+            <MetricCard title="Inscripciones confirmadas" value={metrics.routes.confirmed_registrations} detail={`${metrics.routes.waitlist_registrations} en lista de espera`} icon={ClipboardCheck} tone="success" />
+            <MetricCard title="Solicitudes personalizadas" value={metrics.routes.custom_requests_open} detail="Pendientes o en gestión" icon={FileWarning} tone={metrics.routes.custom_requests_open ? 'warning' : 'default'} />
         </div></section>
 
         <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Gamepad2 className="w-4 h-4" />Juegos y calidad editorial</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">

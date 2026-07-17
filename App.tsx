@@ -48,6 +48,7 @@ import ReviewModal from "./components/views/ReviewModal";
 import { userService } from './services/user.service';
 import { routesService } from './services/routes.service'; // Kept for updateRouteDetails which might not be in hook yet
 import { gamificationService } from './services/gamification.service';
+import { analyticsService } from './services/analytics.service';
 import PaQueSepasPanel from './components/panels/PaQueSepasPanel';
 import AdminDashboard from './components/panels/admin/AdminDashboard';
 import { GameSessionModal } from './components/views/GameSessionModal';
@@ -246,6 +247,21 @@ export default function App() {
       });
     }
   }, [isAuthenticated, user]);
+
+  useEffect(() => {
+    if (!user) return;
+    void analyticsService.trackEvent('session_start', 'app');
+    const closeSession = () => { void analyticsService.endSession(user.id); };
+    window.addEventListener('pagehide', closeSession);
+    return () => {
+      window.removeEventListener('pagehide', closeSession);
+      closeSession();
+    };
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (user) void analyticsService.trackEvent('panel_view', 'panel', activePanel);
+  }, [activePanel, user?.id]);
 
   // Accessibility Application
   useEffect(() => {

@@ -131,7 +131,7 @@ export const AdminRutaInscripciones: React.FC<AdminRutaInscripcionesProps> = ({ 
                                         {new Date(reg.created_at).toLocaleDateString()}
                                     </td>
                                     <td className="p-3 text-right">
-                                        <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => handleCancelRegistration(reg.profiles?.id)}>
+                                        <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => handleCancelRegistration(reg.user_id)}>
                                             <XCircle className="h-4 w-4 mr-1" /> Cancelar
                                         </Button>
                                     </td>
