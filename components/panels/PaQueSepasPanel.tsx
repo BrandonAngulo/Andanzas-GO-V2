@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LearnEntry } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
-import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints, Lightbulb, Library, Headphones } from 'lucide-react';
+import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints, Lightbulb, Library, Headphones, RefreshCw } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
@@ -25,7 +25,21 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
     const { t, language } = useI18n();
     const [selectedEntry, setSelectedEntry] = useState<LearnEntry | null>(null);
     const [relatedGames, setRelatedGames] = useState<Game[]>([]);
+    const [factIndex, setFactIndex] = useState(0);
     const storiesRef = React.useRef<HTMLDivElement>(null);
+
+    // Se muestra UN solo dato curioso por historia. El punto de partida rota por
+    // día (mismo día = mismo dato), y el usuario puede recorrer el banco de esa
+    // historia con "Otro dato". Así aprovechamos mejor la cantidad de datos.
+    React.useEffect(() => {
+        const total = selectedEntry?.sabias_que?.length ?? 0;
+        if (total > 0) {
+            const daySeed = Math.floor(Date.now() / 86400000);
+            setFactIndex(daySeed % total);
+        } else {
+            setFactIndex(0);
+        }
+    }, [selectedEntry]);
 
     // Al entrar con una entrada objetivo (p. ej. desde un dato curioso), la abre directamente.
     // Si no existe entre las entradas cargadas, se queda en la vista general (fallback).
@@ -88,25 +102,52 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                         ))}
                     </div>
 
-                    {selectedEntry.sabias_que && selectedEntry.sabias_que.length > 0 && (
-                        <div className="mt-8 p-6 relative overflow-hidden rounded-2xl bg-card/40 backdrop-blur-md border border-border shadow-lg">
-                            <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-primary/20 blur-3xl rounded-full pointer-events-none" />
-                            <h3 className="text-xl font-bold mb-5 flex items-center gap-2 text-primary relative z-10">
-                                <Sparkles className="w-5 h-5" />
-                                Datos curiosos
-                            </h3>
-                            <ul className="space-y-4 relative z-10">
-                                {selectedEntry.sabias_que.map((sq, idx) => (
-                                    <li key={idx} className="flex items-start gap-4 text-[15px] text-foreground/80 leading-relaxed">
-                                        <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
-                                            {idx + 1}
-                                        </div>
-                                        <span>{sq}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    {selectedEntry.sabias_que && selectedEntry.sabias_que.length > 0 && (() => {
+                        const facts = selectedEntry.sabias_que!;
+                        const total = facts.length;
+                        const current = factIndex % total;
+                        return (
+                            <div className="mt-8 p-6 relative overflow-hidden rounded-2xl bg-card/40 backdrop-blur-md border border-border shadow-lg">
+                                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-primary/20 blur-3xl rounded-full pointer-events-none" />
+                                <div className="relative z-10 mb-4 flex items-center justify-between gap-3">
+                                    <h3 className="text-xl font-bold flex items-center gap-2 text-primary">
+                                        <Sparkles className="w-5 h-5" />
+                                        ¿Sabías que?
+                                    </h3>
+                                    {total > 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFactIndex(i => (i + 1) % total)}
+                                            className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                        >
+                                            <RefreshCw className="w-3.5 h-3.5" /> Otro dato
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="relative z-10 flex items-start gap-4">
+                                    <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                                        <Lightbulb className="w-5 h-5" />
+                                    </div>
+                                    <p key={current} className="text-[15px] text-foreground/85 leading-relaxed animate-in fade-in slide-in-from-bottom-1 duration-300">
+                                        {facts[current]}
+                                    </p>
+                                </div>
+                                {total > 1 && (
+                                    <div className="relative z-10 mt-4 flex items-center gap-1.5">
+                                        {facts.map((_, idx) => (
+                                            <button
+                                                key={idx}
+                                                type="button"
+                                                aria-label={`Dato ${idx + 1} de ${total}`}
+                                                onClick={() => setFactIndex(idx)}
+                                                className={`h-1.5 rounded-full transition-all ${idx === current ? 'w-5 bg-primary' : 'w-1.5 bg-primary/25 hover:bg-primary/50'}`}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })()}
 
                     {relatedGames.length > 0 && (
                         <div className="mt-8 p-6 relative overflow-hidden rounded-2xl bg-primary/5 border border-primary/20">
