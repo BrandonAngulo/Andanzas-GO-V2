@@ -639,7 +639,7 @@ export default function App() {
               {activePanel === 'sobre' && <SobrePanel />}
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
-              {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} />}
+              {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} dictionaryVisible={dictionaryVisible} onOpenDictionary={() => setActivePanel('diccionario')} />}
               {activePanel === 'juegos' && isAuthenticated && <JuegosPanel onPlayGame={(gameId, mode, theme) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme } }))} />}
               {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && <DictionaryPanel />}
               {activePanel === 'admin' && <AdminDashboard />}

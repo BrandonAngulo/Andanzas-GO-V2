@@ -37,6 +37,27 @@ const iconMap: Record<string, any> = {
 };
 
 export const gamificationService = {
+    async getUserGameSummary(userId: string) {
+        const { data, error } = await supabase
+            .from('game_sessions')
+            .select('id,total_score,total_questions,correct_answers,max_correct_streak,status,completed_at')
+            .eq('user_id', userId)
+            .order('started_at', { ascending: false });
+        if (error) throw error;
+        const sessions = data || [];
+        const completed = sessions.filter(session => session.status === 'completed' || session.completed_at);
+        const questions = completed.reduce((sum, session) => sum + (session.total_questions || 0), 0);
+        const correct = completed.reduce((sum, session) => sum + (session.correct_answers || 0), 0);
+        return {
+            sessions: sessions.length,
+            score: completed.reduce((sum, session) => sum + (session.total_score || 0), 0),
+            questions,
+            correct,
+            accuracy: questions > 0 ? Math.round((correct / questions) * 100) : 0,
+            bestStreak: completed.reduce((best, session) => Math.max(best, session.max_correct_streak || 0), 0)
+        };
+    },
+
     async getEconomySummary() {
         const { data, error } = await supabase.rpc('get_my_economy_summary');
         if (error) {

@@ -43,7 +43,7 @@ interface RutasPanelProps {
     onReorderPoints?: (points: Site[]) => void;
 }
 
-const ROUTE_EMOJIS = ["🗺️", "🚶", "🚲", "🚗", "🚌", "🏞️", "🏛️", "🎨", "🎭", "🎵", "🍔", "☕", "📸", "🛍️", "⚽", "🌳", "🌻", "🌆", "🌃", "🌉", "🏰", "⛪", "🎡", "🎢", "🚂", "✈️", "🚀", "⛵", "🏖️", "🏔️", "🏕️", "💡", "❤️", "⭐"];
+const ROUTE_EMOJIS = ["🗺️", "🧭", "👣", "🚶", "🥾", "🚲", "🛴", "🚗", "🚌", "🚆", "⛵", "🏞️", "🌿", "🌳", "🌻", "🌊", "⛰️", "🏛️", "🏘️", "🌉", "⛪", "🎨", "🧱", "🎭", "🎵", "💃", "📚", "✍️", "🍲", "🍔", "☕", "🥭", "📸", "🛍️", "⚽", "🌆", "🌃", "🎡", "✨", "💡", "❤️", "⭐"];
 
 const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoints, allSites, query, onAddPoint, onRemovePoint, onSave, onOpenDetail, onTogglePrivacy, onDelete, onUpdateDetails, onStartRoute, onCompleteRoute, routesInProgress, routesCompleted, onReorderPoints }) => {
     const { t, language } = useI18n();
@@ -382,7 +382,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     <TabsContent value="por-andar" className="mt-0 animate-in fade-in duration-300">
                         <div className="mb-4">
                             <h3 className="font-bold flex items-center gap-2"><Bookmark className="w-5 h-5 text-primary" /> Rutas Guardadas</h3>
-                            <p className="text-sm text-muted-foreground">Tus rutas pendientes para explorar Cali a tu propio ritmo.</p>
+                            <p className="text-sm text-muted-foreground">Tus rutas pendientes para explorar Cali a tu propio ritmo. Elegí una, revisá sus paradas y convertí ese guardado en tu próxima salida.</p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {rutasSugeridas.filter(r => savedRouteIds.includes(r.id)).map((r) => (
@@ -408,7 +408,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                     <p className="text-sm text-emerald-50 mt-2">Diseñamos el recorrido según tu grupo, edades, tiempo, dificultad, movilidad e intereses.</p>
                                     <div className="flex flex-wrap gap-2 mt-3 text-xs"><span className="rounded-full bg-white/15 px-3 py-1">Solicitud mínima: 7 días antes</span><span className="rounded-full bg-white/15 px-3 py-1">Sujeta a disponibilidad y cotización</span></div>
                                 </div>
-                                <Button className="relative shrink-0 rounded-full bg-white text-emerald-800 hover:bg-emerald-50 shadow-lg" onClick={() => setShowRequestModal(true)}>
+                                <Button className="relative shrink-0 rounded-full !bg-white !text-emerald-900 hover:!bg-emerald-50 shadow-lg" onClick={() => setShowRequestModal(true)}>
                                     <Compass className="w-4 h-4 mr-2" /> Solicitar ruta guiada
                                 </Button>
                             </div>
@@ -547,7 +547,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                     </div>
                                     <div className="grid gap-2">
                                         <label className="text-sm font-medium flex items-center gap-2">
-                                            <span>Imagen de la ruta (Emoji)</span>
+                                            <span>Personalidad visual de la ruta</span>
                                         </label>
                                         <div className="flex flex-wrap gap-2 p-3 bg-muted/30 rounded-xl border">
                                             {ROUTE_EMOJIS.map(emoji => (
@@ -622,7 +622,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                 </div>
                                 <div className="grid gap-2 mt-2">
                                     <label className="text-sm font-medium flex items-center gap-2">
-                                        <span>Imagen de la ruta (Emoji)</span>
+                                        <span>Personalidad visual de la ruta</span>
                                     </label>
                                     <div className="flex flex-wrap gap-2 p-3 bg-muted/30 rounded-xl border">
                                         {ROUTE_EMOJIS.map(emoji => (

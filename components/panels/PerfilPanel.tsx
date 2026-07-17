@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles } from 'lucide-react';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
 import { GameMascot } from '../views/GameMascot';
@@ -121,6 +121,17 @@ const StatItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label
     </div>
 );
 
+const ECONOMY_HELP = {
+    points: { title: 'Puntos Andanzas', body: 'Son tu puntaje general como explorador. Se ganan al recorrer, aprender, jugar y aportar. Miden tu trayectoria y permiten desbloquear beneficios.' },
+    coins: { title: 'Monedas', body: 'Son la recompensa de uso frecuente. Podrás usarlas para recuperar vidas y acceder a ayudas o beneficios dentro de los juegos.' },
+    gems: { title: 'Gemas', body: 'Son recompensas poco frecuentes y de mayor valor. Una gema equivale a varias monedas y se reserva para beneficios especiales.' },
+    lives: { title: 'Vidas', body: 'Permiten continuar en modos de juego que tienen riesgo. Tienes un máximo de 3; se recargan automáticamente o pueden recuperarse con monedas o gemas.' }
+} as const;
+
+function EconomyTile({ icon, value, label, help }: { icon: React.ReactNode; value: string | number; label: string; help: { title: string; body: string } }) {
+    return <InfoHint title={help.title} body={help.body} trigger={<button type="button" className="w-full rounded-xl border bg-background/70 p-2.5 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}><span className="mx-auto block w-fit">{icon}</span><strong className="block text-sm">{value}</strong><span className="text-[10px] text-muted-foreground">{label}</span></button>} />;
+}
+
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite, onNavigate }) => {
     const { t, language } = useI18n();
     const { getHelp } = useHelpContent();
@@ -140,6 +151,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [loading, setLoading] = useState(false);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [economy, setEconomy] = useState<{ level: number; experience_points: number; level_start_xp: number; next_level_xp: number; app_points: number; coins: number; gems: number; lives: number; max_lives: number } | null>(null);
+    const [gameSummary, setGameSummary] = useState({ sessions: 0, score: 0, questions: 0, correct: 0, accuracy: 0, bestStreak: 0 });
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
@@ -195,6 +207,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 }
             });
             gamificationService.getEconomySummary().then(setEconomy);
+            gamificationService.getUserGameSummary(user.id).then(setGameSummary).catch(error => console.error('Error loading game summary', error));
 
             // Load badges
             const loadBadges = async () => {
@@ -606,7 +619,22 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         <Settings className="h-4 w-4 text-foreground" />
                     </Button>
 
-                    <div className="relative p-6 flex flex-col items-center text-center z-10 pt-12">
+                    <aside className="absolute left-6 top-1/2 z-10 hidden w-64 -translate-y-1/2 rounded-2xl border bg-background/75 p-5 text-left shadow-sm backdrop-blur-md xl:block">
+                        <p className="mb-2 text-xs font-bold uppercase tracking-widest text-primary">Tu memoria de ciudad</p>
+                        <h3 className="mb-2 font-bold">Mucho más que una cuenta</h3>
+                        <p className="text-xs leading-relaxed text-muted-foreground">Este perfil guarda la huella de lo que recorrés, aprendés y compartís: rutas, cultura, artes, juegos, aportes, logros y recuerdos. Tu avatar le da imagen a esa experiencia.</p>
+                    </aside>
+                    <aside className="absolute right-6 top-1/2 z-10 hidden w-72 -translate-y-1/2 rounded-2xl border bg-background/75 p-4 shadow-sm backdrop-blur-md xl:block">
+                        <p className="mb-3 text-left text-xs font-bold uppercase tracking-widest text-primary">Tus recursos</p>
+                        <div className="grid grid-cols-2 gap-2">
+                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} />
+                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} />
+                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} />
+                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} />
+                        </div>
+                    </aside>
+
+                    <div className="relative z-10 flex flex-col items-center p-6 pt-12 text-center xl:min-h-[390px] xl:justify-center">
                         <div className="relative mb-4 cursor-pointer group" onClick={() => setShowAvatarModal(true)}>
                             {/* Circular Progress SVG */}
                             <svg className="absolute -inset-2 w-[112px] h-[112px] -rotate-90">
@@ -654,22 +682,27 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Aportes</span>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-md mt-4">
-                            <div className="rounded-xl border bg-background/60 p-2"><Sparkles className="w-4 h-4 mx-auto text-emerald-500" /><strong className="block text-sm">{economy?.app_points ?? userProfile?.points ?? 0}</strong><span className="text-[9px] text-muted-foreground">Puntos Andanzas</span></div>
-                            <div className="rounded-xl border bg-background/60 p-2"><Coins className="w-4 h-4 mx-auto text-yellow-500" /><strong className="block text-sm">{economy?.coins ?? 0}</strong><span className="text-[9px] text-muted-foreground">Monedas</span></div>
-                            <div className="rounded-xl border bg-background/60 p-2"><Gem className="w-4 h-4 mx-auto text-cyan-500" /><strong className="block text-sm">{economy?.gems ?? 0}</strong><span className="text-[9px] text-muted-foreground">Gemas</span></div>
-                            <div className="rounded-xl border bg-background/60 p-2"><Heart className="w-4 h-4 mx-auto text-red-500" /><strong className="block text-sm">{economy?.lives ?? 0}/{economy?.max_lives ?? 3}</strong><span className="text-[9px] text-muted-foreground">Vidas</span></div>
+                        <div className="mt-4 grid w-full max-w-md grid-cols-2 gap-2 sm:grid-cols-4 xl:hidden">
+                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} />
+                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} />
+                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} />
+                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} />
                         </div>
 
                         <InfoHint
                             title={economyHelp.title}
-                            body={economyHelp.body}
                             trigger={
                                 <button type="button" className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline">
                                     <Info className="w-3.5 h-3.5" /> {language === 'es' ? '¿Cómo funcionan los puntos?' : 'How do points work?'}
                                 </button>
                             }
-                        />
+                        >
+                            <p>{economyHelp.body}</p>
+                            <div className="grid gap-3 sm:grid-cols-2">
+                                {Object.values(ECONOMY_HELP).map(item => <div key={item.title} className="rounded-xl border bg-muted/30 p-3"><h4 className="font-semibold text-foreground">{item.title}</h4><p className="mt-1 text-xs">{item.body}</p></div>)}
+                            </div>
+                            <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs">En los juegos, las vidas representan intentos; las monedas atienden compras frecuentes y las gemas beneficios de mayor valor. Tu máximo actual es de 3 vidas.</div>
+                        </InfoHint>
                     </div>
                 </div>
 
@@ -685,6 +718,13 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </TabsList>
                         <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background pointer-events-none" />
                     </ScrollArea>
+                    <p className="-mt-4 mb-6 px-2 text-sm text-muted-foreground">
+                        {activeTab === 'overview' && 'Tu pasaporte reúne la memoria de tus recorridos y los sellos que representan territorios explorados.'}
+                        {activeTab === 'rutas' && 'Consulta las rutas que guardaste, empezaste o completaste y elegí tu próxima andanza.'}
+                        {activeTab === 'badges' && 'Las insignias reconocen acciones y constancia; algunas evolucionan de bronce a plata y oro.'}
+                        {activeTab === 'games' && 'Revisa partidas, precisión, rachas y puntos obtenidos en los juegos culturales.'}
+                        {activeTab === 'activity' && 'Tus aportes conservan reseñas, favoritos y otras huellas que compartís con la comunidad.'}
+                    </p>
 
                     <TabsContent value="overview" className="space-y-6 mt-0">
                         {/* Experiencias Vividas */}
@@ -757,8 +797,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                 <div className={`w-24 h-28 relative flex flex-col items-center justify-center p-1.5 rounded-lg border-2 overflow-hidden transition-transform group-hover:scale-105 duration-300 ${getStampStyle()}`}>
 
                                                     <div className={`w-full h-full border border-dashed rounded-sm flex flex-col items-center justify-center overflow-hidden p-1 ${isLevel3 ? 'border-yellow-500/50' : 'border-border'}`}>
-                                                        <div className={`w-full h-1/2 flex items-center justify-center ${getInnerStyle()} rounded-sm mb-1 ${!hasAnyExperience ? 'grayscale opacity-40' : ''}`}>
-                                                            <GameMascot icon="music" accent={isLevel3 ? '#D4A017' : '#E8600F'} size={40} />
+                                                        <div className={`mb-1 h-1/2 w-full overflow-hidden rounded-sm ${getInnerStyle()} ${!hasAnyExperience ? 'grayscale opacity-40' : ''}`}>
+                                                            <img src="/images/rewards/sello-cali-v2.webp" alt="Ilustración del sello de Santiago de Cali" className="h-full w-full object-cover" />
                                                         </div>
                                                         <span className={`text-[12px] font-black uppercase drop-shadow-sm tracking-widest mt-1 ${isLevel3 ? 'text-yellow-600' : (hasAnyExperience ? 'text-foreground' : 'text-muted-foreground')}`}>
                                                             Cali
@@ -856,13 +896,19 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </TabsContent>
 
                     <TabsContent value="games" className="mt-0 space-y-6">
-                        <Card className="border-dashed border-2 border-purple-500/20 shadow-none bg-purple-500/5 hover:bg-purple-500/10 transition-colors">
+                        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                            <StatItem icon={Gamepad2} label="Partidas" value={gameSummary.sessions} />
+                            <StatItem icon={Trophy} label="Puntos en juegos" value={gameSummary.score} />
+                            <StatItem icon={Target} label="Precisión" value={`${gameSummary.accuracy}%`} />
+                            <StatItem icon={Flame} label="Mejor racha" value={gameSummary.bestStreak} />
+                        </div>
+                        <Card className="border-2 border-purple-500/20 shadow-none bg-gradient-to-br from-purple-500/10 via-fuchsia-500/5 to-orange-500/10 transition-colors">
                             <CardContent className="p-8 text-center flex flex-col items-center justify-center">
                                 <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-4">
                                     <Trophy className="h-8 w-8 text-purple-600" />
                                 </div>
                                 <p className="text-base font-bold text-purple-600 mb-1">Mi Rendimiento en Juegos</p>
-                                <p className="text-sm text-muted-foreground mb-4 max-w-sm">Juega trivias en la Zona de Juegos para ganar puntos y aparecer aquí.</p>
+                                <p className="text-sm text-muted-foreground mb-4 max-w-md">Has respondido {gameSummary.questions} preguntas y acertado {gameSummary.correct}. Sigue jugando para mejorar tu precisión, superar tu mejor racha y ampliar tu memoria cultural.</p>
                                 <Button variant="outline" className="rounded-full text-purple-600 border-purple-200 hover:bg-purple-50" onClick={() => onNavigate('juegos')}>Ir a Juegos</Button>
                             </CardContent>
                         </Card>

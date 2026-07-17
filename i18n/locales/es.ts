@@ -26,7 +26,7 @@ const es = {
         routes: "Rutas",
         news: "Noticias",
         events: "Eventos",
-        games: "Juegos",
+        games: "Entretenimiento",
         aprende: "Aprende",
     },
     searchPlaceholder: "Buscar museos, teatros, murales…",
@@ -50,7 +50,7 @@ const es = {
         soporte: "Soporte y Ayuda",
         noticias: "Noticias y Novedades",
         paquesepas: "Pa' que sepás",
-        juegos: "Zona Play",
+        juegos: "Entretenimiento",
         diccionario: "Diccionario de la caleñidad",
         admin: "Panel de Administración"
     },

@@ -72,12 +72,13 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-5 shadow-sm">
-      <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
+    <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950 via-emerald-800 to-teal-700 p-6 text-white shadow-xl shadow-emerald-900/10">
+      <div className="pointer-events-none absolute -right-10 -top-16 font-serif text-[14rem] font-black leading-none text-white/5" aria-hidden="true">{entry.term.charAt(0)}</div>
+      <div className="pointer-events-none absolute -bottom-16 left-1/3 h-40 w-40 rounded-full bg-lime-300/20 blur-3xl" />
       <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-50 backdrop-blur">
               <Sparkles className="h-3.5 w-3.5" /> Palabra del día
             </span>
             {streak > 0 && (
@@ -86,15 +87,15 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
               </span>
             )}
           </div>
-          <h2 className="truncate text-2xl font-bold text-foreground">{entry.term}</h2>
+          <h2 className="truncate font-serif text-4xl font-black tracking-tight text-white">{entry.term}</h2>
           <div className="mt-1 flex flex-wrap items-center gap-2">
-            {entry.word_class && <Badge variant="secondary">{entry.word_class}</Badge>}
+            {entry.word_class && <Badge className="border-white/20 bg-white/10 text-white hover:bg-white/15">{entry.word_class}</Badge>}
           </div>
           {claimedToday && entry.short_definition && (
-            <p className="mt-2 line-clamp-2 max-w-xl text-sm text-muted-foreground">{entry.short_definition}</p>
+            <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-relaxed text-emerald-50/85">{entry.short_definition}</p>
           )}
         </div>
-        <Button onClick={() => void discover()} disabled={busy} className="shrink-0 rounded-full">
+        <Button onClick={() => void discover()} disabled={busy} className="shrink-0 rounded-full bg-white text-emerald-900 hover:bg-emerald-50">
           {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {!busy && <BookOpen className="mr-2 h-4 w-4" />}
           {claimedToday ? 'Ver ficha' : 'Descubrir'}
@@ -102,7 +103,7 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
         </Button>
       </div>
       {!user && (
-        <p className="relative mt-3 text-xs text-muted-foreground">Inicia sesión para ganar puntos y mantener tu racha.</p>
+        <p className="relative mt-3 text-xs text-emerald-50/75">La palabra es pública. Inicia sesión para ganar puntos y mantener tu racha.</p>
       )}
     </div>
   );

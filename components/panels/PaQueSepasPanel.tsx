@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LearnEntry } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
-import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints, Lightbulb } from 'lucide-react';
+import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints, Lightbulb, Library, Headphones } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
@@ -17,9 +17,11 @@ interface PaQueSepasPanelProps {
     isLoading?: boolean;
     initialEntryId?: string | null;
     onInitialConsumed?: () => void;
+    dictionaryVisible?: boolean;
+    onOpenDictionary?: () => void;
 }
 
-const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, isLoading, initialEntryId, onInitialConsumed }) => {
+const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, isLoading, initialEntryId, onInitialConsumed, dictionaryVisible, onOpenDictionary }) => {
     const { t, language } = useI18n();
     const [selectedEntry, setSelectedEntry] = useState<LearnEntry | null>(null);
     const [relatedGames, setRelatedGames] = useState<Game[]>([]);
@@ -169,6 +171,15 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     defaultSubtitle={language === 'es' ? 'Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.' : 'Learn about the culture, history and best-kept secrets of the city. Why what you see matters.'}
                     andiMessage="¡Ey andante! La ciudad está llena de historias escondidas. Aquí te dejo mis favoritas para que las leás con un buen champús o cafecito."
                 />
+
+                <section className="mb-8">
+                    <div className="mb-4"><p className="text-xs font-bold uppercase tracking-widest text-indigo-600">Herramientas para aprender</p><h2 className="text-2xl font-bold">Explorá la ciudad desde distintas voces</h2></div>
+                    <div className="grid gap-4 md:grid-cols-3">
+                        <div className="rounded-2xl border bg-card p-5 shadow-sm"><BookOpen className="mb-3 h-6 w-6 text-indigo-600" /><h3 className="font-bold">Historias y saberes</h3><p className="mt-1 text-sm text-muted-foreground">Relatos, personajes y claves para entender lo que ves mientras andás.</p></div>
+                        {dictionaryVisible && <button type="button" onClick={onOpenDictionary} className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><Library className="mb-3 h-6 w-6 text-emerald-600" /><h3 className="font-bold">Diccionario de la caleñidad</h3><p className="mt-1 text-sm text-muted-foreground">Palabras, expresiones, usos y contextos para comprender cómo habla la ciudad.</p><span className="mt-3 inline-flex items-center text-xs font-bold text-emerald-700">Abrir diccionario <ChevronRight className="h-4 w-4" /></span></button>}
+                        <div className="rounded-2xl border border-dashed bg-muted/20 p-5"><Headphones className="mb-3 h-6 w-6 text-muted-foreground" /><h3 className="font-bold">Narraciones y audios</h3><p className="mt-1 text-sm text-muted-foreground">Próximamente: historias contadas para escuchar durante tus recorridos.</p></div>
+                    </div>
+                </section>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {entries.map(entry => (

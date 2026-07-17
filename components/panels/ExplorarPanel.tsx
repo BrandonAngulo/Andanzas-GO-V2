@@ -26,17 +26,17 @@ const IMPERDIBLES: { routeId: string; image: string; tag: string }[] = [
 const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ site, onOpenSite }) => {
   const { t, language } = useI18n();
   return (
-    <Card className="overflow-hidden flex flex-col">
+    <Card className="overflow-hidden flex h-full min-h-[300px] flex-col rounded-2xl border-border/70">
       <LazyImage
         src={site.logoUrl}
         alt={getTranslated(site, 'nombre', language) as string}
         textFallback={getTranslated(site, 'nombre', language) as string}
         className="w-full h-32 object-cover bg-muted"
       />
-      <CardHeader className="py-2">
+      <CardHeader className="px-4 pb-2 pt-4">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(site, 'nombre', language)}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow -mt-2 text-xs text-muted-foreground space-y-2">
+      <CardContent className="flex-grow px-4 text-xs text-muted-foreground space-y-2">
         <div>{getMacroCategory(getTranslated(site, 'tipo', language) as string, language)} · ⭐ {site.rating}</div>
         {site.accessibility_features && site.accessibility_features.length > 0 && (
           <div className="flex gap-1 flex-wrap">
@@ -58,7 +58,7 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
           </div>
         )}
       </CardContent>
-      <CardFooter className="pt-2">
+      <CardFooter className="mt-auto px-4 pb-4 pt-3">
         <Button size="sm" variant="outline" onClick={() => onOpenSite(site)}>{t('seeMore')}</Button>
       </CardFooter>
     </Card>
@@ -253,7 +253,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
         </div>
       )}
       
-      <div className="px-4 md:px-8 pb-4">
+      <div className="px-4 pb-12 md:px-8 md:pb-16">
         {(query || categoryFilter) && (
           <div className="flex items-center justify-between mb-3 ml-1">
             <h3 className="font-semibold text-lg text-muted-foreground">Resultados de búsqueda</h3>

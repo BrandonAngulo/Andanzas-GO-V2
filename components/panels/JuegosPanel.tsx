@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Game, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Timer, ChevronRight } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Timer, ChevronRight, Music, Mic2, Headphones } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
@@ -64,8 +64,10 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     }
 
     return (
-        <ScrollArea className="h-[72vh] bg-muted/10">
-            <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+        <ScrollArea className="h-[72vh] bg-gradient-to-b from-violet-500/5 via-background to-fuchsia-500/5">
+            <div className="relative p-4 pb-16 md:p-6 md:pb-16 lg:p-8 lg:pb-20 max-w-7xl mx-auto space-y-6 overflow-hidden">
+                <div className="pointer-events-none absolute -left-20 top-64 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl" />
+                <div className="pointer-events-none absolute -right-20 top-96 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
                 <PanelBanner
                     panelKey="juegos"
                     defaultImage="/images/banner_juegos.png"
@@ -76,14 +78,16 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </div>
                     }
                     titleClassName="text-4xl font-extrabold tracking-tight text-purple-950 dark:text-purple-50"
-                    defaultTitle="Zona de Juegos"
-                    defaultSubtitle="Demuestra cuánto sabes sobre la cultura, gana puntos y compite en el ranking global."
+                    defaultTitle="Entretenimiento"
+                    defaultSubtitle="Jugá, descubrí sonidos y disfrutá contenidos para acompañar tus andanzas por la ciudad."
             />
 
-            <Tabs defaultValue="juegos" className="w-full">
+            <Tabs defaultValue="juegos" className="relative z-10 w-full">
                 <div className="flex flex-row items-center justify-between mb-6">
-                    <TabsList className="grid w-full grid-cols-2 max-w-[400px] m-0">
-                        <TabsTrigger value="juegos">Trivias y Retos</TabsTrigger>
+                    <TabsList className="grid h-auto w-full grid-cols-2 gap-1 p-1 sm:grid-cols-4 sm:max-w-[700px] m-0">
+                        <TabsTrigger value="juegos">Juegos</TabsTrigger>
+                        <TabsTrigger value="musica">Música</TabsTrigger>
+                        <TabsTrigger value="podcasts">Relatos</TabsTrigger>
                         <TabsTrigger value="podio">Salón de la Fama</TabsTrigger>
                     </TabsList>
                     <div className="ml-4">
@@ -104,7 +108,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     const overCover = !!game.cover_image_url || illustratedCover; // título en blanco sobre arte
                     const titleStyle = (!overCover && game.theme_accent) ? { color: game.theme_accent } : undefined;
                     return (
-                    <Card key={game.id} className="overflow-hidden border-2 border-border/50 hover:border-primary/30 hover:shadow-xl transition-all hover:-translate-y-1 bg-card rounded-2xl group flex flex-col h-full">
+                    <Card key={game.id} className="overflow-hidden border-2 border-purple-500/15 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-500/10 transition-all hover:-translate-y-1.5 bg-card/95 backdrop-blur rounded-3xl group flex flex-col h-full">
                         <div className={`${overCover ? 'h-36' : 'min-h-[9rem] h-auto'} relative flex flex-col items-center justify-center p-4 overflow-hidden ${bgTheme}`} style={headerStyle}>
                             {game.cover_image_url && (
                                 <>
@@ -186,6 +190,25 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     </div>
                 </TabsContent>
                 
+                <TabsContent value="musica">
+                    <div className="relative overflow-hidden rounded-3xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-950 via-purple-900 to-indigo-900 p-8 text-white shadow-xl">
+                        <Music className="mb-5 h-10 w-10 text-fuchsia-300" />
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-200">Música para andar</p>
+                        <h3 className="mt-2 text-3xl font-black">Una playlist para cada recorrido</h3>
+                        <p className="mt-3 max-w-2xl text-white/75">Estamos preparando selecciones musicales para acompañar caminatas, visitas y rutas sin convertir la app todavía en una plataforma de audio.</p>
+                        <div className="mt-6 inline-flex items-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold"><Headphones className="mr-2 h-4 w-4" /> Próximamente</div>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="podcasts">
+                    <div className="rounded-3xl border border-dashed border-orange-500/30 bg-orange-500/5 p-8 text-center">
+                        <Mic2 className="mx-auto mb-4 h-10 w-10 text-orange-500" />
+                        <h3 className="text-2xl font-bold">Relatos, pódcast y voces de la ciudad</h3>
+                        <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">Este espacio queda preparado para futuras narraciones, entrevistas y audios de historias. Se activará cuando exista contenido propio o curado con permisos claros.</p>
+                        <span className="mt-5 inline-block rounded-full bg-orange-500/10 px-4 py-2 text-sm font-semibold text-orange-700">En preparación</span>
+                    </div>
+                </TabsContent>
+
                 <TabsContent value="podio">
                     <LeaderboardPanel />
                 </TabsContent>
