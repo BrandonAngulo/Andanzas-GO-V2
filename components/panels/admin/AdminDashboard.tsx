@@ -27,7 +27,11 @@ import { AdminAvatarsManager } from './AdminAvatarsManager';
 import { AdminDocumentosLegales } from './AdminDocumentosLegales';
 import { AdminDictionary } from './AdminDictionary';
 import { JuegosAnalyticsPanel } from './JuegosAnalyticsPanel';
+import { userService } from '../../../services/user.service';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
+import { toast } from 'sonner';
+
+const ADMIN_TUTORIAL_VERSION = 'admin-v1';
 
 const AdminOverview = () => {
     const [counts, setCounts] = useState({
@@ -266,13 +270,36 @@ const AdminGeneral = () => (
 );
 
 const AdminDashboard: React.FC = () => {
-    const { userProfile } = useUserData();
+    const { userProfile, setUserProfile } = useUserData();
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
+    const isAdmin = userProfile?.role === 'admin' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com';
+    const hasManagementAccess = isAdmin || userProfile?.role === 'editor' || user?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com';
+
+    useEffect(() => {
+        if (hasManagementAccess && userProfile && userProfile.admin_tutorial_version !== ADMIN_TUTORIAL_VERSION) {
+            setShowIntroModal(true);
+        }
+    }, [hasManagementAccess, userProfile?.id, userProfile?.admin_tutorial_version]);
+
+    const completeIntro = async () => {
+        try {
+            const completedAt = await userService.completeAdminTutorial(ADMIN_TUTORIAL_VERSION);
+            setUserProfile((current) => current ? {
+                ...current,
+                admin_tutorial_version: ADMIN_TUTORIAL_VERSION,
+                admin_tutorial_completed_at: completedAt
+            } : current);
+            setShowIntroModal(false);
+        } catch (error) {
+            console.error('No se pudo guardar el tutorial de gestión:', error);
+            toast.error('No pudimos guardar este avance. Inténtalo nuevamente.');
+        }
+    };
 
     // Security Check: Only render if user is admin or editor
-    if (userProfile?.role !== 'admin' && userProfile?.role !== 'editor' && user?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com' && userProfile?.email?.trim().toLowerCase() !== 'gruesobrandon@gmail.com') {
+    if (!hasManagementAccess) {
         return (
             <div className="flex flex-col items-center justify-center h-[70vh] text-center p-6">
                 <ShieldAlert className="h-16 w-16 text-destructive mb-4" />
@@ -287,13 +314,16 @@ const AdminDashboard: React.FC = () => {
     return (
         <ScrollArea className="h-[72vh] bg-muted/20">
             <div className="p-4 md:p-6 max-w-6xl mx-auto">
-                <AdminIntroModal isOpen={showIntroModal} onClose={() => setShowIntroModal(false)} />
+                <AdminIntroModal isOpen={showIntroModal} isAdmin={isAdmin} onClose={() => setShowIntroModal(false)} onComplete={completeIntro} />
                 <div className="mb-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                         <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
                             <ShieldAlert className="h-8 w-8 text-primary" />
                             Panel de Administración
                         </h2>
+                        <Button variant="outline" onClick={() => setShowIntroModal(true)}>
+                            <HelpCircle className="mr-2 h-4 w-4" /> Ver tutorial
+                        </Button>
                     </div>
                     <p className="text-muted-foreground">
                         Bienvenido, {userProfile?.full_name || 'Admin'}. Gestiona el contenido de Andanzas GO.

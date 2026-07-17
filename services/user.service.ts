@@ -2,6 +2,14 @@ import { supabase } from '../lib/supabaseClient';
 import { UserProfile } from '../types';
 
 export const userService = {
+    async completeAdminTutorial(version: string): Promise<string> {
+        const { data, error } = await supabase.rpc('complete_admin_tutorial', {
+            tutorial_version: version
+        });
+        if (error) throw error;
+        return data as string;
+    },
+
     async getProfile(userId: string): Promise<UserProfile | null> {
         const { data, error } = await supabase
             .from('profiles')

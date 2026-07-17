@@ -530,6 +530,8 @@ export interface UserProfile {
   unlocked_banners?: string[];
   selected_banner_id?: string;
   saved_routes?: string[];
+  admin_tutorial_version?: string | null;
+  admin_tutorial_completed_at?: string | null;
 }
 
 // === Phase 5: Gamification & Trivia Models ===
