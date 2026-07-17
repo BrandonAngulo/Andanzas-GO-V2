@@ -93,14 +93,24 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
             />
 
             <Tabs defaultValue="juegos" className="relative z-10 w-full">
-                <div className="flex flex-row items-center justify-between mb-6">
-                    <TabsList className="grid h-auto w-full grid-cols-2 gap-1 p-1 sm:grid-cols-4 sm:max-w-[700px] m-0">
-                        <TabsTrigger value="juegos">Juegos</TabsTrigger>
-                        <TabsTrigger value="musica">Música</TabsTrigger>
-                        <TabsTrigger value="podcasts">Relatos</TabsTrigger>
-                        <TabsTrigger value="podio">Salón de la Fama</TabsTrigger>
-                    </TabsList>
-                    <div className="ml-4">
+                <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                    <ScrollArea className="w-full lg:w-auto">
+                        <TabsList className="inline-flex h-auto w-max items-center gap-1 rounded-full border border-border/60 bg-background/70 p-1.5 shadow-sm backdrop-blur">
+                            <TabsTrigger value="juegos" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-purple-700 dark:aria-selected:text-purple-200">
+                                <Gamepad2 className="h-4 w-4" /> Juegos
+                            </TabsTrigger>
+                            <TabsTrigger value="musica" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-fuchsia-700 dark:aria-selected:text-fuchsia-200">
+                                <Music className="h-4 w-4" /> Música
+                            </TabsTrigger>
+                            <TabsTrigger value="podcasts" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-orange-700 dark:aria-selected:text-orange-200">
+                                <Mic2 className="h-4 w-4" /> Relatos
+                            </TabsTrigger>
+                            <TabsTrigger value="podio" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-yellow-700 dark:aria-selected:text-yellow-200">
+                                <Trophy className="h-4 w-4" /> Salón de la Fama
+                            </TabsTrigger>
+                        </TabsList>
+                    </ScrollArea>
+                    <div className="shrink-0 self-end lg:self-auto">
                         <AndiGuia message="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos." variant="tip" />
                     </div>
                 </div>

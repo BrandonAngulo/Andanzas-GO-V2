@@ -129,7 +129,7 @@ const ECONOMY_HELP = {
 } as const;
 
 function EconomyTile({ icon, value, label, help }: { icon: React.ReactNode; value: string | number; label: string; help: { title: string; body: string } }) {
-    return <InfoHint title={help.title} body={help.body} trigger={<button type="button" className="w-full rounded-xl border bg-background/70 p-2.5 text-center shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}><span className="mx-auto block w-fit">{icon}</span><strong className="block text-sm">{value}</strong><span className="text-[10px] text-muted-foreground">{label}</span></button>} />;
+    return <InfoHint title={help.title} body={help.body} trigger={<button type="button" className="flex w-full items-center gap-2 rounded-lg border bg-background/70 px-2 py-1.5 text-left shadow-sm transition-all hover:border-primary/40 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}><span className="shrink-0">{icon}</span><span className="min-w-0 leading-tight"><strong className="block text-sm leading-none">{value}</strong><span className="block truncate text-[10px] text-muted-foreground">{label}</span></span></button>} />;
 }
 
 const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutasCount, insigniasCount, onOpenInsigniasModal, routesInProgressCount, routesCompletedCount, favoriteSiteIds, sites, toggleFav, onOpenSite, onNavigate }) => {
@@ -235,44 +235,61 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         }
     }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
 
-    // Check for banner unlocks based on activity
+    // Check for banner unlocks based on activity. Cada regla refleja la condición
+    // que se muestra al usuario en la galería (BannerGalleryModal.AVAILABLE_BANNERS).
     React.useEffect(() => {
         if (!userProfile) return;
 
-        let newUnlocks = [...(userProfile.unlocked_banners || [])];
-        let triggeredUnlock = null;
+        const level = economy?.level || userProfile.level || 1;
+        const savedRoutesCount = userProfile.saved_routes?.length || 0;
 
-        // Condition 1: First Review unlocks Bulevar del Río
-        if (myReviews.length > 0 && !newUnlocks.includes('banner_bulevar_rio')) {
-            newUnlocks.push('banner_bulevar_rio');
-            triggeredUnlock = {
-                type: 'banner' as const,
+        const rules: { id: string; met: boolean; name: string; description: string }[] = [
+            {
+                id: 'banner_bulevar_rio',
+                met: myReviews.length > 0,
                 name: 'Banner: Bulevar del Río',
                 description: '¡Por dejar tu primera reseña has desbloqueado una ilustración exclusiva para tu perfil!'
-            };
-        }
-        
-        // Condition 2: First Saved Route unlocks La Ermita
-        if ((userProfile.saved_routes?.length || 0) > 0 && !newUnlocks.includes('banner_la_ermita')) {
-            newUnlocks.push('banner_la_ermita');
-            // Prioritize showing only one modal at a time
-            if (!triggeredUnlock) {
-                triggeredUnlock = {
-                    type: 'banner' as const,
-                    name: 'Banner: La Ermita',
-                    description: '¡Por guardar tu primera ruta has desbloqueado una ilustración exclusiva para tu perfil!'
-                };
-            }
-        }
+            },
+            {
+                id: 'banner_la_ermita',
+                met: savedRoutesCount > 0,
+                name: 'Banner: La Ermita',
+                description: '¡Por guardar tu primera ruta has desbloqueado una ilustración exclusiva para tu perfil!'
+            },
+            {
+                id: 'banner_tres_cruces',
+                met: level >= 3,
+                name: 'Banner: Cerro Tres Cruces',
+                description: '¡Por alcanzar el Nivel 3 de Explorador has desbloqueado una ilustración exclusiva para tu perfil!'
+            },
+            {
+                id: 'banner_torre_cali',
+                met: routesCompletedCount > 0,
+                name: 'Banner: Torre de Cali',
+                description: '¡Por completar tu primera ruta guiada has desbloqueado una ilustración exclusiva para tu perfil!'
+            },
+            {
+                id: 'banner_bulevar_oriente',
+                met: insigniasCount >= 5,
+                name: 'Banner: Bulevar de Oriente',
+                description: '¡Por ganar 5 insignias culturales has desbloqueado una ilustración exclusiva para tu perfil!'
+            },
+        ];
 
-        if (triggeredUnlock) {
-            userService.updateProfileData(userProfile.id, { unlocked_banners: newUnlocks }).then(() => {
-                setUserProfile(prev => prev ? { ...prev, unlocked_banners: newUnlocks } : null);
-                setUnlockData(triggeredUnlock);
-                setShowUnlockModal(true);
-            });
-        }
-    }, [myReviews.length, userProfile?.saved_routes?.length]);
+        const alreadyUnlocked = userProfile.unlocked_banners || [];
+        const newlyUnlocked = rules.filter(r => r.met && !alreadyUnlocked.includes(r.id));
+        if (newlyUnlocked.length === 0) return;
+
+        const newUnlocks = [...alreadyUnlocked, ...newlyUnlocked.map(r => r.id)];
+        // Se muestra un solo modal a la vez (el primero desbloqueado en esta pasada).
+        const triggeredUnlock = { type: 'banner' as const, name: newlyUnlocked[0].name, description: newlyUnlocked[0].description };
+
+        userService.updateProfileData(userProfile.id, { unlocked_banners: newUnlocks }).then(() => {
+            setUserProfile(prev => prev ? { ...prev, unlocked_banners: newUnlocks } : null);
+            setUnlockData(triggeredUnlock);
+            setShowUnlockModal(true);
+        });
+    }, [myReviews.length, userProfile?.saved_routes?.length, economy?.level, routesCompletedCount, insigniasCount]);
 
     const handleDeleteReview = async (reviewId: string) => {
         toast((t('deleteConfirm') || "¿Estás seguro de eliminar esta reseña?"), {
@@ -619,14 +636,26 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         <Settings className="h-4 w-4 text-foreground" />
                     </Button>
 
-                    <aside className="absolute left-6 top-1/2 z-10 hidden w-64 -translate-y-1/2 rounded-2xl border bg-background/75 p-5 text-left shadow-sm backdrop-blur-md xl:block">
-                        <p className="mb-2 text-xs font-bold uppercase tracking-widest text-primary">Tu memoria de ciudad</p>
-                        <h3 className="mb-2 font-bold">Mucho más que una cuenta</h3>
-                        <p className="text-xs leading-relaxed text-muted-foreground">Este perfil guarda la huella de lo que recorrés, aprendés y compartís: rutas, cultura, artes, juegos, aportes, logros y recuerdos. Tu avatar le da imagen a esa experiencia.</p>
-                    </aside>
-                    <aside className="absolute right-6 top-1/2 z-10 hidden w-72 -translate-y-1/2 rounded-2xl border bg-background/75 p-4 shadow-sm backdrop-blur-md xl:block">
-                        <p className="mb-3 text-left text-xs font-bold uppercase tracking-widest text-primary">Tus recursos</p>
-                        <div className="grid grid-cols-2 gap-2">
+                    <InfoHint
+                        title="Tu memoria de ciudad"
+                        trigger={
+                            <button
+                                type="button"
+                                aria-label="Qué es tu perfil"
+                                title="Qué es tu perfil"
+                                className="absolute left-4 top-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/50 bg-background/50 text-foreground shadow-md backdrop-blur-md transition-colors hover:bg-background/80"
+                            >
+                                <Info className="h-4 w-4" />
+                            </button>
+                        }
+                    >
+                        <p className="font-semibold text-foreground">Mucho más que una cuenta</p>
+                        <p>Este perfil guarda la huella de lo que recorrés, aprendés y compartís: rutas, cultura, artes, juegos, aportes, logros y recuerdos. Tu avatar le da imagen a esa experiencia.</p>
+                    </InfoHint>
+
+                    <aside className="absolute right-6 top-1/2 z-10 hidden w-56 -translate-y-1/2 rounded-2xl border bg-background/75 p-3 shadow-sm backdrop-blur-md xl:block">
+                        <p className="mb-2 text-left text-[11px] font-bold uppercase tracking-widest text-primary">Tus recursos</p>
+                        <div className="grid grid-cols-2 gap-1.5">
                             <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} />
                             <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} />
                             <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} />
@@ -634,7 +663,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </div>
                     </aside>
 
-                    <div className="relative z-10 flex flex-col items-center p-6 pt-12 text-center xl:min-h-[390px] xl:justify-center">
+                    <div className="relative z-10 flex flex-col items-center p-6 pt-12 text-center xl:min-h-[300px] xl:justify-center">
                         <div className="relative mb-4 cursor-pointer group" onClick={() => setShowAvatarModal(true)}>
                             {/* Circular Progress SVG */}
                             <svg className="absolute -inset-2 w-[112px] h-[112px] -rotate-90">
@@ -809,11 +838,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     </div>
                                                 </div>
                                                 
-                                                <div className="text-center mt-1">
-                                                    <span className="text-xs font-bold leading-tight block w-full truncate">
+                                                <div className="text-center mt-1 w-32 px-1">
+                                                    <span className="text-xs font-bold leading-tight block w-full">
                                                         Santiago de Cali
                                                     </span>
-                                                    <span className="text-[10px] text-muted-foreground block w-full truncate">
+                                                    <span className="text-[10px] text-muted-foreground block w-full leading-tight">
                                                         {isLevel3 ? 'Leyenda Urbana' : (isLevel2 ? 'Explorador Frecuente' : (isLevel1 ? 'Iniciando Viaje' : 'Por descubrir'))}
                                                     </span>
                                                 </div>
@@ -850,9 +879,9 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="text-center mt-1">
-                                                <span className="text-xs font-bold leading-tight block truncate w-32">{stamp.title}</span>
-                                                {stamp.subtitle && <span className="text-[10px] text-muted-foreground block truncate w-32">{stamp.subtitle}</span>}
+                                            <div className="text-center mt-1 w-32 px-1">
+                                                <span className="text-xs font-bold leading-tight block w-full line-clamp-2">{stamp.title}</span>
+                                                {stamp.subtitle && <span className="text-[10px] text-muted-foreground block w-full leading-tight line-clamp-1">{stamp.subtitle}</span>}
                                             </div>
                                         </div>
                                     ))}
