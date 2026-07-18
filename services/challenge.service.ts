@@ -66,6 +66,26 @@ export interface DuelRunResult {
     resolved?: boolean;
 }
 
+export interface DuelReviewItem {
+    question_id: string;
+    question_text: string;
+    options: any;
+    category?: string;
+    selected: string | null;
+    correct_answer: any; // valor correcto (revelado solo después de enviar)
+    is_correct: boolean;
+    explanation?: string | null;
+}
+
+export interface DuelReview {
+    challenge_id: string;
+    correct: number;
+    total: number;
+    score: number;
+    time_ms: number;
+    review: DuelReviewItem[];
+}
+
 export const challengeService = {
     // ---- Duelo autoritativo (modo propio) ----
 
@@ -107,6 +127,13 @@ export const challengeService = {
     async cancelDuel(challengeId: string): Promise<void> {
         const { error } = await supabase.rpc('cancel_duel', { p_challenge_id: challengeId });
         if (error) throw error;
+    },
+
+    // Review post-partida del propio jugador (respuestas correctas + explicaciones), para el cierre.
+    async getDuelReview(challengeId: string): Promise<DuelReview> {
+        const { data, error } = await supabase.rpc('get_duel_review', { p_challenge_id: challengeId });
+        if (error) throw error;
+        return data as DuelReview;
     },
 
     // Metadatos del reto (lobby / veredicto). SELECT es público por RLS.
