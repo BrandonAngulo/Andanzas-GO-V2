@@ -16,6 +16,7 @@ import { LazyImage } from '../ui/lazy-image';
 import { bannerService, Banner } from '../../services/banner.service';
 import { analyticsService } from '../../services/analytics.service';
 import { DailyQuestion } from '../views/DailyQuestion';
+import { GamePresentationCard } from './GamePresentationCard';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string) => void;
@@ -139,6 +140,25 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {games.map(game => {
                     const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';
+                    const isTriviaGo =
+                        game.id === '81111111-1111-1111-1111-111111111111'
+                        || game.slug?.toLowerCase() === 'trivia-cali'
+                        || game.title?.toLowerCase() === 'trivia cali';
+
+                    if (isTriviaGo) {
+                        return (
+                            <GamePresentationCard
+                                key={game.id}
+                                game={game}
+                                imageSrc="/images/games/trivia-go-andi-card-v1.png"
+                                title="TRIVIA GO"
+                                description="Explora culturas, responde y descubre."
+                                onInstructions={() => setActiveInstructionsGame(game)}
+                                onPlay={() => launchGame(game)}
+                            />
+                        );
+                    }
+
                     // Portada ilustrada propia (SVG) si el juego trae una para su theme_pattern.
                     const illustratedCover = !game.cover_image_url && hasGameCover(game.theme_pattern);
                     // Identidad visual por juego: si el juego define theme_accent, se usa ese color (inline style,
