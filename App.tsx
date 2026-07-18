@@ -56,6 +56,8 @@ import { GameSessionModal } from './components/views/GameSessionModal';
 import { JuegosPanel } from './components/panels/JuegosPanel';
 import { ChallengeLobby } from './components/views/ChallengeLobby';
 import { ChallengeVerdict } from './components/views/ChallengeVerdict';
+import { DuelSession } from './components/views/DuelSession';
+import { challengeService, DuelPlay } from './services/challenge.service';
 import { DictionaryPanel } from './components/panels/DictionaryPanel';
 
 // New Imports
@@ -219,6 +221,10 @@ export default function App() {
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
   const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
+  // Duelo modo propio (autoritativo): set congelado + rol; renderiza DuelSession en pantalla completa.
+  const [duelPlay, setDuelPlay] = useState<{ play: DuelPlay; role: 'challenger' | 'rival' } | null>(null);
+  const [duelLoading, setDuelLoading] = useState(false);
+  const duelStartingRef = useRef(false);
   const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend' | 'timed'>('levels');
   const [activeGameTheme, setActiveGameTheme] = useState<string | undefined>(undefined);
   // Se incrementa en cada "Reintentar" para forzar un remount limpio de GameSessionModal
@@ -359,9 +365,29 @@ export default function App() {
     };
     window.addEventListener('open-game' as any, handleOpenGame);
 
+    // Inicia un Duelo nuevo (modo propio): congela set + reglas y abre DuelSession como retador.
+    const handleStartDuel = async (e: CustomEvent) => {
+      if (!e.detail?.gameId) return;
+      if (!isAuthenticated) { setAuthDialogOpen(true); return; }
+      if (duelStartingRef.current) return;
+      duelStartingRef.current = true;
+      setDuelLoading(true);
+      try {
+        const play = await challengeService.createDuel(e.detail.gameId);
+        setDuelPlay({ play, role: 'challenger' });
+      } catch (err: any) {
+        toast.error(String(err?.message || '').includes('NO_QUESTIONS') ? 'Este juego no tiene preguntas para un duelo.' : 'No se pudo crear el duelo.');
+      } finally {
+        duelStartingRef.current = false;
+        setDuelLoading(false);
+      }
+    };
+    window.addEventListener('start-duel' as any, handleStartDuel);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener('open-game' as any, handleOpenGame);
+      window.removeEventListener('start-duel' as any, handleStartDuel);
     };
   }, [isAuthenticated]);
 
@@ -670,7 +696,24 @@ export default function App() {
 
               {/* Full View inside CardContent */}
               {fullView && ["site", "event", "route"].includes(fullView.type) && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
-              {fullView && fullView.type === 'challenge_lobby' && <ChallengeLobby challengeId={fullView.data.id} onClose={closeFull} isAuthenticated={isAuthenticated} onAccept={(gameId, challengeId) => { if (!isAuthenticated) { setAuthDialogOpen(true); } else { closeFull(); setActiveChallengeId(challengeId); setActiveGameId(gameId); } }} />}
+              {fullView && fullView.type === 'challenge_lobby' && <ChallengeLobby challengeId={fullView.data.id} onClose={closeFull} isAuthenticated={isAuthenticated} onAccept={(_gameId, challengeId) => {
+                if (!isAuthenticated) { setAuthDialogOpen(true); return; }
+                closeFull();
+                duelStartingRef.current = true; setDuelLoading(true);
+                challengeService.getDuelPlay(challengeId)
+                  .then(play => setDuelPlay({ play, role: 'rival' }))
+                  .catch((err: any) => {
+                    const m = String(err?.message || '');
+                    toast.error(
+                      m.includes('NOT_READY') ? 'El retador aún no ha terminado su partida.' :
+                      m.includes('EXPIRED') ? 'Este reto ya venció.' :
+                      m.includes('ALREADY_TAKEN') ? 'Otra persona ya está jugando este reto.' :
+                      m.includes('IS_CHALLENGER') ? 'No puedes jugar tu propio reto.' :
+                      'No se pudo abrir el reto.'
+                    );
+                  })
+                  .finally(() => { duelStartingRef.current = false; setDuelLoading(false); });
+              }} />}
               {fullView && fullView.type === 'challenge_verdict' && <ChallengeVerdict challengeId={fullView.data.id} onClose={closeFull} />}
             </CardContent>
           </Card>
@@ -763,6 +806,8 @@ export default function App() {
       <AppTutorialModal />
       <LegalAcceptanceModal />
       {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); setActiveChallengeId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
+      {duelLoading && !duelPlay && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background"><div className="w-10 h-10 rounded-full border-4 border-primary/30 border-t-primary animate-spin" /></div>}
+      {duelPlay && <DuelSession play={duelPlay.play} role={duelPlay.role} onExit={(submitted) => { setDuelPlay(null); if (submitted) setActivePanel('juegos'); }} />}
     </div>
   );
 }

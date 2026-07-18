@@ -138,23 +138,13 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isFinished, loading, error, showExitConfirm, onClose]);
 
-    const handleChallengeFriend = async () => {
-        if (!sessionId) return;
+    // Atajo post-partida: inicia un DUELO nuevo (modo propio) sobre este mismo juego.
+    // El duelo congela su propio set/reglas; no reutiliza esta partida casual.
+    const handleChallengeFriend = () => {
         setIsCreatingChallenge(true);
-        try {
-            const challenge = await challengeService.createChallenge(gameId, sessionId);
-            if (challenge) {
-                const challengeUrl = `${window.location.origin}/#/challenge/${challenge.id}`;
-                await navigator.clipboard.writeText(`¡Te reto en Andanzas GO! ¿Puedes superar mi puntaje de ${score}?\n\nJuega aquí: ${challengeUrl}`);
-                toast.success("¡Enlace copiado al portapapeles! Compártelo con tus amigos.");
-            } else {
-                toast.error("Hubo un error al crear el reto. Debes iniciar sesión.");
-            }
-        } catch (e) {
-            toast.error("Error al generar el enlace de reto");
-        } finally {
-            setIsCreatingChallenge(false);
-        }
+        onClose();
+        window.dispatchEvent(new CustomEvent('start-duel', { detail: { gameId } }));
+        setIsCreatingChallenge(false);
     };
 
 

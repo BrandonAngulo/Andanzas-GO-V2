@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Game, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Timer, ChevronRight, Music, Mic2, Headphones } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Timer, ChevronRight, Music, Mic2, Headphones, Swords } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
@@ -276,6 +276,18 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             <div className="flex-1">
                                 <div className="font-bold">Contrarreloj</div>
                                 <div className="text-sm text-muted-foreground">2 minutos, 15 preguntas y un solo error te saca. Llegá al final y duplicás todo. ¿Le corrés al reloj?</div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) window.dispatchEvent(new CustomEvent('start-duel', { detail: { gameId: g.id } })); }}
+                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-primary hover:bg-primary/5"
+                        >
+                            <div className="rounded-xl bg-primary/10 p-3 text-primary"><Swords className="h-6 w-6" /></div>
+                            <div className="flex-1">
+                                <div className="font-bold">Duelo · Retar a un amigo</div>
+                                <div className="text-sm text-muted-foreground">10 preguntas, 25s cada una y 3 minutos en total. Jugás vos primero y luego mandás el reto: gana quien más sepa.</div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-muted-foreground" />
                         </button>
