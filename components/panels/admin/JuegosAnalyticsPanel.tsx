@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
-import { Activity, AlertTriangle, XCircle, CheckCircle2 } from 'lucide-react';
+import { Activity, AlertTriangle, XCircle, CheckCircle2, Filter, Layers, Gauge } from 'lucide-react';
 
 export const JuegosAnalyticsPanel = () => {
     const [loading, setLoading] = useState(true);
@@ -10,7 +10,11 @@ export const JuegosAnalyticsPanel = () => {
         completedSessions: 0,
         abandonRate: 0,
         topFailed: [] as { text: string, fails: number }[],
-        reports: [] as { id: string, text: string, reason: string, date: string, status: string }[]
+        reports: [] as { id: string, text: string, reason: string, date: string, status: string }[],
+        // Instrumentación Fase 0 (desde analytics_events + game_answers)
+        funnel: { viewed: 0, started: 0, completed: 0 },
+        byMode: [] as { mode: string, started: number, completed: number }[],
+        accuracyByLevel: [] as { level: number, correct: number, total: number }[]
     });
 
     useEffect(() => {
@@ -67,12 +71,60 @@ export const JuegosAnalyticsPanel = () => {
                 status: r.status
             }));
 
+            // 4. Instrumentación Fase 0: embudo y partidas por modo (analytics_events).
+            const { data: events } = await supabase
+                .from('analytics_events')
+                .select('event_name, metadata')
+                .in('event_name', ['game_mode_viewed', 'game_started', 'game_completed']);
+            const evList = (events || []) as { event_name: string, metadata: any }[];
+            const funnel = {
+                viewed: evList.filter(e => e.event_name === 'game_mode_viewed').length,
+                started: evList.filter(e => e.event_name === 'game_started').length,
+                completed: evList.filter(e => e.event_name === 'game_completed').length
+            };
+            const modeMap: Record<string, { started: number, completed: number }> = {};
+            evList.forEach(e => {
+                if (e.event_name !== 'game_started' && e.event_name !== 'game_completed') return;
+                const mode = (e.metadata?.mode as string) || 'desconocido';
+                if (!modeMap[mode]) modeMap[mode] = { started: 0, completed: 0 };
+                if (e.event_name === 'game_started') modeMap[mode].started++;
+                else modeMap[mode].completed++;
+            });
+            const byMode = Object.entries(modeMap)
+                .map(([mode, v]) => ({ mode, ...v }))
+                .sort((a, b) => b.started - a.started);
+
+            // 5. Exactitud por dificultad (game_answers + nivel de la pregunta).
+            // A escala esto debería ser un RPC; con los volúmenes actuales basta el cruce en cliente.
+            const { data: ans } = await supabase.from('game_answers').select('is_correct, question_id').limit(2000);
+            const ansList = (ans || []) as { is_correct: boolean, question_id: string | null }[];
+            const qIds = Array.from(new Set(ansList.map(a => a.question_id).filter(Boolean))) as string[];
+            const levelMap = new Map<string, number>();
+            if (qIds.length > 0) {
+                const { data: qs } = await supabase.from('game_questions').select('id, level').in('id', qIds);
+                (qs || []).forEach((q: any) => levelMap.set(q.id, Number(q.level || 1)));
+            }
+            const levelAgg: Record<number, { correct: number, total: number }> = {};
+            ansList.forEach(a => {
+                if (!a.question_id) return;
+                const lvl = levelMap.get(a.question_id) || 1;
+                if (!levelAgg[lvl]) levelAgg[lvl] = { correct: 0, total: 0 };
+                levelAgg[lvl].total++;
+                if (a.is_correct) levelAgg[lvl].correct++;
+            });
+            const accuracyByLevel = Object.entries(levelAgg)
+                .map(([level, v]) => ({ level: Number(level), ...v }))
+                .sort((a, b) => a.level - b.level);
+
             setMetrics({
                 totalSessions: total,
                 completedSessions: completed,
                 abandonRate: abandon,
                 topFailed,
-                reports
+                reports,
+                funnel,
+                byMode,
+                accuracyByLevel
             });
 
         } catch (error) {
@@ -120,6 +172,75 @@ export const JuegosAnalyticsPanel = () => {
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold text-orange-500">{metrics.abandonRate.toFixed(1)}%</div>
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Instrumentación Fase 0: embudo, modos y dificultad */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg">
+                            <Filter className="w-5 h-5 text-primary" /> Embudo (Fase 0)
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {metrics.funnel.viewed + metrics.funnel.started + metrics.funnel.completed === 0 ? (
+                            <p className="text-sm text-muted-foreground">Sin eventos aún. Se poblará con el uso tras el despliegue.</p>
+                        ) : (
+                            <ul className="space-y-2 text-sm">
+                                <li className="flex justify-between"><span>Vieron modo</span><span className="font-bold">{metrics.funnel.viewed}</span></li>
+                                <li className="flex justify-between"><span>Iniciaron</span><span className="font-bold">{metrics.funnel.started}{metrics.funnel.viewed > 0 ? <span className="text-muted-foreground font-normal"> ({Math.round(metrics.funnel.started / metrics.funnel.viewed * 100)}%)</span> : null}</span></li>
+                                <li className="flex justify-between"><span>Completaron</span><span className="font-bold">{metrics.funnel.completed}{metrics.funnel.started > 0 ? <span className="text-muted-foreground font-normal"> ({Math.round(metrics.funnel.completed / metrics.funnel.started * 100)}%)</span> : null}</span></li>
+                            </ul>
+                        )}
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg">
+                            <Layers className="w-5 h-5 text-primary" /> Partidas por Modo
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {metrics.byMode.length === 0 ? (
+                            <p className="text-sm text-muted-foreground">Sin datos de modo aún.</p>
+                        ) : (
+                            <ul className="space-y-2 text-sm">
+                                {metrics.byMode.map(m => (
+                                    <li key={m.mode} className="flex justify-between items-center bg-muted/30 p-2 rounded">
+                                        <span className="font-medium capitalize">{m.mode}</span>
+                                        <span className="text-xs text-muted-foreground">{m.started} inic · {m.completed} compl</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg">
+                            <Gauge className="w-5 h-5 text-primary" /> Exactitud por Dificultad
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {metrics.accuracyByLevel.length === 0 ? (
+                            <p className="text-sm text-muted-foreground">Sin respuestas registradas.</p>
+                        ) : (
+                            <ul className="space-y-2 text-sm">
+                                {metrics.accuracyByLevel.map(l => {
+                                    const pct = l.total > 0 ? Math.round(l.correct / l.total * 100) : 0;
+                                    return (
+                                        <li key={l.level} className="flex justify-between items-center">
+                                            <span>Nivel {l.level}</span>
+                                            <span className="font-bold">{pct}% <span className="text-xs text-muted-foreground font-normal">({l.correct}/{l.total})</span></span>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        )}
                     </CardContent>
                 </Card>
             </div>
