@@ -15,6 +15,7 @@ import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
 import { bannerService, Banner } from '../../services/banner.service';
 import { analyticsService } from '../../services/analytics.service';
+import { DailyQuestion } from '../views/DailyQuestion';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string) => void;
@@ -25,6 +26,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [loading, setLoading] = useState(true);
     const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
     const [modeChoiceGame, setModeChoiceGame] = useState<Game | null>(null);
+    const [showDaily, setShowDaily] = useState(false);
     const [musicContent, setMusicContent] = useState<Banner | null>(null);
     const [storiesContent, setStoriesContent] = useState<Banner | null>(null);
 
@@ -122,6 +124,18 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                 </div>
                 
                 <TabsContent value="juegos" className="space-y-6">
+                    <button
+                        type="button"
+                        onClick={() => setShowDaily(true)}
+                        className="flex w-full items-center gap-4 rounded-3xl border-2 border-primary/20 bg-gradient-to-r from-primary/10 to-fuchsia-500/10 p-4 text-left transition-all hover:border-primary/50 hover:shadow-lg"
+                    >
+                        <div className="rounded-2xl bg-primary/15 p-3 text-primary"><CalendarDays className="h-6 w-6" /></div>
+                        <div className="flex-1">
+                            <div className="font-bold">Pregunta del día</div>
+                            <div className="text-sm text-muted-foreground">Responde la de hoy y mantené tu racha 🔥</div>
+                        </div>
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                    </button>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {games.map(game => {
                     const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';
@@ -294,6 +308,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     </div>
                 </DialogContent>
             </Dialog>
+
+            {showDaily && <DailyQuestion onClose={() => setShowDaily(false)} />}
             </div>
         </ScrollArea>
     );
