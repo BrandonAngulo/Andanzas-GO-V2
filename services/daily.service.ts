@@ -21,6 +21,13 @@ export interface DailyQuestionData {
     } | null;
 }
 
+export interface DailyReward {
+    coins: number;
+    gems: number;
+    daily_coins: number;
+    weekly_bonus: number;
+}
+
 export interface DailyAnswerResult {
     is_correct?: boolean;
     correct_answer?: any;
@@ -28,6 +35,7 @@ export interface DailyAnswerResult {
     streak?: number;
     best_streak?: number;
     already_answered?: boolean;
+    reward?: DailyReward;
 }
 
 export const dailyService = {

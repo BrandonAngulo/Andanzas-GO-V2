@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { dailyService, DailyQuestionData, DailyAnswerResult } from '../../services/daily.service';
 import { Button } from '../ui/button';
-import { CalendarDays, Flame, Check, X, Share2, Loader2, AlertTriangle } from 'lucide-react';
+import { CalendarDays, Flame, Check, X, Share2, Loader2, AlertTriangle, Coins, Gem } from 'lucide-react';
 import { toast } from 'sonner';
 
 const optionValue = (opt: any): string => (typeof opt === 'string' ? opt : (opt?.label ?? String(opt)));
@@ -105,6 +105,15 @@ export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                         <div className={`rounded-2xl p-4 text-center font-semibold ${review?.is_correct ? 'bg-green-500/10 text-green-700 dark:text-green-400' : 'bg-red-500/10 text-red-600 dark:text-red-400'}`}>
                             {review?.is_correct ? '¡Correcto! 🎉' : 'Casi… la respuesta correcta está marcada.'}
                         </div>
+                        {result?.reward && (
+                            <div className="flex items-center justify-center gap-5 font-bold">
+                                <span className="flex items-center gap-1.5 text-amber-500"><Coins className="w-5 h-5" /> +{result.reward.coins}</span>
+                                {result.reward.gems > 0 && <span className="flex items-center gap-1.5 text-fuchsia-500"><Gem className="w-5 h-5" /> +{result.reward.gems}</span>}
+                            </div>
+                        )}
+                        {result?.reward && result.reward.weekly_bonus > 0 && (
+                            <p className="text-center text-xs text-amber-600 dark:text-amber-400 font-medium">🔥 ¡Bonus semanal! +{result.reward.weekly_bonus} monedas por completar la semana.</p>
+                        )}
                         {review?.explanation && <p className="text-sm text-muted-foreground italic">{review.explanation}</p>}
                         <p className="text-center text-sm text-muted-foreground">Ya respondiste hoy. ¡Vuelve mañana para mantener tu racha! 🔥</p>
                         <Button className="w-full rounded-xl" onClick={share}><Share2 className="w-4 h-4 mr-2" /> Compartir (sin spoiler)</Button>
