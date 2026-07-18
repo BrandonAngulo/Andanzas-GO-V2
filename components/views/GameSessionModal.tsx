@@ -7,7 +7,6 @@ import { gamesService } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserData } from '../../contexts/UserDataContext';
 import { toast } from 'sonner';
-import { challengeService } from '../../services/challenge.service';
 import { QuestionRenderer } from './QuestionRenderer';
 import { GameMascot, MascotState } from './GameMascot';
 import ReactConfetti from 'react-confetti';
@@ -21,12 +20,11 @@ interface GameSessionModalProps {
     onClose: () => void;
     onNavigate?: (panel: string) => void;
     onRetry?: () => void;
-    challengeId?: string;
     mode?: 'levels' | 'legend' | 'timed';
     theme?: string;
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, challengeId, mode = 'levels', theme }) => {
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, mode = 'levels', theme }) => {
     const isLegend = mode === 'legend';
     const isTimed = mode === 'timed';
     const { userProfile } = useUserData();
@@ -111,16 +109,6 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
             return () => clearTimeout(t);
         }
     }, [isChecking, isCorrect, streak]);
-
-    React.useEffect(() => {
-        if (isFinished && challengeId && sessionId) {
-            challengeService.completeChallenge(challengeId, sessionId, null).then(() => {
-                // El router de la app lee window.location.hash (ver App.tsx parseHash/pushHash),
-                // no la ruta de la URL, así que la navegación al veredicto debe ir por hash.
-                window.location.hash = `#/challenge/${challengeId}/verdict`;
-            });
-        }
-    }, [isFinished, challengeId, sessionId]);
 
     React.useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {

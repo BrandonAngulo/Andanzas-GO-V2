@@ -220,7 +220,6 @@ export default function App() {
   const [badgeProgress, setBadgeProgress] = useState<Record<string, number>>({});
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
-  const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
   // Duelo modo propio (autoritativo): set congelado + rol; renderiza DuelSession en pantalla completa.
   const [duelPlay, setDuelPlay] = useState<{ play: DuelPlay; role: 'challenger' | 'rival' } | null>(null);
   const [duelLoading, setDuelLoading] = useState(false);
@@ -394,7 +393,7 @@ export default function App() {
   useEffect(() => {
     if (isAuthenticated) return;
     setActiveGameId(null);
-    setActiveChallengeId(null);
+    setDuelPlay(null);
   }, [isAuthenticated]);
 
   // --- Handlers ---
@@ -805,7 +804,7 @@ export default function App() {
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />
-      {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} challengeId={activeChallengeId || undefined} onClose={() => { setActiveGameId(null); setActiveChallengeId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); setActiveChallengeId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
+      {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} onClose={() => { setActiveGameId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
       {duelLoading && !duelPlay && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background"><div className="w-10 h-10 rounded-full border-4 border-primary/30 border-t-primary animate-spin" /></div>}
       {duelPlay && <DuelSession play={duelPlay.play} role={duelPlay.role} onExit={(submitted) => { setDuelPlay(null); if (submitted) setActivePanel('juegos'); }} />}
     </div>
