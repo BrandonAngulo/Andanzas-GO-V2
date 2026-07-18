@@ -890,14 +890,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         {/* Experiencias Vividas */}
                         <div className="grid grid-cols-2 gap-3">
                             <Card className="overflow-hidden bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-none shadow-sm">
-                                <CardContent className="p-4 pt-4 flex flex-col gap-2">
+                                <CardContent className="p-4 flex flex-col gap-2">
                                     <Map className="h-5 w-5 text-blue-500" />
                                     <span className="text-2xl font-bold">{routesCompletedCount}</span>
                                     <span className="text-xs opacity-70">Rutas Completadas</span>
                                 </CardContent>
                             </Card>
                             <Card className="overflow-hidden bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-none shadow-sm cursor-pointer hover:bg-yellow-500/20 transition-colors" onClick={() => setActiveTab('badges')}>
-                                <CardContent className="p-4 pt-4 flex flex-col gap-2">
+                                <CardContent className="p-4 flex flex-col gap-2">
                                     <Award className="h-5 w-5 text-yellow-600" />
                                     <span className="text-2xl font-bold">{insigniasCount}</span>
                                     <span className="text-xs opacity-70">Insignias Ganadas</span>
@@ -916,7 +916,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             <Card className="border-2 border-border bg-card overflow-hidden relative shadow-sm">
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10" />
                                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
-                                <CardContent className="p-5 pt-5 flex gap-4 overflow-x-auto snap-x hide-scrollbar">
+                                <CardContent className="p-5 flex gap-4 overflow-x-auto snap-x hide-scrollbar">
                                     
                                     {/* Cali Stamp (Dynamic) */}
                                     {(() => {
@@ -1024,7 +1024,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     {/* Rutas Tab */}
                     <TabsContent value="rutas" className="space-y-6 mt-0">
                         <Card className="border-dashed border-2 border-primary/20 shadow-none bg-primary/5 hover:bg-primary/10 transition-colors">
-                            <CardContent className="p-8 pt-8 text-center flex flex-col items-center justify-center">
+                            <CardContent className="p-8 text-center flex flex-col items-center justify-center">
                                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4">
                                     <RouteIcon className="h-8 w-8 text-primary" />
                                 </div>
@@ -1063,7 +1063,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             <StatItem icon={Flame} label="Mejor racha" value={gameSummary.bestStreak} />
                         </div>
                         <Card className="border-2 border-purple-500/20 shadow-none bg-gradient-to-br from-purple-500/10 via-fuchsia-500/5 to-orange-500/10 transition-colors">
-                            <CardContent className="p-8 pt-8 text-center flex flex-col items-center justify-center">
+                            <CardContent className="p-8 text-center flex flex-col items-center justify-center">
                                 <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-4">
                                     <Trophy className="h-8 w-8 text-purple-600" />
                                 </div>
@@ -1088,7 +1088,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                             <div key={review.id} className="relative pl-4">
                                                 <div className="absolute w-3 h-3 bg-primary rounded-full -left-[23px] top-1.5 ring-4 ring-background" />
                                                 <Card className="border-none shadow-sm bg-muted/20 hover:bg-muted/40 transition-colors">
-                                                    <CardContent className="p-3 pt-3">
+                                                    <CardContent className="p-3">
                                                         <p className="text-xs text-muted-foreground mb-1">Escribiste una reseña en</p>
                                                         <h4 className="font-semibold text-sm cursor-pointer hover:text-primary transition-colors" onClick={() => site && onOpenSite(site)}>
                                                             {site ? getTranslated(site, 'nombre', language) : 'Sitio desconocido'}
@@ -1105,7 +1105,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </div>
                             ) : (
                                 <Card className="border-dashed border-2 border-primary/20 shadow-none bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer">
-                                    <CardContent className="p-8 pt-8 text-center flex flex-col items-center justify-center">
+                                    <CardContent className="p-8 text-center flex flex-col items-center justify-center">
                                         <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4">
                                             <MapPin className="h-8 w-8 text-primary" />
                                         </div>
@@ -1130,7 +1130,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                             className="group overflow-hidden border-none shadow-sm bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer"
                                             onClick={() => onOpenSite(site)}
                                         >
-                                            <CardContent className="flex p-3 pt-3 gap-3">
+                                            <CardContent className="flex p-3 gap-3">
                                                 <div className="h-16 w-16 rounded-md bg-muted flex-shrink-0 overflow-hidden">
                                                     <img src={site.logoUrl} alt={site.nombre} className="h-full w-full object-cover" />
                                                 </div>
@@ -1157,7 +1157,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </div>
                             ) : (
                                 <Card className="border-dashed border-2 border-pink-500/20 shadow-none bg-pink-500/5 hover:bg-pink-500/10 transition-colors cursor-pointer">
-                                    <CardContent className="p-6 pt-6 text-center flex flex-col items-center">
+                                    <CardContent className="p-6 text-center flex flex-col items-center">
                                         <div className="p-3 bg-pink-100 dark:bg-pink-900/30 rounded-full mb-3">
                                             <Heart className="h-8 w-8 text-pink-500" />
                                         </div>
@@ -1184,7 +1184,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                                 className="border-none shadow-sm bg-muted/20 cursor-pointer hover:bg-muted/40 transition-colors"
                                                 onClick={() => site && onOpenSite(site)}
                                             >
-                                                <CardContent className="p-3 pt-3 space-y-2">
+                                                <CardContent className="p-3 space-y-2">
                                                     <div className="flex justify-between items-start">
                                                         <div>
                                                             <h4 className="font-semibold text-sm">
@@ -1219,7 +1219,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </div>
                             ) : (
                                 <Card className="border-dashed border-2 border-orange-500/20 shadow-none bg-orange-500/5 hover:bg-orange-500/10 transition-colors cursor-pointer">
-                                    <CardContent className="p-6 pt-6 text-center flex flex-col items-center">
+                                    <CardContent className="p-6 text-center flex flex-col items-center">
                                         <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-3">
                                             <MessageSquare className="h-8 w-8 text-orange-500" />
                                         </div>

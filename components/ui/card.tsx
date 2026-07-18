@@ -17,7 +17,7 @@ Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-col space-y-1.5 p-5', className)} {...props} />
+    <div ref={ref} className={cn('ui-card-header flex flex-col space-y-1.5 p-5', className)} {...props} />
   )
 );
 CardHeader.displayName = 'CardHeader';
@@ -37,9 +37,12 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = 'CardDescription';
 
+// Nota: el padding superior lo restaura index.css SOLO cuando el contenido va
+// justo después de un CardHeader (.ui-card-header + .ui-card-content). Así las
+// tarjetas sin header dejan de heredar pt-0 y sus elementos ya no tocan el borde.
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('p-5 pt-0', className)} {...props} />
+    <div ref={ref} className={cn('ui-card-content p-5', className)} {...props} />
   )
 );
 CardContent.displayName = 'CardContent';
