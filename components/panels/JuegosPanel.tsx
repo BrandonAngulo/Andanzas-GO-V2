@@ -14,6 +14,7 @@ import { PanelBanner } from './shared/PanelBanner';
 import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
 import { bannerService, Banner } from '../../services/banner.service';
+import { analyticsService } from '../../services/analytics.service';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string) => void;
@@ -28,6 +29,11 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [storiesContent, setStoriesContent] = useState<Banner | null>(null);
 
     const launchGame = (game: Game) => {
+        // Instrumentación (Fase 0): intención de jugar / vista de elección de modo.
+        analyticsService.trackEvent('game_mode_viewed', 'game', game.id, {
+            game_type: game.type,
+            has_mode_choice: game.type === 'trivia'
+        });
         // Las trivias ofrecen elegir modo (corto por niveles / Leyenda). El resto arranca directo.
         if (game.type === 'trivia') setModeChoiceGame(game);
         else onPlayGame(game.id);

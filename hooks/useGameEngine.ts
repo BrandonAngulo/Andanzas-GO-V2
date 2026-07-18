@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { Game, GameQuestion, gamesService } from '../services/games.service';
 import type { EconomySummary } from '../services/gamification.service';
+import { analyticsService } from '../services/analytics.service';
 
 export interface GameEngineState {
     game: Game | null;
@@ -297,6 +298,14 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
             if (sessionError) throw sessionError;
 
+            // Instrumentación (Fase 0): inicio de partida. Fire-and-forget, no bloquea el juego.
+            analyticsService.trackEvent('game_started', 'game_session', sessionData.id, {
+                game_id: gameId,
+                mode,
+                theme: theme || 'all',
+                question_count: questions.length
+            });
+
             const usesPersistentLives = mode === 'legend' || game.mechanic_type === 'lives';
             let economy: EconomySummary | null = null;
             if (userId && usesPersistentLives) {
@@ -422,6 +431,16 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 timed_out: isTimeout
             });
         }
+
+        // Instrumentación (Fase 0): respuesta registrada.
+        analyticsService.trackEvent('question_answered', 'game_session', state.sessionId ?? undefined, {
+            question_id: currentQ.id,
+            category: currentQ.category || 'General',
+            level: currentQ.level ?? null,
+            is_correct: isCorrect,
+            time_to_answer_ms: timeToAnswerMs,
+            timed_out: isTimeout
+        });
 
         let isGameEnding = false;
         let finalLives = state.livesRemaining;
@@ -576,6 +595,27 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             game_session_id: state.sessionId
         });
         if (rewardError) console.error('Error awarding game rewards:', rewardError);
+
+        // Instrumentación (Fase 0): fin de partida y recompensa otorgada.
+        analyticsService.trackEvent('game_completed', 'game_session', state.sessionId ?? undefined, {
+            game_id: gameId,
+            mode: modeRef.current,
+            score: finalScore,
+            accuracy_percent: Math.round(accuracy),
+            answered: answeredCount,
+            correct: correctCount,
+            max_streak: state.maxStreak,
+            aborted: isAborted
+        });
+        if (rewardData) {
+            analyticsService.trackEvent('reward_granted', 'game_session', state.sessionId ?? undefined, {
+                xp: Number(rewardData.xp_awarded || 0),
+                app_points: Number(rewardData.app_points_awarded || 0),
+                coins: Number(rewardData.coins_awarded || 0),
+                gems: Number(rewardData.gems_awarded || 0),
+                source: 'game_completed'
+            });
+        }
 
         let categoryProgress: { category: string; xp: number; level: number; mastery: number }[] = [];
         if (userId) {

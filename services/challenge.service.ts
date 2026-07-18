@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
+import { analyticsService } from './analytics.service';
 
 export interface GameChallenge {
     id: string;
@@ -31,6 +32,8 @@ export const challengeService = {
                 .single();
 
             if (error) throw error;
+            // Instrumentación (Fase 0): reto creado.
+            analyticsService.trackEvent('challenge_created', 'game_challenge', data.id, { game_id: gameId });
             return data;
         } catch (error) {
             console.error('Error creating challenge:', error);
@@ -77,6 +80,10 @@ export const challengeService = {
                 .single();
 
             if (error) throw error;
+            // Instrumentación (Fase 0): reto completado por el retado.
+            analyticsService.trackEvent('challenge_completed', 'game_challenge', challengeId, {
+                result: winnerId ? (winnerId === userData.user.id ? 'won' : 'lost') : 'tie'
+            });
             return data;
         } catch (error) {
             console.error('Error completing challenge:', error);
