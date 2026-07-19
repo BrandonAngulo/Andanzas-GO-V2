@@ -1,6 +1,5 @@
 import React from 'react';
-import { BotMessageSquare, X } from 'lucide-react';
-import { Card, CardContent } from '../ui/card';
+import { BotMessageSquare } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '../../lib/utils';
 
@@ -57,7 +56,11 @@ export const AndiGuia: React.FC<AndiGuiaProps> = ({
                 "bg-background/95 backdrop-blur-sm"
               )}
             >
-              <BotMessageSquare className={cn("w-6 h-6", iconColors[variant])} />
+              <img
+                src="/brand/andi/andi-app-mark-512.png"
+                alt="Andi"
+                className="h-10 w-10 rounded-full object-cover"
+              />
             </Button>
           </div>
         </DialogTrigger>

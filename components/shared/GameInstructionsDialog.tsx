@@ -9,12 +9,19 @@ import {
     Flame,
     Heart,
     Lightbulb,
+    MapPinned,
     PlayCircle,
+    Route,
     ShieldAlert,
     Skull,
+    Sparkles,
+    Swords,
+    Timer,
     Trophy,
 } from 'lucide-react';
 import { Game } from '../../services/games.service';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { isTriviaGo } from '../../lib/gameIdentity';
 
 interface GameInstructionsDialogProps {
     open: boolean;
@@ -29,10 +36,7 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
     game,
     onPlay,
 }) => {
-    const isTriviaGo =
-        game.id === '81111111-1111-1111-1111-111111111111'
-        || game.slug?.toLowerCase() === 'trivia-cali'
-        || game.title?.toLowerCase() === 'trivia cali';
+    const triviaGo = isTriviaGo(game);
     
     // Determine mechanic configuration
     let mechanicIcon = <Flag className="w-8 h-8 text-green-500" />;
@@ -66,7 +70,7 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
         onPlay?.();
     };
 
-    if (isTriviaGo) {
+    if (triviaGo) {
         const steps = [
             {
                 icon: CheckCircle2,
@@ -78,14 +82,14 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
             {
                 icon: Lightbulb,
                 title: 'Descubre algo nuevo',
-                description: 'Cada respuesta abre una historia de la ciudad.',
+                description: 'Cada respuesta te cuenta algo que vale la pena recordar.',
                 color: 'text-amber-600',
                 surface: 'bg-amber-50',
             },
             {
                 icon: Trophy,
                 title: 'Suma y avanza',
-                description: 'Gana puntos y construye tu recorrido con Andi.',
+                description: 'Encadena aciertos, avanza y descubre hasta dónde puedes llegar.',
                 color: 'text-violet-600',
                 surface: 'bg-violet-50',
             },
@@ -93,8 +97,8 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
 
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent className="max-h-[92vh] overflow-y-auto rounded-[2rem] border-emerald-950/10 bg-[#fbfaf6] p-0 shadow-2xl sm:max-w-2xl">
-                    <div className="relative min-h-[11.5rem] overflow-hidden bg-gradient-to-br from-[#063b42] via-[#086052] to-[#10a866] px-6 py-6 text-white sm:px-8">
+                <DialogContent className="max-h-[92vh] overflow-y-auto rounded-[2rem] border-emerald-950/10 bg-[#fbfaf6] p-0 shadow-2xl sm:max-w-3xl">
+                    <div className="relative min-h-[10.5rem] overflow-hidden bg-gradient-to-br from-[#063b42] via-[#086052] to-[#10a866] px-6 py-5 text-white sm:px-8">
                         <div className="pointer-events-none absolute -left-16 -top-20 h-52 w-52 rounded-full border border-white/10" />
                         <div className="pointer-events-none absolute left-28 top-12 h-28 w-28 rounded-full border border-amber-300/20" />
                         <DialogHeader className="relative z-10 mb-0 max-w-[67%] text-left">
@@ -105,72 +109,94 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
                                 Jugar es descubrir
                             </DialogTitle>
                             <DialogDescription className="mt-2 text-sm font-medium leading-relaxed text-white/85">
-                                Responde, aprende algo inesperado y sigue explorando la ciudad.
+                                Elige cómo jugar, explora una experiencia y deja que cada pregunta te lleve más lejos.
                             </DialogDescription>
                         </DialogHeader>
                         <img
-                            src="/brand/andi/andi-frontal-512.png"
+                            src="/brand/andi/andi-frontal-512-transparent-v2.png"
                             alt="Andi presenta las instrucciones de TRIVIA GO."
-                            className="absolute -bottom-5 right-2 h-[11rem] w-auto object-contain drop-shadow-2xl sm:right-7 sm:h-[12rem]"
+                            className="absolute -bottom-3 right-2 h-[10.5rem] w-auto object-contain drop-shadow-2xl sm:right-7 sm:h-[11.5rem]"
                             loading="eager"
                             decoding="async"
                         />
                     </div>
 
                     <div className="space-y-4 p-5 sm:p-6">
-                        <div className="grid gap-3 sm:grid-cols-3">
-                            {steps.map((step, index) => {
-                                const Icon = step.icon;
-                                return (
-                                    <div
-                                        key={step.title}
-                                        className="rounded-2xl border border-emerald-950/10 bg-white p-4 shadow-sm"
-                                    >
-                                        <div className="flex items-center gap-3 sm:block">
-                                            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${step.surface}`}>
-                                                <Icon className={`h-5 w-5 ${step.color}`} />
-                                            </div>
-                                            <div className="sm:mt-3">
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                                                    Paso {index + 1}
-                                                </p>
-                                                <h4 className="mt-0.5 text-sm font-black text-emerald-950">
-                                                    {step.title}
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                                            {step.description}
-                                        </p>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                        <Tabs defaultValue="como" className="w-full">
+                            <TabsList className="grid h-auto w-full grid-cols-3 rounded-2xl bg-emerald-950/5 p-1">
+                                <TabsTrigger value="como" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
+                                    Cómo funciona
+                                </TabsTrigger>
+                                <TabsTrigger value="modos" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
+                                    Modos
+                                </TabsTrigger>
+                                <TabsTrigger value="experiencias" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
+                                    Experiencias
+                                </TabsTrigger>
+                            </TabsList>
 
-                        <div className={`flex items-start gap-3 rounded-2xl border p-4 ${mechanicBorder} ${mechanicBg}`}>
-                            <div className="shrink-0 rounded-xl bg-white p-2 shadow-sm">
-                                {mechanicIcon}
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                                    Regla de esta partida
-                                </p>
-                                <h4 className="mt-0.5 font-black text-foreground">{mechanicTitle}</h4>
-                                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{mechanicDesc}</p>
-                            </div>
-                        </div>
-
-                        {game.instructions && (
-                            <div className="flex items-start gap-3 rounded-2xl border border-border bg-white p-4">
-                                <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-                                <div>
-                                    <h4 className="text-sm font-black text-foreground">Tenlo en cuenta</h4>
-                                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                                        {game.instructions}
-                                    </p>
+                            <TabsContent value="como" className="mt-4">
+                                <div className="grid gap-3 sm:grid-cols-3">
+                                    {steps.map((step, index) => {
+                                        const Icon = step.icon;
+                                        return (
+                                            <div key={step.title} className="rounded-2xl border border-emerald-950/10 bg-white p-4 shadow-sm">
+                                                <div className="flex items-center gap-3 sm:block">
+                                                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${step.surface}`}>
+                                                        <Icon className={`h-5 w-5 ${step.color}`} />
+                                                    </div>
+                                                    <div className="sm:mt-3">
+                                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Paso {index + 1}</p>
+                                                        <h4 className="mt-0.5 text-sm font-black text-emerald-950">{step.title}</h4>
+                                                    </div>
+                                                </div>
+                                                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{step.description}</p>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-                            </div>
-                        )}
+                            </TabsContent>
+
+                            <TabsContent value="modos" className="mt-4">
+                                <div className="grid gap-3 sm:grid-cols-3">
+                                    {[
+                                        { icon: Flame, title: 'Modo Leyenda', text: 'Avanza sin final, protege tus 3 vidas y enfrenta preguntas cada vez más exigentes.', style: 'bg-orange-50 text-orange-600' },
+                                        { icon: Timer, title: 'Contrarreloj', text: 'Tienes 2 minutos y 15 preguntas. Un error termina la carrera: piensa rápido.', style: 'bg-sky-50 text-sky-600' },
+                                        { icon: Swords, title: 'Duelo', text: 'Responde 10 preguntas, comparte el reto y descubre quién conoce más.', style: 'bg-violet-50 text-violet-600' },
+                                    ].map(mode => {
+                                        const Icon = mode.icon;
+                                        return (
+                                            <div key={mode.title} className="rounded-2xl border border-emerald-950/10 bg-white p-4 shadow-sm">
+                                                <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${mode.style}`}>
+                                                    <Icon className="h-5 w-5" />
+                                                </div>
+                                                <h4 className="mt-3 text-sm font-black text-emerald-950">{mode.title}</h4>
+                                                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{mode.text}</p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="experiencias" className="mt-4">
+                                <div className="rounded-2xl border border-emerald-950/10 bg-white p-4 shadow-sm">
+                                    <div className="flex items-start gap-3">
+                                        <div className="rounded-xl bg-emerald-50 p-2.5 text-emerald-700"><Route className="h-5 w-5" /></div>
+                                        <div>
+                                            <h4 className="font-black text-emerald-950">Una trivia, muchos recorridos</h4>
+                                            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                                                Juega la selección general o entra a una experiencia temática. Valle del Cauca ahora vive dentro de TRIVIA GO, junto a Cali y nuevos destinos que iremos sumando.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 flex flex-wrap gap-2">
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-800"><Sparkles className="h-3.5 w-3.5" /> Selección general</span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-800"><MapPinned className="h-3.5 w-3.5" /> Valle del Cauca</span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-100 px-3 py-1.5 text-xs font-bold text-violet-800"><Lightbulb className="h-3.5 w-3.5" /> Vocabulario caleño</span>
+                                    </div>
+                                </div>
+                            </TabsContent>
+                        </Tabs>
 
                         <div className="flex flex-col gap-3 border-t border-emerald-950/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
                             <p className="text-sm font-semibold text-emerald-950">

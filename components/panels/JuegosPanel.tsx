@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Game, gamesService } from '../../services/games.service';
+import { Game, GameTheme, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, Star, CalendarDays, Info, Flame, Timer, ChevronRight, Music, Mic2, Headphones, Swords } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, CalendarDays, Info, Flame, Timer, ChevronRight, Music, Mic2, Headphones, Swords, Sparkles, MapPinned, Zap } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
@@ -17,6 +17,7 @@ import { bannerService, Banner } from '../../services/banner.service';
 import { analyticsService } from '../../services/analytics.service';
 import { DailyQuestion } from '../views/DailyQuestion';
 import { GamePresentationCard } from './GamePresentationCard';
+import { isLegacyValleStandalone, isTriviaGo } from '../../lib/gameIdentity';
 
 interface JuegosPanelProps {
     onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string) => void;
@@ -27,18 +28,24 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [loading, setLoading] = useState(true);
     const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
     const [modeChoiceGame, setModeChoiceGame] = useState<Game | null>(null);
+    const [themeChoices, setThemeChoices] = useState<GameTheme[]>([]);
+    const [selectedTheme, setSelectedTheme] = useState('all');
     const [showDaily, setShowDaily] = useState(false);
     const [musicContent, setMusicContent] = useState<Banner | null>(null);
     const [storiesContent, setStoriesContent] = useState<Banner | null>(null);
 
-    const launchGame = (game: Game) => {
+    const launchGame = async (game: Game) => {
         // Instrumentación (Fase 0): intención de jugar / vista de elección de modo.
         analyticsService.trackEvent('game_mode_viewed', 'game', game.id, {
             game_type: game.type,
             has_mode_choice: game.type === 'trivia'
         });
         // Las trivias ofrecen elegir modo (corto por niveles / Leyenda). El resto arranca directo.
-        if (game.type === 'trivia') setModeChoiceGame(game);
+        if (game.type === 'trivia') {
+            setSelectedTheme('all');
+            setModeChoiceGame(game);
+            setThemeChoices(await gamesService.getGameThemes(game.id));
+        }
         else onPlayGame(game.id);
     };
 
@@ -57,7 +64,10 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
         setLoading(true);
         // We fetch all games, then filter by public statuses
         const data = await gamesService.getAllGames();
-        const publicGames = data.filter(g => g.status === 'published' || g.status === 'coming_soon' || g.status === 'scheduled');
+        const publicGames = data
+            .filter(g => g.status === 'published' || g.status === 'coming_soon' || g.status === 'scheduled')
+            .filter(g => !isLegacyValleStandalone(g))
+            .sort((a, b) => Number(isTriviaGo(b)) - Number(isTriviaGo(a)));
         setGames(publicGames);
         setLoading(false);
     };
@@ -83,8 +93,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     }
 
     return (
-        <ScrollArea className="h-[72vh] bg-gradient-to-b from-violet-500/5 via-background to-fuchsia-500/5">
-            <div className="relative p-4 pb-16 md:p-6 md:pb-16 lg:p-8 lg:pb-20 max-w-7xl mx-auto space-y-6 overflow-hidden">
+        <ScrollArea className="h-[72vh] bg-[radial-gradient(circle_at_8%_18%,rgba(139,92,246,0.1),transparent_24%),radial-gradient(circle_at_92%_35%,rgba(249,115,22,0.1),transparent_25%),linear-gradient(to_bottom,rgba(168,85,247,0.04),transparent)]">
+            <div className="relative mx-auto max-w-7xl space-y-4 overflow-hidden p-3 pb-16 md:p-5 md:pb-16 lg:p-6 lg:pb-20">
                 <div className="pointer-events-none absolute -left-20 top-64 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl" />
                 <div className="pointer-events-none absolute -right-20 top-96 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
                 <PanelBanner
@@ -96,63 +106,50 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             <Gamepad2 className="h-6 w-6" />
                         </div>
                     }
-                    titleClassName="text-4xl font-extrabold tracking-tight text-purple-950 dark:text-purple-50"
+                    titleClassName="text-2xl font-black tracking-tight text-purple-950 dark:text-purple-50 md:text-3xl"
                     defaultTitle="Entretenimiento"
-                    defaultSubtitle="Jugá, descubrí sonidos y disfrutá contenidos para acompañar tus andanzas por la ciudad."
+                    defaultSubtitle="Elige una aventura, reta lo que sabes y convierte cada respuesta en un nuevo descubrimiento."
+                    marginClass="mx-0"
+                    compact
             />
 
             <Tabs defaultValue="juegos" className="relative z-10 w-full">
-                <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-                    <ScrollArea className="w-full lg:w-auto">
-                        <TabsList className="inline-flex h-auto w-max items-center gap-1 rounded-full border border-border/60 bg-background/70 p-1.5 shadow-sm backdrop-blur">
-                            <TabsTrigger value="juegos" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-purple-700 dark:aria-selected:text-purple-200">
+                <div className="mb-4 grid items-center gap-3 rounded-2xl border border-purple-500/10 bg-background/80 p-2.5 shadow-sm backdrop-blur lg:grid-cols-[minmax(0,1fr)_auto]">
+                    <ScrollArea className="w-full">
+                        <TabsList className="inline-flex h-auto w-max items-center gap-1 rounded-xl bg-purple-500/5 p-1">
+                            <TabsTrigger value="juegos" className="flex-none gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold text-muted-foreground data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-md">
                                 <Gamepad2 className="h-4 w-4" /> Juegos
                             </TabsTrigger>
-                            <TabsTrigger value="musica" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-fuchsia-700 dark:aria-selected:text-fuchsia-200">
+                            <TabsTrigger value="musica" className="flex-none gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold text-muted-foreground data-[state=active]:bg-fuchsia-600 data-[state=active]:text-white">
                                 <Music className="h-4 w-4" /> Música
                             </TabsTrigger>
-                            <TabsTrigger value="podcasts" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-orange-700 dark:aria-selected:text-orange-200">
+                            <TabsTrigger value="podcasts" className="flex-none gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold text-muted-foreground data-[state=active]:bg-orange-500 data-[state=active]:text-white">
                                 <Mic2 className="h-4 w-4" /> Relatos
                             </TabsTrigger>
-                            <TabsTrigger value="podio" className="flex-none gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground aria-selected:text-yellow-700 dark:aria-selected:text-yellow-200">
+                            <TabsTrigger value="podio" className="flex-none gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold text-muted-foreground data-[state=active]:bg-amber-500 data-[state=active]:text-amber-950">
                                 <Trophy className="h-4 w-4" /> Salón de la Fama
                             </TabsTrigger>
                         </TabsList>
                     </ScrollArea>
                     <div className="shrink-0 self-end lg:self-auto">
-                        <AndiGuia message="¡Pilas pues! Aquí es donde demostramos qué tanto sabemos de nuestra tierra. Jugá, aprendé y sumá puntos." variant="tip" />
+                        <AndiGuia message="No necesitas saberlo todo: elige una experiencia, sigue tu curiosidad y descubre hasta dónde llegas." variant="tip" />
                     </div>
                 </div>
                 
-                <TabsContent value="juegos" className="space-y-6">
-                    <button
-                        type="button"
-                        onClick={() => setShowDaily(true)}
-                        className="flex w-full items-center gap-4 rounded-3xl border-2 border-primary/20 bg-gradient-to-r from-primary/10 to-fuchsia-500/10 p-4 text-left transition-all hover:border-primary/50 hover:shadow-lg"
-                    >
-                        <div className="rounded-2xl bg-primary/15 p-3 text-primary"><CalendarDays className="h-6 w-6" /></div>
-                        <div className="flex-1">
-                            <div className="font-bold">Pregunta del día</div>
-                            <div className="text-sm text-muted-foreground">Responde la de hoy y mantené tu racha 🔥</div>
-                        </div>
-                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                    </button>
-                    <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <TabsContent value="juegos" className="mt-0">
+                    <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[23rem_minmax(0,1fr)]">
                 {games.map(game => {
                     const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';
-                    const isTriviaGo =
-                        game.id === '81111111-1111-1111-1111-111111111111'
-                        || game.slug?.toLowerCase() === 'trivia-cali'
-                        || game.title?.toLowerCase() === 'trivia cali';
+                    const triviaGo = isTriviaGo(game);
 
-                    if (isTriviaGo) {
+                    if (triviaGo) {
                         return (
                             <GamePresentationCard
                                 key={game.id}
                                 game={game}
                                 imageSrc="/images/games/trivia-go-andi-card-v1.png"
                                 title="TRIVIA GO"
-                                description="¿Cuánto conoces de la ciudad que recorres? Descubre sorpresas, suma puntos y avanza junto a Andi."
+                                description="Viaja por ciudades y regiones, elige tu desafío y descubre algo inesperado en cada respuesta junto a Andi."
                                 onInstructions={() => setActiveInstructionsGame(game)}
                                 onPlay={() => launchGame(game)}
                             />
@@ -168,8 +165,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     const overCover = !!game.cover_image_url || illustratedCover; // título en blanco sobre arte
                     const titleStyle = (!overCover && game.theme_accent) ? { color: game.theme_accent } : undefined;
                     return (
-                    <Card key={game.id} className="overflow-hidden border-2 border-purple-500/15 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-500/10 transition-all hover:-translate-y-1.5 bg-card/95 backdrop-blur rounded-3xl group flex flex-col h-full">
-                        <div className={`${overCover ? 'h-36' : 'min-h-[9rem] h-auto'} relative flex flex-col items-center justify-center p-4 overflow-hidden ${bgTheme}`} style={headerStyle}>
+                    <Card key={game.id} className="flex h-full max-w-[23rem] flex-col overflow-hidden rounded-[1.45rem] border-2 border-purple-500/15 bg-card/95 backdrop-blur transition-all hover:-translate-y-1 hover:border-purple-500/40 hover:shadow-xl hover:shadow-purple-500/10">
+                        <div className={`${overCover ? 'h-28' : 'min-h-[7.5rem] h-auto'} relative flex flex-col items-center justify-center p-3.5 overflow-hidden ${bgTheme}`} style={headerStyle}>
                             {game.cover_image_url && (
                                 <>
                                     <div className="absolute inset-0 bg-black/40 z-10" />
@@ -190,8 +187,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                     </div>
                                 )}
                                 {!overCover && game.theme_icon && (
-                                    <div className="mb-2 w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: `${game.theme_accent || '#10B981'}22` }}>
-                                        <GameMascot icon={game.theme_icon} accent={game.theme_accent} size={38} />
+                                    <div className="mb-1.5 flex h-11 w-11 items-center justify-center rounded-full" style={{ backgroundColor: `${game.theme_accent || '#10B981'}22` }}>
+                                        <GameMascot icon={game.theme_icon} accent={game.theme_accent} size={31} />
                                     </div>
                                 )}
                                 <h3 className={`text-base sm:text-lg font-black drop-shadow-md line-clamp-2 uppercase tracking-tight leading-tight ${overCover ? 'text-white' : 'text-primary'}`} style={titleStyle}>
@@ -204,15 +201,15 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                 )}
                             </div>
                         </div>
-                        <CardContent className="p-4 flex flex-col flex-1">
-                            <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1 leading-relaxed">
+                        <CardContent className="flex flex-1 flex-col p-3.5">
+                            <p className="mb-3 flex-1 text-[0.82rem] leading-relaxed text-muted-foreground line-clamp-2">
                                 {game.description || 'Pon a prueba tus conocimientos en este desafío especial.'}
                             </p>
                             
-                            <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground mb-4 font-medium">
-                                <div className="flex items-center gap-1.5 bg-muted/50 p-2 rounded-lg">
-                                    <Star className="w-4 h-4 text-primary" />
-                                    <span>{game.difficulty_level === 'easy' ? 'Fácil' : game.difficulty_level === 'medium' ? 'Media' : 'Difícil'}</span>
+                            <div className="mb-3 grid grid-cols-2 gap-2 text-xs font-medium text-muted-foreground">
+                                <div className="flex items-center gap-1.5 rounded-lg bg-muted/50 p-2">
+                                    <Zap className="h-4 w-4 text-primary" />
+                                    <span>{game.difficulty_level === 'easy' ? 'Fácil' : game.difficulty_level === 'medium' ? 'Media' : game.difficulty_level === 'hard' ? 'Difícil' : 'Variable'}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5 bg-muted/50 p-2 rounded-lg">
                                     <Trophy className="w-4 h-4 text-yellow-500" />
@@ -247,6 +244,44 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </Card>
                     )
                 })}
+                        <aside className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                            <button
+                                type="button"
+                                onClick={() => setShowDaily(true)}
+                                className="group flex min-h-[7.2rem] items-center gap-4 overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-50 via-orange-50 to-fuchsia-50 p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-amber-400/60 hover:shadow-lg dark:from-amber-950/30 dark:via-orange-950/20 dark:to-fuchsia-950/20"
+                            >
+                                <div className="relative rounded-2xl bg-amber-400 p-3 text-amber-950 shadow-md">
+                                    <CalendarDays className="h-6 w-6" />
+                                    <span className="absolute -right-1 -top-1 h-3 w-3 animate-pulse rounded-full bg-fuchsia-500 ring-2 ring-white" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">Vuelve cada día</p>
+                                    <h3 className="mt-0.5 font-black text-foreground">Pregunta del día</h3>
+                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Responde la de hoy y mantén viva tu racha.</p>
+                                </div>
+                                <ChevronRight className="h-5 w-5 shrink-0 text-orange-500 transition-transform group-hover:translate-x-1" />
+                            </button>
+
+                            <div className="relative min-h-[7.2rem] overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-700 via-purple-700 to-fuchsia-600 p-4 text-white shadow-sm">
+                                <Sparkles className="absolute -right-3 -top-3 h-20 w-20 text-white/10" />
+                                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-violet-100">Tú eliges el ritmo</p>
+                                <h3 className="mt-1 font-black">Tres formas de jugar</h3>
+                                <div className="mt-3 flex flex-wrap gap-1.5 text-[0.68rem] font-bold">
+                                    <span className="rounded-full bg-white/15 px-2.5 py-1">🔥 Leyenda</span>
+                                    <span className="rounded-full bg-white/15 px-2.5 py-1">⏱ Contrarreloj</span>
+                                    <span className="rounded-full bg-white/15 px-2.5 py-1">⚔️ Duelo</span>
+                                </div>
+                            </div>
+
+                            <div className="flex min-h-[7.2rem] items-start gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 shadow-sm sm:col-span-2 lg:col-span-1">
+                                <div className="rounded-xl bg-emerald-100 p-2.5 text-emerald-700"><MapPinned className="h-5 w-5" /></div>
+                                <div>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">Explora por experiencia</p>
+                                    <h3 className="mt-1 font-black text-foreground">El Valle ahora está dentro de TRIVIA GO</h3>
+                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Al jugar podrás elegir la selección general, Valle del Cauca o vocabulario caleño.</p>
+                                </div>
+                            </div>
+                        </aside>
                     </div>
                 </TabsContent>
                 
@@ -279,20 +314,45 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     open={!!activeInstructionsGame}
                     onOpenChange={(open) => !open && setActiveInstructionsGame(null)}
                     game={activeInstructionsGame}
-                    onPlay={() => onPlayGame(activeInstructionsGame.id)}
+                    onPlay={() => launchGame(activeInstructionsGame)}
                 />
             )}
 
             <Dialog open={!!modeChoiceGame} onOpenChange={(open) => !open && setModeChoiceGame(null)}>
-                <DialogContent className="max-w-md">
+                <DialogContent className="max-h-[92vh] max-w-md overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>¿Cómo querés jugar?</DialogTitle>
-                        <DialogDescription>{modeChoiceGame?.title}</DialogDescription>
+                        <DialogDescription>Elige una experiencia y después tu modo de juego.</DialogDescription>
                     </DialogHeader>
+                    {themeChoices.some(theme => theme.isCampaign) && (
+                        <div>
+                            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">Experiencia</p>
+                            <div className="flex flex-wrap gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedTheme('all')}
+                                    className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${selectedTheme === 'all' ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background hover:border-primary/50'}`}
+                                >
+                                    Selección general
+                                </button>
+                                {themeChoices.filter(theme => theme.isCampaign).map(theme => (
+                                    <button
+                                        key={theme.key}
+                                        type="button"
+                                        onClick={() => setSelectedTheme(theme.key)}
+                                        className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${selectedTheme === theme.key ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background hover:border-primary/50'}`}
+                                    >
+                                        {theme.label}
+                                    </button>
+                                ))}
+                            </div>
+                            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">La experiencia elegida se aplica a Leyenda y Contrarreloj. En Duelo, las preguntas pueden mezclar todos los recorridos.</p>
+                        </div>
+                    )}
                     <div className="space-y-3">
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend'); }}
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend', selectedTheme); }}
                             className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-orange-500 hover:bg-orange-500/5"
                         >
                             <div className="rounded-xl bg-orange-500/10 p-3 text-orange-500"><Flame className="h-6 w-6" /></div>
@@ -304,7 +364,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </button>
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'timed'); }}
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'timed', selectedTheme); }}
                             className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-sky-500 hover:bg-sky-500/5"
                         >
                             <div className="rounded-xl bg-sky-500/10 p-3 text-sky-500"><Timer className="h-6 w-6" /></div>

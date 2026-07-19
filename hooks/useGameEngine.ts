@@ -191,11 +191,11 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
         let questions: GameQuestion[] = [];
         if (questionsData && questionsData.length > 0) {
-            // Filtro por tema: sin tema ('Todo') usa solo el núcleo del juego (sin campaña);
-            // un tema específico usa esa categoría (incluye campañas como Vocabulario).
+            // Sin experiencia elegida se usa el núcleo general. Una experiencia puede
+            // corresponder a una categoría o a una campaña regional/temática completa.
             const activeTheme = (theme && theme !== 'all') ? theme : null;
             const themed = activeTheme
-                ? questionsData.filter(q => q.category === activeTheme)
+                ? questionsData.filter(q => q.category === activeTheme || (q as any).campaign === activeTheme)
                 : questionsData.filter(q => !(q as any).campaign);
             const source = themed.length > 0 ? themed : questionsData; // salvaguarda: nunca dejar la partida vacía
 

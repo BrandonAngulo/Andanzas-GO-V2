@@ -198,7 +198,7 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium leading-none text-foreground">Dificultad</label>
-                        <Select value={formData.difficulty_level} onValueChange={(val) => handleSelectChange('difficulty_level', val)}>
+                        <Select value={formData.difficulty_level || undefined} onValueChange={(val) => handleSelectChange('difficulty_level', val)}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Selecciona" />
                             </SelectTrigger>

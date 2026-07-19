@@ -5,57 +5,26 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ animated = false }) => (
-  <div className="flex items-center gap-2 select-none" aria-label="Logo de Andanzas GO">
-    <div className="relative w-[34px] h-[40px] flex items-center justify-center [perspective:1000px]">
-      {/* 3D Container */}
-      <div
-        className={`relative w-full h-full [transform-style:preserve-3d] ${animated ? 'animate-[spin-y-axis_6s_linear_infinite]' : ''}`}
-      >
-        <style>{`
-            @keyframes spin-y-axis {
-              0% { transform: rotateY(0deg); }
-              100% { transform: rotateY(360deg); }
-            }
-          `}</style>
-
-        {/* Front Face */}
-        <div className="absolute inset-0 [backface-visibility:hidden] z-[2]">
-          <svg width="34" height="40" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md">
-            <path fillRule="evenodd" clipRule="evenodd" d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z" fill="hsl(var(--primary))" />
-            {/* Shiny gradient overlay for "premium" feel */}
-            <path fillRule="evenodd" clipRule="evenodd" d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z" fill="url(#shine)" fillOpacity="0.2" style={{ mixBlendMode: 'overlay' }} />
-            <defs>
-              <linearGradient id="shine" x1="0" y1="0" x2="32" y2="38" gradientUnits="userSpaceOnUse">
-                <stop stopColor="white" stopOpacity="0" />
-                <stop offset="0.5" stopColor="white" stopOpacity="0.8" />
-                <stop offset="1" stopColor="white" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-
-        {/* Simulated Thickness (multiple layers pushed back) - Simplified "Extrusion" */}
-        {animated && (
-          <>
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="absolute inset-0 [backface-visibility:hidden]" style={{ transform: `translateZ(-${i}px)` }}>
-                <svg width="34" height="40" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" clipRule="evenodd" d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z" fill="hsl(var(--primary) / 0.8)" />
-                </svg>
-              </div>
-            ))}
-
-            {/* Back Face (Mirrored) */}
-            <div className="absolute inset-0 [backface-visibility:hidden]" style={{ transform: 'rotateY(180deg) translateZ(4px)' }}>
-              <svg width="34" height="40" viewBox="0 0 32 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" clipRule="evenodd" d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z" fill="hsl(var(--primary))" />
-              </svg>
-            </div>
-          </>
-        )}
-      </div>
+  <div className="flex select-none items-center gap-2" aria-label="Andanzas GO">
+    <div
+      className={`relative h-11 w-11 shrink-0 overflow-hidden rounded-[0.9rem] border border-emerald-900/10 bg-emerald-700 shadow-md ${
+        animated ? 'animate-[andi-breathe_2.8s_ease-in-out_infinite]' : ''
+      }`}
+    >
+      <style>{`
+        @keyframes andi-breathe {
+          0%, 100% { transform: translateY(0) rotate(-1deg); }
+          50% { transform: translateY(-2px) rotate(1deg); }
+        }
+      `}</style>
+      <img
+        src="/brand/andi/andi-app-mark-512.png"
+        alt=""
+        className="h-full w-full object-cover"
+        decoding="async"
+      />
     </div>
-    <span className="font-heading font-black text-2xl tracking-tighter bg-gradient-to-r from-orange-500 to-primary bg-clip-text text-transparent select-none ml-1 pr-1">
+    <span className="ml-0.5 bg-gradient-to-r from-orange-500 to-primary bg-clip-text pr-1 font-heading text-2xl font-black tracking-tighter text-transparent">
       GO
     </span>
   </div>

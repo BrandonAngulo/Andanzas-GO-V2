@@ -8,7 +8,7 @@ export interface Game {
     description?: string;
     description_en?: string;
     type: 'trivia' | 'quiz' | 'daily' | 'guess' | 'visual' | 'matching' | 'ordering';
-    difficulty_level: 'easy' | 'medium' | 'hard';
+    difficulty_level: 'easy' | 'medium' | 'hard' | null;
     status: 'draft' | 'review' | 'published' | 'paused' | 'archived' | 'coming_soon' | 'scheduled';
     cover_title?: string;
     cover_subtitle?: string;
@@ -85,6 +85,27 @@ export interface QuestionEditorialCheck {
     checked_at: string;
 }
 
+export interface GameTheme {
+    key: string;
+    label: string;
+    isCampaign: boolean;
+}
+
+const campaignLabel = (campaign: string) => {
+    const knownLabels: Record<string, string> = {
+        vocabulario: 'Vocabulario caleño',
+        region_valle_del_cauca: 'Valle del Cauca',
+    };
+
+    return knownLabels[campaign]
+        || campaign
+            .replace(/^region_/, '')
+            .split('_')
+            .filter(Boolean)
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+};
+
 export const gamesService = {
     // ---- ADMIN / GAMES CRUD ----
     async getAllGames(): Promise<Game[]> {
@@ -120,25 +141,34 @@ export const gamesService = {
         return data as Game;
     },
 
-    // Temas jugables de un juego: categorías del núcleo + campañas (para el selector).
-    async getGameThemes(gameId: string): Promise<{ category: string; isCampaign: boolean }[]> {
+    // Experiencias jugables: categorías del núcleo y campañas/regiones agrupadas.
+    async getGameThemes(gameId: string): Promise<GameTheme[]> {
         const { data, error } = await supabase
             .from('game_questions')
             .select('category, campaign')
             .eq('game_id', gameId)
             .eq('status', 'published');
         if (error) { console.error('Error fetching game themes:', error); return []; }
-        const map = new Map<string, boolean>();
+        const map = new Map<string, GameTheme>();
         for (const row of (data || []) as any[]) {
             const cat = row.category as string | null;
-            if (!cat) continue;
-            const isCampaign = !!row.campaign;
-            // Si una categoría aparece como campaña en alguna fila, la marcamos como campaña.
-            map.set(cat, (map.get(cat) || false) || isCampaign);
+            const campaign = row.campaign as string | null;
+            if (campaign) {
+                map.set(`campaign:${campaign}`, {
+                    key: campaign,
+                    label: campaignLabel(campaign),
+                    isCampaign: true,
+                });
+            } else if (cat) {
+                map.set(`category:${cat}`, {
+                    key: cat,
+                    label: cat,
+                    isCampaign: false,
+                });
+            }
         }
-        return Array.from(map.entries())
-            .map(([category, isCampaign]) => ({ category, isCampaign }))
-            .sort((a, b) => Number(a.isCampaign) - Number(b.isCampaign) || a.category.localeCompare(b.category));
+        return Array.from(map.values())
+            .sort((a, b) => Number(a.isCampaign) - Number(b.isCampaign) || a.label.localeCompare(b.label, 'es'));
     },
 
     async deleteGame(id: string): Promise<boolean> {

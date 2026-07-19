@@ -18,6 +18,7 @@ interface PanelBannerProps {
     gradientClass?: string;
     children?: React.ReactNode; // For extra content like CategoryCarousel
     marginClass?: string; // Margen horizontal externo; se alinea con el gutter del panel
+    compact?: boolean;
 }
 
 export const PanelBanner: React.FC<PanelBannerProps> = ({
@@ -30,7 +31,8 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
     andiMessage,
     gradientClass = "from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent",
     children,
-    marginClass = "mx-2"
+    marginClass = "mx-2",
+    compact = false,
 }) => {
     const { language } = useI18n();
     const [bgImage, setBgImage] = useState(defaultImage);
@@ -62,7 +64,11 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
     const subtitle = (overrideSubtitle && overrideSubtitle.trim()) ? overrideSubtitle : defaultSubtitle;
 
     return (
-        <div className={cn("relative p-6 md:p-10 mb-4 overflow-hidden rounded-[2rem] shadow-sm border border-primary/10", marginClass)}>
+        <div className={cn(
+            "relative mb-4 overflow-hidden rounded-[2rem] border border-primary/10 shadow-sm",
+            compact ? "p-4 md:p-6" : "p-6 md:p-10",
+            marginClass,
+        )}>
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 {/* Full-width banner background */}
                 <img
@@ -74,13 +80,13 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
                 <div className={cn("absolute inset-0 bg-gradient-to-r", gradientClass)}></div>
             </div>
 
-            <div className="relative z-10 flex flex-col gap-6">
+            <div className={cn("relative z-10 flex flex-col", compact ? "gap-3" : "gap-6")}>
                 <div className="w-full max-w-xl">
-                    <div className="flex items-center gap-3 mb-4">
+                    <div className={cn("flex items-center gap-3", compact ? "mb-2" : "mb-4")}>
                         {icon}
                         <h2 className={titleClassName}>{title}</h2>
                     </div>
-                    <p className="text-muted-foreground text-lg leading-relaxed font-medium">
+                    <p className={cn("font-medium leading-relaxed text-muted-foreground", compact ? "text-sm md:text-base" : "text-lg")}>
                         {subtitle}
                     </p>
                 </div>
