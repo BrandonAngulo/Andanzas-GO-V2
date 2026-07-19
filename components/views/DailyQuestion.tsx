@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { dailyService, DailyQuestionData, DailyAnswerResult } from '../../services/daily.service';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { CalendarDays, Flame, Check, X, Share2, Loader2, AlertTriangle, Coins, Gem } from 'lucide-react';
+import { CalendarDays, Flame, Check, X, Share2, Loader2, AlertTriangle, Coins, Gem, Shield, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 
 const optionValue = (opt: any): string => (typeof opt === 'string' ? opt : (opt?.label ?? String(opt)));
@@ -15,10 +15,19 @@ export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) =>
     const [answering, setAnswering] = useState(false);
     const [result, setResult] = useState<DailyAnswerResult | null>(null);
     const [picked, setPicked] = useState<string | null>(null);
+    // Protector de racha: reserva y estado de armado (se sincroniza al cargar y al responder).
+    const [protectors, setProtectors] = useState(0);
+    const [armed, setArmed] = useState(false);
+    const [toggling, setToggling] = useState(false);
 
     useEffect(() => {
         (async () => {
-            try { setData(await dailyService.getDaily()); }
+            try {
+                const d = await dailyService.getDaily();
+                setData(d);
+                setProtectors(d.protectors ?? 0);
+                setArmed(!!d.protector_armed);
+            }
             catch (e: any) {
                 const m = String(e?.message || '');
                 setError(m.includes('AUTH_REQUIRED') ? 'Inicia sesión para responder la pregunta del día.'
@@ -34,9 +43,26 @@ export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) =>
     const answer = async (opt: string) => {
         if (answering || resolved) return;
         setPicked(opt); setAnswering(true);
-        try { setResult(await dailyService.answerDaily(opt)); }
+        try {
+            const res = await dailyService.answerDaily(opt);
+            setResult(res);
+            if (typeof res.protectors === 'number') setProtectors(res.protectors);
+            if (res.protector_used) setArmed(false); // se consumió: queda desarmado
+        }
         catch { toast.error('No se pudo registrar tu respuesta.'); setPicked(null); }
         finally { setAnswering(false); }
+    };
+
+    const toggleProtector = async () => {
+        if (toggling) return;
+        setToggling(true);
+        try {
+            await dailyService.setProtector(!armed);
+            setArmed(!armed);
+            toast.success(!armed ? 'Protector armado 🛡️ Si te saltás un día, tu racha se salva.' : 'Protector desarmado.');
+        } catch (e: any) {
+            toast.error(String(e?.message || '').includes('NO_PROTECTORS') ? 'No tenés protectores. Completá una semana de racha para ganar uno.' : 'No se pudo cambiar el protector.');
+        } finally { setToggling(false); }
     };
 
     const streak = result?.streak ?? data?.streak ?? 0;
@@ -82,6 +108,26 @@ export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                             <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-500/10 px-2.5 py-1 text-xs font-bold text-orange-500"><Flame className="h-3.5 w-3.5" /> Racha {streak}</span>
                         </div>
 
+                        {/* Protector de racha: reserva + armar/desarmar (debe estar armado ANTES de la falta). */}
+                        {protectors > 0 || armed ? (
+                            <div className="flex items-center justify-between gap-2 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 px-3 py-2">
+                                <span className="flex items-center gap-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                                    {armed ? <ShieldCheck className="h-4 w-4" /> : <Shield className="h-4 w-4" />}
+                                    Protector ×{protectors}{armed ? ' · Armado' : ''}
+                                </span>
+                                <button
+                                    type="button"
+                                    disabled={toggling}
+                                    onClick={toggleProtector}
+                                    className={`rounded-full px-3 py-1 text-xs font-bold transition-colors disabled:opacity-60 ${armed ? 'bg-muted text-muted-foreground hover:bg-muted/70' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}
+                                >
+                                    {armed ? 'Desarmar' : 'Armar'}
+                                </button>
+                            </div>
+                        ) : (
+                            <p className="text-[11px] text-muted-foreground"><Shield className="mr-1 inline h-3 w-3" /> Completá una semana de racha y ganá un protector: armado, salva tu racha si te saltás un día.</p>
+                        )}
+
                         <h2 className="text-lg font-bold leading-snug">{data.question?.question_text}</h2>
 
                         <div className="space-y-2.5">
@@ -123,6 +169,12 @@ export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                                 )}
                                 {result?.reward && result.reward.weekly_bonus > 0 && (
                                     <p className="text-center text-xs font-medium text-amber-600 dark:text-amber-400">🔥 ¡Bonus semanal! +{result.reward.weekly_bonus} monedas.</p>
+                                )}
+                                {result?.protector_used && (
+                                    <div className="flex items-center justify-center gap-2 rounded-2xl bg-indigo-500/10 px-3 py-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400"><ShieldCheck className="h-4 w-4" /> ¡Tu protector salvó la racha!</div>
+                                )}
+                                {result?.protector_earned && (
+                                    <div className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-500/10 px-3 py-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400"><Shield className="h-4 w-4" /> ¡Ganaste un protector de racha! Armalo para proteger tus días.</div>
                                 )}
                                 {review?.explanation && <p className="text-sm italic text-muted-foreground">{review.explanation}</p>}
                                 <p className="text-center text-xs text-muted-foreground">Ya respondiste hoy. ¡Vuelve mañana para tu racha! 🔥</p>
