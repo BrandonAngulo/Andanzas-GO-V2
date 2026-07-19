@@ -16,6 +16,7 @@ import { LazyImage } from '../ui/lazy-image';
 import { bannerService, Banner } from '../../services/banner.service';
 import { analyticsService } from '../../services/analytics.service';
 import { DailyQuestion } from '../views/DailyQuestion';
+import { WeeklyGoals } from '../views/WeeklyGoals';
 import { GamePresentationCard } from './GamePresentationCard';
 import { isLegacyValleStandalone, isTriviaGo } from '../../lib/gameIdentity';
 
@@ -266,6 +267,9 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                 </div>
                                 <ChevronRight className="h-5 w-5 shrink-0 text-orange-500 transition-transform group-hover:translate-x-1" />
                             </button>
+
+                            {/* Metas semanales flexibles: progreso real, reclamo de monedas. */}
+                            <div className="sm:col-span-2 lg:col-span-1"><WeeklyGoals /></div>
 
                             <div className="relative min-h-[7.2rem] overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-700 via-purple-700 to-fuchsia-600 p-4 text-white shadow-sm">
                                 <Sparkles className="absolute -right-3 -top-3 h-20 w-20 text-white/10" />
