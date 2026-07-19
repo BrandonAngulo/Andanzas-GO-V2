@@ -20,6 +20,26 @@ const EMPTY: ManagementMetrics = {
     economy: { points_in_wallets: 0, coins_in_wallets: 0, gems_in_wallets: 0, available_lives: 0, transactions_30d: 0, shop_purchases_30d: 0, gems_awarded_30d: 0, coins_awarded_30d: 0 }
 };
 
+// Etiquetas legibles para los nombres crudos de eventos (analytics_events.event_name).
+const EVENT_LABELS: Record<string, string> = {
+    panel_view: 'Vistas de panel',
+    session_start: 'Inicios de sesión',
+    game_mode_viewed: 'Juegos abiertos',
+    game_started: 'Partidas iniciadas',
+    question_answered: 'Preguntas respondidas',
+    game_completed: 'Partidas completadas',
+    game_abandoned: 'Partidas abandonadas',
+    reward_granted: 'Recompensas otorgadas',
+    resource_spent: 'Recursos gastados',
+    challenge_created: 'Duelos creados',
+    challenge_accepted: 'Duelos aceptados',
+    challenge_completed: 'Duelos completados',
+    daily_question_viewed: 'Pregunta del día vista',
+    daily_question_answered: 'Pregunta del día respondida',
+    daily_question_shared: 'Pregunta del día compartida',
+};
+const eventLabel = (name: string) => EVENT_LABELS[name] || name;
+
 function MetricCard({ title, value, detail, icon: Icon, tone = 'default' }: { title: string; value: number | string; detail: string; icon: React.ElementType; tone?: 'default' | 'warning' | 'success' }) {
     const toneClass = tone === 'warning' ? 'bg-amber-500/10 border-amber-500/20' : tone === 'success' ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-muted/30';
     return <Card className={toneClass}><CardContent className="p-4"><div className="flex items-start justify-between gap-3"><div><p className="text-xs font-medium text-muted-foreground">{title}</p><p className="text-2xl font-black mt-1">{value}</p><p className="text-[11px] text-muted-foreground mt-1">{detail}</p></div><Icon className="w-5 h-5 text-primary" /></div></CardContent></Card>;
@@ -73,6 +93,6 @@ export const AdminMetricas: React.FC = () => {
             <MetricCard title="Vidas disponibles" value={metrics.economy.available_lives} detail={`${metrics.economy.shop_purchases_30d} compras en 30 días`} icon={Heart} />
         </div></section>
 
-        <div className="grid lg:grid-cols-2 gap-4"><Card><CardHeader><CardTitle className="text-base">Eventos más frecuentes</CardTitle></CardHeader><CardContent className="space-y-2">{metrics.activity.top_events.length ? metrics.activity.top_events.map(ev => <div key={ev.name} className="flex justify-between rounded-lg bg-muted/40 px-3 py-2 text-sm"><span>{ev.name}</span><strong>{ev.count}</strong></div>) : <p className="text-sm text-muted-foreground">Todavía no hay eventos registrados.</p>}</CardContent></Card><Card><CardHeader><CardTitle className="text-base">Movimiento económico</CardTitle></CardHeader><CardContent><div className="flex items-center gap-3"><ShoppingBag className="w-8 h-8 text-primary" /><div><p className="text-2xl font-black">{metrics.economy.transactions_30d}</p><p className="text-xs text-muted-foreground">movimientos auditados en los últimos 30 días</p></div></div></CardContent></Card></div>
+        <div className="grid lg:grid-cols-2 gap-4"><Card><CardHeader><CardTitle className="text-base">Eventos más frecuentes</CardTitle></CardHeader><CardContent className="space-y-2">{metrics.activity.top_events.length ? metrics.activity.top_events.map(ev => <div key={ev.name} className="flex justify-between rounded-lg bg-muted/40 px-3 py-2 text-sm"><span title={ev.name}>{eventLabel(ev.name)}</span><strong>{ev.count}</strong></div>) : <p className="text-sm text-muted-foreground">Todavía no hay eventos registrados.</p>}</CardContent></Card><Card><CardHeader><CardTitle className="text-base">Movimiento económico</CardTitle></CardHeader><CardContent><div className="flex items-center gap-3"><ShoppingBag className="w-8 h-8 text-primary" /><div><p className="text-2xl font-black">{metrics.economy.transactions_30d}</p><p className="text-xs text-muted-foreground">movimientos auditados en los últimos 30 días</p></div></div></CardContent></Card></div>
     </div>;
 };
