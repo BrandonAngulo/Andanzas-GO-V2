@@ -216,25 +216,29 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     andiTitle="Mirá la ciudad con otros ojos"
                     andiMessage="Cada historia puede cambiar la forma de recorrer un lugar. Elegí la que más te intrigue y, cuando salgas, buscá sus huellas en la ciudad."
                     andiActionLabel="Explorar historias"
-                >
-                    {/* Pregunta del día: ocupa el espacio libre del propio banner, sin agregar una fila. */}
-                    <button
-                        type="button"
-                        onClick={() => setShowDaily(true)}
-                        className="group flex w-full max-w-xl items-center gap-3 rounded-2xl border border-white/50 bg-white/75 px-4 py-2.5 text-left shadow-sm backdrop-blur-sm transition-all hover:bg-white/90 hover:shadow-md dark:border-white/10 dark:bg-slate-900/60 dark:hover:bg-slate-900/80"
-                    >
-                        <div className="shrink-0 rounded-xl bg-primary/15 p-2 text-primary"><CalendarDays className="h-5 w-5" /></div>
-                        <div className="min-w-0 flex-1">
-                            <div className="text-sm font-bold leading-tight">Pregunta del día</div>
-                            <div className="truncate text-xs text-muted-foreground">Poné a prueba lo que sabés y sumá a tu racha 🔥</div>
-                        </div>
-                        <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-                    </button>
-                </PanelBanner>
+                />
                 {showDaily && <DailyQuestion onClose={() => setShowDaily(false)} />}
 
                 <section className="mb-8">
-                    <div className="mb-4"><p className="text-xs font-bold uppercase tracking-widest text-indigo-600">Herramientas para aprender</p><h2 className="text-2xl font-bold">Explorá la ciudad desde distintas voces</h2></div>
+                    <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-widest text-indigo-600">Herramientas para aprender</p>
+                            <h2 className="text-2xl font-bold">Explorá la ciudad desde distintas voces</h2>
+                        </div>
+                        {/* Pregunta del día: aprovecha el espacio a la derecha del título. */}
+                        <button
+                            type="button"
+                            onClick={() => setShowDaily(true)}
+                            className="group flex shrink-0 items-center gap-3 rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/10 to-fuchsia-500/10 px-4 py-2.5 text-left transition-all hover:border-primary/40 hover:shadow-md"
+                        >
+                            <div className="shrink-0 rounded-xl bg-primary/15 p-2 text-primary"><CalendarDays className="h-5 w-5" /></div>
+                            <div>
+                                <div className="text-sm font-bold leading-tight">Pregunta del día</div>
+                                <div className="text-xs text-muted-foreground">Sumá a tu racha 🔥</div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                        </button>
+                    </div>
                     <div className="grid gap-4 md:grid-cols-3">
                         <button type="button" onClick={() => storiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/15 via-violet-500/10 to-sky-500/10 p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><BookOpen className="mb-3 h-6 w-6 text-indigo-600" /><h3 className="font-bold">Historias y saberes</h3><p className="mt-1 text-sm text-muted-foreground">Relatos, personajes y claves para entender lo que ves mientras andás.</p><span className="mt-3 inline-flex items-center text-xs font-bold text-indigo-700">Explorar historias <ChevronRight className="h-4 w-4" /></span></button>
                         {dictionaryVisible && <button type="button" onClick={onOpenDictionary} className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><Library className="mb-3 h-6 w-6 text-emerald-600" /><h3 className="font-bold">Diccionario de la caleñidad</h3><p className="mt-1 text-sm text-muted-foreground">Palabras, expresiones, usos y contextos para comprender cómo habla la ciudad.</p><span className="mt-3 inline-flex items-center text-xs font-bold text-emerald-700">Abrir diccionario <ChevronRight className="h-4 w-4" /></span></button>}
