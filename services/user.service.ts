@@ -123,6 +123,38 @@ export const userService = {
         }
     },
 
+    async getSavedRoutes(userId: string): Promise<string[]> {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('saved_routes')
+            .eq('id', userId)
+            .single();
+        if (error) return [];
+        return (data?.saved_routes as string[]) || [];
+    },
+
+    async saveRoute(userId: string, routeId: string): Promise<boolean> {
+        const current = await this.getSavedRoutes(userId);
+        if (current.includes(routeId)) return true;
+        const { error } = await supabase
+            .from('profiles')
+            .update({ saved_routes: [...current, routeId] })
+            .eq('id', userId);
+        if (error) { console.error('Error saving route:', error); return false; }
+        return true;
+    },
+
+    async unsaveRoute(userId: string, routeId: string): Promise<boolean> {
+        const current = await this.getSavedRoutes(userId);
+        const updated = current.filter(id => id !== routeId);
+        const { error } = await supabase
+            .from('profiles')
+            .update({ saved_routes: updated })
+            .eq('id', userId);
+        if (error) { console.error('Error unsaving route:', error); return false; }
+        return true;
+    },
+
     async getFavorites(userId: string): Promise<string[]> {
         const { data, error } = await supabase
             .from('favorites')

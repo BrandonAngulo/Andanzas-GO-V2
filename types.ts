@@ -279,6 +279,7 @@ export interface Ruta {
   id: string;
   nombre: string;
   nombre_en?: string;
+  image_url?: string;
   puntos: string[];
   duracionMin: number;
   // New rich content fields

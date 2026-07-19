@@ -90,16 +90,20 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         setSavingRoute(true);
         try {
             const isSaved = savedRouteIds.includes(routeId);
-            const newSaved = isSaved 
-                ? savedRouteIds.filter(id => id !== routeId)
-                : [...savedRouteIds, routeId];
-            
-            await userService.updateProfileData(user.id, { saved_routes: newSaved });
-            setSavedRouteIds(newSaved);
-            if (!isSaved) toast.success("Ruta guardada en 'Por Andar'");
+            if (isSaved) {
+                const removed = await userService.unsaveRoute(user.id, routeId);
+                if (!removed) throw new Error('No se pudo eliminar la ruta guardada');
+                setSavedRouteIds(prev => prev.filter(id => id !== routeId));
+                toast.success("Ruta eliminada de 'Por Andar'");
+            } else {
+                const saved = await userService.saveRoute(user.id, routeId);
+                if (!saved) throw new Error('No se pudo guardar la ruta');
+                setSavedRouteIds(prev => [...prev, routeId]);
+                toast.success("✅ Ruta guardada en 'Por Andar'");
+            }
         } catch (error) {
             console.error(error);
-            toast.error("Error al guardar la ruta");
+            toast.error("Error al guardar la ruta. Intenta de nuevo.");
         } finally {
             setSavingRoute(false);
         }
@@ -210,7 +214,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                 <div className="h-32 w-full relative overflow-hidden bg-muted">
                     <div className="w-full h-full relative">
                         <LazyImage
-                            src={route.coverUrl || routeImage || ""}
+                            src={route.image_url || route.coverUrl || routeImage || ""}
                             className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.3] group-hover:grayscale-0")}
                             alt="Route cover"
                             textFallback={getTranslated(route, 'nombre', language) as string}

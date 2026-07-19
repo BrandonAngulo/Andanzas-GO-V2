@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Site, Evento, CuriousFact, Ruta } from '../../types';
 import { curiositiesService } from '../../services/curiosities.service';
+import { promotedBannerService, PromotedBanner } from '../../services/banner.service';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
@@ -10,16 +11,7 @@ import { PanelBanner } from './shared/PanelBanner';
 import { LazyImage } from '../ui/lazy-image';
 import { Badge } from '../ui/badge';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
-import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library, Map } from 'lucide-react';
-
-// Cada imperdible referencia el id real de una ruta publicada (ver services/routes.service.ts).
-// Se conserva la imagen/tag curados a mano; título y subtítulo se toman de la ruta real
-// para que nunca queden desincronizados si el contenido cambia en Supabase.
-const IMPERDIBLES: { routeId: string; image: string; tag: string }[] = [
-  { routeId: 'ruta1', image: '/images/imperdibles/salsa_obrero.png', tag: 'Ruta Recomendada' },
-  { routeId: 'ruta6', image: '/images/imperdibles/fogones_memoria.png', tag: 'Ruta Gastronómica' },
-  { routeId: 'ruta3', image: '/images/imperdibles/pinceles_calle.png', tag: 'Ruta Visual' },
-];
+import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library, Map, Route, CalendarDays, Gamepad2 } from 'lucide-react';
 
 // --- Reusable Card Components for the Feed ---
 
@@ -65,20 +57,26 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
   );
 };
 
+const TARGET_TYPE_ICON: Record<string, React.ElementType> = {
+  route: Route,
+  event: CalendarDays,
+  game: Gamepad2,
+  url: ArrowRight,
+};
+
 interface ExplorarPanelProps {
   sites: Site[];
   query: string;
   onOpenSite: (site: Site) => void;
   onNavigateToRoutes?: () => void;
-  onOpenRoute?: (route: any) => void;
+  onOpenRoute?: (route: Ruta) => void;
   onNavigateToAprende?: () => void;
   onOpenLearnEntry?: (entryId: string) => void;
   rutasTematicas: Ruta[];
+  onNavigateToTab?: (tab: string, itemId?: string) => void;
 }
 
-
-
-const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende, onOpenLearnEntry, rutasTematicas }) => {
+const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende, onOpenLearnEntry, rutasTematicas, onNavigateToTab }) => {
   const { language } = useI18n();
 
   // Abre la historia de "Pa' que sepás" ligada al dato curioso; si no hay vínculo,
@@ -90,23 +88,50 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
 
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [randomFact, setRandomFact] = useState<CuriousFact | null>(null);
+  const [promotedBanners, setPromotedBanners] = useState<PromotedBanner[]>([]);
+  const [bannersLoaded, setBannersLoaded] = useState(false);
 
   useEffect(() => {
-    const loadFact = async () => {
+    const loadData = async () => {
       try {
-        const facts = await curiositiesService.getPublished('home');
+        const [facts, banners] = await Promise.all([
+          curiositiesService.getPublished('home'),
+          promotedBannerService.getAll()
+        ]);
         if (facts && facts.length > 0) {
           // Dato del día: determinista por fecha (UTC) para que sea el mismo todo el día,
           // cambie a diario y recorra todo el pool antes de repetir.
           const dayNumber = Math.floor(Date.now() / 86_400_000);
           setRandomFact(facts[dayNumber % facts.length]);
         }
+        setPromotedBanners(banners);
       } catch (err) {
-        console.error("Failed to load random fact", err);
+        console.error("Failed to load ExplorarPanel data", err);
+      } finally {
+        setBannersLoaded(true);
       }
     };
-    loadFact();
+    loadData();
   }, []);
+
+  const handleBannerClick = (banner: PromotedBanner) => {
+    if (!banner.target_type) return;
+    if (banner.target_type === 'route') {
+      if (banner.target_id && onOpenRoute) {
+        const route = rutasTematicas.find(item => item.id === banner.target_id);
+        if (route) onOpenRoute(route);
+        else onNavigateToRoutes?.();
+      } else if (onNavigateToRoutes) {
+        onNavigateToRoutes();
+      }
+    } else if (banner.target_type === 'event') {
+      if (onNavigateToTab) onNavigateToTab('eventos', banner.target_id);
+    } else if (banner.target_type === 'game') {
+      if (onNavigateToTab) onNavigateToTab('juegos', banner.target_id);
+    } else if (banner.target_type === 'url' && banner.target_id) {
+      window.open(banner.target_id, '_blank', 'noopener');
+    }
+  };
 
   const CATEGORY_TAGS = useMemo(() => [
     { id: 'salsa', filter: 'Salsa y Música', label: language === 'es' ? 'Salsa y Música' : 'Salsa & Music', icon: Music, color: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-800/50' },
@@ -118,17 +143,12 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
     { id: 'historicos', filter: 'Sitios Históricos / Otros', label: language === 'es' ? 'Sitios Históricos' : 'Historic Sites', icon: Landmark, color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800/50' },
   ], [language]);
 
-  // Show sites in a feed and shuffle it for variety
   const feedItems = useMemo(() => {
-    // Filter by query if present
     const normalizedQuery = query.toLowerCase().trim();
-
     let filteredSites = sites;
-
     if (categoryFilter) {
       filteredSites = filteredSites.filter(s => getMacroCategory(getTranslated(s, 'tipo', 'es') as string, 'es') === categoryFilter);
     }
-
     if (normalizedQuery) {
       filteredSites = filteredSites.filter(s => {
         const name = (getTranslated(s, 'nombre', language) as string).toLowerCase();
@@ -137,21 +157,14 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
         return name.includes(normalizedQuery) || type.includes(normalizedQuery) || desc.includes(normalizedQuery);
       });
     }
-
     const sitesWithType = filteredSites.map(s => ({ type: 'site' as const, data: s, id: s.id }));
-
     const combined = [...sitesWithType];
-
-    // Simple shuffle function (Fisher-Yates) - only shuffle if no query to keep relevance? 
-    // Actually shuffling is fine for exploration, but maybe better to keep relevance if searching.
-    // For now, let's keep shuffle for consistency with original design, but maybe skip if searching to show matches clearly.
     if (!normalizedQuery) {
       for (let i = combined.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [combined[i], combined[j]] = [combined[j], combined[i]];
       }
     }
-
     return combined;
   }, [sites, query, language, categoryFilter]);
 
@@ -176,7 +189,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'
           }
         >
-          <CategoryCarousel 
+          <CategoryCarousel
             categories={CATEGORY_TAGS.map(tag => ({
               id: tag.filter,
               label: tag.label,
@@ -189,7 +202,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
         </PanelBanner>
       )}
 
-      {/* Imperdibles Banners */}
+      {/* Imperdibles Banners — dynamic, grid layout */}
       {!query && !categoryFilter && (
         <div className="px-4 md:px-8 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="flex items-center justify-between mb-4">
@@ -198,46 +211,97 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               {language === 'es' ? 'Imperdibles' : 'Must See'}
             </h3>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar">
-            {IMPERDIBLES.map(item => {
-              const route = rutasTematicas.find(r => r.id === item.routeId);
-              // Si la ruta ya no existe/cambió de id en Supabase, no se renderiza el tile
-              // en vez de llevar a una vista rota.
-              if (!route) return null;
-              return (
-                <div
-                  key={item.routeId}
-                  className="min-w-[280px] md:min-w-[320px] snap-center shrink-0 cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all"
-                  onClick={() => onOpenRoute && onOpenRoute(route)}
+          {/* Grid layout: first card tall on desktop, remaining cards shorter */}
+          {promotedBanners.length === 0 && !bannersLoaded ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[1,2,3].map(i => (
+                <div key={i} className="rounded-2xl bg-muted animate-pulse h-48" />
+              ))}
+            </div>
+          ) : promotedBanners.length === 0 ? null : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* First banner: large (spans 2 rows on desktop) */}
+              {promotedBanners[0] && (
+                <button
+                  type="button"
+                  className="md:row-span-2 cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all duration-300 text-left"
+                  style={{ minHeight: '320px' }}
+                  onClick={() => handleBannerClick(promotedBanners[0])}
                 >
-                  <LazyImage src={item.image} alt={route.nombre} className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-4">
-                    <Badge className="w-fit mb-2 bg-primary/90 text-white border-none">{item.tag}</Badge>
-                    <h4 className="text-white font-bold text-lg leading-tight mb-1">{route.nombre}</h4>
-                    <p className="text-white/80 text-sm font-medium line-clamp-2">{route.descripcion}</p>
+                  <LazyImage
+                    src={promotedBanners[0].image_url}
+                    alt={promotedBanners[0].title}
+                    className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-5">
+                    {promotedBanners[0].tag && (
+                      <Badge className="w-fit mb-2 bg-primary/90 text-white border-none text-xs">
+                        {promotedBanners[0].target_type && TARGET_TYPE_ICON[promotedBanners[0].target_type] &&
+                          React.createElement(TARGET_TYPE_ICON[promotedBanners[0].target_type], { className: 'w-3 h-3 inline mr-1' })}
+                        {promotedBanners[0].tag}
+                      </Badge>
+                    )}
+                    <h4 className="text-white font-bold text-xl leading-tight mb-1">{promotedBanners[0].title}</h4>
+                    {promotedBanners[0].subtitle && (
+                      <p className="text-white/80 text-sm">{promotedBanners[0].subtitle}</p>
+                    )}
+                    <div className="mt-3 flex items-center text-xs text-white/60 font-semibold group-hover:text-white transition-colors">
+                      {language === 'es' ? 'Ver más' : 'Learn more'} <ArrowRight className="w-3 h-3 ml-1" />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                </button>
+              )}
+              {/* Remaining banners: normal height */}
+              {promotedBanners.slice(1).map(banner => {
+                const Icon = banner.target_type ? TARGET_TYPE_ICON[banner.target_type] : null;
+                return (
+                  <button
+                    type="button"
+                    key={banner.id}
+                    className="cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all duration-300 h-48 md:h-auto text-left"
+                    style={{ minHeight: '180px' }}
+                    onClick={() => handleBannerClick(banner)}
+                  >
+                    <LazyImage
+                      src={banner.image_url}
+                      alt={banner.title}
+                      className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
+                      {banner.tag && (
+                        <Badge className="w-fit mb-1.5 bg-primary/90 text-white border-none text-xs">
+                          {Icon && React.createElement(Icon, { className: 'w-3 h-3 inline mr-1' })}
+                          {banner.tag}
+                        </Badge>
+                      )}
+                      <h4 className="text-white font-bold text-base leading-tight mb-0.5">{banner.title}</h4>
+                      {banner.subtitle && (
+                        <p className="text-white/70 text-xs">{banner.subtitle}</p>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
       {/* Sabías que Banner */}
       {!query && !categoryFilter && randomFact && (
         <div className="px-4 md:px-8 mb-8">
-          <div 
+          <div
             className="bg-card border border-primary/20 rounded-2xl p-5 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-4 relative overflow-hidden"
             onClick={openRelatedStory}
           >
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
               <BookOpen className="w-24 h-24 text-primary" />
             </div>
-            
+
             <div className="bg-primary/10 p-3 rounded-full shrink-0">
               <BookOpen className="w-6 h-6 text-primary" />
             </div>
-            
+
             <div className="flex-1 relative z-10">
               <h4 className="font-bold text-lg text-primary mb-1">
                 {randomFact.title || "Pa' que sepás"}
@@ -252,7 +316,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
           </div>
         </div>
       )}
-      
+
       <div className="px-4 pb-12 md:px-8 md:pb-16">
         {(query || categoryFilter) && (
           <div className="flex items-center justify-between mb-3 ml-1">

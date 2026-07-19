@@ -189,6 +189,10 @@ export const RutaForm: React.FC<RutaFormProps> = ({ routeId, onClose, onSaved })
                             <Input required type="number" name="duracionMin" value={formData.duracionMin || ''} onChange={handleNumberChange} />
                         </div>
                         <div className="space-y-2 md:col-span-2">
+                            <label className="text-sm font-semibold">URL de la Imagen</label>
+                            <Input name="image_url" value={formData.image_url || ''} onChange={handleChange} placeholder="Ej: /images/rutas/mi_ruta.png o https://..." />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
                             <label className="text-sm font-semibold">Descripción Corta *</label>
                             <Textarea required name="descripcion" value={formData.descripcion || ''} onChange={handleChange} rows={2} placeholder="Descripción breve de la ruta..." />
                         </div>

@@ -88,7 +88,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         economy: null
     });
 
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const questionStartTimeRef = useRef<number>(0);
     // Modo activo (levels = corto por niveles; legend = sin fin con vidas; timed = contrarreloj).
     const modeRef = useRef<'levels' | 'legend' | 'timed'>(mode);

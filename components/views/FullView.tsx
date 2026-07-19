@@ -86,10 +86,10 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
                 </div>
 
                 <div className="mx-auto max-w-5xl p-3 grid gap-3 pb-safe">
-                    {(data.img || data.logoUrl) && (
+                    {(data.img || data.logoUrl || data.image_url) && (
                         <div className="relative w-full h-[36vh] md:h-[44vh] overflow-hidden rounded-2xl group">
                             <LazyImage
-                                src={data.img || data.logoUrl}
+                                src={data.img || data.logoUrl || data.image_url}
                                 alt={viewTitle as string}
                                 textFallback={viewTitle as string}
                                 className="w-full h-full object-cover"

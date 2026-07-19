@@ -5,8 +5,8 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { toast } from 'sonner';
-import { Save, Image as ImageIcon, Loader2, Edit } from 'lucide-react';
-import { bannerService, Banner } from '../../../services/banner.service';
+import { Save, Image as ImageIcon, Loader2, Edit, Trash2, Plus } from 'lucide-react';
+import { bannerService, Banner, promotedBannerService, PromotedBanner } from '../../../services/banner.service';
 import { Switch } from '../../ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../ui/dialog';
@@ -37,16 +37,33 @@ interface EditingBanner {
     defaultImg: string;
 }
 
+const EMPTY_PROMOTED: Omit<PromotedBanner, 'id'> = {
+    title: '',
+    subtitle: '',
+    image_url: '',
+    tag: '',
+    target_type: 'route',
+    target_id: '',
+    is_active: true,
+    order_index: 1,
+};
+
 export const AdminBanners = () => {
     const [loading, setLoading] = useState(false);
     const [banners, setBanners] = useState<Record<string, Banner>>({});
     const [profileBanners, setProfileBanners] = useState<Record<string, Banner>>({});
+    const [promotedBanners, setPromotedBanners] = useState<PromotedBanner[]>([]);
 
-    // Edit Modal State
+    // Edit Modal State (for panel/profile banners)
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [editingBanner, setEditingBanner] = useState<EditingBanner | null>(null);
     const [savingEdit, setSavingEdit] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
+
+    // Promoted Banner Edit State
+    const [promoModalOpen, setPromoModalOpen] = useState(false);
+    const [editingPromo, setEditingPromo] = useState<Partial<PromotedBanner> | null>(null);
+    const [savingPromo, setSavingPromo] = useState(false);
 
     const [broadcastOpen, setBroadcastOpen] = useState(false);
 
@@ -56,7 +73,6 @@ export const AdminBanners = () => {
 
     const loadBanners = async () => {
         setLoading(true);
-
         // App banners (scope='app'), keyed by panel key.
         const appBanners = await bannerService.getAppBanners();
         const map: Record<string, Banner> = {};
@@ -72,13 +88,56 @@ export const AdminBanners = () => {
         });
         setProfileBanners(pMap);
 
+        const promoted = await promotedBannerService.getAllAdmin();
+        setPromotedBanners(promoted);
+
         setLoading(false);
+    };
+
+    const openPromoModal = (banner?: PromotedBanner) => {
+        setEditingPromo(banner ? { ...banner } : { ...EMPTY_PROMOTED, order_index: promotedBanners.length + 1 });
+        setPromoModalOpen(true);
+    };
+
+    const savePromo = async () => {
+        if (!editingPromo || !editingPromo.title || !editingPromo.image_url) {
+            toast.error('El título y la URL de imagen son obligatorios');
+            return;
+        }
+        setSavingPromo(true);
+        try {
+            let saved: PromotedBanner | null;
+            if ((editingPromo as PromotedBanner).id) {
+                saved = await promotedBannerService.update((editingPromo as PromotedBanner).id, editingPromo);
+            } else {
+                saved = await promotedBannerService.create(editingPromo as Omit<PromotedBanner, 'id'>);
+            }
+            if (!saved) throw new Error('No se pudo guardar el banner');
+            toast.success((editingPromo as PromotedBanner).id ? 'Banner actualizado' : 'Banner creado');
+            setPromoModalOpen(false);
+            await loadBanners();
+        } catch (e) {
+            toast.error('Error al guardar');
+        } finally {
+            setSavingPromo(false);
+        }
+    };
+
+    const deletePromo = async (id: string) => {
+        if (!confirm('¿Eliminar este banner? Esta acción no se puede deshacer.')) return;
+        const deleted = await promotedBannerService.delete(id);
+        if (!deleted) {
+            toast.error('No se pudo eliminar el banner');
+            return;
+        }
+        toast.success('Banner eliminado');
+        await loadBanners();
     };
 
     const handleToggleActive = async (key: string, isActive: boolean, isProfile: boolean = false) => {
         if (isProfile) {
             const current = profileBanners[key] || ({} as Banner);
-            await bannerService.updateProfileBanner(
+            const updated = await bannerService.updateProfileBanner(
                 key,
                 current.title_es || '',
                 current.subtitle_es || '',
@@ -87,10 +146,18 @@ export const AdminBanners = () => {
                 current.title_en,
                 current.subtitle_en,
             );
+            if (!updated) {
+                toast.error('No se pudo actualizar el estado');
+                return;
+            }
         } else {
-            await bannerService.updateAppBanner(key, { is_active: isActive });
+            const updated = await bannerService.updateAppBanner(key, { is_active: isActive });
+            if (!updated) {
+                toast.error('No se pudo actualizar el estado');
+                return;
+            }
         }
-        loadBanners();
+        await loadBanners();
         toast.success(`Estado actualizado`);
     };
 
@@ -146,8 +213,9 @@ export const AdminBanners = () => {
         if (!editingBanner) return;
         setSavingEdit(true);
         try {
+            let updated: Banner | null;
             if (editingBanner.isProfile) {
-                await bannerService.updateProfileBanner(
+                updated = await bannerService.updateProfileBanner(
                     editingBanner.key,
                     editingBanner.title_es,
                     editingBanner.subtitle_es,
@@ -157,7 +225,7 @@ export const AdminBanners = () => {
                     editingBanner.subtitle_en,
                 );
             } else {
-                await bannerService.updateAppBanner(editingBanner.key, {
+                updated = await bannerService.updateAppBanner(editingBanner.key, {
                     title_es: editingBanner.title_es,
                     subtitle_es: editingBanner.subtitle_es,
                     title_en: editingBanner.title_en,
@@ -166,9 +234,10 @@ export const AdminBanners = () => {
                     is_active: editingBanner.is_active,
                 });
             }
+            if (!updated) throw new Error('No se pudo guardar el banner');
             toast.success('Cambios guardados exitosamente');
             setEditModalOpen(false);
-            loadBanners();
+            await loadBanners();
         } catch (e) {
             toast.error("Error al guardar cambios");
         } finally {
@@ -226,16 +295,54 @@ export const AdminBanners = () => {
                 </Button>
             </div>
 
-            <Tabs defaultValue="app" className="w-full">
+            <Tabs defaultValue="imperdibles" className="w-full">
                 <TabsList className="mb-4">
-                    <TabsTrigger value="app">Banners de la App</TabsTrigger>
-                    <TabsTrigger value="profile">Banners de Perfil (Recompensas)</TabsTrigger>
+                    <TabsTrigger value="imperdibles">Imperdibles</TabsTrigger>
+                    <TabsTrigger value="app">Banners de Paneles</TabsTrigger>
+                    <TabsTrigger value="profile">Banners de Perfil</TabsTrigger>
                 </TabsList>
 
                 {loading ? (
                     <div className="py-12 flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>
                 ) : (
                     <>
+                        <TabsContent value="imperdibles">
+                            <div className="flex justify-between items-center mb-4">
+                                <p className="text-sm text-muted-foreground">Banners promocionales que aparecen en la sección "Imperdibles" del panel de Explorar.</p>
+                                <Button size="sm" onClick={() => openPromoModal()}><Plus className="w-4 h-4 mr-2" />Nuevo Banner</Button>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {promotedBanners.map(b => (
+                                    <Card key={b.id} className="overflow-hidden">
+                                        <div className="h-36 relative overflow-hidden bg-muted">
+                                            {b.image_url && <img src={b.image_url} alt={b.title} className="w-full h-full object-cover" />}
+                                            <div className="absolute top-2 right-2 flex gap-1">
+                                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${b.is_active ? 'bg-green-500 text-white' : 'bg-gray-400 text-white'}`}>{b.is_active ? 'Activo' : 'Inactivo'}</span>
+                                            </div>
+                                        </div>
+                                        <CardHeader className="py-3">
+                                            <div className="flex justify-between items-start gap-2">
+                                                <div className="flex-1 min-w-0">
+                                                    <CardTitle className="text-sm truncate">{b.title}</CardTitle>
+                                                    <CardDescription className="text-xs mt-0.5">{b.tag} · {b.target_type} {b.target_id ? `→ ${b.target_id.slice(0,8)}...` : ''}</CardDescription>
+                                                </div>
+                                                <div className="flex gap-1 shrink-0">
+                                                    <Button size="icon" variant="ghost" className="h-7 w-7" aria-label={`Editar ${b.title}`} onClick={() => openPromoModal(b)}><Edit className="w-3.5 h-3.5" /></Button>
+                                                    <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive" aria-label={`Eliminar ${b.title}`} onClick={() => deletePromo(b.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                                                </div>
+                                            </div>
+                                        </CardHeader>
+                                    </Card>
+                                ))}
+                                {promotedBanners.length === 0 && (
+                                    <div className="col-span-full text-center py-12 text-muted-foreground border-2 border-dashed rounded-xl">
+                                        <p>No hay banners promocionales configurados.</p>
+                                        <Button variant="outline" className="mt-3" onClick={() => openPromoModal()}>Crear el primero</Button>
+                                    </div>
+                                )}
+                            </div>
+                        </TabsContent>
+
                         <TabsContent value="app">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {APP_PANELS.map(panel => renderBannerCard(panel.key, panel.label, panel.defaultImg, false))}
@@ -323,6 +430,107 @@ export const AdminBanners = () => {
                         <Button onClick={saveBannerChanges} disabled={savingEdit || uploadingImage}>
                             {savingEdit ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                             Guardar Cambios
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Promoted Banner Edit/Create Modal */}
+            <Dialog open={promoModalOpen} onOpenChange={setPromoModalOpen}>
+                <DialogContent className="sm:max-w-[550px]">
+                    <DialogHeader>
+                        <DialogTitle>{(editingPromo as PromotedBanner)?.id ? 'Editar Banner Promocional' : 'Nuevo Banner Promocional'}</DialogTitle>
+                    </DialogHeader>
+                    {editingPromo && (
+                        <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">Título *</label>
+                                <Input
+                                    value={editingPromo.title || ''}
+                                    onChange={(e) => setEditingPromo({...editingPromo, title: e.target.value})}
+                                    placeholder="Ej. Ruta Histórica y Colonial"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">Subtítulo</label>
+                                <Input
+                                    value={editingPromo.subtitle || ''}
+                                    onChange={(e) => setEditingPromo({...editingPromo, subtitle: e.target.value})}
+                                    placeholder="Ej. Descubre los vestigios del Cali colonial"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">URL de Imagen *</label>
+                                <Input
+                                    value={editingPromo.image_url || ''}
+                                    onChange={(e) => setEditingPromo({...editingPromo, image_url: e.target.value})}
+                                    placeholder="/images/imperdibles/mi_banner.png"
+                                />
+                                {editingPromo.image_url && (
+                                    <div className="h-28 rounded-md border overflow-hidden">
+                                        <img src={editingPromo.image_url} alt="Preview" className="w-full h-full object-cover" />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">Etiqueta (Tag)</label>
+                                <Input
+                                    value={editingPromo.tag || ''}
+                                    onChange={(e) => setEditingPromo({...editingPromo, tag: e.target.value})}
+                                    placeholder="Ej. Ruta Recomendada, Evento Destacado"
+                                />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Tipo de Destino</label>
+                                    <select
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                        value={editingPromo.target_type || 'route'}
+                                        onChange={(e) => setEditingPromo({ ...editingPromo, target_type: e.target.value as PromotedBanner['target_type'] })}
+                                    >
+                                        <option value="route">Ruta</option>
+                                        <option value="event">Evento</option>
+                                        <option value="game">Juego</option>
+                                        <option value="url">URL externa</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">ID del Destino</label>
+                                    <Input
+                                        value={editingPromo.target_id || ''}
+                                        onChange={(e) => setEditingPromo({...editingPromo, target_id: e.target.value})}
+                                        placeholder="ID o URL"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Orden</label>
+                                    <Input
+                                        type="number"
+                                        value={editingPromo.order_index || 1}
+                                        onChange={(e) => setEditingPromo({...editingPromo, order_index: parseInt(e.target.value) || 1})}
+                                        min={1}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Estado</label>
+                                    <div className="flex items-center gap-2 pt-2">
+                                        <Switch
+                                            checked={editingPromo.is_active ?? true}
+                                            onChange={(e) => setEditingPromo({...editingPromo, is_active: e.target.checked})}
+                                        />
+                                        <span className="text-sm">{editingPromo.is_active ? 'Activo' : 'Inactivo'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setPromoModalOpen(false)}>Cancelar</Button>
+                        <Button onClick={savePromo} disabled={savingPromo}>
+                            {savingPromo ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                            Guardar
                         </Button>
                     </DialogFooter>
                 </DialogContent>

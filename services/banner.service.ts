@@ -111,3 +111,67 @@ export const bannerService = {
         return data ? withLegacyAliases(data) : null;
     },
 };
+
+// --- Promoted Banners (Imperdibles) ---
+export interface PromotedBanner {
+    id: string;
+    title: string;
+    subtitle?: string;
+    image_url: string;
+    tag?: string;
+    target_type?: 'route' | 'event' | 'game' | 'url';
+    target_id?: string;
+    is_active: boolean;
+    order_index: number;
+}
+
+export const promotedBannerService = {
+    async getAll(): Promise<PromotedBanner[]> {
+        const { data, error } = await supabase
+            .from('promoted_banners')
+            .select('*')
+            .eq('is_active', true)
+            .order('order_index', { ascending: true });
+        if (error) { console.error('Error fetching promoted banners:', error); return []; }
+        return (data as PromotedBanner[]) || [];
+    },
+
+    async getAllAdmin(): Promise<PromotedBanner[]> {
+        const { data, error } = await supabase
+            .from('promoted_banners')
+            .select('*')
+            .order('order_index', { ascending: true });
+        if (error) { console.error('Error fetching admin promoted banners:', error); return []; }
+        return (data as PromotedBanner[]) || [];
+    },
+
+    async create(banner: Omit<PromotedBanner, 'id'>): Promise<PromotedBanner | null> {
+        const { data, error } = await supabase
+            .from('promoted_banners')
+            .insert(banner)
+            .select()
+            .single();
+        if (error) { console.error('Error creating promoted banner:', error); return null; }
+        return data as PromotedBanner;
+    },
+
+    async update(id: string, updates: Partial<PromotedBanner>): Promise<PromotedBanner | null> {
+        const { data, error } = await supabase
+            .from('promoted_banners')
+            .update({ ...updates, updated_at: new Date().toISOString() })
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) { console.error('Error updating promoted banner:', error); return null; }
+        return data as PromotedBanner;
+    },
+
+    async delete(id: string): Promise<boolean> {
+        const { error } = await supabase
+            .from('promoted_banners')
+            .delete()
+            .eq('id', id);
+        if (error) { console.error('Error deleting promoted banner:', error); return false; }
+        return true;
+    }
+};

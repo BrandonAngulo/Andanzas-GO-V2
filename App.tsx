@@ -677,7 +677,7 @@ export default function App() {
                   plannedRoutePoints={newRoutePoints}
                 />
               )}
-              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} onNavigateToAprende={() => setActivePanel('paquesepas')} onOpenLearnEntry={(id) => { setPendingLearnEntryId(id); setActivePanel('paquesepas'); }} rutasTematicas={rutasTematicas} />}
+              {activePanel === 'explorar' && <ExplorarPanel sites={sites} query={query} onOpenSite={openSite} onOpenRoute={openRoute} onNavigateToRoutes={() => setActivePanel('rutas')} onNavigateToAprende={() => setActivePanel('paquesepas')} onOpenLearnEntry={(id) => { setPendingLearnEntryId(id); setActivePanel('paquesepas'); }} rutasTematicas={rutasTematicas} onNavigateToTab={(tab, itemId) => { setActivePanel(tab as any); if (tab === 'juegos' && itemId) { setTimeout(() => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId: itemId } })), 300); } }} />}
               {activePanel === 'eventos' && <EventosPanel eventos={eventos} query={query} sites={sites} onOpenEvent={openEvent} />}
               {activePanel === 'tendencias' && <TendenciasPanel items={tendencias} query={query} onOpenSite={openSite} />}
               {activePanel === 'favoritos' && <FavoritosPanel ids={favIds} query={query} onOpen={(id) => openSite(getSiteById(id)!)} onToggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} sites={sites} />}
