@@ -211,7 +211,9 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     titleClassName="text-4xl font-extrabold tracking-tight text-indigo-950 dark:text-indigo-50"
                     defaultTitle={language === 'es' ? "Pa' que sepás" : 'Did you know?'}
                     defaultSubtitle={language === 'es' ? 'Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.' : 'Learn about the culture, history and best-kept secrets of the city. Why what you see matters.'}
-                    andiMessage="¡Ey andante! La ciudad está llena de historias escondidas. Aquí te dejo mis favoritas para que las leás con un buen champús o cafecito."
+                    andiTitle="Mirá la ciudad con otros ojos"
+                    andiMessage="Cada historia puede cambiar la forma de recorrer un lugar. Elegí la que más te intrigue y, cuando salgas, buscá sus huellas en la ciudad."
+                    andiActionLabel="Explorar historias"
                 />
 
                 <section className="mb-8">

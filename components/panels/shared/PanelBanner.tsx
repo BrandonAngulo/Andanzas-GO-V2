@@ -15,6 +15,8 @@ interface PanelBannerProps {
     defaultSubtitle: string;
     titleClassName?: string;
     andiMessage?: string;
+    andiTitle?: string;
+    andiActionLabel?: string;
     gradientClass?: string;
     children?: React.ReactNode; // For extra content like CategoryCarousel
     marginClass?: string; // Margen horizontal externo; se alinea con el gutter del panel
@@ -29,6 +31,8 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
     defaultSubtitle,
     titleClassName = "text-4xl font-extrabold tracking-tight text-foreground",
     andiMessage,
+    andiTitle,
+    andiActionLabel,
     gradientClass = "from-blue-50/95 via-blue-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent",
     children,
     marginClass = "mx-2",
@@ -100,7 +104,12 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
             {/* Andi Floating Button inside Banner */}
             {andiMessage && (
                 <div className="absolute bottom-6 right-6 md:bottom-8 md:right-10 z-20">
-                    <AndiGuia message={andiMessage} variant="tip" />
+                    <AndiGuia
+                        message={andiMessage}
+                        title={andiTitle}
+                        actionLabel={andiActionLabel}
+                        variant="tip"
+                    />
                 </div>
             )}
         </div>

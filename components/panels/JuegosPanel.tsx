@@ -132,7 +132,12 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </TabsList>
                     </ScrollArea>
                     <div className="shrink-0 self-end lg:self-auto">
-                        <AndiGuia message="No necesitas saberlo todo: elige una experiencia, sigue tu curiosidad y descubre hasta dónde llegas." variant="tip" />
+                        <AndiGuia
+                            title="Elegí cómo querés jugar"
+                            message="Cada modo propone un viaje distinto. Empezá por el que más te intrigue: no hace falta saberlo todo, porque cada respuesta también te revela algo nuevo."
+                            actionLabel="Elegir mi juego"
+                            variant="tip"
+                        />
                     </div>
                 </div>
                 
