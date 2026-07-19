@@ -11,7 +11,6 @@ import {
     Lightbulb,
     MapPinned,
     PlayCircle,
-    Route,
     ShieldAlert,
     Skull,
     Sparkles,
@@ -109,7 +108,7 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
                                 Jugar es descubrir
                             </DialogTitle>
                             <DialogDescription className="mt-2 text-sm font-medium leading-relaxed text-white/85">
-                                Elige cómo jugar, explora una experiencia y deja que cada pregunta te lleve más lejos.
+                                Elige tu ritmo, recorre nuevos lugares y deja que cada pregunta te lleve más lejos.
                             </DialogDescription>
                         </DialogHeader>
                         <img
@@ -130,8 +129,8 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
                                 <TabsTrigger value="modos" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
                                     Modos
                                 </TabsTrigger>
-                                <TabsTrigger value="experiencias" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
-                                    Experiencias
+                                <TabsTrigger value="lugares" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
+                                    Lugares y temas
                                 </TabsTrigger>
                             </TabsList>
 
@@ -160,7 +159,7 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
                             <TabsContent value="modos" className="mt-4">
                                 <div className="grid gap-3 sm:grid-cols-3">
                                     {[
-                                        { icon: Flame, title: 'Modo Leyenda', text: 'Avanza sin final, protege tus 3 vidas y enfrenta preguntas cada vez más exigentes.', style: 'bg-orange-50 text-orange-600' },
+                                        { icon: Flame, title: 'Historia', text: 'Avanza capítulo a capítulo, protege tus 3 vidas y enfrenta preguntas cada vez más exigentes.', style: 'bg-orange-50 text-orange-600' },
                                         { icon: Timer, title: 'Contrarreloj', text: 'Tienes 2 minutos y 15 preguntas. Un error termina la carrera: piensa rápido.', style: 'bg-sky-50 text-sky-600' },
                                         { icon: Swords, title: 'Duelo', text: 'Responde 10 preguntas, comparte el reto y descubre quién conoce más.', style: 'bg-violet-50 text-violet-600' },
                                     ].map(mode => {
@@ -178,19 +177,20 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
                                 </div>
                             </TabsContent>
 
-                            <TabsContent value="experiencias" className="mt-4">
+                            <TabsContent value="lugares" className="mt-4">
                                 <div className="rounded-2xl border border-emerald-950/10 bg-white p-4 shadow-sm">
                                     <div className="flex items-start gap-3">
-                                        <div className="rounded-xl bg-emerald-50 p-2.5 text-emerald-700"><Route className="h-5 w-5" /></div>
+                                        <div className="rounded-xl bg-emerald-50 p-2.5 text-emerald-700"><MapPinned className="h-5 w-5" /></div>
                                         <div>
-                                            <h4 className="font-black text-emerald-950">Una trivia, muchos recorridos</h4>
+                                            <h4 className="font-black text-emerald-950">El mundo cabe en una pregunta</h4>
                                             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                                                Juega la selección general o entra a una experiencia temática. Valle del Cauca ahora vive dentro de TRIVIA GO, junto a Cali y nuevos destinos que iremos sumando.
+                                                Elige una partida mundial o pon a prueba lo que sabes de Cali, el Valle del Cauca y Colombia. También puedes jugar con palabras y expresiones del vocabulario caleño.
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mt-4 flex flex-wrap gap-2">
-                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-800"><Sparkles className="h-3.5 w-3.5" /> Selección general</span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-800"><Sparkles className="h-3.5 w-3.5" /> Mundo</span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-100 px-3 py-1.5 text-xs font-bold text-sky-800"><MapPinned className="h-3.5 w-3.5" /> Colombia y Cali</span>
                                         <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-800"><MapPinned className="h-3.5 w-3.5" /> Valle del Cauca</span>
                                         <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-100 px-3 py-1.5 text-xs font-bold text-violet-800"><Lightbulb className="h-3.5 w-3.5" /> Vocabulario caleño</span>
                                     </div>

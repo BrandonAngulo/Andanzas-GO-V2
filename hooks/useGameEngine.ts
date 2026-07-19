@@ -180,7 +180,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             }
         }
 
-        // Piso de dificultad según la experiencia del jugador (nivel del perfil): a mayor
+        // Piso de dificultad según el nivel del jugador: a mayor
         // nivel, se saltan los niveles más fáciles. Conservador (máx. 3) para no agotar el banco.
         let difficultyFloor = 1;
         if (userId) {
@@ -191,8 +191,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
         let questions: GameQuestion[] = [];
         if (questionsData && questionsData.length > 0) {
-            // Sin experiencia elegida se usa el núcleo general. Una experiencia puede
-            // corresponder a una categoría o a una campaña regional/temática completa.
+            // El tema puede corresponder a una categoría o a un recorrido regional/temático.
             const activeTheme = (theme && theme !== 'all') ? theme : null;
             const themed = activeTheme
                 ? questionsData.filter(q => q.category === activeTheme || (q as any).campaign === activeTheme)
@@ -208,7 +207,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 return [...sh(unseen), ...sh(seen)];
             };
 
-            // Cola de dificultad ASCENDENTE para Modo Leyenda: arranca en 'floor' (experiencia)
+            // Cola de dificultad ascendente para Historia: arranca en el piso del jugador
             // y sube el techo cada pocas preguntas, sirviendo el nivel más alto disponible de la
             // ventana. Así no se vuelca lo fácil al principio: la dificultad trepa rápido y se
             // sostiene arriba (y recicla lo más difícil cuando se agota).
@@ -245,7 +244,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             let finalQuestions = source;
 
             if (mode === 'legend') {
-                // Modo Leyenda: pool completo con dificultad ascendente (piso según experiencia),
+                // Historia: pool completo con dificultad ascendente,
                 // sin tope. La partida sigue mientras queden vidas.
                 finalQuestions = buildRampQueue(source, difficultyFloor);
             } else if (activeTheme) {
@@ -446,7 +445,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         let finalLives = state.livesRemaining;
         let lifeWalletUpdate: { lives: number; next_life_at?: string | null } | null = null;
 
-        // Mecánica efectiva: Leyenda = vidas; Contrarreloj = un fallo termina la ronda.
+        // Mecánica efectiva: Historia = vidas; Contrarreloj = un fallo termina la ronda.
         const effectiveMechanic = modeRef.current === 'legend' ? 'lives'
             : modeRef.current === 'timed' ? 'sudden_death'
             : state.game?.mechanic_type;

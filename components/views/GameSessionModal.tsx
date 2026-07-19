@@ -258,32 +258,32 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     <div className="absolute top-[40%] -right-[10%] w-[40vw] h-[40vw] bg-primary/20 rounded-full blur-[100px]" />
                 </div>
 
-                <div className="relative z-10 flex-1 max-w-2xl mx-auto w-full flex flex-col justify-center items-center text-center p-6 py-12 space-y-8">
+                <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center space-y-5 p-4 py-6 text-center">
                     <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", bounce: 0.5 }}
-                        className="p-8 rounded-full mb-2"
+                        className="mb-1 rounded-full p-5"
                         style={{
                             backgroundColor: `${accent}1A`,
                             boxShadow: `0 0 0 4px ${accent}33, 0 0 40px ${accent}4D`
                         }}
                     >
-                        <Trophy className="w-24 h-24 drop-shadow-md" style={{ color: accent }} />
+                        <Trophy className="h-16 w-16 drop-shadow-md" style={{ color: accent }} />
                     </motion.div>
                     
-                    <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-white drop-shadow-lg">¡Desafío Completado!</h2>
+                    <h2 className="text-3xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl">¡Desafío completado!</h2>
                     
                     <div className="grid grid-cols-2 gap-4 w-full">
-                        <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-6 rounded-3xl flex flex-col items-center">
-                            <Star className="w-8 h-8 text-yellow-400 fill-yellow-400 mb-3" />
-                            <span className="text-4xl font-black text-white mb-1">{score}</span>
+                        <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-4 backdrop-blur-xl">
+                            <Star className="mb-2 h-6 w-6 fill-yellow-400 text-yellow-400" />
+                            <span className="mb-1 text-3xl font-black text-white">{score}</span>
                             <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Puntos</span>
                         </div>
                         {game?.type !== 'quiz' && (
-                            <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 p-6 rounded-3xl flex flex-col items-center">
-                                <Target className="w-8 h-8 text-emerald-400 mb-3" />
-                                <span className="text-4xl font-black text-white mb-1">{accuracyPercent.toFixed(0)}%</span>
+                            <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-4 backdrop-blur-xl">
+                                <Target className="mb-2 h-6 w-6 text-emerald-400" />
+                                <span className="mb-1 text-3xl font-black text-white">{accuracyPercent.toFixed(0)}%</span>
                                 <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Precisión</span>
                             </div>
                         )}
@@ -292,13 +292,13 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     {(bestCategory || worstCategory) && (
                         <div className="w-full grid grid-cols-2 gap-4">
                             {bestCategory && (
-                                <div className="bg-slate-900/40 backdrop-blur-md border border-white/5 p-4 rounded-2xl flex flex-col items-center">
+                                <div className="flex flex-col items-center rounded-xl border border-white/5 bg-slate-900/40 p-3 backdrop-blur-md">
                                     <span className="text-xs text-white/40 uppercase tracking-wider mb-1 font-bold">Mejor Categoría</span>
                                     <span className="text-sm sm:text-base font-bold text-emerald-400 text-center">{bestCategory}</span>
                                 </div>
                             )}
                             {worstCategory && (
-                                <div className="bg-slate-900/40 backdrop-blur-md border border-white/5 p-4 rounded-2xl flex flex-col items-center">
+                                <div className="flex flex-col items-center rounded-xl border border-white/5 bg-slate-900/40 p-3 backdrop-blur-md">
                                     <span className="text-xs text-white/40 uppercase tracking-wider mb-1 font-bold">Por Mejorar</span>
                                     <span className="text-sm sm:text-base font-bold text-orange-400 text-center">{worstCategory}</span>
                                 </div>
@@ -307,7 +307,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     )}
 
                     {rewards && (
-                        <div className="w-full bg-slate-900/50 border border-white/10 p-5 rounded-3xl">
+                        <div className="w-full rounded-2xl border border-white/10 bg-slate-900/50 p-4">
                             <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-3">Recompensas de la partida</p>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                                 <div><strong className="block text-xl text-violet-300">+{rewards.xp}</strong><span className="text-xs text-white/50">XP de perfil</span></div>
@@ -319,7 +319,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     )}
 
                     {categoryProgress.length > 0 && (
-                        <div className="w-full bg-slate-900/40 backdrop-blur-md border border-white/5 p-5 rounded-3xl text-left">
+                        <div className="w-full rounded-2xl border border-white/5 bg-slate-900/40 p-4 text-left backdrop-blur-md">
                             <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-3">Tu progreso por categoría</p>
                             <div className="space-y-3">
                                 {categoryProgress.map(progress => (
@@ -333,7 +333,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     )}
 
                     {game?.related_learn_ids && game.related_learn_ids.length > 0 && (
-                        <div className="w-full p-6 bg-primary/10 backdrop-blur-md rounded-3xl border border-primary/20 text-left">
+                        <div className="w-full rounded-2xl border border-primary/20 bg-primary/10 p-4 text-left backdrop-blur-md">
                             <p className="font-bold text-white mb-4 flex items-center"><Star className="w-5 h-5 mr-2 text-primary" />Sigue explorando</p>
                             <Button 
                                 className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-14 font-bold"
@@ -344,10 +344,10 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         </div>
                     )}
 
-                    <div className="w-full space-y-4 pt-4">
+                    <div className="w-full space-y-3 pt-2">
                         {onRetry && (
                             <Button
-                                className="w-full rounded-2xl h-16 text-lg font-bold text-white border-none shadow-lg transition-all hover:scale-[1.02]"
+                                className="h-12 w-full rounded-xl border-none font-bold text-white shadow-lg transition-all hover:scale-[1.01]"
                                 style={{ backgroundColor: accent }}
                                 onClick={onRetry}
                             >
@@ -356,14 +356,14 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             </Button>
                         )}
                         <Button
-                            className="w-full rounded-2xl h-16 text-lg font-bold bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-none shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:scale-[1.02]"
+                            className="h-12 w-full rounded-xl border-none bg-gradient-to-r from-indigo-500 to-purple-600 font-bold text-white shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:scale-[1.01] hover:from-indigo-600 hover:to-purple-700"
                             onClick={handleChallengeFriend}
                             disabled={isCreatingChallenge}
                         >
                             <Users className="w-6 h-6 mr-3" />
                             {isCreatingChallenge ? "Generando Reto..." : "Retar a un amigo"}
                         </Button>
-                        <Button variant="outline" className="w-full bg-transparent rounded-2xl h-16 text-lg font-bold border-white/20 text-white hover:bg-white/10" onClick={onClose}>
+                        <Button variant="outline" className="h-12 w-full rounded-xl border-white/20 bg-transparent font-bold text-white hover:bg-white/10" onClick={onClose}>
                             Volver a Inicio
                         </Button>
                     </div>
@@ -382,8 +382,8 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
             </div>
 
             {/* HUD (Floating Pill) */}
-            <div className="relative z-10 w-full pt-6 pb-2 px-4 flex justify-center">
-                <div className="flex items-center gap-4 sm:gap-6 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-full px-4 sm:px-6 py-2 shadow-2xl">
+            <div className="relative z-10 flex w-full justify-center px-4 pb-1 pt-3">
+                <div className="flex items-center gap-3 rounded-full border border-white/10 bg-slate-900/60 px-4 py-1.5 shadow-2xl backdrop-blur-xl sm:gap-5">
                     <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full w-8 h-8 text-white/70 hover:text-white transition-colors" onClick={() => setShowExitConfirm(true)}>
                         <X className="w-5 h-5" />
                     </Button>
@@ -456,7 +456,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
             )}
 
             {/* Main Area */}
-            <div className="relative z-10 flex-1 flex flex-col items-center p-4 sm:p-6 w-full max-w-4xl mx-auto h-full overflow-y-auto overflow-x-hidden scrollbar-none">
+            <div className="scrollbar-none relative z-10 mx-auto flex h-full w-full max-w-4xl flex-1 flex-col items-center overflow-x-hidden overflow-y-auto p-3 sm:p-4">
                 <AnimatePresence mode="wait">
                     {isShuffling ? (
                         <motion.div 
@@ -464,10 +464,10 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 1.2 }}
-                            className="flex flex-col items-center justify-center space-y-4 py-12"
+                            className="flex flex-col items-center justify-center space-y-3 py-8"
                         >
                             <span className="text-white/50 uppercase tracking-widest text-sm font-bold">Categoría</span>
-                            <h2 className="text-4xl sm:text-5xl font-black text-white animate-pulse drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">{shuffledCategory}</h2>
+                            <h2 className="animate-pulse text-3xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] sm:text-4xl">{shuffledCategory}</h2>
                         </motion.div>
                     ) : (
                         <motion.div 
@@ -476,11 +476,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             animate={{ opacity: 1, y: 0 }}
                             className="w-full flex flex-col flex-1 my-auto"
                         >
-                            <div className="mb-6 w-full max-w-xl mx-auto flex flex-col items-center">
+                            <div className="mx-auto mb-3 flex w-full max-w-xl flex-col items-center">
                                 {/* Mascota del juego con anillo de tiempo alrededor */}
-                                <div className="relative w-24 h-24 mb-4 flex items-center justify-center">
+                                <div className="relative mb-2 flex h-20 w-20 items-center justify-center">
                                     {game?.type !== 'quiz' && (
-                                        <svg className="absolute inset-0 -rotate-90" width="96" height="96" viewBox="0 0 96 96">
+                                        <svg className="absolute inset-0 h-20 w-20 -rotate-90" viewBox="0 0 96 96">
                                             <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
                                             <motion.circle
                                                 cx="48" cy="48" r="42" fill="none"
@@ -494,7 +494,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                         </svg>
                                     )}
                                     <div
-                                        className="w-16 h-16 rounded-full flex items-center justify-center transition-shadow duration-300"
+                                        className="flex h-14 w-14 items-center justify-center rounded-full transition-shadow duration-300"
                                         style={{
                                             backgroundColor: `${accent}22`,
                                             boxShadow: mascotState === 'correct'
@@ -507,19 +507,19 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                         {isTimed ? (
                                             <span className={`text-2xl font-black tabular-nums ${timeRemaining <= 10 ? 'text-red-400' : 'text-white'}`}>{timeRemaining}</span>
                                         ) : (
-                                            <GameMascot icon={game?.theme_icon} accent={accent} size={44} state={mascotState} />
+                                            <GameMascot icon={game?.theme_icon} accent={accent} size={38} state={mascotState} />
                                         )}
                                     </div>
                                 </div>
 
                                 <span className="text-white/50 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3">
-                                    {isLegend ? `Modo Leyenda · Pregunta ${currentQuestionIndex + 1}` : `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`}
+                                    {isLegend ? `Modo Historia · Pregunta ${currentQuestionIndex + 1}` : `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`}
                                 </span>
 
                                 {/* Puntos de progreso: una perla por pregunta de la partida.
                                     Las zonas seguras (cada 5 preguntas, ver useGameEngine finishGame) se marcan
                                     con un anillo dorado para motivar al jugador a alcanzarlas.
-                                    En Modo Leyenda no hay total fijo, así que se omite. */}
+                                    En Historia no hay total fijo, así que se omite. */}
                                 <div className="flex items-center gap-1.5 flex-wrap justify-center max-w-xs">
                                     {!isLegend && questions.map((_, idx) => {
                                         const isPast = idx < currentQuestionIndex;
@@ -543,12 +543,12 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 </div>
                             </div>
 
-                            <div className="w-full bg-slate-900/40 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl flex flex-col items-center text-center relative overflow-hidden flex-shrink-0">
-                                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight mb-8 mt-2 text-white drop-shadow-md">
+                            <div className="relative flex w-full flex-shrink-0 flex-col items-center overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/40 p-5 text-center shadow-2xl backdrop-blur-2xl sm:p-6">
+                                <h2 className="mb-5 mt-1 text-xl font-extrabold leading-tight text-white drop-shadow-md sm:text-2xl lg:text-3xl">
                                     {currentQuestion?.question_text}
                                 </h2>
 
-                                <div className="w-full overflow-y-auto max-h-[50vh] scrollbar-none pb-2">
+                                <div className="scrollbar-none max-h-[46vh] w-full overflow-y-auto pb-1">
                                     {currentQuestion && (
                                         <QuestionRenderer
                                             question={currentQuestion}
@@ -572,10 +572,10 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         <motion.div 
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className={`mt-4 mb-8 w-full p-6 sm:p-8 rounded-[2.5rem] border-2 backdrop-blur-2xl shadow-2xl ${game?.type === 'quiz' ? 'bg-primary/10 border-primary/50' : (isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50'))}`}
+                            className={`mb-4 mt-3 w-full rounded-[2rem] border-2 p-5 shadow-2xl backdrop-blur-2xl sm:p-6 ${game?.type === 'quiz' ? 'bg-primary/10 border-primary/50' : (isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50'))}`}
                         >
-                            <h3 className={`text-2xl font-black mb-3 flex items-center ${game?.type === 'quiz' ? 'text-primary' : (isCorrect ? 'text-emerald-400' : (hasTimedOut ? 'text-orange-400' : 'text-red-400'))}`}>
-                                {game?.type === 'quiz' ? <CheckCircle2 className="mr-3 w-8 h-8" /> : (isCorrect ? <CheckCircle2 className="mr-3 w-8 h-8" /> : (hasTimedOut ? <Clock className="mr-3 w-8 h-8" /> : <XCircle className="mr-3 w-8 h-8" />))}
+                            <h3 className={`mb-2 flex items-center text-xl font-black ${game?.type === 'quiz' ? 'text-primary' : (isCorrect ? 'text-emerald-400' : (hasTimedOut ? 'text-orange-400' : 'text-red-400'))}`}>
+                                {game?.type === 'quiz' ? <CheckCircle2 className="mr-2 h-6 w-6" /> : (isCorrect ? <CheckCircle2 className="mr-2 h-6 w-6" /> : (hasTimedOut ? <Clock className="mr-2 h-6 w-6" /> : <XCircle className="mr-2 h-6 w-6" />))}
                                 {game?.type === 'quiz' ? '¡Respuesta registrada!' : (isCorrect ? '¡Correcto!' : (hasTimedOut ? '¡Tiempo Agotado!' : 'Incorrecto'))}
                             </h3>
                             
@@ -592,18 +592,18 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 if (isGameEnding && (hasTimedOut || !isCorrect)) {
                                     return (
                                         <>
-                                            <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8 font-medium">
+                                            <p className="mb-5 text-sm font-medium leading-relaxed text-white/80 sm:text-base">
                                                 {hasTimedOut ? 'Se agotó el tiempo.' : 'Respuesta incorrecta.'} {isTimed ? 'Se acabó tu carrera contrarreloj.' : isLegend ? 'Te quedaste sin vidas.' : 'Has perdido la partida.'}
                                                 {!isLegend && !isTimed && (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && ' Tu racha se guardará hasta la última zona segura.'}
                                             </p>
                                             {/* Aun al perder, mostramos la respuesta correcta y la explicación: el momento de mayor aprendizaje. */}
                                             {typeof currentQuestion?.correct_answer === 'string' && currentQuestion.correct_answer && (
-                                                <p className="text-white/90 text-base sm:text-lg mb-3">
+                                                <p className="mb-2 text-sm text-white/90 sm:text-base">
                                                     <span className="font-bold text-emerald-300">Respuesta correcta:</span> {currentQuestion.correct_answer}
                                                 </p>
                                             )}
                                             {currentQuestion?.explanation && (
-                                                <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8">
+                                                <p className="mb-5 text-sm leading-relaxed text-white/80 sm:text-base">
                                                     <TextWithDictionaryLinks
                                                         text={currentQuestion.explanation}
                                                         entries={dictEntries}
@@ -612,7 +612,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                                     />
                                                 </p>
                                             )}
-                                            <div className="flex flex-col sm:flex-row gap-4">
+                                            <div className="flex flex-col gap-3 sm:flex-row">
                                                 {(isLegend || game?.mechanic_type === 'lives') && economy && (
                                                     <div className="w-full grid grid-cols-2 gap-2 mb-2 sm:col-span-2">
                                                         {economy.shop_offers.map(offer => (
@@ -625,14 +625,14 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                                 {currentQuestion?.related_learn_id && (
                                                     <Button
                                                         variant="outline"
-                                                        className="flex-1 rounded-2xl h-14 font-bold border-white/20 text-white hover:bg-white/10 text-lg"
+                                                        className="h-11 flex-1 rounded-xl border-white/20 font-bold text-white hover:bg-white/10"
                                                         onClick={() => onNavigate?.('paquesepas')}
                                                     >
                                                         Saber más
                                                     </Button>
                                                 )}
                                                 <Button
-                                                    className="flex-1 rounded-2xl h-14 font-bold bg-white text-slate-900 hover:bg-white/90 border-none shadow-lg text-lg"
+                                                    className="h-11 flex-1 rounded-xl border-none bg-white font-bold text-slate-900 shadow-lg hover:bg-white/90"
                                                     onClick={() => finishGame(true)}
                                                 >
                                                     Ver Resultados Finales
@@ -645,7 +645,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 return (
                                 <>
                                     {currentQuestion?.explanation && (
-                                        <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8">
+                                        <p className="mb-5 text-sm leading-relaxed text-white/80 sm:text-base">
                                             <TextWithDictionaryLinks
                                                 text={currentQuestion.explanation}
                                                 entries={dictEntries}
@@ -654,18 +654,18 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                             />
                                         </p>
                                     )}
-                                    <div className="flex flex-col sm:flex-row gap-4">
+                                    <div className="flex flex-col gap-3 sm:flex-row">
                                         {currentQuestion?.related_learn_id && (
                                             <Button 
                                                 variant="outline"
-                                                className="flex-1 rounded-2xl h-14 font-bold border-white/20 text-white hover:bg-white/10 text-lg"
+                                                className="h-11 flex-1 rounded-xl border-white/20 font-bold text-white hover:bg-white/10"
                                                 onClick={() => onNavigate?.('paquesepas')}
                                             >
                                                 Saber más
                                             </Button>
                                         )}
                                         <Button 
-                                            className="flex-1 rounded-2xl h-14 font-bold bg-white text-slate-900 hover:bg-white/90 border-none shadow-lg text-lg" 
+                                            className="h-11 flex-1 rounded-xl border-none bg-white font-bold text-slate-900 shadow-lg hover:bg-white/90"
                                             onClick={handleNext}
                                         >
                                             Siguiente

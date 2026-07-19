@@ -37,17 +37,17 @@ export function SolidBrandPin({ className = '', fallback }: SolidBrandPinProps) 
 
       const pinShape = new THREE.Shape();
       pinShape.moveTo(0, -2.28);
-      pinShape.bezierCurveTo(-0.42, -1.75, -1.48, -0.68, -1.52, 0.43);
-      pinShape.bezierCurveTo(-1.57, 1.68, -0.82, 2.38, 0, 2.38);
-      pinShape.bezierCurveTo(0.82, 2.38, 1.57, 1.68, 1.52, 0.43);
-      pinShape.bezierCurveTo(1.48, -0.68, 0.42, -1.75, 0, -2.28);
+      pinShape.bezierCurveTo(-0.56, -1.72, -1.82, -0.65, -1.87, 0.48);
+      pinShape.bezierCurveTo(-1.93, 1.7, -1.02, 2.38, 0, 2.38);
+      pinShape.bezierCurveTo(1.02, 2.38, 1.93, 1.7, 1.87, 0.48);
+      pinShape.bezierCurveTo(1.82, -0.65, 0.56, -1.72, 0, -2.28);
 
       const heartHole = new THREE.Path();
       heartHole.moveTo(0, 0.25);
-      heartHole.bezierCurveTo(0.68, 0.79, 0.9, 1.08, 0.9, 1.38);
-      heartHole.bezierCurveTo(0.9, 1.72, 0.5, 1.91, 0, 1.49);
-      heartHole.bezierCurveTo(-0.5, 1.91, -0.9, 1.72, -0.9, 1.38);
-      heartHole.bezierCurveTo(-0.9, 1.08, -0.68, 0.79, 0, 0.25);
+      heartHole.bezierCurveTo(0.74, 0.79, 0.98, 1.08, 0.98, 1.38);
+      heartHole.bezierCurveTo(0.98, 1.72, 0.55, 1.91, 0, 1.49);
+      heartHole.bezierCurveTo(-0.55, 1.91, -0.98, 1.72, -0.98, 1.38);
+      heartHole.bezierCurveTo(-0.98, 1.08, -0.74, 0.79, 0, 0.25);
       pinShape.holes.push(heartHole);
 
       const depth = 0.58;

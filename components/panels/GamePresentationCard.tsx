@@ -63,11 +63,11 @@ export const GamePresentationCard: React.FC<GamePresentationCardProps> = ({
                 <div className="grid grid-cols-2 gap-2 text-[0.7rem] font-semibold text-white/90">
                     <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1.5 backdrop-blur-md">
                         <Gamepad2 className="h-3.5 w-3.5 text-amber-300" />
-                        <span>3 modos</span>
+                        <span>5 formas de jugar</span>
                     </div>
                     <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1.5 backdrop-blur-md">
                         <MapPinned className="h-3.5 w-3.5 text-amber-300" />
-                        <span>Ciudades y regiones</span>
+                        <span>Cali y el mundo</span>
                     </div>
                 </div>
 

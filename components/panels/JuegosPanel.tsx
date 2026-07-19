@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Game, GameTheme, gamesService } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, CalendarDays, Info, Flame, Timer, ChevronRight, Music, Mic2, Headphones, Swords, Sparkles, MapPinned, Zap } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, CalendarDays, Info, Timer, ChevronRight, ChevronLeft, Music, Mic2, Headphones, Swords, Sparkles, MapPinned, Zap, Globe2, Languages, BookOpen } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
@@ -29,7 +29,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
     const [modeChoiceGame, setModeChoiceGame] = useState<Game | null>(null);
     const [themeChoices, setThemeChoices] = useState<GameTheme[]>([]);
-    const [selectedTheme, setSelectedTheme] = useState('all');
+    const [modeMenuView, setModeMenuView] = useState<'modes' | 'places'>('modes');
     const [showDaily, setShowDaily] = useState(false);
     const [musicContent, setMusicContent] = useState<Banner | null>(null);
     const [storiesContent, setStoriesContent] = useState<Banner | null>(null);
@@ -40,9 +40,9 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
             game_type: game.type,
             has_mode_choice: game.type === 'trivia'
         });
-        // Las trivias ofrecen elegir modo (corto por niveles / Leyenda). El resto arranca directo.
+        // Las trivias ofrecen un selector directo de modos y recorridos temáticos.
         if (game.type === 'trivia') {
-            setSelectedTheme('all');
+            setModeMenuView('modes');
             setModeChoiceGame(game);
             setThemeChoices(await gamesService.getGameThemes(game.id));
         }
@@ -154,7 +154,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                 game={game}
                                 imageSrc="/images/games/trivia-go-andi-card-v1.png"
                                 title="TRIVIA GO"
-                                description="Viaja por ciudades y regiones, elige tu desafío y descubre algo inesperado en cada respuesta junto a Andi."
+                                description="Recorre el mundo con preguntas de cultura, ciencia, lugares e historias. Elige un modo y descubre algo nuevo con Andi."
                                 onInstructions={() => setActiveInstructionsGame(game)}
                                 onPlay={() => launchGame(game)}
                             />
@@ -270,9 +270,9 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             <div className="relative min-h-[7.2rem] overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-700 via-purple-700 to-fuchsia-600 p-4 text-white shadow-sm">
                                 <Sparkles className="absolute -right-3 -top-3 h-20 w-20 text-white/10" />
                                 <p className="text-[10px] font-black uppercase tracking-[0.16em] text-violet-100">Tú eliges el ritmo</p>
-                                <h3 className="mt-1 font-black">Tres formas de jugar</h3>
+                                <h3 className="mt-1 font-black">Elige tu próxima partida</h3>
                                 <div className="mt-3 flex flex-wrap gap-1.5 text-[0.68rem] font-bold">
-                                    <span className="rounded-full bg-white/15 px-2.5 py-1">🔥 Leyenda</span>
+                                    <span className="rounded-full bg-white/15 px-2.5 py-1">📖 Historia</span>
                                     <span className="rounded-full bg-white/15 px-2.5 py-1">⏱ Contrarreloj</span>
                                     <span className="rounded-full bg-white/15 px-2.5 py-1">⚔️ Duelo</span>
                                 </div>
@@ -281,9 +281,9 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             <div className="flex min-h-[7.2rem] items-start gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 shadow-sm sm:col-span-2 lg:col-span-1">
                                 <div className="rounded-xl bg-emerald-100 p-2.5 text-emerald-700"><MapPinned className="h-5 w-5" /></div>
                                 <div>
-                                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">Explora por experiencia</p>
-                                    <h3 className="mt-1 font-black text-foreground">El Valle ahora está dentro de TRIVIA GO</h3>
-                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Al jugar podrás elegir la selección general, Valle del Cauca o vocabulario caleño.</p>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">El mundo también se juega</p>
+                                    <h3 className="mt-1 font-black text-foreground">Pon a prueba lo que sabes de cada lugar</h3>
+                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Viaja con preguntas de Cali, el Valle, Colombia y el mundo, o atrévete con el vocabulario caleño.</p>
                                 </div>
                             </div>
                         </aside>
@@ -324,73 +324,132 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
             )}
 
             <Dialog open={!!modeChoiceGame} onOpenChange={(open) => !open && setModeChoiceGame(null)}>
-                <DialogContent className="max-h-[92vh] max-w-md overflow-y-auto">
-                    <DialogHeader>
-                        <DialogTitle>¿Cómo querés jugar?</DialogTitle>
-                        <DialogDescription>Elige una experiencia y después tu modo de juego.</DialogDescription>
-                    </DialogHeader>
-                    {themeChoices.some(theme => theme.isCampaign) && (
-                        <div>
-                            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">Experiencia</p>
-                            <div className="flex flex-wrap gap-2">
+                <DialogContent className="max-h-[92vh] max-w-lg overflow-y-auto p-0">
+                    <div className="relative overflow-hidden bg-gradient-to-br from-[#073c43] via-[#08705d] to-[#14a866] px-5 py-4 text-white">
+                        <DialogHeader className="max-w-[68%] text-left">
+                            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-300">Andi te acompaña</p>
+                            <DialogTitle className="mt-1 text-2xl font-black text-white">
+                                {modeMenuView === 'places' ? 'Elige un lugar' : 'Elige un modo de juego'}
+                            </DialogTitle>
+                            <DialogDescription className="mt-1 text-sm text-white/80">
+                                {modeMenuView === 'places'
+                                    ? '¿De qué parte del mundo quieres poner a prueba tus conocimientos?'
+                                    : 'Una elección y listo: cada partida tiene su propio ritmo.'}
+                            </DialogDescription>
+                        </DialogHeader>
+                        <img
+                            src="/brand/andi/andi-app-mark-512.png"
+                            alt="Andi te ayuda a elegir una partida."
+                            className="absolute -bottom-3 right-3 h-28 w-28 rounded-full object-cover shadow-2xl ring-2 ring-white/30"
+                            loading="eager"
+                            decoding="async"
+                        />
+                    </div>
+                    <div className="space-y-2.5 p-4">
+                    {modeMenuView === 'places' ? (
+                        <>
+                            <button
+                                type="button"
+                                onClick={() => setModeMenuView('modes')}
+                                className="mb-1 inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground"
+                            >
+                                <ChevronLeft className="h-4 w-4" /> Volver a los modos
+                            </button>
+                            {themeChoices.filter(theme => theme.kind === 'place').map(theme => (
                                 <button
+                                    key={theme.key}
                                     type="button"
-                                    onClick={() => setSelectedTheme('all')}
-                                    className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${selectedTheme === 'all' ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background hover:border-primary/50'}`}
+                                    onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', theme.key); }}
+                                    className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-emerald-500 hover:bg-emerald-500/5"
                                 >
-                                    Selección general
+                                    <div className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-600"><MapPinned className="h-5 w-5" /></div>
+                                    <div className="flex-1">
+                                        <div className="font-bold">¿Qué tanto sabes de {theme.label}?</div>
+                                        <div className="text-xs text-muted-foreground">15 preguntas para recorrer sus lugares, historias y cultura.</div>
+                                    </div>
+                                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
                                 </button>
-                                {themeChoices.filter(theme => theme.isCampaign).map(theme => (
-                                    <button
-                                        key={theme.key}
-                                        type="button"
-                                        onClick={() => setSelectedTheme(theme.key)}
-                                        className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-colors ${selectedTheme === theme.key ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background hover:border-primary/50'}`}
-                                    >
-                                        {theme.label}
-                                    </button>
-                                ))}
-                            </div>
-                            <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">La experiencia elegida se aplica a Leyenda y Contrarreloj. En Duelo, las preguntas pueden mezclar todos los recorridos.</p>
-                        </div>
-                    )}
-                    <div className="space-y-3">
+                            ))}
+                        </>
+                    ) : (
+                        <>
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend', selectedTheme); }}
-                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-orange-500 hover:bg-orange-500/5"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', 'world_general'); }}
+                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-emerald-500 hover:bg-emerald-500/5"
                         >
-                            <div className="rounded-xl bg-orange-500/10 p-3 text-orange-500"><Flame className="h-6 w-6" /></div>
+                            <div className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-600"><Globe2 className="h-5 w-5" /></div>
                             <div className="flex-1">
-                                <div className="font-bold">Modo Leyenda</div>
-                                <div className="text-sm text-muted-foreground">Nivel tras nivel, sin final a la vista y solo 3 vidas. Pocos llegan lejos… ¿te la jugás por ser leyenda?</div>
+                                <div className="font-bold">Partida clásica</div>
+                                <div className="text-xs text-muted-foreground">15 preguntas para viajar por culturas, ciencia, historia y lugares del mundo.</div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-muted-foreground" />
                         </button>
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'timed', selectedTheme); }}
-                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-sky-500 hover:bg-sky-500/5"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend', 'world_general'); }}
+                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-orange-500 hover:bg-orange-500/5"
                         >
-                            <div className="rounded-xl bg-sky-500/10 p-3 text-sky-500"><Timer className="h-6 w-6" /></div>
+                            <div className="rounded-xl bg-orange-500/10 p-2.5 text-orange-500"><BookOpen className="h-5 w-5" /></div>
+                            <div className="flex-1">
+                                <div className="font-bold">Historia</div>
+                                <div className="text-xs text-muted-foreground">Avanza capítulo a capítulo, cuida tus 3 vidas y llega tan lejos como puedas.</div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'timed', 'world_general'); }}
+                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-sky-500 hover:bg-sky-500/5"
+                        >
+                            <div className="rounded-xl bg-sky-500/10 p-2.5 text-sky-500"><Timer className="h-5 w-5" /></div>
                             <div className="flex-1">
                                 <div className="font-bold">Contrarreloj</div>
-                                <div className="text-sm text-muted-foreground">2 minutos, 15 preguntas y un solo error te saca. Llegá al final y duplicás todo. ¿Le corrés al reloj?</div>
+                                <div className="text-xs text-muted-foreground">2 minutos, 15 preguntas y un solo error: piensa rápido y llega al final.</div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-muted-foreground" />
                         </button>
                         <button
                             type="button"
                             onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) window.dispatchEvent(new CustomEvent('start-duel', { detail: { gameId: g.id } })); }}
-                            className="flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-colors hover:border-primary hover:bg-primary/5"
+                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5"
                         >
-                            <div className="rounded-xl bg-primary/10 p-3 text-primary"><Swords className="h-6 w-6" /></div>
+                            <div className="rounded-xl bg-primary/10 p-2.5 text-primary"><Swords className="h-5 w-5" /></div>
                             <div className="flex-1">
-                                <div className="font-bold">Duelo · Retar a un amigo</div>
-                                <div className="text-sm text-muted-foreground">10 preguntas, 25s cada una y 3 minutos en total. Jugás vos primero y luego mandás el reto: gana quien más sepa.</div>
+                                <div className="font-bold">Duelo</div>
+                                <div className="text-xs text-muted-foreground">Responde 10 preguntas, comparte el reto y descubre quién conoce más.</div>
                             </div>
                             <ChevronRight className="h-5 w-5 text-muted-foreground" />
                         </button>
+                        <button
+                            type="button"
+                            onClick={() => setModeMenuView('places')}
+                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-amber-500 hover:bg-amber-500/5"
+                        >
+                            <div className="rounded-xl bg-amber-500/10 p-2.5 text-amber-600"><MapPinned className="h-5 w-5" /></div>
+                            <div className="flex-1">
+                                <div className="font-bold">Jugar por lugar</div>
+                                <div className="text-xs text-muted-foreground">Elige un país, una región o una ciudad y demuestra cuánto conoces.</div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        </button>
+                        {themeChoices.filter(theme => theme.kind === 'topic').map(theme => (
+                            <button
+                                key={theme.key}
+                                type="button"
+                                onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', theme.key); }}
+                                className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-violet-500 hover:bg-violet-500/5"
+                            >
+                                <div className="rounded-xl bg-violet-500/10 p-2.5 text-violet-600"><Languages className="h-5 w-5" /></div>
+                                <div className="flex-1">
+                                    <div className="font-bold">{theme.label}</div>
+                                    <div className="text-xs text-muted-foreground">Palabras y expresiones para hablar como se habla en Cali.</div>
+                                </div>
+                                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            </button>
+                        ))}
+                        </>
+                    )}
                     </div>
                 </DialogContent>
             </Dialog>

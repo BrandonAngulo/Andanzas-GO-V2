@@ -89,12 +89,16 @@ export interface GameTheme {
     key: string;
     label: string;
     isCampaign: boolean;
+    kind: 'place' | 'topic' | 'category';
 }
 
 const campaignLabel = (campaign: string) => {
     const knownLabels: Record<string, string> = {
         vocabulario: 'Vocabulario caleño',
+        city_cali: 'Cali',
         region_valle_del_cauca: 'Valle del Cauca',
+        country_colombia: 'Colombia',
+        world_general: 'Mundo',
     };
 
     return knownLabels[campaign]
@@ -158,12 +162,14 @@ export const gamesService = {
                     key: campaign,
                     label: campaignLabel(campaign),
                     isCampaign: true,
+                    kind: campaign === 'vocabulario' ? 'topic' : 'place',
                 });
             } else if (cat) {
                 map.set(`category:${cat}`, {
                     key: cat,
                     label: cat,
                     isCampaign: false,
+                    kind: 'category',
                 });
             }
         }

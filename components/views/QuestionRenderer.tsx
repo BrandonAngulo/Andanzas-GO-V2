@@ -78,20 +78,20 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
         const palette = deriveOptionPalette(accent);
         return (
             <div className="w-full">
-                {label && <p className="text-xs uppercase tracking-widest font-bold text-white/40 mb-4">{label}</p>}
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                {label && <p className="mb-3 text-[0.68rem] font-bold uppercase tracking-widest text-white/40">{label}</p>}
+                <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
                     {question.options.map((opt: string, idx: number) => (
                         <Button
                             key={idx}
                             variant="outline"
-                            className={`w-full justify-start text-left h-auto py-5 px-6 rounded-2xl border-2 transition-all duration-300 ${stateClassFor(opt === question.correct_answer, opt === selectedAnswer)} ${!isChecking ? 'hover:scale-[1.02]' : ''}`}
+                            className={`h-auto w-full justify-start rounded-xl border-2 px-4 py-3.5 text-left transition-all duration-300 ${stateClassFor(opt === question.correct_answer, opt === selectedAnswer)} ${!isChecking ? 'hover:scale-[1.01]' : ''}`}
                             onClick={() => !isChecking && onSubmit(opt)}
                             disabled={isChecking}
                         >
-                            <span className="mr-5 w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                                <ShapeIcon shapeIndex={idx} color={palette[idx % palette.length]} />
+                            <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/10">
+                                <ShapeIcon shapeIndex={idx} color={palette[idx % palette.length]} size={18} />
                             </span>
-                            <span className="text-base sm:text-lg font-semibold whitespace-normal">{opt}</span>
+                            <span className="whitespace-normal text-sm font-semibold sm:text-base">{opt}</span>
                         </Button>
                     ))}
                 </div>
@@ -137,34 +137,34 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
 
         return (
             <div className="w-full">
-                <p className="text-xs uppercase tracking-widest font-bold text-white/40 mb-4">Selecciona todas las que correspondan</p>
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 mb-6">
+                <p className="mb-3 text-[0.68rem] font-bold uppercase tracking-widest text-white/40">Selecciona todas las que correspondan</p>
+                <div className="mb-4 grid w-full grid-cols-1 gap-3 md:grid-cols-2">
                     {opts.map((opt, idx) => {
                         const isSelected = isChecking ? submittedSet.includes(opt) : draftMulti.includes(opt);
                         return (
                             <Button
                                 key={idx}
                                 variant="outline"
-                                className={`w-full justify-start text-left h-auto py-5 px-6 rounded-2xl border-2 transition-all duration-300 ${stateClassFor(correctSet.includes(opt), isSelected)}`}
+                                className={`h-auto w-full justify-start rounded-xl border-2 px-4 py-3.5 text-left transition-all duration-300 ${stateClassFor(correctSet.includes(opt), isSelected)}`}
                                 onClick={() => toggle(opt)}
                                 disabled={isChecking}
                             >
-                                <span className="mr-5 w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 relative">
-                                    <ShapeIcon shapeIndex={idx} color={palette[idx % palette.length]} />
+                                <span className="relative mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/10">
+                                    <ShapeIcon shapeIndex={idx} color={palette[idx % palette.length]} size={18} />
                                     {isSelected && (
                                         <span className="absolute -top-1 -right-1 bg-white rounded-full p-0.5">
                                             <Check className="w-3 h-3 text-slate-900" />
                                         </span>
                                     )}
                                 </span>
-                                <span className="text-base sm:text-lg font-semibold whitespace-normal">{opt}</span>
+                                <span className="whitespace-normal text-sm font-semibold sm:text-base">{opt}</span>
                             </Button>
                         );
                     })}
                 </div>
                 {!isChecking && (
                     <Button
-                        className="w-full rounded-2xl h-14 font-bold bg-white text-slate-900 hover:bg-white/90 border-none shadow-lg text-lg"
+                        className="h-11 w-full rounded-xl border-none bg-white font-bold text-slate-900 shadow-lg hover:bg-white/90"
                         disabled={draftMulti.length === 0}
                         onClick={() => onSubmit(draftMulti)}
                     >
@@ -230,7 +230,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
 
                 {!isChecking && (
                     <Button
-                        className="w-full rounded-2xl h-14 font-bold bg-white text-slate-900 hover:bg-white/90 border-none shadow-lg text-lg"
+                        className="h-11 w-full rounded-xl border-none bg-white font-bold text-slate-900 shadow-lg hover:bg-white/90"
                         disabled={remaining.length > 0}
                         onClick={() => onSubmit(draftOrder)}
                     >
@@ -311,7 +311,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
 
                 {!isChecking && (
                     <Button
-                        className="w-full rounded-2xl h-14 font-bold bg-white text-slate-900 hover:bg-white/90 border-none shadow-lg text-lg"
+                        className="h-11 w-full rounded-xl border-none bg-white font-bold text-slate-900 shadow-lg hover:bg-white/90"
                         disabled={Object.keys(draftMatch).length < left.length}
                         onClick={() => onSubmit(draftMatch)}
                     >
