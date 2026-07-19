@@ -10,6 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import Logo from '../layout/Logo';
 
 interface OnboardingModalProps {
     isOpen: boolean;
@@ -114,95 +115,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
             case 0:
                 return (
                     <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500 py-4">
-                        <style>{`
-                            @keyframes spin-horizontal {
-                                0% { transform: rotateY(0deg); }
-                                100% { transform: rotateY(360deg); }
-                            }
-                        `}</style>
                         <div className="text-center space-y-4">
-                            {/* Custom Animated Logo - Premium Horizontal Layout */}
-                            <div className="flex flex-row items-center justify-center gap-6 select-none py-6">
-                                {/* Animated Marker 3D Stack */}
-                                <div style={{
-                                    perspective: '1000px',
-                                    width: '72px',
-                                    height: '86px',
-                                    position: 'relative',
-                                    transformStyle: 'preserve-3d'
-                                }}>
-                                    <div style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        position: 'relative',
-                                        transformStyle: 'preserve-3d',
-                                        animation: 'spin-horizontal 7s linear infinite'
-                                    }}>
-                                        {/* Helper function to generate SVG layers for thickness */}
-                                        {[...Array(6)].map((_, i) => {
-                                            const isOuterFace = i === 0 || i === 5;
-                                            return (
-                                                <svg
-                                                    key={i}
-                                                    width="72"
-                                                    height="86"
-                                                    viewBox="0 0 32 38"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: 0,
-                                                        left: 0,
-                                                        transform: `translateZ(${-i}px)`,
-                                                        filter: isOuterFace ? 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' : 'none',
-                                                        backfaceVisibility: 'visible'
-                                                    }}
-                                                >
-                                                    {i === 0 && ( /* Gradients defined once */
-                                                        <defs>
-                                                            <linearGradient id="markerGradientFront" x1="0" y1="0" x2="32" y2="38" gradientUnits="userSpaceOnUse">
-                                                                <stop offset="0%" stopColor="#5EEAD4" /> {/* Teal-300 Bright */}
-                                                                <stop offset="100%" stopColor="#0F766E" /> {/* Teal-700 */}
-                                                            </linearGradient>
-                                                        </defs>
-                                                    )}
-
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        clipRule="evenodd"
-                                                        d="M16 38C16 38 0 25.3333 0 15.8333C0 7.08832 7.16344 0 16 0C24.8366 0 32 7.08832 32 15.8333C32 25.3333 16 38 16 38ZM16 20.8C19.5 17.5 23 14 23 11.2C23 8.8 21.2 7 18.8 7C17.4 7 16.5 7.8 16 8.5C15.5 7.8 14.6 7 13.2 7C10.8 7 9 8.8 9 11.2C9 14 12.5 17.5 16 20.8Z"
-                                                        fill={isOuterFace ? "url(#markerGradientFront)" : "#115E59"}
-                                                        stroke={isOuterFace ? "rgba(255,255,255,0.4)" : "none"}
-                                                        strokeWidth={isOuterFace ? "0.5" : "0"}
-                                                    />
-
-                                                    {/* Gloss only on outer faces */}
-                                                    {isOuterFace && (
-                                                        <path
-                                                            d="M16 0C7.16344 0 0 7.08832 0 15.8333C0 17 0.1 18.1 0.4 19.2C1.5 10 8 3 16 3C24 3 30.5 10 31.6 19.2C31.9 18.1 32 17 32 15.8333C32 7.08832 24.8366 0 16 0Z"
-                                                            fill="white"
-                                                            fillOpacity="0.2"
-                                                        />
-                                                    )}
-                                                </svg>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                {/* Static Text */}
-                                <span
-                                    className="font-black text-6xl tracking-tight drop-shadow-sm pb-1"
-                                    style={{
-                                        background: 'linear-gradient(135deg, #F97316 0%, #C2410C 100%)',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent',
-                                        backgroundClip: 'text',
-                                        fontFamily: "'Outfit', 'Inter', system-ui, sans-serif"
-                                    }}
-                                >
-                                    GO
-                                </span>
+                            <div className="flex justify-center py-6">
+                                <Logo animated variant="hero" />
                             </div>
 
                             <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">

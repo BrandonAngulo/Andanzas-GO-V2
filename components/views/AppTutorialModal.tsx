@@ -101,7 +101,7 @@ export function AppTutorialModal() {
                         {currentStep === 0 ? (
                             /* Logo Vivo Animation for Step 1 */
                             <div className="flex items-center justify-center p-4">
-                                <Logo animated={true} />
+                                <Logo animated variant="hero" />
                             </div>
                         ) : (
                             <div className="h-20 w-20 rounded-3xl bg-gradient-to-br from-white/10 to-transparent border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex items-center justify-center backdrop-blur-md relative overflow-hidden group">

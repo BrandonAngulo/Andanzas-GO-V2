@@ -1,33 +1,31 @@
-import React from 'react';
+import { BrandPin } from './BrandPin';
 
 interface LogoProps {
   animated?: boolean;
+  variant?: 'header' | 'hero';
 }
 
-const Logo: React.FC<LogoProps> = ({ animated = false }) => (
-  <div className="flex select-none items-center gap-2" aria-label="Andanzas GO">
+function Logo({ animated = false, variant = 'header' }: LogoProps) {
+  const isHero = variant === 'hero';
+
+  return (
     <div
-      className={`relative h-11 w-11 shrink-0 overflow-hidden rounded-[0.9rem] border border-emerald-900/10 bg-emerald-700 shadow-md ${
-        animated ? 'animate-[andi-breathe_2.8s_ease-in-out_infinite]' : ''
-      }`}
+      className={`flex select-none items-center ${isHero ? 'gap-6 py-3' : 'gap-2'}`}
+      aria-label="Andanzas GO"
     >
-      <style>{`
-        @keyframes andi-breathe {
-          0%, 100% { transform: translateY(0) rotate(-1deg); }
-          50% { transform: translateY(-2px) rotate(1deg); }
-        }
-      `}</style>
-      <img
-        src="/brand/andi/andi-app-mark-512.png"
-        alt=""
-        className="h-full w-full object-cover"
-        decoding="async"
+      <BrandPin
+        animated={animated}
+        className={isHero ? 'h-[5.4rem] w-[4.55rem] shrink-0' : 'h-11 w-[2.35rem] shrink-0'}
       />
-    </div>
-    <span className="ml-0.5 bg-gradient-to-r from-orange-500 to-primary bg-clip-text pr-1 font-heading text-2xl font-black tracking-tighter text-transparent">
+      <span
+        className={`bg-gradient-to-br from-orange-500 via-amber-500 to-emerald-600 bg-clip-text pr-1 font-heading font-black tracking-tighter text-transparent ${
+          isHero ? 'text-6xl' : 'text-2xl'
+        }`}
+      >
       GO
-    </span>
-  </div>
-);
+      </span>
+    </div>
+  );
+}
 
 export default Logo;
