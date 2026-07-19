@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LearnEntry } from '../../types';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
-import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints, Lightbulb, Library, Headphones, RefreshCw } from 'lucide-react';
+import { BookOpen, MapPin, ChevronRight, Hash, Sparkles, Footprints, Lightbulb, Library, Headphones, RefreshCw, CalendarDays } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getTranslated } from '../../lib/utils';
 import { Badge } from '../ui/badge';
@@ -10,6 +10,7 @@ import { TextWithLearnLinks } from '../shared/TextWithLearnLinks';
 import { Game, gamesService } from '../../services/games.service';
 import { Gamepad2, Quote } from 'lucide-react';
 import { PanelBanner } from './shared/PanelBanner';
+import { DailyQuestion } from '../views/DailyQuestion';
 
 interface PaQueSepasPanelProps {
     entries: LearnEntry[];
@@ -24,6 +25,7 @@ interface PaQueSepasPanelProps {
 const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, isLoading, initialEntryId, onInitialConsumed, dictionaryVisible, onOpenDictionary }) => {
     const { t, language } = useI18n();
     const [selectedEntry, setSelectedEntry] = useState<LearnEntry | null>(null);
+    const [showDaily, setShowDaily] = useState(false);
     const [relatedGames, setRelatedGames] = useState<Game[]>([]);
     const [factIndex, setFactIndex] = useState(0);
     const storiesRef = React.useRef<HTMLDivElement>(null);
@@ -215,6 +217,20 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     andiMessage="Cada historia puede cambiar la forma de recorrer un lugar. Elegí la que más te intrigue y, cuando salgas, buscá sus huellas en la ciudad."
                     andiActionLabel="Explorar historias"
                 />
+
+                <button
+                    type="button"
+                    onClick={() => setShowDaily(true)}
+                    className="mb-8 flex w-full items-center gap-4 rounded-3xl border-2 border-primary/20 bg-gradient-to-r from-primary/10 to-fuchsia-500/10 p-4 text-left transition-all hover:border-primary/50 hover:shadow-lg"
+                >
+                    <div className="rounded-2xl bg-primary/15 p-3 text-primary"><CalendarDays className="h-6 w-6" /></div>
+                    <div className="flex-1">
+                        <div className="font-bold">Pregunta del día</div>
+                        <div className="text-sm text-muted-foreground">Poné a prueba lo que sabés de la ciudad y sumá a tu racha 🔥</div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                </button>
+                {showDaily && <DailyQuestion onClose={() => setShowDaily(false)} />}
 
                 <section className="mb-8">
                     <div className="mb-4"><p className="text-xs font-bold uppercase tracking-widest text-indigo-600">Herramientas para aprender</p><h2 className="text-2xl font-bold">Explorá la ciudad desde distintas voces</h2></div>

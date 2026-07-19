@@ -18,7 +18,12 @@ export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) =>
     useEffect(() => {
         (async () => {
             try { setData(await dailyService.getDaily()); }
-            catch (e: any) { setError(String(e?.message || '').includes('NO_QUESTIONS') ? 'Aún no hay pregunta del día disponible.' : 'No se pudo cargar la pregunta del día.'); }
+            catch (e: any) {
+                const m = String(e?.message || '');
+                setError(m.includes('AUTH_REQUIRED') ? 'Inicia sesión para responder la pregunta del día.'
+                    : m.includes('NO_QUESTIONS') ? 'Aún no hay pregunta del día disponible.'
+                    : 'No se pudo cargar la pregunta del día.');
+            }
             finally { setLoading(false); }
         })();
     }, []);

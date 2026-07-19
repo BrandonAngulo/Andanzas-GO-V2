@@ -77,7 +77,7 @@ export function AndiGuia({
             size="icon"
             aria-label={`Abrir guía: ${resolvedTitle}`}
             className={cn(
-              'group relative h-14 w-14 shrink-0 overflow-visible !rounded-full border-2 p-1.5 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl',
+              'group relative h-14 w-14 shrink-0 overflow-visible !rounded-full border p-0.5 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl',
               styles.button,
             )}
           >
