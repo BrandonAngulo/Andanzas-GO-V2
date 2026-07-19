@@ -169,6 +169,9 @@ export default function App() {
   // --- Local UI State ---
   const [openMenu, setOpenMenu] = useState(false);
   const [activePanel, setActivePanel] = useState<ActivePanelType>("mapa");
+  // Ref siempre actualizado al panel actual (para leerlo desde listeners con deps []).
+  const activePanelRef = useRef<ActivePanelType>("mapa");
+  activePanelRef.current = activePanel;
   const [fullView, setFullView] = useState<{ type: string; data: any } | null>(null);
   useEffect(() => {
     if (!window.history.state?.andanzasPanel) {
@@ -176,7 +179,9 @@ export default function App() {
     }
     const handlePopState = (event: PopStateEvent) => {
       const destination = event.state?.andanzasPanel as ActivePanelType | undefined;
-      setActivePanel(destination || 'mapa');
+      // Al cerrar un overlay de detalle (sitio/evento/ruta) la entrada de historial no
+      // lleva panel: conservar el panel actual (el de origen) en vez de saltar al mapa.
+      setActivePanel(destination ?? activePanelRef.current);
       setFullView(null);
     };
     window.addEventListener('popstate', handlePopState);
@@ -693,8 +698,12 @@ export default function App() {
               {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && <DictionaryPanel />}
               {activePanel === 'admin' && <AdminDashboard />}
 
-              {/* Full View inside CardContent */}
-              {fullView && ["site", "event", "route"].includes(fullView.type) && <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />}
+              {/* Full View: overlay que cubre el panel dentro del CardContent (no debajo). */}
+              {fullView && ["site", "event", "route"].includes(fullView.type) && (
+                <div className="absolute inset-0 z-20 overflow-y-auto bg-background">
+                <FullView view={fullView} onClose={closeFull} isFav={(id) => favIds.includes(id)} toggleFav={(id) => toggleFav(id, getSiteById(id)?.nombre || '')} addReview={addReview} addToRoute={(site) => setNewRoutePoints(prev => (prev.find(p => p.id === site.id) ? prev : [...prev, site]))} goToPlaceInMap={goToPlaceInMap} onStartRoute={(r) => { const res = startRoute(r); if (!res) { setAuthDialogOpen(true); } else { if (res === 'started') { setActivePanel('mapa'); } closeFull(); } }} onCompleteRoute={() => { }} routesInProgress={routesInProgress} routesCompleted={routesCompleted} sites={sites} onAuthRequired={() => setAuthDialogOpen(true)} onNavigateToAprende={() => setActivePanel('paquesepas')} />
+                </div>
+              )}
               {fullView && fullView.type === 'challenge_lobby' && <ChallengeLobby challengeId={fullView.data.id} onClose={closeFull} isAuthenticated={isAuthenticated} onAccept={(_gameId, challengeId) => {
                 if (!isAuthenticated) { setAuthDialogOpen(true); return; }
                 closeFull();
