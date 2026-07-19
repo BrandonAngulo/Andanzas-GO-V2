@@ -137,7 +137,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </div>
                         <ChevronRight className="h-5 w-5 text-muted-foreground" />
                     </button>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {games.map(game => {
                     const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';
                     const isTriviaGo =
@@ -152,7 +152,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                                 game={game}
                                 imageSrc="/images/games/trivia-go-andi-card-v1.png"
                                 title="TRIVIA GO"
-                                description="Explora culturas, responde y descubre."
+                                description="¿Cuánto conoces de la ciudad que recorres? Descubre sorpresas, suma puntos y avanza junto a Andi."
                                 onInstructions={() => setActiveInstructionsGame(game)}
                                 onPlay={() => launchGame(game)}
                             />
@@ -279,6 +279,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                     open={!!activeInstructionsGame}
                     onOpenChange={(open) => !open && setActiveInstructionsGame(null)}
                     game={activeInstructionsGame}
+                    onPlay={() => onPlayGame(activeInstructionsGame.id)}
                 />
             )}
 

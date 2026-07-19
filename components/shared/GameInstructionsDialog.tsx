@@ -1,16 +1,38 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { Button } from '../ui/button';
-import { Heart, Flag, Flame, Skull, ShieldAlert, BookOpen, Clock } from 'lucide-react';
+import {
+    BookOpen,
+    CheckCircle2,
+    Clock,
+    Flag,
+    Flame,
+    Heart,
+    Lightbulb,
+    PlayCircle,
+    ShieldAlert,
+    Skull,
+    Trophy,
+} from 'lucide-react';
 import { Game } from '../../services/games.service';
 
 interface GameInstructionsDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     game: Game;
+    onPlay?: () => void;
 }
 
-const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({ open, onOpenChange, game }) => {
+const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
+    open,
+    onOpenChange,
+    game,
+    onPlay,
+}) => {
+    const isTriviaGo =
+        game.id === '81111111-1111-1111-1111-111111111111'
+        || game.slug?.toLowerCase() === 'trivia-cali'
+        || game.title?.toLowerCase() === 'trivia cali';
     
     // Determine mechanic configuration
     let mechanicIcon = <Flag className="w-8 h-8 text-green-500" />;
@@ -37,6 +59,135 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({ open, o
         mechanicDesc = "No hay margen de error. Una sola respuesta incorrecta o tiempo agotado y tu partida terminará instantáneamente.";
         mechanicBg = "bg-purple-500/10";
         mechanicBorder = "border-purple-500/30";
+    }
+
+    const handlePlay = () => {
+        onOpenChange(false);
+        onPlay?.();
+    };
+
+    if (isTriviaGo) {
+        const steps = [
+            {
+                icon: CheckCircle2,
+                title: 'Elige tu respuesta',
+                description: 'Lee la pregunta y confía en lo que sabes.',
+                color: 'text-emerald-600',
+                surface: 'bg-emerald-50',
+            },
+            {
+                icon: Lightbulb,
+                title: 'Descubre algo nuevo',
+                description: 'Cada respuesta abre una historia de la ciudad.',
+                color: 'text-amber-600',
+                surface: 'bg-amber-50',
+            },
+            {
+                icon: Trophy,
+                title: 'Suma y avanza',
+                description: 'Gana puntos y construye tu recorrido con Andi.',
+                color: 'text-violet-600',
+                surface: 'bg-violet-50',
+            },
+        ];
+
+        return (
+            <Dialog open={open} onOpenChange={onOpenChange}>
+                <DialogContent className="max-h-[92vh] overflow-y-auto rounded-[2rem] border-emerald-950/10 bg-[#fbfaf6] p-0 shadow-2xl sm:max-w-2xl">
+                    <div className="relative min-h-[11.5rem] overflow-hidden bg-gradient-to-br from-[#063b42] via-[#086052] to-[#10a866] px-6 py-6 text-white sm:px-8">
+                        <div className="pointer-events-none absolute -left-16 -top-20 h-52 w-52 rounded-full border border-white/10" />
+                        <div className="pointer-events-none absolute left-28 top-12 h-28 w-28 rounded-full border border-amber-300/20" />
+                        <DialogHeader className="relative z-10 mb-0 max-w-[67%] text-left">
+                            <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-300">
+                                Andi te acompaña
+                            </p>
+                            <DialogTitle className="mt-2 text-3xl font-black leading-tight text-white">
+                                Jugar es descubrir
+                            </DialogTitle>
+                            <DialogDescription className="mt-2 text-sm font-medium leading-relaxed text-white/85">
+                                Responde, aprende algo inesperado y sigue explorando la ciudad.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <img
+                            src="/brand/andi/andi-frontal-512.png"
+                            alt="Andi presenta las instrucciones de TRIVIA GO."
+                            className="absolute -bottom-5 right-2 h-[11rem] w-auto object-contain drop-shadow-2xl sm:right-7 sm:h-[12rem]"
+                            loading="eager"
+                            decoding="async"
+                        />
+                    </div>
+
+                    <div className="space-y-4 p-5 sm:p-6">
+                        <div className="grid gap-3 sm:grid-cols-3">
+                            {steps.map((step, index) => {
+                                const Icon = step.icon;
+                                return (
+                                    <div
+                                        key={step.title}
+                                        className="rounded-2xl border border-emerald-950/10 bg-white p-4 shadow-sm"
+                                    >
+                                        <div className="flex items-center gap-3 sm:block">
+                                            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${step.surface}`}>
+                                                <Icon className={`h-5 w-5 ${step.color}`} />
+                                            </div>
+                                            <div className="sm:mt-3">
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                                                    Paso {index + 1}
+                                                </p>
+                                                <h4 className="mt-0.5 text-sm font-black text-emerald-950">
+                                                    {step.title}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                                            {step.description}
+                                        </p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className={`flex items-start gap-3 rounded-2xl border p-4 ${mechanicBorder} ${mechanicBg}`}>
+                            <div className="shrink-0 rounded-xl bg-white p-2 shadow-sm">
+                                {mechanicIcon}
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                                    Regla de esta partida
+                                </p>
+                                <h4 className="mt-0.5 font-black text-foreground">{mechanicTitle}</h4>
+                                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{mechanicDesc}</p>
+                            </div>
+                        </div>
+
+                        {game.instructions && (
+                            <div className="flex items-start gap-3 rounded-2xl border border-border bg-white p-4">
+                                <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                                <div>
+                                    <h4 className="text-sm font-black text-foreground">Tenlo en cuenta</h4>
+                                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                                        {game.instructions}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex flex-col gap-3 border-t border-emerald-950/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                            <p className="text-sm font-semibold text-emerald-950">
+                                No necesitas saberlo todo: la curiosidad también suma.
+                            </p>
+                            <Button
+                                onClick={handlePlay}
+                                className="h-11 shrink-0 rounded-xl bg-primary px-6 font-black text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90"
+                            >
+                                <PlayCircle className="mr-2 h-5 w-5" />
+                                Listo, quiero jugar
+                            </Button>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        );
     }
 
     return (
@@ -99,7 +250,7 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({ open, o
                     </div>
 
                     <Button 
-                        onClick={() => onOpenChange(false)}
+                        onClick={onPlay ? handlePlay : () => onOpenChange(false)}
                         className="w-full h-12 rounded-xl font-bold text-base bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25"
                     >
                         ¡Entendido, a jugar!

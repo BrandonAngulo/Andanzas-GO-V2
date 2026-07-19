@@ -30,7 +30,7 @@ export const GamePresentationCard: React.FC<GamePresentationCardProps> = ({
             : 'Difícil';
 
     return (
-        <Card className="group relative isolate aspect-[8/9] min-h-[31rem] w-full max-w-[28rem] justify-self-center overflow-hidden rounded-[1.6rem] border border-emerald-950/10 bg-emerald-950 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
+        <Card className="group relative isolate h-[27.5rem] w-full max-w-[27rem] self-start justify-self-center overflow-hidden rounded-[1.6rem] border border-emerald-950/10 bg-emerald-950 text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 sm:h-[28rem]">
             <LazyImage
                 src={imageSrc}
                 alt="ANDI piensa frente a una pregunta y tres opciones culturales."
@@ -38,7 +38,7 @@ export const GamePresentationCard: React.FC<GamePresentationCardProps> = ({
             />
 
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/5 to-emerald-950/95" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-[#062f36] via-[#073f42]/95 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[54%] bg-gradient-to-t from-[#062f36] via-[#073f42]/95 to-transparent" />
 
             {isUpcoming && (
                 <div className="absolute left-4 top-4 z-20 inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-amber-950 shadow-lg">
@@ -56,12 +56,12 @@ export const GamePresentationCard: React.FC<GamePresentationCardProps> = ({
                 </div>
             )}
 
-            <CardContent className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-3 p-5 sm:p-6">
+            <CardContent className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-2.5 p-4 sm:p-5">
                 <div>
-                    <h3 className="text-2xl font-black uppercase leading-none tracking-tight drop-shadow-md sm:text-3xl">
+                    <h3 className="text-2xl font-black uppercase leading-none tracking-tight drop-shadow-md">
                         {title}
                     </h3>
-                    <p className="mt-2 max-w-[30ch] text-sm leading-relaxed text-white/85 line-clamp-2">
+                    <p className="mt-1.5 max-w-[40ch] text-[0.82rem] font-medium leading-snug text-white/90 line-clamp-3">
                         {description}
                     </p>
                 </div>
@@ -81,7 +81,7 @@ export const GamePresentationCard: React.FC<GamePresentationCardProps> = ({
                     <div className="grid grid-cols-2 gap-2">
                         <Button
                             variant="outline"
-                            className="h-11 border-white/25 bg-white/95 px-3 font-bold text-emerald-950 shadow-lg hover:bg-white"
+                            className="h-10 border-white/25 bg-white/95 px-3 font-bold text-emerald-950 shadow-lg hover:bg-white"
                             onClick={onInstructions}
                             title="Cómo jugar"
                             aria-label={`Cómo jugar ${title}`}
@@ -90,7 +90,7 @@ export const GamePresentationCard: React.FC<GamePresentationCardProps> = ({
                             Cómo jugar
                         </Button>
                         <Button
-                            className="h-11 bg-primary px-3 font-bold text-primary-foreground shadow-lg hover:bg-primary/90"
+                            className="h-10 bg-primary px-3 font-bold text-primary-foreground shadow-lg hover:bg-primary/90"
                             onClick={onPlay}
                             aria-label={`Jugar ${title}`}
                         >
@@ -99,7 +99,7 @@ export const GamePresentationCard: React.FC<GamePresentationCardProps> = ({
                         </Button>
                     </div>
                 ) : (
-                    <Button className="h-11 w-full shadow-lg" disabled variant="secondary">
+                    <Button className="h-10 w-full shadow-lg" disabled variant="secondary">
                         En preparación
                     </Button>
                 )}
