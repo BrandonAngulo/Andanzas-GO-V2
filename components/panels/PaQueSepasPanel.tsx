@@ -216,20 +216,21 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     andiTitle="Mirá la ciudad con otros ojos"
                     andiMessage="Cada historia puede cambiar la forma de recorrer un lugar. Elegí la que más te intrigue y, cuando salgas, buscá sus huellas en la ciudad."
                     andiActionLabel="Explorar historias"
-                />
-
-                <button
-                    type="button"
-                    onClick={() => setShowDaily(true)}
-                    className="mb-8 flex w-full items-center gap-4 rounded-3xl border-2 border-primary/20 bg-gradient-to-r from-primary/10 to-fuchsia-500/10 p-4 text-left transition-all hover:border-primary/50 hover:shadow-lg"
                 >
-                    <div className="rounded-2xl bg-primary/15 p-3 text-primary"><CalendarDays className="h-6 w-6" /></div>
-                    <div className="flex-1">
-                        <div className="font-bold">Pregunta del día</div>
-                        <div className="text-sm text-muted-foreground">Poné a prueba lo que sabés de la ciudad y sumá a tu racha 🔥</div>
-                    </div>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                </button>
+                    {/* Pregunta del día: ocupa el espacio libre del propio banner, sin agregar una fila. */}
+                    <button
+                        type="button"
+                        onClick={() => setShowDaily(true)}
+                        className="group flex w-full max-w-xl items-center gap-3 rounded-2xl border border-white/50 bg-white/75 px-4 py-2.5 text-left shadow-sm backdrop-blur-sm transition-all hover:bg-white/90 hover:shadow-md dark:border-white/10 dark:bg-slate-900/60 dark:hover:bg-slate-900/80"
+                    >
+                        <div className="shrink-0 rounded-xl bg-primary/15 p-2 text-primary"><CalendarDays className="h-5 w-5" /></div>
+                        <div className="min-w-0 flex-1">
+                            <div className="text-sm font-bold leading-tight">Pregunta del día</div>
+                            <div className="truncate text-xs text-muted-foreground">Poné a prueba lo que sabés y sumá a tu racha 🔥</div>
+                        </div>
+                        <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                    </button>
+                </PanelBanner>
                 {showDaily && <DailyQuestion onClose={() => setShowDaily(false)} />}
 
                 <section className="mb-8">
