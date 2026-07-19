@@ -15,8 +15,8 @@ export const HelpBody: React.FC<{ text: string }> = ({ text }) => {
     const flushBullets = () => {
         if (bullets.length) {
             blocks.push(
-                <ul key={`ul-${blocks.length}`} className="list-disc pl-5 space-y-1">
-                    {bullets.map((b, i) => <li key={i}>{b}</li>)}
+                <ul key={`ul-${blocks.length}`} className="list-disc pl-5 space-y-1.5 marker:text-primary">
+                    {bullets.map((b, i) => <li key={i} className="pl-1">{b}</li>)}
                 </ul>
             );
             bullets = [];
@@ -95,11 +95,18 @@ export const InfoHint: React.FC<InfoHintProps> = ({
                     </button>
                 )}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[480px] max-h-[85vh] overflow-y-auto">
-                <DialogHeader>
-                    <DialogTitle>{title}</DialogTitle>
+            <DialogContent className="sm:max-w-[480px] max-h-[85vh] overflow-y-auto rounded-3xl border border-primary/10 shadow-2xl">
+                {/* Sutil acento superior */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/10 to-transparent" />
+                <DialogHeader className="relative">
+                    <DialogTitle className="flex items-center gap-3 text-xl font-extrabold tracking-tight">
+                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
+                            {icon || <HelpCircle className="h-5 w-5" />}
+                        </span>
+                        <span className="pt-0.5">{title}</span>
+                    </DialogTitle>
                 </DialogHeader>
-                <div className="text-sm text-muted-foreground leading-relaxed space-y-3 pt-1">
+                <div className="relative text-[15px] text-foreground/75 leading-relaxed space-y-3 pt-1">
                     {children ?? (body ? <HelpBody text={body} /> : null)}
                 </div>
             </DialogContent>
