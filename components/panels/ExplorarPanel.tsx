@@ -211,55 +211,22 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               {language === 'es' ? 'Imperdibles' : 'Must See'}
             </h3>
           </div>
-          {/* Grid layout: first card tall on desktop, remaining cards shorter */}
+          {/* Grid uniforme: todas las tarjetas del mismo tamaño y alineadas. */}
           {promotedBanners.length === 0 && !bannersLoaded ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[1,2,3].map(i => (
-                <div key={i} className="rounded-2xl bg-muted animate-pulse h-48" />
+                <div key={i} className="rounded-2xl bg-muted animate-pulse h-52" />
               ))}
             </div>
           ) : promotedBanners.length === 0 ? null : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* First banner: large (spans 2 rows on desktop) */}
-              {promotedBanners[0] && (
-                <button
-                  type="button"
-                  className="md:row-span-2 cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all duration-300 text-left"
-                  style={{ minHeight: '320px' }}
-                  onClick={() => handleBannerClick(promotedBanners[0])}
-                >
-                  <LazyImage
-                    src={promotedBanners[0].image_url}
-                    alt={promotedBanners[0].title}
-                    className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-5">
-                    {promotedBanners[0].tag && (
-                      <Badge className="w-fit mb-2 bg-primary/90 text-white border-none text-xs">
-                        {promotedBanners[0].target_type && TARGET_TYPE_ICON[promotedBanners[0].target_type] &&
-                          React.createElement(TARGET_TYPE_ICON[promotedBanners[0].target_type], { className: 'w-3 h-3 inline mr-1' })}
-                        {promotedBanners[0].tag}
-                      </Badge>
-                    )}
-                    <h4 className="text-white font-bold text-xl leading-tight mb-1">{promotedBanners[0].title}</h4>
-                    {promotedBanners[0].subtitle && (
-                      <p className="text-white/80 text-sm">{promotedBanners[0].subtitle}</p>
-                    )}
-                    <div className="mt-3 flex items-center text-xs text-white/60 font-semibold group-hover:text-white transition-colors">
-                      {language === 'es' ? 'Ver más' : 'Learn more'} <ArrowRight className="w-3 h-3 ml-1" />
-                    </div>
-                  </div>
-                </button>
-              )}
-              {/* Remaining banners: normal height */}
-              {promotedBanners.slice(1).map(banner => {
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {promotedBanners.map(banner => {
                 const Icon = banner.target_type ? TARGET_TYPE_ICON[banner.target_type] : null;
                 return (
                   <button
                     type="button"
                     key={banner.id}
-                    className="cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all duration-300 h-48 md:h-auto text-left"
-                    style={{ minHeight: '180px' }}
+                    className="cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all duration-300 h-52 text-left"
                     onClick={() => handleBannerClick(banner)}
                   >
                     <LazyImage
@@ -274,10 +241,13 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
                           {banner.tag}
                         </Badge>
                       )}
-                      <h4 className="text-white font-bold text-base leading-tight mb-0.5">{banner.title}</h4>
+                      <h4 className="text-white font-bold text-lg leading-tight mb-0.5">{banner.title}</h4>
                       {banner.subtitle && (
-                        <p className="text-white/70 text-xs">{banner.subtitle}</p>
+                        <p className="text-white/75 text-xs line-clamp-2">{banner.subtitle}</p>
                       )}
+                      <div className="mt-2 flex items-center text-xs text-white/60 font-semibold group-hover:text-white transition-colors">
+                        {language === 'es' ? 'Ver más' : 'Learn more'} <ArrowRight className="w-3 h-3 ml-1" />
+                      </div>
                     </div>
                   </button>
                 );
