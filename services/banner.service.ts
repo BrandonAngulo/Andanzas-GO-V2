@@ -110,6 +110,16 @@ export const bannerService = {
         }
         return data ? withLegacyAliases(data) : null;
     },
+
+    // Evalúa las reglas de desbloqueo (definidas en cada banner, app_banners.unlock_rule) contra
+    // las métricas del usuario; el servidor persiste y devuelve los nuevos desbloqueos.
+    async syncProfileBannerUnlocks(stats: {
+        reviews: number; saved_routes: number; level: number; routes_completed: number; badges: number;
+    }): Promise<{ unlocked_banners: string[]; newly_unlocked: { id: string; name: string; description: string }[] }> {
+        const { data, error } = await supabase.rpc('sync_profile_banner_unlocks', { p_stats: stats });
+        if (error) throw error;
+        return (data || { unlocked_banners: [], newly_unlocked: [] }) as any;
+    },
 };
 
 // --- Promoted Banners (Imperdibles) ---

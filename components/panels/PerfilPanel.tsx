@@ -371,60 +371,27 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
         }
     }, [user, showInterestsModal]); // Refresh when modal closes (interests might change)
 
-    // Check for banner unlocks based on activity. Cada regla refleja la condición
-    // que se muestra al usuario en la galería (BannerGalleryModal.AVAILABLE_BANNERS).
+    // Desbloqueo de banners: las reglas viven en el PROPIO banner (app_banners.unlock_rule) y
+    // el servidor las evalúa contra las métricas, persiste y devuelve los nuevos. Única fuente
+    // de verdad: agregar/editar banners no requiere tocar este código.
     React.useEffect(() => {
         if (!userProfile) return;
-
         const level = economy?.level || userProfile.level || 1;
-        const savedRoutesCount = userProfile.saved_routes?.length || 0;
-
-        const rules: { id: string; met: boolean; name: string; description: string }[] = [
-            {
-                id: 'banner_bulevar_rio',
-                met: myReviews.length > 0,
-                name: 'Banner: Bulevar del Río',
-                description: '¡Por dejar tu primera reseña has desbloqueado una ilustración exclusiva para tu perfil!'
-            },
-            {
-                id: 'banner_la_ermita',
-                met: savedRoutesCount > 0,
-                name: 'Banner: La Ermita',
-                description: '¡Por guardar tu primera ruta has desbloqueado una ilustración exclusiva para tu perfil!'
-            },
-            {
-                id: 'banner_tres_cruces',
-                met: level >= 3,
-                name: 'Banner: Cerro Tres Cruces',
-                description: '¡Por alcanzar el Nivel 3 de Explorador has desbloqueado una ilustración exclusiva para tu perfil!'
-            },
-            {
-                id: 'banner_torre_cali',
-                met: routesCompletedCount > 0,
-                name: 'Banner: Torre de Cali',
-                description: '¡Por completar tu primera ruta guiada has desbloqueado una ilustración exclusiva para tu perfil!'
-            },
-            {
-                id: 'banner_bulevar_oriente',
-                met: insigniasCount >= 5,
-                name: 'Banner: Bulevar de Oriente',
-                description: '¡Por ganar 5 insignias culturales has desbloqueado una ilustración exclusiva para tu perfil!'
-            },
-        ];
-
-        const alreadyUnlocked = userProfile.unlocked_banners || [];
-        const newlyUnlocked = rules.filter(r => r.met && !alreadyUnlocked.includes(r.id));
-        if (newlyUnlocked.length === 0) return;
-
-        const newUnlocks = [...alreadyUnlocked, ...newlyUnlocked.map(r => r.id)];
-        // Se muestra un solo modal a la vez (el primero desbloqueado en esta pasada).
-        const triggeredUnlock = { type: 'banner' as const, name: newlyUnlocked[0].name, description: newlyUnlocked[0].description };
-
-        userService.updateProfileData(userProfile.id, { unlocked_banners: newUnlocks }).then(() => {
-            setUserProfile(prev => prev ? { ...prev, unlocked_banners: newUnlocks } : null);
-            setUnlockData(triggeredUnlock);
-            setShowUnlockModal(true);
-        });
+        const stats = {
+            reviews: myReviews.length,
+            saved_routes: userProfile.saved_routes?.length || 0,
+            level,
+            routes_completed: routesCompletedCount,
+            badges: insigniasCount,
+        };
+        bannerService.syncProfileBannerUnlocks(stats).then(res => {
+            if (res.newly_unlocked && res.newly_unlocked.length > 0) {
+                setUserProfile(prev => prev ? { ...prev, unlocked_banners: res.unlocked_banners } : null);
+                const first = res.newly_unlocked[0];
+                setUnlockData({ type: 'banner', name: first.name, description: first.description || '¡Desbloqueaste una ilustración exclusiva para tu perfil!' });
+                setShowUnlockModal(true);
+            }
+        }).catch(() => { /* silencioso: no bloquea el perfil */ });
     }, [myReviews.length, userProfile?.saved_routes?.length, economy?.level, routesCompletedCount, insigniasCount]);
 
     const handleDeleteReview = async (reviewId: string) => {
