@@ -10,6 +10,7 @@ import { ConfirmDialog } from '../../ui/confirm-dialog';
 import { Checkbox } from '../../ui/checkbox';
 import { useBulkSelection } from '../../../hooks/useBulkSelection';
 import { BulkActionsBar } from './BulkActionsBar';
+import { AdminModifiers } from './AdminModifiers';
 
 export const AdminJuegos = () => {
     const [games, setGames] = useState<Game[]>([]);
@@ -78,6 +79,7 @@ export const AdminJuegos = () => {
 
     return (
         <div className="space-y-6">
+            <AdminModifiers />
             <ConfirmDialog
                 open={!!deleteId}
                 onOpenChange={(open) => !open && setDeleteId(null)}

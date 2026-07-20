@@ -17,6 +17,7 @@ import { bannerService, Banner } from '../../services/banner.service';
 import { analyticsService } from '../../services/analytics.service';
 import { DailyQuestion } from '../views/DailyQuestion';
 import { WeeklyGoals } from '../views/WeeklyGoals';
+import { modifierService, GameModifier } from '../../services/modifier.service';
 import { GamePresentationCard } from './GamePresentationCard';
 import { isLegacyValleStandalone, isTriviaGo } from '../../lib/gameIdentity';
 
@@ -32,6 +33,8 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [themeChoices, setThemeChoices] = useState<GameTheme[]>([]);
     const [modeMenuView, setModeMenuView] = useState<'modes' | 'places'>('modes');
     const [showDaily, setShowDaily] = useState(false);
+    const [activeModifier, setActiveModifier] = useState<GameModifier | null>(null);
+    useEffect(() => { modifierService.getActive().then(setActiveModifier); }, []);
     const [musicContent, setMusicContent] = useState<Banner | null>(null);
     const [storiesContent, setStoriesContent] = useState<Banner | null>(null);
 
@@ -143,6 +146,16 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                 </div>
                 
                 <TabsContent value="juegos" className="mt-0">
+                    {activeModifier && (
+                        <div className="mb-4 flex items-center gap-3 rounded-2xl border border-amber-400/40 bg-gradient-to-r from-amber-500/15 to-orange-500/15 px-4 py-3">
+                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-400 text-amber-950"><Zap className="h-5 w-5" /></span>
+                            <div className="min-w-0 flex-1">
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">Modificador de la semana</div>
+                                <div className="font-bold leading-tight">{activeModifier.label}</div>
+                                <div className="text-xs text-muted-foreground">{activeModifier.description}</div>
+                            </div>
+                        </div>
+                    )}
                     <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[23rem_minmax(0,1fr)]">
                 {games.map(game => {
                     const isUpcoming = game.status === 'coming_soon' || game.status === 'scheduled';

@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient';
 import { Game, GameQuestion, gamesService } from '../services/games.service';
 import type { EconomySummary } from '../services/gamification.service';
 import { analyticsService } from '../services/analytics.service';
+import { modifierService, GameModifier } from '../services/modifier.service';
 
 export interface GameEngineState {
     game: Game | null;
@@ -95,6 +96,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
     modeRef.current = mode;
     const globalTimerStartedRef = useRef(false);
     const finishedRef = useRef(false); // evita finalizar la partida dos veces (p. ej. reloj + acción del usuario)
+    // Modificador controlado activo (dormido si no hay ninguno). Cambia reglas por un tiempo.
+    const modifierRef = useRef<GameModifier | null>(null);
+    const scaledSeconds = (s: number) => Math.max(3, Math.round((s || 0) * (modifierRef.current?.config?.time_scale ?? 1)));
 
     useEffect(() => {
         if (gameId && userId) {
@@ -107,7 +111,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
     useEffect(() => {
         if (mode === 'timed' && state.sessionId && state.questions.length > 0 && !globalTimerStartedRef.current && !state.isFinished) {
             globalTimerStartedRef.current = true;
-            startGlobalTimer(TIMED_ROUND_SECONDS);
+            startGlobalTimer(scaledSeconds(TIMED_ROUND_SECONDS));
         }
     }, [mode, state.sessionId, state.questions.length, state.isFinished]);
 
@@ -118,7 +122,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 questionStartTimeRef.current = Date.now();
                 return;
             }
-            startTimer(state.questions[state.currentQuestionIndex].time_limit_sec || 30);
+            startTimer(scaledSeconds(state.questions[state.currentQuestionIndex].time_limit_sec || 30));
         }
     }, [state.currentQuestionIndex, state.questions, state.isFinished]);
 
@@ -285,12 +289,17 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
 
             if (questions.length === 0) throw new Error("El juego no tiene preguntas");
 
+            // Modificador controlado activo (si lo hay): cambia reglas por un tiempo. Dormido por defecto.
+            const activeModifier = await modifierService.getActive();
+            modifierRef.current = activeModifier;
+
             const { data: sessionData, error: sessionError } = await supabase
                 .from('game_sessions')
                 .insert({
                     game_id: gameId,
                     user_id: userId,
-                    total_questions: questions.length
+                    total_questions: questions.length,
+                    modifier_key: activeModifier?.key ?? null
                 })
                 .select()
                 .single();
@@ -302,7 +311,8 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 game_id: gameId,
                 mode,
                 theme: theme || 'all',
-                question_count: questions.length
+                question_count: questions.length,
+                modifier: activeModifier?.key ?? null
             });
 
             const usesPersistentLives = mode === 'legend' || game.mechanic_type === 'lives';
@@ -410,6 +420,10 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             }
         }
 
+        // Modificador: doble puntaje (u otro multiplicador) sobre lo ganado en esta pregunta.
+        const scoreMult = modifierRef.current?.config?.score_multiplier ?? 1;
+        if (scoreMult !== 1 && pointsEarned > 0) pointsEarned = Math.round(pointsEarned * scoreMult);
+
         // Save to DB
         if (state.sessionId) {
             await supabase.from('game_answers').insert({
@@ -448,7 +462,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         // Mecánica efectiva: Historia = vidas; Contrarreloj = un fallo termina la ronda.
         const effectiveMechanic = modeRef.current === 'legend' ? 'lives'
             : modeRef.current === 'timed' ? 'sudden_death'
-            : state.game?.mechanic_type;
+            : (modifierRef.current?.config?.force_mechanic || state.game?.mechanic_type);
         if (!isCorrect) {
             if (effectiveMechanic === 'sudden_death') {
                 isGameEnding = true;
