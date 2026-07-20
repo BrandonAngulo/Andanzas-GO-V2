@@ -70,6 +70,18 @@ export const notificationsService = {
             console.error('Error broadcasting notification:', error);
             throw error;
         }
+    },
+
+    // Crea (una vez por día, dedupe en servidor) la notificación de la Pregunta del día
+    // si el usuario aún no respondió hoy. Pensada para llamarse al cargar la app.
+    async ensureDailyNotification(): Promise<boolean> {
+        try {
+            const { data, error } = await supabase.rpc('ensure_daily_notification');
+            if (error) return false;
+            return !!(data as any)?.created;
+        } catch {
+            return false;
+        }
     }
 };
 
@@ -82,6 +94,7 @@ function mapNotification(dbNotif: any): Notificacion {
         descripcion_en: dbNotif.descripcion_en,
         fecha: dbNotif.fecha,
         leida: dbNotif.leida,
-        icono: iconMap[dbNotif.icono_name] || Compass
+        icono: iconMap[dbNotif.icono_name] || Compass,
+        tipo: dbNotif.tipo || undefined
     };
 }

@@ -58,6 +58,7 @@ import { ChallengeLobby } from './components/views/ChallengeLobby';
 import { ChallengeVerdict } from './components/views/ChallengeVerdict';
 import { DuelSession } from './components/views/DuelSession';
 import { challengeService, DuelPlay } from './services/challenge.service';
+import { DailyQuestion } from './components/views/DailyQuestion';
 import { DictionaryPanel } from './components/panels/DictionaryPanel';
 
 // New Imports
@@ -228,6 +229,8 @@ export default function App() {
   // Duelo modo propio (autoritativo): set congelado + rol; renderiza DuelSession en pantalla completa.
   const [duelPlay, setDuelPlay] = useState<{ play: DuelPlay; role: 'challenger' | 'rival' } | null>(null);
   const [duelLoading, setDuelLoading] = useState(false);
+  // Pregunta del día abierta desde fuera de los paneles (p.ej. clic en una notificación).
+  const [showDailyGlobal, setShowDailyGlobal] = useState(false);
   const duelStartingRef = useRef(false);
   const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend' | 'timed'>('levels');
   const [activeGameTheme, setActiveGameTheme] = useState<string | undefined>(undefined);
@@ -616,7 +619,11 @@ export default function App() {
                       setShowNotifications(false);
                   }}
                   onNotificationClick={(notif) => {
-                      if ((notif as any).tipo === 'badge_earned' || (notif as any).tipo === 'reward' || notif.titulo.includes('Insignia') || notif.titulo.includes('Banner')) {
+                      if (notif.tipo === 'daily_question') {
+                          markAsRead(notif.id);
+                          setShowDailyGlobal(true);
+                          setShowNotifications(false);
+                      } else if (notif.tipo === 'badge_earned' || notif.tipo === 'reward' || notif.titulo.includes('Insignia') || notif.titulo.includes('Banner')) {
                           setActivePanel('perfil');
                           setShowNotifications(false);
                       }
@@ -816,6 +823,7 @@ export default function App() {
       {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} onClose={() => { setActiveGameId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
       {duelLoading && !duelPlay && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background"><div className="w-10 h-10 rounded-full border-4 border-primary/30 border-t-primary animate-spin" /></div>}
       {duelPlay && <DuelSession play={duelPlay.play} role={duelPlay.role} onExit={(submitted) => { setDuelPlay(null); if (submitted) setActivePanel('juegos'); }} />}
+      {isAuthenticated && showDailyGlobal && <DailyQuestion onClose={() => setShowDailyGlobal(false)} />}
     </div>
   );
 }

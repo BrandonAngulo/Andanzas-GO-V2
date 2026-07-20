@@ -327,6 +327,8 @@ export interface Notificacion {
   fecha: string;
   leida: boolean;
   icono: React.ElementType;
+  /** Enrutamiento del clic en la bandeja: 'daily_question' | 'badge_earned' | 'broadcast' | ... */
+  tipo?: string;
 }
 
 export interface Insignia {

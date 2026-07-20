@@ -53,7 +53,10 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         if (isAuthenticated && user) {
             userService.getFavorites(user.id).then(setFavIds);
             reviewsService.getByUserId(user.id).then(setReviews);
-            notificationsService.getUserNotifications(user.id).then(setNotifications);
+            // Genera (si toca) la notificación de la Pregunta del día antes de leer la bandeja.
+            notificationsService.ensureDailyNotification().finally(() => {
+                if (active) notificationsService.getUserNotifications(user.id).then(n => { if (active) setNotifications(n); });
+            });
             gamificationService.getUserBadgeIds(user.id).then(setEarnedInsignias);
             userService.getProfile(user.id).then(setUserProfile);
             routesService.getUserRouteProgress(user.id).then(progress => {
@@ -138,8 +141,15 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         }
     };
 
-    const markAsRead = (id: string) => setNotifications(prev => prev.map(n => n.id === id ? { ...n, leida: true } : n));
-    const markAllAsRead = () => setNotifications(prev => prev.map(n => ({ ...n, leida: true })));
+    // Persisten en la BD además del estado local (las notificaciones locales tipo `n_...` no existen en la tabla).
+    const markAsRead = (id: string) => {
+        setNotifications(prev => prev.map(n => n.id === id ? { ...n, leida: true } : n));
+        if (!id.startsWith('n_')) notificationsService.markAsRead(id);
+    };
+    const markAllAsRead = () => {
+        setNotifications(prev => prev.map(n => ({ ...n, leida: true })));
+        if (user) notificationsService.markAllAsRead(user.id);
+    };
 
     const updateRouteProgress = (inProgress: string[], completed: string[]) => {
         setRoutesInProgress(inProgress);
