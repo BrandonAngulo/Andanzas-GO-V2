@@ -25,7 +25,7 @@ grant select on public.game_modifiers to authenticated;
 insert into public.game_modifiers (key, label, description, config, order_index) values
   ('sudden_death', 'Muerte súbita', 'Un solo error y se acaba la partida.', '{"force_mechanic":"sudden_death"}'::jsonb, 1),
   ('double_score', 'Doble puntaje', 'Cada acierto vale el doble esta semana.', '{"score_multiplier":2}'::jsonb, 2),
-  ('half_time',    'Contra el reloj', 'La mitad de tiempo por pregunta.', '{"time_scale":0.5}'::jsonb, 3),
+  ('half_time',    'Reloj exprés', 'La mitad de tiempo por pregunta. ¡Pensá rápido!', '{"time_scale":0.5}'::jsonb, 3),
   ('lightning',    'Relámpago', 'Doble puntaje… pero mitad de tiempo.', '{"score_multiplier":2,"time_scale":0.5}'::jsonb, 4)
 on conflict (key) do nothing;
 
