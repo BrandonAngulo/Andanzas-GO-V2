@@ -193,6 +193,20 @@ export default function App() {
       window.history.pushState({ ...window.history.state, andanzasPanel: activePanel }, '', window.location.href);
     }
   }, [activePanel]);
+  // Navegar a otro panel cierra cualquier detalle (sitio/evento/ruta) abierto, para que no
+  // quede como overlay encima/por debajo del panel nuevo. Abrir un detalle NO cambia
+  // activePanel, así que esto no cierra el detalle recién abierto.
+  useEffect(() => {
+    setFullView(prev => {
+      if (prev && ['site', 'event', 'route'].includes(prev.type)) {
+        if (window.location.hash) {
+          try { window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search); } catch { /* noop */ }
+        }
+        return null;
+      }
+      return prev;
+    });
+  }, [activePanel]);
   // Entrada de "Pa' que sepás" a abrir directamente al navegar (p. ej. desde un dato curioso).
   const [pendingLearnEntryId, setPendingLearnEntryId] = useState<string | null>(null);
   // Recuerda cuál era el panel activo justo antes de entrar a 'perfil' (sin importar la
