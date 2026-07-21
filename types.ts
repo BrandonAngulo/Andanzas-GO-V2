@@ -79,6 +79,7 @@ export interface LearnEntry {
   site_ids?: string[];
   route_ids?: string[];
   image_url?: string;
+  image_position?: { x: number; y: number; zoom: number } | null;
   illustration_url?: string;
   illustration_alt?: string;
   illustration_style?: string;

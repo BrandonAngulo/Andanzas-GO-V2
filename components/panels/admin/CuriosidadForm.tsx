@@ -7,6 +7,7 @@ import { Textarea } from '../../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { Save, X, Plus, Trash2 } from 'lucide-react';
+import { ImageWithPositionField } from '../../shared/ImageWithPositionField';
 
 interface CuriosidadFormProps {
     entry?: LearnEntry;
@@ -151,10 +152,15 @@ export const CuriosidadForm: React.FC<CuriosidadFormProps> = ({ entry, onSave, o
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium">URL de Imagen Principal</label>
-                            <Input name="image_url" value={formData.image_url || ''} onChange={handleChange} placeholder="https://ejemplo.com/imagen.jpg" />
-                        </div>
+                        <ImageWithPositionField
+                            label="URL de Imagen Principal"
+                            url={formData.image_url || ''}
+                            onUrlChange={(url) => setFormData(prev => ({ ...prev, image_url: url }))}
+                            position={formData.image_position ?? null}
+                            onPositionChange={(pos) => setFormData(prev => ({ ...prev, image_position: pos }))}
+                            placeholder="https://ejemplo.com/imagen.jpg"
+                            aspectClassName="aspect-[16/9]"
+                        />
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Estado Editorial</label>

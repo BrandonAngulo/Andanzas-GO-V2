@@ -9,6 +9,7 @@ import { Textarea } from '../../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Save, X } from 'lucide-react';
 import { PreguntasForm } from './PreguntasForm';
+import { ImageWithPositionField } from '../../shared/ImageWithPositionField';
 
 interface JuegoFormProps {
     game?: Game;
@@ -158,10 +159,15 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
                             <Input name="cover_subtitle" value={formData.cover_subtitle || ''} onChange={handleChange} placeholder="Ej: Ponete a prueba con Trivia Cali" />
                         </div>
                     </div>
-                    <div className="space-y-2">
-                        <label className="text-xs font-medium text-foreground">Imagen de portada (URL, opcional)</label>
-                        <Input name="cover_image_url" value={formData.cover_image_url || ''} onChange={handleChange} placeholder="https://..." />
-                    </div>
+                    <ImageWithPositionField
+                        label="Imagen de portada (URL, opcional)"
+                        url={formData.cover_image_url || ''}
+                        onUrlChange={(url) => setFormData(prev => ({ ...prev, cover_image_url: url }))}
+                        position={formData.image_position ?? null}
+                        onPositionChange={(pos) => setFormData(prev => ({ ...prev, image_position: pos }))}
+                        placeholder="https://..."
+                        aspectClassName="aspect-[16/9]"
+                    />
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-2">
                             <label className="text-xs font-medium text-foreground">Color de acento (hex)</label>

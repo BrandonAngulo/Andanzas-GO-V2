@@ -13,6 +13,7 @@ import { GameCover, hasGameCover } from '../views/GameCover';
 import { PanelBanner } from './shared/PanelBanner';
 import { AndiGuia } from '../shared/AndiGuia';
 import { LazyImage } from '../ui/lazy-image';
+import { imagePositionStyle } from '../shared/ImagePositioner';
 import { bannerService, Banner } from '../../services/banner.service';
 import { analyticsService } from '../../services/analytics.service';
 import { DailyQuestion } from '../views/DailyQuestion';
@@ -189,7 +190,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             {game.cover_image_url && (
                                 <>
                                     <div className="absolute inset-0 bg-black/40 z-10" />
-                                    <LazyImage src={game.cover_image_url} alt={game.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                    <LazyImage src={game.cover_image_url} alt={game.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style={imagePositionStyle((game as any).image_position)} />
                                 </>
                             )}
                             {illustratedCover && (

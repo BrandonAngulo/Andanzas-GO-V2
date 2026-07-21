@@ -13,6 +13,7 @@ export interface Game {
     cover_title?: string;
     cover_subtitle?: string;
     cover_image_url?: string;
+    image_position?: { x: number; y: number; zoom: number } | null;
     cover_theme?: string;
     release_at?: string;
     show_countdown?: boolean;
