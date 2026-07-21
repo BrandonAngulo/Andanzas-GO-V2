@@ -8,6 +8,7 @@ export interface Banner {
     title_en?: string;
     subtitle_en?: string;
     image_url?: string;
+    image_position?: { x: number; y: number; zoom: number } | null;
     is_active: boolean;
     // Backward-compat aliases used by existing consumers (profile banners).
     section_key?: string;
@@ -21,6 +22,7 @@ export interface BannerTextPatch {
     title_en?: string;
     subtitle_en?: string;
     image_url?: string;
+    image_position?: { x: number; y: number; zoom: number } | null;
     is_active?: boolean;
 }
 
@@ -85,6 +87,7 @@ export const bannerService = {
         isActive: boolean = true,
         titleEn?: string,
         subtitleEn?: string,
+        imagePosition?: { x: number; y: number; zoom: number } | null,
     ): Promise<Banner | null> {
         const key = id.startsWith('profile_banner_') ? id : `profile_banner_${id}`;
         const payload: any = {
@@ -98,6 +101,7 @@ export const bannerService = {
         };
         if (titleEn !== undefined) payload.title_en = titleEn;
         if (subtitleEn !== undefined) payload.subtitle_en = subtitleEn;
+        if (imagePosition !== undefined) payload.image_position = imagePosition;
 
         const { data, error } = await supabase
             .from('app_banners')

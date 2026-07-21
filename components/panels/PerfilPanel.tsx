@@ -309,7 +309,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             ...b,
                             image_url: db.image_url || b.image_url,
                             title: db.title || b.title,
-                            unlock_condition: db.content_text || b.unlock_condition
+                            unlock_condition: db.content_text || b.unlock_condition,
+                            image_position: (db as any).image_position ?? undefined,
                         };
                     }
                     return b;
@@ -678,13 +679,15 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const currentAvatarUrl = userProfile?.selected_avatar_id || userProfile?.avatar_url || user?.user_metadata?.avatar_url;
     
     // Get active banner image URL
-    const activeBannerUrl = userProfile?.selected_banner_id
-        ? dynamicBanners.find(b => b.id === userProfile.selected_banner_id)?.image_url
-        : null;
-    const bannerPosition = normalizeImagePosition((userProfile as any)?.banner_position);
+    const activeBanner = userProfile?.selected_banner_id
+        ? dynamicBanners.find(b => b.id === userProfile.selected_banner_id)
+        : undefined;
+    const activeBannerUrl = activeBanner?.image_url ?? null;
+    // El encuadre del usuario manda; si no reposicionó, hereda el encuadre por defecto del catálogo.
+    const bannerPosition = normalizeImagePosition((userProfile as any)?.banner_position ?? (activeBanner as any)?.image_position);
 
     const openReposition = () => {
-        setTempBannerPos(normalizeImagePosition((userProfile as any)?.banner_position));
+        setTempBannerPos(normalizeImagePosition((userProfile as any)?.banner_position ?? (activeBanner as any)?.image_position));
         setShowReposition(true);
     };
     const saveReposition = async () => {

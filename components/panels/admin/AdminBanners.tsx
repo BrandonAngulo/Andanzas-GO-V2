@@ -11,7 +11,7 @@ import { Switch } from '../../ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../ui/dialog';
 import { ImageWithPositionField } from '../../shared/ImageWithPositionField';
-import { imagePositionStyle, ImagePosition } from '../../shared/ImagePositioner';
+import { ImagePositioner, imagePositionStyle, normalizeImagePosition, ImagePosition } from '../../shared/ImagePositioner';
 import { AVAILABLE_BANNERS } from '../BannerGalleryModal';
 import { BroadcastModal } from './BroadcastModal';
 import { Megaphone } from 'lucide-react';
@@ -36,6 +36,7 @@ interface EditingBanner {
     subtitle_es: string;
     title_en: string;
     subtitle_en: string;
+    image_position?: ImagePosition | null;
     defaultImg: string;
 }
 
@@ -177,6 +178,7 @@ export const AdminBanners = () => {
             subtitle_es: currentData?.subtitle_es ?? hd?.unlock_condition ?? '',
             title_en: currentData?.title_en ?? '',
             subtitle_en: currentData?.subtitle_en ?? '',
+            image_position: (currentData as any)?.image_position ?? null,
             defaultImg
         });
         setEditModalOpen(true);
@@ -225,6 +227,7 @@ export const AdminBanners = () => {
                     editingBanner.is_active,
                     editingBanner.title_en,
                     editingBanner.subtitle_en,
+                    editingBanner.image_position ?? null,
                 );
             } else {
                 updated = await bannerService.updateAppBanner(editingBanner.key, {
@@ -233,6 +236,7 @@ export const AdminBanners = () => {
                     title_en: editingBanner.title_en,
                     subtitle_en: editingBanner.subtitle_en,
                     image_url: editingBanner.image_url,
+                    image_position: editingBanner.image_position ?? null,
                     is_active: editingBanner.is_active,
                 });
             }
@@ -380,6 +384,20 @@ export const AdminBanners = () => {
                                     </label>
                                 </div>
                             </div>
+
+                            {editingBanner.image_url && (
+                                <div className="rounded-xl border border-border/70 bg-muted/30 p-3">
+                                    <p className="mb-2 text-xs font-medium text-muted-foreground">
+                                        Encuadre (arrastrá + zoom){editingBanner.isProfile ? ': encuadre inicial; cada usuario puede reposicionar el suyo.' : ': cómo se recorta la imagen del encabezado.'}
+                                    </p>
+                                    <ImagePositioner
+                                        imageUrl={editingBanner.image_url}
+                                        value={normalizeImagePosition(editingBanner.image_position)}
+                                        onChange={(pos) => setEditingBanner({ ...editingBanner, image_position: pos })}
+                                        aspectClassName="aspect-[16/6]"
+                                    />
+                                </div>
+                            )}
 
                             {/* Spanish */}
                             <div className="space-y-2">

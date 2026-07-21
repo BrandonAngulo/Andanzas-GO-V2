@@ -11,6 +11,7 @@ interface BannerItem {
     title: string;
     image_url: string;
     unlock_condition: string;
+    image_position?: { x: number; y: number; zoom: number } | null;
 }
 
 export const AVAILABLE_BANNERS: BannerItem[] = [

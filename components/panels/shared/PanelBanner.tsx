@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { bannerService, Banner } from '../../../services/banner.service';
+import { imagePositionStyle } from '../../shared/ImagePositioner';
 import { AndiGuia } from '../../shared/AndiGuia';
 import { cn } from '../../../lib/utils';
 import { useI18n } from '../../../i18n';
@@ -79,6 +80,7 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
                     src={bgImage}
                     alt={`Fondo ${panelKey}`}
                     className="w-full h-full object-cover object-right"
+                    style={banner?.image_position ? imagePositionStyle(banner.image_position) : undefined}
                 />
                 {/* Gradient overlay to ensure text readability */}
                 <div className={cn("absolute inset-0 bg-gradient-to-r", gradientClass)}></div>
