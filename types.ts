@@ -147,6 +147,7 @@ export interface Site {
   rating_count?: number;
   visitas: number;
   logoUrl: string;
+  image_position?: { x: number; y: number; zoom: number } | null;
   descripcion: string;
   descripcion_en?: string;
   status?: 'draft' | 'published' | 'archived';
@@ -195,6 +196,7 @@ export interface Evento {
   resumen: string;
   resumen_en?: string;
   img: string;
+  image_position?: { x: number; y: number; zoom: number } | null;
   descripcion: string;
   descripcion_en?: string;
   status?: 'draft' | 'published' | 'archived';
@@ -280,6 +282,7 @@ export interface Ruta {
   nombre: string;
   nombre_en?: string;
   image_url?: string;
+  image_position?: { x: number; y: number; zoom: number } | null;
   puntos: string[];
   duracionMin: number;
   // New rich content fields

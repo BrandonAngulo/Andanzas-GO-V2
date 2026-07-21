@@ -7,6 +7,7 @@ import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { Save, ArrowLeft } from 'lucide-react';
+import { ImageWithPositionField } from '../../shared/ImageWithPositionField';
 
 interface SitioFormProps {
     siteId?: string | null;
@@ -212,10 +213,17 @@ export const SitioForm: React.FC<SitioFormProps> = ({ siteId, onClose, onSaved }
                 {/* MEDIA & STATUS */}
                 <TabsContent value="media" className="space-y-4 pt-4">
                     <div className="grid grid-cols-1 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold">URL de la Imagen Principal *</label>
-                            <Input required name="logoUrl" value={formData.logoUrl || ''} onChange={handleChange} placeholder="https://..." />
-                        </div>
+                        <ImageWithPositionField
+                            label="URL de la Imagen Principal"
+                            required
+                            url={formData.logoUrl || ''}
+                            onUrlChange={(url) => setFormData(prev => ({ ...prev, logoUrl: url }))}
+                            position={formData.image_position ?? null}
+                            onPositionChange={(pos) => setFormData(prev => ({ ...prev, image_position: pos }))}
+                            placeholder="https://..."
+                            aspectClassName="aspect-[16/9]"
+                            helpText="El encuadre se usa en la ficha del sitio y las tarjetas."
+                        />
                         <div className="space-y-2">
                             <label className="text-sm font-semibold">Fotos de Galería (URLs separadas por coma)</label>
                             <Textarea 

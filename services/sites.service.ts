@@ -139,6 +139,7 @@ function unmapSite(site: Partial<Site>): any {
     if (site.rating !== undefined) unmapped.rating = site.rating;
     if (site.visitas !== undefined) unmapped.visitas = site.visitas;
     if (site.logoUrl !== undefined) unmapped.logo_url = site.logoUrl;
+    if (site.image_position !== undefined) unmapped.image_position = site.image_position;
     if (site.descripcion !== undefined) unmapped.descripcion = site.descripcion;
     if (site.descripcion_en !== undefined) unmapped.descripcion_en = site.descripcion_en;
     if (site.importancia !== undefined) unmapped.importancia = site.importancia;
@@ -171,6 +172,7 @@ function mapSite(dbSite: any): Site {
         rating: dbSite.rating,
         visitas: dbSite.visitas,
         logoUrl: dbSite.logo_url,
+        image_position: dbSite.image_position,
         descripcion: dbSite.descripcion,
         descripcion_en: dbSite.descripcion_en,
         importancia: dbSite.importancia,

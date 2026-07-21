@@ -9,6 +9,7 @@ import { useI18n } from '../../i18n';
 import { getTranslated, getMacroCategory } from '../../lib/utils';
 import { PanelBanner } from './shared/PanelBanner';
 import { LazyImage } from '../ui/lazy-image';
+import { imagePositionStyle } from '../shared/ImagePositioner';
 import { Badge } from '../ui/badge';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
 import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library, Map, Route, CalendarDays, Gamepad2 } from 'lucide-react';
@@ -24,6 +25,7 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
         alt={getTranslated(site, 'nombre', language) as string}
         textFallback={getTranslated(site, 'nombre', language) as string}
         className="w-full h-32 object-cover bg-muted"
+        style={imagePositionStyle(site.image_position)}
       />
       <CardHeader className="px-4 pb-2 pt-4">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(site, 'nombre', language)}</CardTitle>
@@ -233,6 +235,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
                       src={banner.image_url}
                       alt={banner.title}
                       className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+                      style={imagePositionStyle(banner.image_position)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
                       {banner.tag && (

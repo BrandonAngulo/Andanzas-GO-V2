@@ -95,6 +95,7 @@ function unmapEvent(evento: Partial<Evento>): any {
     if (evento.resumen !== undefined) unmapped.resumen = evento.resumen;
     if (evento.resumen_en !== undefined) unmapped.resumen_en = evento.resumen_en;
     if (evento.img !== undefined) unmapped.img = evento.img;
+    if (evento.image_position !== undefined) unmapped.image_position = evento.image_position;
     if (evento.descripcion !== undefined) unmapped.descripcion = evento.descripcion;
     if (evento.descripcion_en !== undefined) unmapped.descripcion_en = evento.descripcion_en;
     if (evento.siteId !== undefined) unmapped.site_id = evento.siteId;
@@ -115,6 +116,7 @@ function mapEvent(dbEvent: any): Evento {
         resumen: dbEvent.resumen,
         resumen_en: dbEvent.resumen_en,
         img: dbEvent.img,
+        image_position: dbEvent.image_position,
         descripcion: dbEvent.descripcion,
         descripcion_en: dbEvent.descripcion_en,
         siteId: dbEvent.site_id,

@@ -101,7 +101,8 @@ export const routesService = {
                 max_capacity: route.max_capacity,
                 current_registrations: route.current_registrations || 0,
                 registration_status: route.registration_status || 'open',
-                image_url: route.image_url
+                image_url: route.image_url,
+                image_position: route.image_position ?? null
             })
             .select()
             .single();
@@ -126,6 +127,7 @@ export const routesService = {
         if (route.current_registrations !== undefined) updates.current_registrations = route.current_registrations;
         if (route.registration_status !== undefined) updates.registration_status = route.registration_status;
         if (route.image_url !== undefined) updates.image_url = route.image_url;
+        if (route.image_position !== undefined) updates.image_position = route.image_position;
 
         const { data, error } = await supabase
             .from('routes')
@@ -199,6 +201,7 @@ function mapRoute(dbRoute: any): Ruta {
         nombre: dbRoute.nombre,
         nombre_en: dbRoute.nombre_en,
         image_url: dbRoute.image_url,
+        image_position: dbRoute.image_position,
         puntos: dbRoute.puntos,
         duracionMin: dbRoute.duracion_min,
         descripcion: dbRoute.descripcion,

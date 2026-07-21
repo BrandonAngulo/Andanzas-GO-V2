@@ -128,6 +128,7 @@ export interface PromotedBanner {
     title: string;
     subtitle?: string;
     image_url: string;
+    image_position?: { x: number; y: number; zoom: number } | null;
     tag?: string;
     target_type?: 'route' | 'event' | 'game' | 'url';
     target_id?: string;

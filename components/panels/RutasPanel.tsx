@@ -16,6 +16,7 @@ import { useI18n } from '../../i18n';
 import { getTranslated, formatDuration } from '../../lib/utils';
 import { BADGES } from '../../data/badges';
 import { LazyImage } from '../ui/lazy-image';
+import { imagePositionStyle } from '../shared/ImagePositioner';
 import { settingsService } from '../../services/settings.service';
 import { userService } from '../../services/user.service';
 import { useAuth } from '../../contexts/AuthContext';
@@ -217,6 +218,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             src={route.image_url || route.coverUrl || routeImage || ""}
                             className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.3] group-hover:grayscale-0")}
                             alt="Route cover"
+                            style={imagePositionStyle(route.image_position)}
                             textFallback={getTranslated(route, 'nombre', language) as string}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent opacity-90" />

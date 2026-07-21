@@ -10,6 +10,8 @@ import { bannerService, Banner, promotedBannerService, PromotedBanner } from '..
 import { Switch } from '../../ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../ui/dialog';
+import { ImageWithPositionField } from '../../shared/ImageWithPositionField';
+import { imagePositionStyle, ImagePosition } from '../../shared/ImagePositioner';
 import { AVAILABLE_BANNERS } from '../BannerGalleryModal';
 import { BroadcastModal } from './BroadcastModal';
 import { Megaphone } from 'lucide-react';
@@ -459,19 +461,16 @@ export const AdminBanners = () => {
                                     placeholder="Ej. Descubre los vestigios del Cali colonial"
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">URL de Imagen *</label>
-                                <Input
-                                    value={editingPromo.image_url || ''}
-                                    onChange={(e) => setEditingPromo({...editingPromo, image_url: e.target.value})}
-                                    placeholder="/images/imperdibles/mi_banner.png"
-                                />
-                                {editingPromo.image_url && (
-                                    <div className="h-28 rounded-md border overflow-hidden">
-                                        <img src={editingPromo.image_url} alt="Preview" className="w-full h-full object-cover" />
-                                    </div>
-                                )}
-                            </div>
+                            <ImageWithPositionField
+                                label="URL de Imagen"
+                                required
+                                url={editingPromo.image_url || ''}
+                                onUrlChange={(url) => setEditingPromo({ ...editingPromo, image_url: url })}
+                                position={editingPromo.image_position ?? null}
+                                onPositionChange={(pos) => setEditingPromo({ ...editingPromo, image_position: pos })}
+                                placeholder="/images/imperdibles/mi_banner.png"
+                                aspectClassName="aspect-[16/9]"
+                            />
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Etiqueta (Tag)</label>
                                 <Input

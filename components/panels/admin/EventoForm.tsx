@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { Save, ArrowLeft, Loader2, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '../../../lib/supabaseClient';
 import { toast } from 'sonner';
+import { ImagePositioner, normalizeImagePosition } from '../../shared/ImagePositioner';
 
 interface EventoFormProps {
     eventId?: string | null;
@@ -212,6 +213,17 @@ export const EventoForm: React.FC<EventoFormProps> = ({ eventId, onClose, onSave
                                     <Input required name="img" value={formData.img || ''} onChange={handleChange} placeholder="O ingresa la URL directamente..." />
                                 </div>
                             </div>
+                            {formData.img && (
+                                <div className="rounded-xl border border-border/70 bg-muted/30 p-3">
+                                    <p className="mb-2 text-xs font-medium text-muted-foreground">Encuadre (arrastrá + zoom): así se recorta en tarjetas y ficha del evento.</p>
+                                    <ImagePositioner
+                                        imageUrl={formData.img}
+                                        value={normalizeImagePosition(formData.image_position)}
+                                        onChange={(pos) => setFormData(prev => ({ ...prev, image_position: pos }))}
+                                        aspectClassName="aspect-[16/9]"
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         <div className="space-y-2">

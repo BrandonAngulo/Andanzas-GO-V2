@@ -13,6 +13,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
     className,
     fallbackSrc = "https://placehold.co/600x400?text=No+Image",
     textFallback,
+    style,
     ...props
 }) => {
     // State machine: 'loading' | 'loaded' | 'error'
@@ -90,7 +91,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
                         "h-full w-full object-cover transition-opacity duration-500",
                         status === 'loaded' ? 'opacity-100' : 'opacity-0'
                     )}
-                    style={status === 'error' ? { display: 'none' } : undefined}
+                    style={{ ...(style || {}), ...(status === 'error' ? { display: 'none' } : {}) }}
                     {...props}
                 />
             )}

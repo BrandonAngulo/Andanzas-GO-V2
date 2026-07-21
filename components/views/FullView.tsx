@@ -10,6 +10,7 @@ import { getTranslated, getMacroCategory, getCategoryIcon, getCategoryColor, cn,
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
 import { LazyImage } from '../ui/lazy-image';
+import { imagePositionStyle } from '../shared/ImagePositioner';
 
 interface FullViewProps {
     view: { type: string; data: any };
@@ -93,6 +94,7 @@ const FullView: React.FC<FullViewProps> = ({ view, onClose, isFav, toggleFav, ad
                                 alt={viewTitle as string}
                                 textFallback={viewTitle as string}
                                 className="w-full h-full object-cover"
+                                style={imagePositionStyle((data as any).image_position)}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
                             {(data.image_credit) && (

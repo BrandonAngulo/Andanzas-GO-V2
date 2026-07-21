@@ -8,6 +8,7 @@ import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { Save, ArrowLeft, Plus, Trash2 } from 'lucide-react';
+import { ImageWithPositionField } from '../../shared/ImageWithPositionField';
 
 interface RutaFormProps {
     routeId?: string | null;
@@ -188,9 +189,17 @@ export const RutaForm: React.FC<RutaFormProps> = ({ routeId, onClose, onSaved })
                             <label className="text-sm font-semibold">Duración (minutos) *</label>
                             <Input required type="number" name="duracionMin" value={formData.duracionMin || ''} onChange={handleNumberChange} />
                         </div>
-                        <div className="space-y-2 md:col-span-2">
-                            <label className="text-sm font-semibold">URL de la Imagen</label>
-                            <Input name="image_url" value={formData.image_url || ''} onChange={handleChange} placeholder="Ej: /images/rutas/mi_ruta.png o https://..." />
+                        <div className="md:col-span-2">
+                            <ImageWithPositionField
+                                label="URL de la Imagen"
+                                url={formData.image_url || ''}
+                                onUrlChange={(url) => setFormData(prev => ({ ...prev, image_url: url }))}
+                                position={formData.image_position ?? null}
+                                onPositionChange={(pos) => setFormData(prev => ({ ...prev, image_position: pos }))}
+                                placeholder="Ej: /images/rutas/mi_ruta.png o https://..."
+                                aspectClassName="aspect-[16/9]"
+                                helpText="El encuadre se usa en la ficha de la ruta y sus tarjetas."
+                            />
                         </div>
                         <div className="space-y-2 md:col-span-2">
                             <label className="text-sm font-semibold">Descripción Corta *</label>

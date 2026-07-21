@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Evento, Site } from '../../types';
+import { imagePositionStyle } from '../shared/ImagePositioner';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
@@ -49,7 +50,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
     >
       <div className="relative h-48 w-full bg-muted overflow-hidden">
         {event.img ? (
-          <img src={event.img} alt={event.titulo} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <img src={event.img} alt={event.titulo} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" style={imagePositionStyle(event.image_position)} />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary/40">
             <Calendar className="w-12 h-12" />
