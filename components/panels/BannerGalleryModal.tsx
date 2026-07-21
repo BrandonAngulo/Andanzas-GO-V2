@@ -76,7 +76,8 @@ export const BannerGalleryModal: React.FC<BannerGalleryModalProps> = ({
         if (!user) return;
         setSaving(true);
         try {
-            await userService.updateProfileData(user.id, { selected_banner_id: bannerId });
+            // Reset de la posición al cambiar de banner (cada imagen se encuadra distinto).
+            await userService.updateProfileData(user.id, { selected_banner_id: bannerId, banner_position: null });
             onBannerSelected(bannerId);
             toast.success('¡Banner de perfil actualizado!');
             onOpenChange(false);

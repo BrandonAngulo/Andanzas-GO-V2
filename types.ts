@@ -533,6 +533,7 @@ export interface UserProfile {
   profile_completed?: boolean;
   unlocked_banners?: string[];
   selected_banner_id?: string;
+  banner_position?: { x: number; y: number; zoom: number } | null;
   saved_routes?: string[];
   admin_tutorial_version?: string | null;
   admin_tutorial_completed_at?: string | null;

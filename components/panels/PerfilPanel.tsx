@@ -6,8 +6,8 @@ import { Switch } from '../ui/switch';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2, Calendar, Gift, TrendingUp } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2, Calendar, Gift, TrendingUp, Move } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
 import { GameMascot } from '../views/GameMascot';
@@ -24,6 +24,7 @@ import { reviewsService } from '../../services/reviews.service';
 import { bannerService } from '../../services/banner.service';
 import { BannerGalleryModal, AVAILABLE_BANNERS } from './BannerGalleryModal';
 import { RewardUnlockModal } from './RewardUnlockModal';
+import { ImagePositioner, imagePositionStyle, DEFAULT_IMAGE_POSITION, normalizeImagePosition, ImagePosition } from '../shared/ImagePositioner';
 
 import { InfoTooltip } from '../ui/tooltip';
 import { getTranslated, getMacroCategory, cn } from '../../lib/utils';
@@ -323,6 +324,9 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     
     // Gamification Modals
     const [showBannerGallery, setShowBannerGallery] = useState(false);
+    const [showReposition, setShowReposition] = useState(false);
+    const [tempBannerPos, setTempBannerPos] = useState<ImagePosition>(DEFAULT_IMAGE_POSITION);
+    const [savingPos, setSavingPos] = useState(false);
     const [showUnlockModal, setShowUnlockModal] = useState(false);
     const [unlockData, setUnlockData] = useState({ type: 'banner' as 'banner' | 'badge', name: '', description: '' });
 
@@ -674,9 +678,30 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const currentAvatarUrl = userProfile?.selected_avatar_id || userProfile?.avatar_url || user?.user_metadata?.avatar_url;
     
     // Get active banner image URL
-    const activeBannerUrl = userProfile?.selected_banner_id 
-        ? dynamicBanners.find(b => b.id === userProfile.selected_banner_id)?.image_url 
+    const activeBannerUrl = userProfile?.selected_banner_id
+        ? dynamicBanners.find(b => b.id === userProfile.selected_banner_id)?.image_url
         : null;
+    const bannerPosition = normalizeImagePosition((userProfile as any)?.banner_position);
+
+    const openReposition = () => {
+        setTempBannerPos(normalizeImagePosition((userProfile as any)?.banner_position));
+        setShowReposition(true);
+    };
+    const saveReposition = async () => {
+        if (!user) return;
+        setSavingPos(true);
+        try {
+            await userService.updateProfileData(user.id, { banner_position: tempBannerPos });
+            setUserProfile(prev => prev ? ({ ...prev, banner_position: tempBannerPos } as any) : prev);
+            toast.success('Banner reposicionado.');
+            setShowReposition(false);
+        } catch (e) {
+            console.error(e);
+            toast.error('No se pudo guardar la posición.');
+        } finally {
+            setSavingPos(false);
+        }
+    };
 
     return (
         <ScrollArea className="max-h-[72vh] w-full">
@@ -713,7 +738,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 {/* Header Profile Section */}
                 <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50">
                     {activeBannerUrl ? (
-                        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${activeBannerUrl})` }}>
+                        <div className="absolute inset-0">
+                            <img src={activeBannerUrl} alt="" className="absolute inset-0 h-full w-full" style={imagePositionStyle(bannerPosition)} />
                             <div className="absolute inset-0 bg-background/60 backdrop-blur-sm sm:backdrop-blur-none sm:bg-gradient-to-t sm:from-background/90 sm:via-background/60 sm:to-transparent" />
                         </div>
                     ) : (
@@ -729,10 +755,21 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     >
                         <ImageIcon className="h-4 w-4 text-foreground" />
                     </Button>
-                    <Button 
-                        variant="secondary" 
-                        size="icon" 
-                        className="absolute top-4 right-16 z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80"
+                    {activeBannerUrl && (
+                        <Button
+                            variant="secondary"
+                            size="icon"
+                            className="absolute top-4 right-16 z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80"
+                            onClick={openReposition}
+                            title="Reposicionar banner"
+                        >
+                            <Move className="h-4 w-4 text-foreground" />
+                        </Button>
+                    )}
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        className={`absolute top-4 ${activeBannerUrl ? 'right-28' : 'right-16'} z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80`}
                         onClick={() => setShowSettingsModal(true)}
                         title="Ajustes de perfil"
                     >
@@ -1369,10 +1406,36 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 unlockedBanners={userProfile?.unlocked_banners || []}
                 selectedBannerId={userProfile?.selected_banner_id}
                 onBannerSelected={(id) => {
-                    setUserProfile(prev => prev ? { ...prev, selected_banner_id: id } : null);
+                    // Al equipar otro banner, la posición vuelve a centrada (la persiste el modal).
+                    setUserProfile(prev => prev ? ({ ...prev, selected_banner_id: id, banner_position: null } as any) : null);
                 }}
                 dynamicBanners={dynamicBanners}
             />
+
+            {/* Reposicionar el banner equipado: arrastrar + zoom (mismo componente que usará admin) */}
+            <Dialog open={showReposition} onOpenChange={setShowReposition}>
+                <DialogContent className="sm:max-w-[560px]">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2"><Move className="h-5 w-5 text-primary" /> Reposicionar tu banner</DialogTitle>
+                        <DialogDescription>Arrastrá la imagen y usá el zoom para elegir qué parte se ve en tu perfil.</DialogDescription>
+                    </DialogHeader>
+                    {activeBannerUrl && (
+                        <ImagePositioner
+                            imageUrl={activeBannerUrl}
+                            value={tempBannerPos}
+                            onChange={setTempBannerPos}
+                            aspectClassName="aspect-[16/6]"
+                        />
+                    )}
+                    <p className="text-xs text-muted-foreground">Vista aproximada: en el perfil el alto varía un poco según el dispositivo.</p>
+                    <div className="mt-2 flex items-center justify-end gap-2">
+                        <Button variant="ghost" className="rounded-full" onClick={() => setShowReposition(false)} disabled={savingPos}>Cancelar</Button>
+                        <Button className="rounded-full" onClick={saveReposition} disabled={savingPos}>
+                            {savingPos ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Guardar'}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
 
             <RewardUnlockModal
                 open={showUnlockModal}
