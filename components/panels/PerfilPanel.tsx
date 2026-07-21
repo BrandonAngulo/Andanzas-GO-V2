@@ -714,7 +714,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50">
                     {activeBannerUrl ? (
                         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${activeBannerUrl})` }}>
-                            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm sm:backdrop-blur-none sm:bg-gradient-to-t sm:from-background sm:via-background/80 sm:to-transparent" />
+                            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm sm:backdrop-blur-none sm:bg-gradient-to-t sm:from-background/90 sm:via-background/60 sm:to-transparent" />
                         </div>
                     ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50" />
