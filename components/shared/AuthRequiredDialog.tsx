@@ -4,11 +4,12 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { LogIn, Sparkles, LockKeyhole } from 'lucide-react';
 import { useI18n } from '../../i18n';
+import { getAuthErrorMessage } from '../../services/auth.service';
 
 interface AuthRequiredDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onLogin: (email: string, pass: string, isSignUp: boolean) => void;
+    onLogin: (email: string, pass: string, isSignUp: boolean) => Promise<unknown>;
     title?: string;
     description?: string;
 }
@@ -26,11 +27,32 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
     const [isSignUp, setIsSignUp] = useState(false);
     const [ageConfirmed, setAgeConfirmed] = useState(false);
     const [termsAccepted, setTermsAccepted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [authError, setAuthError] = useState('');
+    const [authNotice, setAuthNotice] = useState('');
 
     const defaultTitle = language === 'es' ? 'Descubre más' : 'Discover more';
     const defaultDesc = language === 'es'
         ? 'Inicia sesión para guardar tus rutas favoritas, dejar reseñas y acceder a funciones exclusivas. ¡Es gratis!'
         : 'Log in to save your favorite routes, leave reviews, and access exclusive features. It\'s free!';
+
+    const handleSubmit = async () => {
+        if (!email || !password || (isSignUp && (!ageConfirmed || !termsAccepted))) return;
+
+        setSubmitting(true);
+        setAuthError('');
+        setAuthNotice('');
+        try {
+            const result = await onLogin(email, password, isSignUp) as { session?: unknown } | undefined;
+            if (isSignUp && !result?.session) {
+                setAuthNotice('Cuenta creada. Revisa tu correo y confirma el enlace para entrar a Andanzas GO.');
+            }
+        } catch (error: unknown) {
+            setAuthError(getAuthErrorMessage(error));
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -105,22 +127,32 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
                             </div>
                         )}
 
+                        {authError && (
+                            <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm leading-snug text-red-700">
+                                {authError}
+                            </p>
+                        )}
+                        {authNotice && (
+                            <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm leading-snug text-emerald-800">
+                                {authNotice}
+                            </p>
+                        )}
+
                         <Button
-                            disabled={isSignUp && (!ageConfirmed || !termsAccepted || !email || !password)}
-                            onClick={() => { 
-                                if (email && password) {
-                                    if (isSignUp && (!ageConfirmed || !termsAccepted)) return;
-                                    onLogin(email, password, isSignUp);
-                                }
-                            }}
+                            disabled={submitting || !email || !password || (isSignUp && (!ageConfirmed || !termsAccepted))}
+                            onClick={() => void handleSubmit()}
                             className="w-full h-12 mt-2 rounded-xl text-base font-medium shadow-lg shadow-primary/25 bg-gradient-to-r from-primary to-emerald-600 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <LogIn className="w-5 h-5 mr-2" />
-                            {isSignUp ? (language === 'es' ? 'Crear Cuenta' : 'Sign Up') : (language === 'es' ? 'Iniciar Sesión' : 'Login')}
+                            {submitting ? 'Un momento…' : isSignUp ? (language === 'es' ? 'Crear Cuenta' : 'Sign Up') : (language === 'es' ? 'Iniciar Sesión' : 'Login')}
                         </Button>
                         <Button
                             variant="link"
-                            onClick={() => setIsSignUp(!isSignUp)}
+                            onClick={() => {
+                                setIsSignUp(!isSignUp);
+                                setAuthError('');
+                                setAuthNotice('');
+                            }}
                             className="w-full h-8 text-sm text-primary hover:text-primary/80"
                         >
                             {isSignUp ? '¿Ya tienes cuenta? Inicia Sesión' : '¿No tienes cuenta? Regístrate'}

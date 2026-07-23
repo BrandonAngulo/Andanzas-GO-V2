@@ -17,6 +17,7 @@ import { useHelpContent } from '../../hooks/useHelpContent';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
+import { getAuthErrorMessage } from '../../services/auth.service';
 import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
 import { UserProfile, Insignia, Review, Site, PassportStamp, ActivePanelType } from '../../types';
@@ -475,15 +476,9 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
             } else {
                 await signIn(formEmail, formPassword);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            if (err.message && (err.message.includes('already registered') || err.message.includes('User already registered'))) {
-                setErrorMsg('Este correo ya está registrado. Por favor intenta iniciar sesión.');
-            } else if (err.message && err.message.includes('Invalid login credentials')) {
-                setErrorMsg('Correo o contraseña incorrectos.');
-            } else {
-                setErrorMsg(err.message || "Error de autenticación");
-            }
+            setErrorMsg(getAuthErrorMessage(err));
         } finally {
             setLoading(false);
         }

@@ -8,6 +8,7 @@ export const authService = {
             email,
             password,
             options: {
+                emailRedirectTo: `${window.location.origin}/auth/confirmed`,
                 data: {
                     full_name: fullName,
                     ...extraData
@@ -73,4 +74,24 @@ export const authService = {
     onAuthStateChange(callback: (event: any, session: any) => void) {
         return supabase.auth.onAuthStateChange(callback);
     }
+};
+
+export const getAuthErrorMessage = (error: unknown): string => {
+    const message = error instanceof Error ? error.message : String(error || '');
+    const normalized = message.toLowerCase();
+
+    if (normalized.includes('rate limit') || normalized.includes('over_email_send_rate_limit')) {
+        return 'El servicio de correo alcanzó temporalmente su límite de envíos. Tu cuenta todavía no fue creada; inténtalo de nuevo más tarde o avisa al equipo de Andanzas GO.';
+    }
+    if (normalized.includes('already registered') || normalized.includes('user already registered')) {
+        return 'Este correo ya está registrado. Intenta iniciar sesión.';
+    }
+    if (normalized.includes('invalid login credentials')) {
+        return 'El correo o la contraseña no coinciden.';
+    }
+    if (normalized.includes('email not confirmed')) {
+        return 'Primero confirma tu correo desde el mensaje que te enviamos.';
+    }
+
+    return message || 'No pudimos completar la autenticación. Inténtalo nuevamente.';
 };

@@ -60,6 +60,7 @@ import { DuelSession } from './components/views/DuelSession';
 import { challengeService, DuelPlay } from './services/challenge.service';
 import { DailyQuestion } from './components/views/DailyQuestion';
 import { DictionaryPanel } from './components/panels/DictionaryPanel';
+import { EmailConfirmationPage } from './components/auth/EmailConfirmationPage';
 
 // New Imports
 import { useAuth } from './contexts/AuthContext';
@@ -114,6 +115,7 @@ export default function App() {
   const path = window.location.pathname;
   if (path === '/privacy') return <PrivacyPolicy />;
   if (path === '/terms') return <TermsOfService />;
+  if (path === '/auth/confirmed') return <EmailConfirmationPage />;
 
   const { t, language } = useI18n();
   const { getHelp } = useHelpContent();
@@ -549,14 +551,16 @@ export default function App() {
         onOpenChange={setAuthDialogOpen}
         onLogin={async (email, password, isSignUp) => {
           if (isSignUp) {
-            await signUp(email, password, email.split('@')[0]);
-          } else {
-            await signIn(email, password);
+            const result = await signUp(email, password, email.split('@')[0]);
+            if (result?.session) setAuthDialogOpen(false);
+            return result;
           }
+          const result = await signIn(email, password);
           // No forzar navegación a 'perfil': el diálogo de login siempre se abre desde una
           // acción contextual (iniciar ruta, dejar reseña, aceptar reto), así que activePanel
           // y fullView ya reflejan correctamente dónde estaba el usuario.
           setAuthDialogOpen(false);
+          return result;
         }}
       />
 
