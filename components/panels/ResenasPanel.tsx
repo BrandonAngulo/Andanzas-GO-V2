@@ -18,7 +18,7 @@ const ResenasPanel: React.FC<ResenasPanelProps> = ({ reviews, sites }) => {
 
   if (reviews.length === 0) {
     return (
-      <div className="h-[72vh] grid place-items-center text-center p-6">
+      <div className="grid h-full place-items-center p-6 text-center">
         <div>
           <Star className="h-8 w-8 mx-auto mb-2" />
           <p className="text-muted-foreground">{t('reviews.emptyDescription')}</p>
@@ -27,7 +27,7 @@ const ResenasPanel: React.FC<ResenasPanelProps> = ({ reviews, sites }) => {
     );
   }
   return (
-    <ScrollArea className="h-[72vh] p-3">
+    <ScrollArea className="h-full p-3">
       <div className="grid gap-3">
         {reviews.map((r) => {
           const site = sites.find((s) => s.id === r.siteId);

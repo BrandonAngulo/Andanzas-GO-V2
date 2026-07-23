@@ -85,7 +85,7 @@ const SoportePanel: React.FC = () => {
     ];
 
     return (
-        <ScrollArea className="h-[72vh]">
+        <ScrollArea className="h-full">
             <div className="p-3">
                 <Tabs defaultValue="faq" className="w-full">
                     <TabsList className="mb-4">

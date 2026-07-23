@@ -66,7 +66,7 @@ const ConfiguracionPanel: React.FC<ConfiguracionPanelProps> = ({ theme, setTheme
     };
 
     return (
-        <ScrollArea className="h-[72vh]">
+        <ScrollArea className="h-full">
             <div className="p-3 space-y-4">
 
                 {/* Appearance */}

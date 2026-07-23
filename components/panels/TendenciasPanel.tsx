@@ -28,7 +28,7 @@ const TendenciasPanel: React.FC<TendenciasPanelProps> = ({ items, query, onOpenS
   }, [items, query, language]);
 
   return (
-    <ScrollArea className="h-[72vh] p-3">
+    <ScrollArea className="h-full p-3">
       <div className="grid gap-3">
         {filteredItems.length === 0 && <p className="text-center text-muted-foreground p-4">No se encontraron resultados</p>}
         {filteredItems.map((s, idx) => (

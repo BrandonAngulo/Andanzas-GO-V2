@@ -30,7 +30,7 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
     icon,
     defaultTitle,
     defaultSubtitle,
-    titleClassName = "text-4xl font-extrabold tracking-tight text-foreground",
+    titleClassName = "text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl md:text-4xl",
     andiMessage,
     andiTitle,
     andiActionLabel,
@@ -71,8 +71,8 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
     return (
         <div className={cn(
             "relative mb-4 overflow-hidden rounded-[2rem] border border-primary/10 shadow-sm",
-            compact ? "p-4 md:p-6" : "p-6 md:p-10",
-            marginClass,
+            compact ? "p-4 md:p-6" : "p-4 sm:p-6 md:p-10",
+            marginClass === "mx-2" ? "mx-0 sm:mx-2" : marginClass,
         )}>
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 {/* Full-width banner background */}
@@ -86,13 +86,13 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
                 <div className={cn("absolute inset-0 bg-gradient-to-r", gradientClass)}></div>
             </div>
 
-            <div className={cn("relative z-10 flex flex-col", compact ? "gap-3" : "gap-6")}>
+            <div className={cn("relative z-10 flex flex-col", compact ? "gap-3" : "gap-4 md:gap-6")}>
                 <div className="w-full max-w-xl">
-                    <div className={cn("flex items-center gap-3", compact ? "mb-2" : "mb-4")}>
+                    <div className={cn("flex items-center gap-2.5 sm:gap-3", compact ? "mb-2" : "mb-3 md:mb-4")}>
                         {icon}
                         <h2 className={titleClassName}>{title}</h2>
                     </div>
-                    <p className={cn("font-medium leading-relaxed text-muted-foreground", compact ? "text-sm md:text-base" : "text-lg")}>
+                    <p className={cn("max-w-[90%] font-medium leading-relaxed text-muted-foreground", compact ? "text-sm md:text-base" : "text-sm sm:text-base md:text-lg")}>
                         {subtitle}
                     </p>
                 </div>
@@ -105,7 +105,7 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
 
             {/* Andi Floating Button inside Banner */}
             {andiMessage && (
-                <div className="absolute bottom-6 right-6 md:bottom-8 md:right-10 z-20">
+                <div className="absolute bottom-4 right-4 z-20 md:bottom-8 md:right-10">
                     <AndiGuia
                         message={andiMessage}
                         title={andiTitle}

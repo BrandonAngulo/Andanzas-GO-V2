@@ -1,5 +1,5 @@
 import React from 'react';
-import { Compass, TrendingUp, Route, Heart, User } from 'lucide-react';
+import { Compass, Sparkles, Route, Heart, User } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { ActivePanelType } from '../../types';
 import { useI18n } from '../../i18n';
@@ -11,35 +11,25 @@ interface IconTabProps {
   onClick: () => void;
 }
 
-const IconTab: React.FC<IconTabProps> = ({ icon: Icon, label, active, onClick }) => {
+function IconTab({ icon: Icon, label, active, onClick }: IconTabProps) {
   return (
-    <div className="relative flex flex-col items-center">
-      <button
-        onClick={onClick}
-        className={cn(
-          "relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-500 ease-out z-10",
-          active 
-            ? "bg-primary text-primary-foreground shadow-[0_0_20px_rgba(var(--primary),0.6)] scale-110" 
-            : "text-foreground/60 hover:text-foreground hover:bg-white/10 dark:hover:bg-white/5"
-        )}
-        aria-label={label}
-      >
-        <Icon className={cn(
-            "transition-all duration-300",
-            active ? "h-5 w-5 stroke-[2.5px]" : "h-5 w-5 stroke-[1.5px]"
-        )} />
-      </button>
-      
-      {/* Etiqueta flotante condicional */}
-      <div className={cn(
-          "absolute -bottom-6 px-2 py-0.5 rounded-md bg-background/80 backdrop-blur-md border border-border/50 shadow-sm transition-all duration-300 pointer-events-none",
-          active ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-1 scale-90"
-      )}>
-          <span className="text-[10px] font-medium whitespace-nowrap text-foreground">{label}</span>
-      </div>
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        'relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-1.5 transition-colors',
+        active
+          ? 'bg-emerald-600 text-white shadow-sm'
+          : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground',
+      )}
+      aria-label={label}
+      aria-current={active ? 'page' : undefined}
+    >
+      <Icon className={cn('h-5 w-5 transition-transform', active && 'scale-105 stroke-[2.5px]')} />
+      <span className="w-full truncate text-center text-[10px] font-bold leading-none">{label}</span>
+    </button>
   );
-};
+}
 
 interface BottomNavProps {
     activePanel: ActivePanelType;
@@ -50,9 +40,11 @@ const BottomNav: React.FC<BottomNavProps> = ({ activePanel, setActivePanel }) =>
     const { t } = useI18n();
     
     return (
-        <nav className="md:hidden fixed bottom-8 inset-x-0 flex justify-center z-[45] pointer-events-none">
-            {/* Contenedor principal: Fondo ultra sutil (casi invisible), solo blur y un borde muy fino */}
-            <div className="pointer-events-auto flex items-center gap-4 px-4 py-2 bg-background/5 backdrop-blur-xl border border-white/10 dark:border-white/5 rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.1)]">
+        <nav
+            className="fixed inset-x-0 bottom-0 z-[45] border-t border-border/70 bg-background/95 px-2 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1.5 shadow-[0_-12px_35px_-25px_rgba(15,23,42,0.7)] backdrop-blur-xl md:hidden"
+            aria-label="Navegación principal"
+        >
+            <div className="mx-auto flex max-w-lg items-stretch gap-1">
                 <IconTab 
                     icon={Compass} 
                     label={t('bottomNav.map')} 
@@ -60,7 +52,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activePanel, setActivePanel }) =>
                     onClick={() => setActivePanel("mapa")} 
                 />
                 <IconTab 
-                    icon={TrendingUp} 
+                    icon={Sparkles}
                     label={t('bottomNav.explore')} 
                     active={activePanel === "explorar"} 
                     onClick={() => setActivePanel("explorar")} 

@@ -208,7 +208,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
   }, [eventos, query, dateFilter, categoryFilter, specificDate, language, sites]);
 
   return (
-    <ScrollArea className="h-[72vh] bg-muted/10">
+    <ScrollArea className="h-full bg-muted/10">
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
         
         {/* Header Hero */}
@@ -221,7 +221,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
                     <Calendar className="h-6 w-6" />
                 </div>
             }
-            titleClassName="text-4xl font-extrabold tracking-tight text-orange-950 dark:text-orange-50"
+            titleClassName="text-2xl font-extrabold tracking-tight text-orange-950 dark:text-orange-50 sm:text-3xl md:text-4xl"
             defaultTitle={language === 'es' ? 'Cartelera Cultural' : 'Cultural Billboard'}
             defaultSubtitle={language === 'es' ? 'Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida.' : 'Cali pulses with culture every day. Explore what is happening today, what is coming, or the perfect plan for you.'}
         />

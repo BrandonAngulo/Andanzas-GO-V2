@@ -30,14 +30,14 @@ const SobrePanel: React.FC = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-[72vh]">
+            <div className="flex h-full items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
         );
     }
 
     return (
-        <ScrollArea className="h-[72vh]">
+        <ScrollArea className="h-full">
             <div className="flex flex-col gap-6 p-4 max-w-2xl mx-auto">
 
                 {/* Hero Section */}

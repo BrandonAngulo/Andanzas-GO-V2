@@ -313,13 +313,13 @@ const AdminDashboard: React.FC = () => {
     }
 
     return (
-        <ScrollArea className="h-[72vh] bg-muted/20">
-            <div className="p-4 md:p-6 max-w-6xl mx-auto">
+        <ScrollArea className="h-full bg-muted/20">
+            <div className="mx-auto max-w-6xl p-3 md:p-6">
                 <AdminIntroModal isOpen={showIntroModal} isAdmin={isAdmin} onClose={() => setShowIntroModal(false)} onComplete={completeIntro} />
-                <div className="mb-8">
+                <div className="mb-5 md:mb-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
-                        <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-                            <ShieldAlert className="h-8 w-8 text-primary" />
+                        <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight md:text-3xl">
+                            <ShieldAlert className="h-7 w-7 text-primary md:h-8 md:w-8" />
                             Panel de Administración
                         </h2>
                         <Button variant="outline" onClick={() => setShowIntroModal(true)}>
@@ -331,7 +331,7 @@ const AdminDashboard: React.FC = () => {
                     </p>
                 </div>
 
-                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 flex flex-wrap gap-2 mb-6 p-3 rounded-2xl border bg-background/90 backdrop-blur-md shadow-sm">
+                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-nowrap gap-1.5 overflow-x-auto rounded-2xl border bg-background/95 p-2 shadow-sm backdrop-blur-md scrollbar-none md:mb-6 md:gap-2 md:p-3 [&>button]:h-9 [&>button]:shrink-0 [&>button]:px-3 [&>button]:text-xs md:[&>button]:h-10 md:[&>button]:px-4 md:[&>button]:text-sm">
                     <Button 
                         variant={activeTab === 'overview' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('overview')}
@@ -462,7 +462,7 @@ const AdminDashboard: React.FC = () => {
                     )}
                 </nav>
 
-                <div className="bg-card rounded-xl border p-4 md:p-6 shadow-sm min-h-[500px]">
+                <div className="min-h-[420px] rounded-xl border bg-card p-2 shadow-sm sm:p-4 md:min-h-[500px] md:p-6">
                     {activeTab === 'overview' && <AdminGeneral />}
                     {activeTab === 'avatares' && <AdminAvatarsManager />}
                     {activeTab === 'sabias_que' && <CuriousFactsManager />}

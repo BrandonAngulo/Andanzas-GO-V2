@@ -98,7 +98,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     }
 
     return (
-        <ScrollArea className="h-[72vh] bg-[radial-gradient(circle_at_8%_18%,rgba(139,92,246,0.1),transparent_24%),radial-gradient(circle_at_92%_35%,rgba(249,115,22,0.1),transparent_25%),linear-gradient(to_bottom,rgba(168,85,247,0.04),transparent)]">
+        <ScrollArea className="h-full bg-[radial-gradient(circle_at_8%_18%,rgba(139,92,246,0.1),transparent_24%),radial-gradient(circle_at_92%_35%,rgba(249,115,22,0.1),transparent_25%),linear-gradient(to_bottom,rgba(168,85,247,0.04),transparent)]">
             <div className="relative mx-auto max-w-7xl space-y-4 overflow-hidden p-3 pb-16 md:p-5 md:pb-16 lg:p-6 lg:pb-20">
                 <div className="pointer-events-none absolute -left-20 top-64 h-64 w-64 rounded-full bg-purple-500/10 blur-3xl" />
                 <div className="pointer-events-none absolute -right-20 top-96 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />

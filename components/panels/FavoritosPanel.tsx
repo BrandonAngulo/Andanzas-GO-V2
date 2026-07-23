@@ -33,7 +33,7 @@ const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onT
 
   if (ids.length === 0) {
     return (
-      <div className="h-[72vh] grid place-items-center text-center p-6">
+      <div className="grid h-full place-items-center p-6 text-center">
         <div>
           <Heart className="h-8 w-8 mx-auto mb-2" />
           <p className="text-muted-foreground">{t('favorites.emptyDescription')}</p>
@@ -44,14 +44,14 @@ const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onT
 
   if (favs.length === 0 && query) {
     return (
-      <div className="h-[72vh] grid place-items-center text-center p-6">
+      <div className="grid h-full place-items-center p-6 text-center">
         <p className="text-muted-foreground">No se encontraron favoritos para "{query}"</p>
       </div>
     );
   }
 
   return (
-    <ScrollArea className="h-[72vh] p-3">
+    <ScrollArea className="h-full p-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
         {favs.map((s) => (
           <Card key={s.id} className="overflow-hidden">

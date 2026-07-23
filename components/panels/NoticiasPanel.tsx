@@ -137,7 +137,7 @@ const NoticiasPanel: React.FC<NoticiasPanelProps> = ({ feed, onOpenSite, sites }
     };
 
     return (
-        <ScrollArea className="h-[72vh] bg-muted/10">
+        <ScrollArea className="h-full bg-muted/10">
             <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
                 {/* Header Hero */}
                 <div className="mb-6 pb-6 border-b flex flex-col md:flex-row md:items-end justify-between gap-4">

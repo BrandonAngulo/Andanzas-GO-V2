@@ -67,7 +67,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
 
     if (selectedEntry) {
         return (
-            <ScrollArea className="h-[72vh] bg-background">
+            <ScrollArea className="h-full bg-background">
                 <div className="p-4 md:p-6 max-w-3xl mx-auto">
                     <Button variant="ghost" onClick={() => setSelectedEntry(null)} className="mb-4 -ml-2 text-muted-foreground">
                         ← Volver a Saberes
@@ -200,7 +200,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
     }
 
     return (
-        <ScrollArea className="h-[72vh] bg-muted/20">
+        <ScrollArea className="h-full bg-muted/20">
             <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
                 <PanelBanner
                     panelKey="paquesepas"
@@ -211,7 +211,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                             <BookOpen className="h-6 w-6" />
                         </div>
                     }
-                    titleClassName="text-4xl font-extrabold tracking-tight text-indigo-950 dark:text-indigo-50"
+                    titleClassName="text-2xl font-extrabold tracking-tight text-indigo-950 dark:text-indigo-50 sm:text-3xl md:text-4xl"
                     defaultTitle={language === 'es' ? "Pa' que sepás" : 'Did you know?'}
                     defaultSubtitle={language === 'es' ? 'Aprende sobre la cultura, la historia y los secretos mejor guardados de la ciudad. El por qué importa lo que ves.' : 'Learn about the culture, history and best-kept secrets of the city. Why what you see matters.'}
                     andiTitle="Mirá la ciudad con otros ojos"

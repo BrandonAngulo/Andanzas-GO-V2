@@ -37,7 +37,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, 
   const { t, language } = useI18n();
 
   return (
-    <Card className="absolute top-12 right-0 w-80 md:w-96 z-[1200] shadow-2xl">
+    <Card className="fixed left-2 right-2 top-14 z-[1200] max-h-[calc(100dvh-5rem)] overflow-hidden shadow-2xl md:absolute md:left-auto md:right-0 md:top-12 md:w-96">
       <Tabs defaultValue="alertas" className="w-full">
         <CardHeader className="p-3 pb-0 border-b">
           <TabsList className="w-full grid grid-cols-2 bg-muted/50 h-9">

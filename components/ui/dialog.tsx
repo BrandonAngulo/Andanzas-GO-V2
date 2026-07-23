@@ -57,14 +57,14 @@ const DialogContent: React.FC<React.PropsWithChildren<{ className?: string; show
   if (!open || !mounted) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[1400] flex items-center justify-center">
+    <div className="fixed inset-0 z-[1400] flex items-end justify-center sm:items-center sm:p-4">
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in-0 duration-200"
         onClick={() => onOpenChange(false)}
       ></div>
-      <div className={cn("relative z-10 w-full max-w-lg p-6 bg-popover text-popover-foreground rounded-lg shadow-xl animate-in fade-in-0 zoom-in-95 duration-200", className)}>
+      <div className={cn("relative z-10 max-h-[96dvh] w-full max-w-lg rounded-t-3xl bg-popover p-5 text-popover-foreground shadow-xl animate-in fade-in-0 zoom-in-95 duration-200 sm:rounded-lg sm:p-6", className)}>
         {showCloseButton && (
-          <button onClick={() => onOpenChange(false)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground z-50">
+          <button type="button" aria-label="Cerrar" onClick={() => onOpenChange(false)} className="absolute right-4 top-4 z-50 grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
             <X size={24} />
           </button>
         )}

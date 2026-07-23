@@ -171,7 +171,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
   }, [sites, query, language, categoryFilter]);
 
   return (
-    <ScrollArea className="h-[72vh]">
+    <ScrollArea className="h-full">
       {!query && (
         <PanelBanner
           panelKey="explorar"

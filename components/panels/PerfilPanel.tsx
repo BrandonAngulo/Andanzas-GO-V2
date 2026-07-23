@@ -495,7 +495,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
     if (!isAuthenticated) {
         return (
-            <ScrollArea className="h-[72vh]">
+            <ScrollArea className="h-full">
                 <div className="p-6 grid place-items-center h-full">
                     <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary">
                         <CardHeader className="text-center pb-2">
@@ -702,7 +702,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     };
 
     return (
-        <ScrollArea className="max-h-[72vh] w-full">
+        <ScrollArea className="h-full w-full">
             <div className="p-3 pr-5 sm:pr-6 space-y-6 w-full max-w-full overflow-x-hidden pb-12">
 
                 {/* Incomplete Profile Banner */}

@@ -368,7 +368,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
     };
 
     return (
-        <div className="relative h-[66vh] md:h-[72vh] rounded-b-xl overflow-hidden group font-sans">
+        <div className="group relative h-full overflow-hidden rounded-b-xl font-sans">
             {props.isLoading && (
                 <div className="absolute inset-0 z-[500] bg-background/50 backdrop-blur-sm flex items-center justify-center">
                     <div className="flex flex-col items-center gap-2">
@@ -542,7 +542,7 @@ export default function MapaGoogle(props: MapaGoogleProps) {
 
     if (!API_KEY) {
         return (
-            <div className="h-[66vh] md:h-[72vh] flex items-center justify-center bg-muted rounded-xl border-2 border-dashed">
+            <div className="flex h-full items-center justify-center rounded-xl border-2 border-dashed bg-muted">
                 <div className="text-center p-6 space-y-4">
                     <AlertTriangle className="mx-auto h-12 w-12 text-yellow-500" />
                     <h3 className="text-lg font-bold">Falta la API Key de Google Maps</h3>

@@ -56,9 +56,9 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md border-0 bg-background/95 backdrop-blur-xl shadow-2xl p-0 overflow-hidden rounded-3xl">
+            <DialogContent className="flex max-h-[96dvh] flex-col overflow-hidden rounded-t-3xl border-0 bg-background/95 p-0 shadow-2xl backdrop-blur-xl sm:max-w-md sm:rounded-3xl">
                 {/* Visual Header with Gradient */}
-                <div className="relative h-32 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center overflow-hidden">
+                <div className="relative flex h-24 shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent sm:h-32">
                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
 
                     {/* Decorative circles */}
@@ -66,7 +66,7 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
                     <div className="absolute bottom-[-20%] right-[-10%] w-32 h-32 rounded-full bg-orange-500/10 blur-3xl"></div>
 
                     {/* Main Icon */}
-                    <div className="relative z-10 w-20 h-20 bg-background rounded-full shadow-lg flex items-center justify-center p-1 border-4 border-white/20 dark:border-white/5 ring-4 ring-primary/10">
+                    <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white/20 bg-background p-1 shadow-lg ring-4 ring-primary/10 dark:border-white/5 sm:h-20 sm:w-20">
                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-primary to-orange-400 flex items-center justify-center text-white">
                             <LockKeyhole className="w-8 h-8" />
                         </div>
@@ -76,7 +76,7 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
                     </div>
                 </div>
 
-                <div className="px-8 pb-8 pt-6">
+                <div className="min-h-0 overflow-y-auto px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-5 sm:px-8 sm:pb-8 sm:pt-6">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/70">
                             {title || defaultTitle}

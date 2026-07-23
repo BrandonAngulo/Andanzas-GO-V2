@@ -569,10 +569,10 @@ export default function App() {
       </a>
 
       {/* Header */}
-      <header className={cn("flex-shrink-0 pt-2 md:pt-3 z-[1000] w-full mx-auto md:max-w-7xl md:px-4 transition-all duration-300", activeGuidedRoute && "hidden")}>
-        <div className="glass-panel shadow-md border-b md:border md:rounded-2xl w-full px-4 py-3 flex items-center gap-3">
-          <Button variant="ghost" size="icon" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
-          <div className="flex items-center gap-2 mr-2"><Logo /></div>
+      <header className={cn("z-[1000] mx-auto w-full flex-shrink-0 pt-[env(safe-area-inset-top)] transition-all duration-300 md:max-w-7xl md:px-4 md:pt-3", activeGuidedRoute && "hidden")}>
+        <div className="glass-panel flex w-full items-center gap-1.5 border-b px-2 py-2 shadow-sm sm:gap-2 sm:px-3 md:gap-3 md:rounded-2xl md:border md:px-4 md:py-3 md:shadow-md">
+          <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full md:h-10 md:w-10" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
+          <div className="mr-1 flex shrink-0 items-center gap-2 md:mr-2"><Logo /></div>
 
           <nav className="hidden md:flex items-center gap-1 bg-muted/50 p-1 rounded-full border border-black/5 dark:border-white/5" aria-label="Main Navigation">
             {[
@@ -622,9 +622,9 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex shrink-0 items-center gap-0.5 sm:gap-1 md:gap-1.5">
             <div className="relative" ref={notificationsRef}>
-              <Button id="notifications-bell" variant="ghost" size="icon" className="rounded-full hover:bg-muted" onClick={() => handleShowNotifications(!showNotifications)}>
+              <Button id="notifications-bell" variant="ghost" size="icon" className="h-9 w-9 rounded-full hover:bg-muted md:h-10 md:w-10" aria-label={language === 'es' ? 'Notificaciones' : 'Notifications'} onClick={() => handleShowNotifications(!showNotifications)}>
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && <div className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-orange-500 border border-background" />}
               </Button>
@@ -650,13 +650,13 @@ export default function App() {
             </div>
 
             <div className="relative" ref={accessibilityMenuRef}>
-              <Button id="accessibility-button" variant="ghost" size="icon" className="rounded-full hover:bg-muted" onClick={() => handleShowAccessibilityMenu(!showAccessibilityMenu)}>
-                <Settings2 className="h-6 w-6" />
+              <Button id="accessibility-button" variant="ghost" size="icon" className="hidden h-9 w-9 rounded-full hover:bg-muted sm:inline-flex md:h-10 md:w-10" aria-label={language === 'es' ? 'Accesibilidad y ajustes visuales' : 'Accessibility and display settings'} onClick={() => handleShowAccessibilityMenu(!showAccessibilityMenu)}>
+                <Settings2 className="h-5 w-5 md:h-6 md:w-6" />
               </Button>
               {showAccessibilityMenu && <AccessibilityMenu settings={accessibilitySettings} onSettingsChange={setAccessibilitySettings} onReset={() => setAccessibilitySettings(defaultAccessibilitySettings)} />}
             </div>
 
-            <Button variant="ghost" size="icon" className={cn("rounded-full hover:bg-muted p-0 overflow-hidden", isAuthenticated ? "border-2 border-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? lastPanelBeforeProfile : 'perfil')}>
+            <Button variant="ghost" size="icon" aria-label={language === 'es' ? 'Abrir perfil' : 'Open profile'} className={cn("h-9 w-9 overflow-hidden rounded-full p-0 hover:bg-muted md:h-10 md:w-10", isAuthenticated ? "border-2 border-primary" : "")} onClick={() => setActivePanel(prev => prev === 'perfil' ? lastPanelBeforeProfile : 'perfil')}>
               {isAuthenticated ? (
                 <UserAvatar userProfile={userProfile} className="w-full h-full" />
               ) : (
@@ -667,25 +667,25 @@ export default function App() {
         </div>
       </header>
 
-      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("flex-1 min-h-0 w-full mx-auto max-w-7xl px-4 pt-4 md:pt-6 pb-4 focus:outline-none", "gap-4 md:gap-6")}>
+      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto w-full max-w-7xl flex-1 min-h-0 px-0 pb-[calc(4.6rem+env(safe-area-inset-bottom))] pt-1.5 focus:outline-none md:px-4 md:pb-4 md:pt-6", "gap-2 md:gap-6")}>
         <section className="relative h-full flex flex-col min-h-0 w-full">
-          <Card className="h-full border-none shadow-medium ring-1 ring-black/5 dark:ring-white/10 flex flex-col overflow-hidden bg-card/80 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4 bg-muted/30">
-              <CardTitle className="text-xl flex items-center gap-2 text-foreground/80">
+          <Card className="flex h-full flex-col overflow-hidden rounded-none border-none bg-card/80 shadow-none ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10 md:rounded-xl md:shadow-medium">
+            <CardHeader className="flex min-h-[3.2rem] flex-row items-center justify-between border-b bg-muted/30 px-3 py-2 md:min-h-0 md:px-6 md:py-4">
+              <CardTitle className="flex min-w-0 items-center gap-1.5 text-base text-foreground/80 md:gap-2 md:text-xl">
                 {activePanel !== 'mapa' && (
-                  <Button type="button" size="icon" variant="ghost" className="-ml-3 rounded-full" aria-label="Volver al panel anterior" title="Volver" onClick={() => window.history.back()}>
+                  <Button type="button" size="icon" variant="ghost" className="-ml-2 h-9 w-9 shrink-0 rounded-full md:-ml-3 md:h-10 md:w-10" aria-label="Volver al panel anterior" title="Volver" onClick={() => window.history.back()}>
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                 )}
-                {panelTitle}
+                <span className="truncate">{panelTitle}</span>
                 {['mapa', 'favoritos', 'reseñas', 'tendencias', 'noticias', 'diccionario', 'perfil'].includes(activePanel) && (() => {
                   const help = getHelp(activePanel);
                   return <InfoHint size="sm" title={help.title} label={help.title} body={help.body} />;
                 })()}
               </CardTitle>
-              {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="rounded-full shadow-lg shadow-primary/20"><Route className="h-4 w-4 mr-1" /> {language === 'es' ? 'Vivir / Crear Ruta' : 'Live / Create Route'}</Button>}
+              {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="h-9 shrink-0 rounded-full px-3 text-xs shadow-lg shadow-primary/20 md:text-sm"><Route className="mr-1 h-4 w-4" /><span className="hidden min-[390px]:inline">{language === 'es' ? 'Vivir / Crear Ruta' : 'Live / Create Route'}</span><span className="min-[390px]:hidden">{language === 'es' ? 'Crear ruta' : 'Create'}</span></Button>}
             </CardHeader>
-            <CardContent className="p-0 flex-1 relative">
+            <CardContent className="relative min-h-0 flex-1 overflow-hidden p-0">
               {/* PANELS */}
               {activePanel === 'mapa' && (
                 <MapaGoogle
@@ -793,7 +793,7 @@ export default function App() {
       
       {/* Privacy Banner */}
       {showPrivacyBanner && (
-        <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-lg border-t z-[2000] p-3 flex items-center gap-3 text-sm">
+        <div className="fixed bottom-[calc(4.55rem+env(safe-area-inset-bottom))] left-2 right-2 z-[2000] flex items-center gap-2 rounded-2xl border bg-background/95 p-3 text-sm shadow-xl backdrop-blur-lg md:bottom-0 md:left-0 md:right-0 md:rounded-none md:border-x-0">
           <Shield className="h-4 w-4 text-primary" />
           <span className="flex-1">Tus datos están protegidos.</span>
           <Button size="sm" onClick={() => setShowPrivacyBanner(false)} className="rounded-full">Aceptar</Button>
