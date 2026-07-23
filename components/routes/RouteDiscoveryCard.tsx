@@ -127,7 +127,9 @@ export function RouteDiscoveryCard({
     ? { label: language === 'es' ? 'Completada' : 'Completed', icon: CheckCircle2, tone: 'bg-amber-300 text-amber-950' }
     : inProgress
       ? { label: language === 'es' ? 'En recorrido' : 'In progress', icon: Compass, tone: 'bg-emerald-500 text-white' }
-      : { label: language === 'es' ? 'Lista para explorar' : 'Ready to explore', icon: Sparkles, tone: 'bg-white/90 text-emerald-950' };
+      : route.completion_status === 'fully_playable'
+        ? { label: language === 'es' ? 'Historia jugable' : 'Playable story', icon: Sparkles, tone: 'bg-orange-300 text-orange-950' }
+        : { label: language === 'es' ? 'Lista para explorar' : 'Ready to explore', icon: Sparkles, tone: 'bg-white/90 text-emerald-950' };
   const StatusIcon = status.icon;
 
   return (

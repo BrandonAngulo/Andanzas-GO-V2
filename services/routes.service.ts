@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
-import { Ruta } from '../types';
+import { Ruta, RouteProgress } from '../types';
 
 export interface RouteRegistrationResult {
     success: boolean;
@@ -41,6 +41,118 @@ export const routesService = {
             return false;
         }
         return true;
+    },
+
+    async getRouteProgress(userId: string, routeId: string): Promise<RouteProgress | null> {
+        const { data, error } = await supabase
+            .from('user_route_progress')
+            .select('route_id,status,started_at,completed_at,abandoned_at,last_stop_id,visited_stop_ids,progress_percent,total_points_earned')
+            .eq('user_id', userId)
+            .eq('route_id', routeId)
+            .maybeSingle();
+
+        if (error) {
+            console.warn('Could not load detailed route progress:', error.message);
+            return null;
+        }
+
+        return data ? mapRouteProgress(data) : null;
+    },
+
+    async startOrResumeRoute(userId: string, route: Ruta, restart = false): Promise<RouteProgress | null> {
+        const existing = await this.getRouteProgress(userId, route.id);
+        const now = new Date().toISOString();
+        const payload = {
+            user_id: userId,
+            route_id: route.id,
+            status: 'in_progress',
+            started_at: restart ? now : existing?.startedAt || now,
+            completed_at: null,
+            abandoned_at: null,
+            last_stop_id: restart ? null : existing?.lastStopId || null,
+            visited_stop_ids: restart ? [] : existing?.visitedStopIds || [],
+            progress_percent: restart ? 0 : existing?.progressPercent || 0,
+            total_points_earned: restart ? 0 : existing?.totalPointsEarned || 0,
+            updated_at: now,
+        };
+
+        const { data, error } = await supabase
+            .from('user_route_progress')
+            .upsert(payload, { onConflict: 'user_id,route_id' })
+            .select('route_id,status,started_at,completed_at,abandoned_at,last_stop_id,visited_stop_ids,progress_percent,total_points_earned')
+            .single();
+
+        if (error) {
+            console.warn('Could not start or resume route:', error.message);
+            return existing;
+        }
+        return mapRouteProgress(data);
+    },
+
+    async saveStopProgress(
+        userId: string,
+        route: Ruta,
+        stopId: string,
+        visitedStopIds: string[],
+    ): Promise<boolean> {
+        const uniqueVisited = [...new Set(visitedStopIds)].filter(id => route.puntos.includes(id));
+        const progressPercent = Math.round((uniqueVisited.length / Math.max(route.puntos.length, 1)) * 100);
+        const { error } = await supabase
+            .from('user_route_progress')
+            .upsert({
+                user_id: userId,
+                route_id: route.id,
+                status: 'in_progress',
+                completed_at: null,
+                abandoned_at: null,
+                last_stop_id: stopId,
+                visited_stop_ids: uniqueVisited,
+                progress_percent: progressPercent,
+                updated_at: new Date().toISOString(),
+            }, { onConflict: 'user_id,route_id' });
+
+        if (error) console.warn('Could not save route stop progress:', error.message);
+        return !error;
+    },
+
+    async completeDetailedRoute(userId: string, route: Ruta, visitedStopIds: string[]): Promise<boolean> {
+        const completedAt = new Date().toISOString();
+        const { error } = await supabase
+            .from('user_route_progress')
+            .upsert({
+                user_id: userId,
+                route_id: route.id,
+                status: 'completed',
+                completed_at: completedAt,
+                abandoned_at: null,
+                last_stop_id: route.puntos[route.puntos.length - 1] || null,
+                visited_stop_ids: [...new Set(visitedStopIds)],
+                progress_percent: 100,
+                updated_at: completedAt,
+            }, { onConflict: 'user_id,route_id' });
+
+        if (error) console.warn('Could not complete detailed route progress:', error.message);
+        return !error;
+    },
+
+    async abandonRoute(userId: string, route: Ruta, visitedStopIds: string[]): Promise<boolean> {
+        const abandonedAt = new Date().toISOString();
+        const uniqueVisited = [...new Set(visitedStopIds)];
+        const { error } = await supabase
+            .from('user_route_progress')
+            .upsert({
+                user_id: userId,
+                route_id: route.id,
+                status: 'abandoned',
+                abandoned_at: abandonedAt,
+                last_stop_id: uniqueVisited[uniqueVisited.length - 1] || route.puntos[0] || null,
+                visited_stop_ids: uniqueVisited,
+                progress_percent: Math.round((uniqueVisited.length / Math.max(route.puntos.length, 1)) * 100),
+                updated_at: abandonedAt,
+            }, { onConflict: 'user_id,route_id' });
+
+        if (error) console.warn('Could not mark route as abandoned:', error.message);
+        return !error;
     },
 
     async getAll(): Promise<Ruta[]> {
@@ -212,6 +324,15 @@ function mapRoute(dbRoute: any): Ruta {
         justificaciones_en: dbRoute.justificaciones_en,
         recomendaciones: dbRoute.recomendaciones,
         gamificacion: dbRoute.gamificacion,
+        gamification_level: dbRoute.gamification_level,
+        completion_status: dbRoute.completion_status,
+        narrative_question: dbRoute.narrative_question,
+        narrative_question_en: dbRoute.narrative_question_en,
+        intro_text: dbRoute.intro_text,
+        intro_text_en: dbRoute.intro_text_en,
+        closing_text: dbRoute.closing_text,
+        closing_text_en: dbRoute.closing_text_en,
+        points_reward: dbRoute.points_reward,
         publico: dbRoute.is_published,
         status: dbRoute.status || (dbRoute.is_published ? 'published' : 'draft'),
         reward_badge_id: dbRoute.reward_badge_id,
@@ -219,5 +340,19 @@ function mapRoute(dbRoute: any): Ruta {
         max_capacity: dbRoute.max_capacity,
         current_registrations: dbRoute.current_registrations,
         registration_status: dbRoute.registration_status
+    };
+}
+
+function mapRouteProgress(row: any): RouteProgress {
+    return {
+        routeId: row.route_id,
+        status: row.status,
+        startedAt: row.started_at,
+        completedAt: row.completed_at,
+        abandonedAt: row.abandoned_at,
+        lastStopId: row.last_stop_id,
+        visitedStopIds: row.visited_stop_ids || [],
+        progressPercent: row.progress_percent || 0,
+        totalPointsEarned: row.total_points_earned || 0,
     };
 }

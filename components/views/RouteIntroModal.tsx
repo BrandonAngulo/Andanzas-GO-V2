@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import React, { useEffect, useState } from 'react';
-import { X, PlayCircle, Clock, MapPin, Award, ChevronRight, Footprints, Navigation, Sparkles } from 'lucide-react';
+import { X, PlayCircle, Clock, MapPin, Award, ChevronRight, Footprints, Navigation, Sparkles, Flag } from 'lucide-react';
 import { Ruta, Site } from '../../types';
 import { Button } from '../ui/button';
 import { LazyImage } from '../ui/lazy-image';
@@ -187,6 +187,27 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                 <p className="text-sm leading-relaxed text-foreground/75">
                                     {getTranslated(route, 'descripcion', language)}
                                 </p>
+                                {getTranslated(route, 'narrative_question', language) && (
+                                    <div className="mt-4 rounded-2xl border border-orange-300/55 bg-gradient-to-br from-orange-50 to-amber-50 p-4 text-orange-950 shadow-sm dark:border-orange-500/25 dark:from-orange-950/35 dark:to-amber-950/20 dark:text-orange-50">
+                                        <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.16em] text-orange-700 dark:text-orange-300">
+                                            <Flag className="h-3.5 w-3.5" />
+                                            {language === 'es' ? 'Tu misión' : 'Your mission'}
+                                        </p>
+                                        <p className="mt-2 text-sm font-black leading-snug">
+                                            {getTranslated(route, 'narrative_question', language)}
+                                        </p>
+                                        {getTranslated(route, 'intro_text', language) && (
+                                            <p className="mt-1.5 text-xs font-semibold leading-relaxed text-orange-900/80 dark:text-orange-100/80">
+                                                {getTranslated(route, 'intro_text', language)}
+                                            </p>
+                                        )}
+                                        <p className="mt-1.5 text-xs leading-relaxed text-orange-900/70 dark:text-orange-100/70">
+                                            {language === 'es'
+                                                ? 'Cada parada revelará una pieza de la respuesta. Observa el lugar antes de responder.'
+                                                : 'Every stop will reveal part of the answer. Observe the place before responding.'}
+                                        </p>
+                                    </div>
+                                )}
                                 <div className="mt-4 flex items-center gap-3 overflow-hidden rounded-2xl border border-emerald-700/10 bg-emerald-50/80 px-3 py-2.5 dark:bg-emerald-950/30">
                                     <img
                                         src="/brand/andi/andi-frontal-512-transparent-v2.png"

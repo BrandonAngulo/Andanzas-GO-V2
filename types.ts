@@ -296,6 +296,14 @@ export interface Ruta {
   recomendaciones: RecomendacionRuta[];
   gamificacion?: any[];
   gamification_level?: 'none' | 'light' | 'medium' | 'full'; // New field for Phase 5
+  completion_status?: 'content_only' | 'map_ready' | 'mission_ready' | 'fully_playable';
+  narrative_question?: string;
+  narrative_question_en?: string;
+  intro_text?: string;
+  intro_text_en?: string;
+  closing_text?: string;
+  closing_text_en?: string;
+  points_reward?: number;
   publico: boolean;
   status?: 'draft' | 'published' | 'archived';
   fully_playable?: boolean;
@@ -311,6 +319,18 @@ export interface Ruta {
   max_capacity?: number | null;
   current_registrations?: number;
   registration_status?: 'open' | 'closed' | 'invite_only';
+}
+
+export interface RouteProgress {
+  routeId: string;
+  status: 'saved' | 'in_progress' | 'completed' | 'abandoned';
+  startedAt?: string | null;
+  completedAt?: string | null;
+  abandonedAt?: string | null;
+  lastStopId?: string | null;
+  visitedStopIds: string[];
+  progressPercent: number;
+  totalPointsEarned: number;
 }
 
 export interface Review {

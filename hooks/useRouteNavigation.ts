@@ -5,6 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { useI18n } from '../i18n';
 import { Ruta, Site } from '../types';
 import { gamificationService } from '../services/gamification.service';
+import { routesService } from '../services/routes.service';
+import { analyticsService } from '../services/analytics.service';
 import { getTranslated } from '../lib/utils';
 import { Route } from 'lucide-react';
 import { toast } from 'sonner';
@@ -47,14 +49,49 @@ export const useRouteNavigation = () => {
     };
 
     const launchRouteSession = (route: Ruta) => {
+        const restartingCompletedRoute = routesCompleted.includes(route.id);
         const newInProgress = [...new Set([...routesInProgress, route.id])];
-        updateRouteProgress(newInProgress, routesCompleted); // Sync state
+        const newCompleted = routesCompleted.filter(routeId => routeId !== route.id);
+        updateRouteProgress(newInProgress, newCompleted); // Sync state
 
         setActiveGuidedRoute(route);
         setVisitedRoutePoints([]);
         setCurrentRouteStep(0);
         setShowRouteModal(false);
         setPreviewRoute(null);
+
+        void analyticsService.trackEvent('route_started', 'route', route.id, {
+            stops_total: route.puntos.length,
+            completion_status: route.completion_status || null,
+            gamification_level: route.gamification_level || null,
+        });
+
+        if (isAuthenticated && user) {
+            void routesService.startOrResumeRoute(user.id, route, restartingCompletedRoute).then(progress => {
+                if (!progress || progress.status === 'completed') return;
+                const validVisited = progress.visitedStopIds.filter(id => route.puntos.includes(id));
+                setVisitedRoutePoints(validVisited);
+
+                const firstPendingIndex = route.puntos.findIndex(id => !validVisited.includes(id));
+                if (firstPendingIndex >= 0) {
+                    setCurrentRouteStep(firstPendingIndex);
+                } else if (progress.lastStopId) {
+                    setCurrentRouteStep(Math.max(route.puntos.indexOf(progress.lastStopId), 0));
+                }
+
+                if (validVisited.length > 0) {
+                    toast.success(
+                        language === 'es'
+                            ? `Retomamos tu recorrido: ${validVisited.length} paradas conservadas`
+                            : `Route resumed: ${validVisited.length} stops restored`
+                    );
+                    void analyticsService.trackEvent('route_resumed', 'route', route.id, {
+                        stops_visited: validVisited.length,
+                        progress_percent: progress.progressPercent,
+                    });
+                }
+            });
+        }
     };
 
     const confirmStartRoute = () => {
@@ -62,13 +99,20 @@ export const useRouteNavigation = () => {
     };
 
     const handlePointVisited = (siteId: string) => {
-        setVisitedRoutePoints(prev => {
-            if (prev.includes(siteId)) return prev;
-            return [...prev, siteId];
-        });
+        const updatedVisited = visitedRoutePoints.includes(siteId)
+            ? visitedRoutePoints
+            : [...visitedRoutePoints, siteId];
+        setVisitedRoutePoints(updatedVisited);
         setReviewSiteId(siteId); // Trigger review prompt
         setShowRouteModal(false);
         if (isAuthenticated && activeGuidedRoute) {
+            void routesService.saveStopProgress(user!.id, activeGuidedRoute, siteId, updatedVisited);
+            void analyticsService.trackEvent('route_stop_completed', 'route', activeGuidedRoute.id, {
+                stop_id: siteId,
+                stop_index: activeGuidedRoute.puntos.indexOf(siteId),
+                stops_visited: updatedVisited.length,
+                stops_total: activeGuidedRoute.puntos.length,
+            });
             const claim = gamificationService.claimActionPoints('route_stop', activeGuidedRoute.id, siteId).then(result => {
                 const points = Number(result?.points_awarded || 0);
                 if (points > 0) toast.success(`+${points} puntos por visitar esta parada`);
@@ -93,10 +137,17 @@ export const useRouteNavigation = () => {
         updateRouteProgress(newInProgress, newCompleted);
         setActiveGuidedRoute(null);
 
-        const closingMsg = getTranslated(route, 'mensajeCierre', language);
+        const closingMsg =
+            getTranslated(route, 'closing_text', language) ||
+            getTranslated(route, 'mensajeCierre', language);
         const defaultMsg = language === 'es' ? '¡Felicitaciones! Has completado una andanza.' : 'Congratulations! You have completed a journey.';
 
         if (isAuthenticated && user) {
+            void routesService.completeDetailedRoute(user.id, route, visitedRoutePoints);
+            void analyticsService.trackEvent('route_completed', 'route', route.id, {
+                stops_total: route.puntos.length,
+                points_reward: route.points_reward || 0,
+            });
             void gamificationService.claimActionPoints('route_complete', route.id).then(result => {
                 const points = Number(result?.points_awarded || 0);
                 if (points > 0) toast.success(`Bono final de ruta: +${points} puntos`);
@@ -115,6 +166,25 @@ export const useRouteNavigation = () => {
 
         setShowRouteModal(false);
         setVisitedRoutePoints([]);
+    };
+
+    const abandonActiveRoute = () => {
+        if (!activeGuidedRoute) return;
+        const route = activeGuidedRoute;
+        if (isAuthenticated && user) {
+            void routesService.abandonRoute(user.id, route, visitedRoutePoints);
+            void analyticsService.trackEvent('route_abandoned', 'route', route.id, {
+                stops_visited: visitedRoutePoints.length,
+                stops_total: route.puntos.length,
+            });
+        }
+        updateRouteProgress(
+            routesInProgress.filter(routeId => routeId !== route.id),
+            routesCompleted,
+        );
+        setActiveGuidedRoute(null);
+        setVisitedRoutePoints([]);
+        setCurrentRouteStep(0);
     };
 
     const nextStep = () => {
@@ -150,6 +220,7 @@ export const useRouteNavigation = () => {
             if (activeGuidedRoute && activeGuidedRoute.id === id) {
                 completeRoute(activeGuidedRoute);
             }
-        }
+        },
+        abandonActiveRoute,
     };
 };

@@ -15,7 +15,8 @@ import {
   Award,
   HelpCircle,
   Route as RouteIcon,
-  Sparkles
+  Sparkles,
+  Flag
 } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { cn, getTranslated } from '../../lib/utils';
@@ -429,6 +430,18 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                 </div>
               </div>
 
+              {getTranslated(route, 'narrative_question', language) && (
+                <div className="rounded-2xl border border-orange-300/45 bg-orange-50/75 p-3.5 text-orange-950 dark:border-orange-500/20 dark:bg-orange-950/25 dark:text-orange-50">
+                  <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.16em] text-orange-700 dark:text-orange-300">
+                    <Flag className="h-3.5 w-3.5" />
+                    {language === 'es' ? 'Misión del recorrido' : 'Route mission'}
+                  </p>
+                  <p className="mt-1.5 text-xs font-bold leading-relaxed">
+                    {getTranslated(route, 'narrative_question', language)}
+                  </p>
+                </div>
+              )}
+
               {/* Tramo Narrativo / Walk Story */}
               <div className="space-y-2.5">
                 <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
@@ -500,6 +513,15 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                     {challenge?.quiz_data?.fun_fact && (
                       <div className="bg-card/80 p-3 rounded-lg text-xs text-foreground/80 text-left border border-border/30">
                         <strong>Dato Curioso:</strong> {getTranslated(challenge.quiz_data, 'fun_fact', language)}
+                      </div>
+                    )}
+
+                    {isLast && getTranslated(route, 'closing_text', language) && (
+                      <div className="rounded-lg border border-emerald-500/20 bg-card/80 p-3 text-left text-xs leading-relaxed text-foreground/80">
+                        <strong className="mb-1 block text-emerald-700 dark:text-emerald-300">
+                          {language === 'es' ? 'La memoria reconstruida' : 'The reconstructed memory'}
+                        </strong>
+                        {getTranslated(route, 'closing_text', language)}
                       </div>
                     )}
 

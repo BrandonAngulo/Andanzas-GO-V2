@@ -154,7 +154,7 @@ export default function App() {
 
   // --- Route Navigation Hook ---
   const {
-    activeGuidedRoute, setActiveGuidedRoute,
+    activeGuidedRoute,
     previewRoute, setPreviewRoute,
     visitedRoutePoints,
     currentRouteStep, setCurrentRouteStep,
@@ -166,7 +166,8 @@ export default function App() {
     handleReviewClose,
     nextStep,
     prevStep,
-    completeRouteById
+    completeRouteById,
+    abandonActiveRoute
   } = useRouteNavigation();
 
   // --- Local UI State ---
@@ -829,7 +830,7 @@ export default function App() {
           <DialogHeader><DialogTitle>¿Cancelar Misión?</DialogTitle></DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCancelConfirmation(false)}>Continuar</Button>
-            <Button variant="destructive" onClick={() => { setActiveGuidedRoute(null); setShowCancelConfirmation(false); setActivePanel("rutas"); }}>Sí, salir</Button>
+            <Button variant="destructive" onClick={() => { abandonActiveRoute(); setShowCancelConfirmation(false); setActivePanel("rutas"); }}>Sí, salir</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
