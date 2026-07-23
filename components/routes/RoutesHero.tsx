@@ -22,6 +22,7 @@ export function RoutesHero({ language, routeCount, stopCount }: RoutesHeroProps)
         explore: 'Descubrir rutas',
         routes: 'rutas disponibles',
         stops: 'paradas por descubrir',
+        preparing: 'Nuevas rutas en preparación',
         preview: 'Tu próxima andanza',
         previewTitle: 'Cultura, sabores y ciudad',
         duration: 'A tu ritmo',
@@ -33,6 +34,7 @@ export function RoutesHero({ language, routeCount, stopCount }: RoutesHeroProps)
         explore: 'Discover routes',
         routes: 'available routes',
         stops: 'stops to discover',
+        preparing: 'New routes in preparation',
         preview: 'Your next journey',
         previewTitle: 'Culture, flavors and city',
         duration: 'At your pace',
@@ -74,12 +76,14 @@ export function RoutesHero({ language, routeCount, stopCount }: RoutesHeroProps)
             </a>
             <div className="hidden h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 text-xs font-bold backdrop-blur-md min-[430px]:inline-flex">
               <Route className="h-4 w-4 text-emerald-200" />
-              <span>{routeCount} {copy.routes}</span>
+              <span>{routeCount > 0 ? `${routeCount} ${copy.routes}` : copy.preparing}</span>
             </div>
-            <div className="hidden h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 text-xs font-bold backdrop-blur-md min-[430px]:inline-flex">
-              <MapPinned className="h-4 w-4 text-orange-300" />
-              <span>{stopCount} {copy.stops}</span>
-            </div>
+            {stopCount > 0 && (
+              <div className="hidden h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 text-xs font-bold backdrop-blur-md min-[430px]:inline-flex">
+                <MapPinned className="h-4 w-4 text-orange-300" />
+                <span>{stopCount} {copy.stops}</span>
+              </div>
+            )}
           </div>
         </div>
 
