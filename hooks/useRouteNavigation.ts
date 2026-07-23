@@ -199,11 +199,22 @@ export const useRouteNavigation = () => {
         }
     };
 
+    const selectRouteStop = (stepIndex: number) => {
+        if (!activeGuidedRoute || stepIndex < 0 || stepIndex >= activeGuidedRoute.puntos.length) return;
+        setCurrentRouteStep(stepIndex);
+        void analyticsService.trackEvent('route_stop_selected', 'route', activeGuidedRoute.id, {
+            stop_id: activeGuidedRoute.puntos[stepIndex],
+            stop_index: stepIndex,
+            selection_mode: 'free',
+            was_already_visited: visitedRoutePoints.includes(activeGuidedRoute.puntos[stepIndex]),
+        });
+    };
+
     return {
         activeGuidedRoute, setActiveGuidedRoute,
         previewRoute, setPreviewRoute,
         visitedRoutePoints,
-        currentRouteStep, setCurrentRouteStep,
+        currentRouteStep, setCurrentRouteStep: selectRouteStop,
         showRouteModal, setShowRouteModal,
         reviewSiteId, setReviewSiteId,
         startRoute,

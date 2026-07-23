@@ -203,8 +203,8 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                         )}
                                         <p className="mt-1.5 text-xs leading-relaxed text-orange-900/70 dark:text-orange-100/70">
                                             {language === 'es'
-                                                ? 'Cada parada revelará una pieza de la respuesta. Observa el lugar antes de responder.'
-                                                : 'Every stop will reveal part of the answer. Observe the place before responding.'}
+                                                ? 'Cada parada revelará una pieza de la respuesta mediante observaciones, fotos, búsquedas y decisiones situadas.'
+                                                : 'Every stop reveals part of the answer through observations, photos, searches, and situated decisions.'}
                                         </p>
                                     </div>
                                 )}
@@ -221,8 +221,8 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                         </p>
                                         <p className="mt-0.5 text-xs leading-relaxed text-foreground/70">
                                             {language === 'es'
-                                                ? 'Te mostraré la siguiente parada y guardaré tu avance durante el recorrido.'
-                                                : 'I will show you the next stop and keep track of your progress along the route.'}
+                                                ? 'Te sugeriré un orden y guardaré tu avance, pero tú decides qué parada visitar en cada momento.'
+                                                : 'I will suggest an order and save your progress, but you choose which stop to visit at any time.'}
                                         </p>
                                     </div>
                                 </div>
@@ -230,9 +230,16 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
 
                             {routePoints.length > 0 && (
                                 <div>
-                                    <h2 className="mb-3 text-sm font-black">
-                                        {language === 'es' ? 'Así será tu recorrido' : 'Your route at a glance'}
-                                    </h2>
+                                    <div className="mb-3">
+                                        <h2 className="text-sm font-black">
+                                            {language === 'es' ? 'Orden sugerido del recorrido' : 'Suggested route order'}
+                                        </h2>
+                                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                                            {language === 'es'
+                                                ? 'No es obligatorio: al comenzar podrás elegir cualquier parada según tu ubicación, tiempo o interés.'
+                                                : 'It is optional: once you start, choose any stop based on your location, time, or interest.'}
+                                        </p>
+                                    </div>
                                     <ol className="space-y-0">
                                         {routePoints.map((site, index) => (
                                             <li key={site.id} className="relative flex gap-3 pb-4 last:pb-0">

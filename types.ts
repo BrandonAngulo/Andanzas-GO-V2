@@ -230,7 +230,13 @@ export interface RecomendacionRuta {
   siteId?: string;
 }
 
-export type ChallengeType = 'TRIVIA' | 'CHECKIN' | 'PHOTO';
+export type ChallengeType =
+  | 'TRIVIA'
+  | 'CHECKIN'
+  | 'PHOTO'
+  | 'OBSERVATION'
+  | 'DETAIL_HUNT'
+  | 'DECISION';
 
 export interface Challenge {
   id: string;
@@ -275,6 +281,28 @@ export interface Challenge {
     latitude?: number;
     longitude?: number;
     radius_meters?: number; // 50m default
+  };
+
+  // Data for an on-site photographic observation.
+  photo_data?: {
+    prompt: string;
+    prompt_en?: string;
+    subject_hint?: string;
+    subject_hint_en?: string;
+    acceptance_text?: string;
+    acceptance_text_en?: string;
+  };
+
+  // A narrative choice has no wrong answer. Each option reveals a consequence.
+  decision_data?: {
+    question: string;
+    question_en?: string;
+    options: Array<{
+      label: string;
+      label_en?: string;
+      response: string;
+      response_en?: string;
+    }>;
   };
 }
 

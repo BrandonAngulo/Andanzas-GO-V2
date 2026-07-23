@@ -16,7 +16,11 @@ import {
   HelpCircle,
   Route as RouteIcon,
   Sparkles,
-  Flag
+  Flag,
+  Camera,
+  Eye,
+  Search,
+  GitFork
 } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { cn, getTranslated } from '../../lib/utils';
@@ -65,6 +69,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
   const [wrongAnswers, setWrongAnswers] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoName, setPhotoName] = useState<string | null>(null);
+  const [decisionResponse, setDecisionResponse] = useState<string | null>(null);
 
   // Active step points
   const currentPointId = route.puntos[currentStep];
@@ -82,7 +89,16 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
     setUserAnswer(null);
     setWrongAnswers([]);
     setIsCorrect(false);
+    setPhotoPreview(null);
+    setPhotoName(null);
+    setDecisionResponse(null);
   }, [currentStep]);
+
+  useEffect(() => {
+    return () => {
+      if (photoPreview) URL.revokeObjectURL(photoPreview);
+    };
+  }, [photoPreview]);
 
   if (!route || !currentPoint) return null;
 
@@ -198,19 +214,65 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   const handleVerifyManualTrivia = () =>
     verifyTriviaLogic(challenge?.manual_trivia_data, 'route_challenge_manual');
 
+  const completeSituatedChallenge = async () => {
+    setIsCorrect(true);
+    onPointVisited(currentPoint.id);
+    if (user) {
+      await gamificationService.claimActionPoints('route_challenge', route.id, currentPoint.id);
+    }
+    toast.success(
+      (challenge ? getTranslated(challenge, 'completed_message', language) : '')
+        || (language === 'es' ? '¡Hallazgo registrado!' : 'Discovery recorded!')
+    );
+  };
+
+  const handlePhotoSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setPhotoName(file.name);
+    setPhotoPreview(URL.createObjectURL(file));
+  };
+
+  const handleDecisionSelected = (option: NonNullable<Challenge['decision_data']>['options'][number]) => {
+    setUserAnswer(getTranslated(option, 'label', language));
+    setDecisionResponse(getTranslated(option, 'response', language));
+  };
+
   const handleNextStep = () => {
-    if (isLast) {
+    if (allStopsCompleted) {
       onComplete();
+    } else if (recommendedNextIndex >= 0 && onSetStep) {
+      onSetStep(recommendedNextIndex);
+      setIsExpanded(false);
     } else {
       onNext();
     }
   };
 
   const visitedStopCount = route.puntos.filter(pointId => visitedPoints.includes(pointId)).length;
-  const routeProgress = Math.round(((currentStep + (isCurrentPointVisited ? 1 : 0)) / route.puntos.length) * 100);
+  const allStopsCompleted = visitedStopCount === route.puntos.length;
+  const routeProgress = Math.round((visitedStopCount / Math.max(route.puntos.length, 1)) * 100);
+  const recommendedNextIndex = (() => {
+    if (allStopsCompleted) return -1;
+    for (let offset = 1; offset <= route.puntos.length; offset += 1) {
+      const candidate = (currentStep + offset) % route.puntos.length;
+      if (!visitedPoints.includes(route.puntos[candidate])) return candidate;
+    }
+    return -1;
+  })();
   const currentImage = currentPoint.fotos?.[0] || currentPoint.logoUrl;
   const routeName = getTranslated(route, 'nombre', language);
   const currentPointName = getTranslated(currentPoint, 'nombre', language);
+  const ChallengeIcon =
+    challenge?.type === 'PHOTO'
+      ? Camera
+      : challenge?.type === 'OBSERVATION'
+        ? Eye
+        : challenge?.type === 'DETAIL_HUNT'
+          ? Search
+          : challenge?.type === 'DECISION'
+            ? GitFork
+            : Award;
 
   return (
     <div
@@ -320,7 +382,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
               <button type="button" className="flex items-center gap-1 text-left" onClick={() => setIsExpanded(prev => !prev)}>
                 <MapPin className="h-3.5 w-3.5 text-emerald-600" />
                 <span className="text-[10px] font-black uppercase leading-none tracking-widest text-emerald-700 dark:text-emerald-300">
-                  {isCurrentPointVisited ? (language === 'es' ? "Parada completada" : "Stop completed") : (language === 'es' ? "Tu próxima parada" : "Your next stop")}
+                  {isCurrentPointVisited
+                    ? (language === 'es' ? "Parada completada" : "Stop completed")
+                    : (language === 'es' ? "Parada elegida" : "Selected stop")}
                 </span>
               </button>
               <div className="group mt-1 flex select-none items-center gap-1.5">
@@ -376,7 +440,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                   onClick={handleNextStep}
                   className="h-10 rounded-xl bg-emerald-600 px-3 text-xs font-bold text-white hover:bg-emerald-700"
                 >
-                  {isLast ? (language === 'es' ? 'Finalizar' : 'Finish') : (language === 'es' ? 'Siguiente' : 'Next')}
+                  {allStopsCompleted
+                    ? (language === 'es' ? 'Finalizar' : 'Finish')
+                    : (language === 'es' ? 'Otra parada' : 'Another stop')}
                 </Button>
               ) : (
                 <Button
@@ -396,9 +462,16 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
             <div className="space-y-6 pb-6">
               {/* Route Progress Stepper */}
               <div className="rounded-2xl border border-border/40 bg-muted/30 p-3.5">
-                <h5 className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">
-                  Progreso del Recorrido
-                </h5>
+                <div className="mb-2">
+                  <h5 className="text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">
+                    {language === 'es' ? 'Elige tu próxima parada' : 'Choose your next stop'}
+                  </h5>
+                  <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground">
+                    {language === 'es'
+                      ? 'El orden numerado es una recomendación. Puedes visitar las paradas como te resulte más conveniente.'
+                      : 'The numbered order is a recommendation. Visit the stops in whichever order works best for you.'}
+                  </p>
+                </div>
                 <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                   {route.puntos.map((puntoId, idx) => {
                     const isVisited = visitedPoints.includes(puntoId);
@@ -414,10 +487,11 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                             ? "bg-primary/15 border-primary text-primary"
                             : isVisited
                             ? "bg-green-500/10 border-green-500/30 text-green-600"
-                            : "bg-background border-border text-muted-foreground opacity-60"
+                            : "bg-background border-border text-foreground hover:border-primary/45 hover:bg-primary/5"
                         )}
                         onClick={() => onSetStep?.(idx)}
                         aria-current={isActive ? 'step' : undefined}
+                        aria-label={`${language === 'es' ? 'Elegir parada' : 'Choose stop'} ${idx + 1}: ${site ? getTranslated(site, 'nombre', language) : ''}`}
                       >
                         <span className="w-4 h-4 rounded-full bg-black/5 flex items-center justify-center text-[10px]">
                           {idx + 1}
@@ -516,7 +590,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                       </div>
                     )}
 
-                    {isLast && getTranslated(route, 'closing_text', language) && (
+                    {allStopsCompleted && getTranslated(route, 'closing_text', language) && (
                       <div className="rounded-lg border border-emerald-500/20 bg-card/80 p-3 text-left text-xs leading-relaxed text-foreground/80">
                         <strong className="mb-1 block text-emerald-700 dark:text-emerald-300">
                           {language === 'es' ? 'La memoria reconstruida' : 'The reconstructed memory'}
@@ -529,7 +603,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                       onClick={handleNextStep}
                       className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-11 rounded-lg"
                     >
-                      {isLast ? 'Finalizar Recorrido' : 'Siguiente Parada'}
+                      {allStopsCompleted
+                        ? (language === 'es' ? 'Finalizar recorrido' : 'Finish route')
+                        : (language === 'es' ? 'Elegir otra parada' : 'Choose another stop')}
                     </Button>
                   </div>
                 ) : (
@@ -537,7 +613,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                   <div className="bg-background border rounded-xl p-4 shadow-sm space-y-4">
                     <div className="flex items-center gap-2">
                       <div className="p-1.5 rounded-full bg-primary/10 text-primary">
-                        <Award className="h-4 w-4" />
+                        <ChallengeIcon className="h-4 w-4" />
                       </div>
                       <h5 className="font-extrabold text-sm">
                         {getTranslated(challenge!, 'title', language) || "Desafío de Parada"}
@@ -636,8 +712,10 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                       </>
                     )}
 
-                    {/* TRIVIA VIEW */}
-                    {challenge?.type === 'TRIVIA' && challenge.quiz_data && (
+                    {/* Situated question, observation, or detail hunt */}
+                    {challenge
+                      && ['TRIVIA', 'OBSERVATION', 'DETAIL_HUNT'].includes(challenge.type)
+                      && challenge.quiz_data && (
                       <div className="space-y-2.5">
                         <p className="font-bold text-xs text-foreground mb-2">
                           {getTranslated(challenge.quiz_data, 'question', language)}
@@ -671,6 +749,100 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                           className="w-full h-10 mt-2 font-bold bg-primary hover:bg-primary/95 text-white"
                         >
                           Confirmar Respuesta
+                        </Button>
+                      </div>
+                    )}
+
+                    {/* Photographic observation */}
+                    {challenge?.type === 'PHOTO' && challenge.photo_data && (
+                      <div className="space-y-3">
+                        <div className="rounded-xl border border-sky-500/20 bg-sky-500/10 p-3">
+                          <p className="text-xs font-bold leading-relaxed text-sky-900 dark:text-sky-100">
+                            {getTranslated(challenge.photo_data, 'prompt', language)}
+                          </p>
+                          {getTranslated(challenge.photo_data, 'subject_hint', language) && (
+                            <p className="mt-1 text-[11px] leading-relaxed text-sky-800/75 dark:text-sky-100/70">
+                              {getTranslated(challenge.photo_data, 'subject_hint', language)}
+                            </p>
+                          )}
+                        </div>
+
+                        <label className="flex min-h-28 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-primary/30 bg-muted/30 text-center transition-colors hover:bg-primary/5">
+                          {photoPreview ? (
+                            <img
+                              src={photoPreview}
+                              alt={language === 'es' ? 'Vista previa de tu hallazgo' : 'Preview of your discovery'}
+                              className="h-36 w-full object-cover"
+                            />
+                          ) : (
+                            <span className="flex flex-col items-center gap-2 p-5 text-xs font-bold text-primary">
+                              <Camera className="h-7 w-7" />
+                              {language === 'es' ? 'Tomar o elegir una foto' : 'Take or choose a photo'}
+                            </span>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            className="sr-only"
+                            onChange={handlePhotoSelected}
+                          />
+                        </label>
+
+                        {photoName && (
+                          <p className="truncate text-center text-[10px] text-muted-foreground">{photoName}</p>
+                        )}
+                        <Button
+                          onClick={() => void completeSituatedChallenge()}
+                          disabled={!photoPreview}
+                          className="h-10 w-full font-bold"
+                        >
+                          {language === 'es' ? 'Guardar hallazgo' : 'Save discovery'}
+                        </Button>
+                        <p className="text-center text-[10px] leading-relaxed text-muted-foreground">
+                          {language === 'es'
+                            ? 'La foto se usa para completar esta observación y permanece en tu dispositivo.'
+                            : 'The photo is used to complete this observation and remains on your device.'}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Narrative decision */}
+                    {challenge?.type === 'DECISION' && challenge.decision_data && (
+                      <div className="space-y-2.5">
+                        <p className="mb-2 text-xs font-bold text-foreground">
+                          {getTranslated(challenge.decision_data, 'question', language)}
+                        </p>
+                        {challenge.decision_data.options.map(option => {
+                          const optionLabel = getTranslated(option, 'label', language);
+                          const isSelected = userAnswer === optionLabel;
+                          return (
+                            <button
+                              type="button"
+                              key={option.label}
+                              onClick={() => handleDecisionSelected(option)}
+                              className={cn(
+                                'w-full rounded-lg border p-3 text-left text-xs font-semibold transition-all',
+                                isSelected
+                                  ? 'border-primary bg-primary/10 text-primary'
+                                  : 'border-border bg-card hover:bg-muted/40'
+                              )}
+                            >
+                              {optionLabel}
+                            </button>
+                          );
+                        })}
+                        {decisionResponse && (
+                          <div className="rounded-lg border border-orange-400/25 bg-orange-500/10 p-3 text-xs leading-relaxed text-foreground/80">
+                            {decisionResponse}
+                          </div>
+                        )}
+                        <Button
+                          onClick={() => void completeSituatedChallenge()}
+                          disabled={!decisionResponse}
+                          className="mt-2 h-10 w-full font-bold"
+                        >
+                          {language === 'es' ? 'Registrar decisión' : 'Record decision'}
                         </Button>
                       </div>
                     )}
