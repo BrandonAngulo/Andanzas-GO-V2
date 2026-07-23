@@ -27,6 +27,82 @@ interface RouteDiscoveryCardProps {
   onToggleSave: () => void;
 }
 
+interface RouteVisual {
+  image: string;
+  overlay: string;
+  accent: string;
+}
+
+const ROUTE_VISUALS: Array<{ keywords: string[]; visual: RouteVisual }> = [
+  {
+    keywords: ['histor', 'colonial'],
+    visual: {
+      image: '/routes/ruta_historica.jpg',
+      overlay: 'from-amber-950/5 via-orange-950/20 to-[#3b1f10]/95',
+      accent: 'text-amber-200',
+    },
+  },
+  {
+    keywords: ['pincel', 'mural', 'arte', 'calle'],
+    visual: {
+      image: '/routes/ruta_arte.jpg',
+      overlay: 'from-fuchsia-950/5 via-violet-950/20 to-[#29104d]/95',
+      accent: 'text-fuchsia-200',
+    },
+  },
+  {
+    keywords: ['clave', 'barrio', 'salsa', 'musica'],
+    visual: {
+      image: '/routes/ruta_salsa.jpg',
+      overlay: 'from-rose-950/5 via-red-950/20 to-[#3b1015]/95',
+      accent: 'text-rose-200',
+    },
+  },
+  {
+    keywords: ['naturaleza', 'verde', 'ecolog'],
+    visual: {
+      image: '/routes/ruta_naturaleza.jpg',
+      overlay: 'from-emerald-950/5 via-green-950/20 to-[#0b3927]/95',
+      accent: 'text-emerald-200',
+    },
+  },
+  {
+    keywords: ['papel', 'liter', 'libro', 'letra'],
+    visual: {
+      image: '/routes/ruta_literatura.jpg',
+      overlay: 'from-sky-950/5 via-blue-950/20 to-[#102a43]/95',
+      accent: 'text-sky-200',
+    },
+  },
+  {
+    keywords: ['fogon', 'gastronom', 'cocina', 'sabor'],
+    visual: {
+      image: '/routes/ruta_gastronomia.jpg',
+      overlay: 'from-orange-950/5 via-amber-950/25 to-[#3a2109]/95',
+      accent: 'text-orange-200',
+    },
+  },
+];
+
+const DEFAULT_ROUTE_VISUAL: RouteVisual = {
+  image: '/routes/ruta_historica.jpg',
+  overlay: 'from-emerald-950/5 via-teal-950/20 to-[#042e2b]/95',
+  accent: 'text-emerald-200',
+};
+
+function normalizeRouteName(name: string) {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function getRouteVisual(routeName: string): RouteVisual {
+  const normalizedName = normalizeRouteName(routeName);
+  return ROUTE_VISUALS.find(({ keywords }) => keywords.some((keyword) => normalizedName.includes(keyword)))?.visual
+    || DEFAULT_ROUTE_VISUAL;
+}
+
 export function RouteDiscoveryCard({
   route,
   sites,
@@ -43,7 +119,10 @@ export function RouteDiscoveryCard({
     .map((pointId) => sites.find((site) => site.id === pointId))
     .filter(Boolean) as Site[];
   const firstPoint = routeSites[0];
-  const routeImage = route.image_url || route.coverUrl || firstPoint?.fotos?.[0] || firstPoint?.logoUrl || '';
+  const routeName = getTranslated(route, 'nombre', language) as string;
+  const visual = getRouteVisual(route.nombre || routeName);
+  const editorialImage = route.image_url || route.coverUrl;
+  const routeImage = editorialImage || visual.image || firstPoint?.fotos?.[0] || firstPoint?.logoUrl || '';
   const status = completed
     ? { label: language === 'es' ? 'Completada' : 'Completed', icon: CheckCircle2, tone: 'bg-amber-300 text-amber-950' }
     : inProgress
@@ -71,10 +150,9 @@ export function RouteDiscoveryCard({
           src={routeImage}
           className="h-full w-full object-cover transition-transform duration-700 motion-safe:group-hover:scale-[1.04]"
           alt=""
-          style={imagePositionStyle(route.image_position)}
-          textFallback={getTranslated(route, 'nombre', language) as string}
+          style={editorialImage ? imagePositionStyle(route.image_position) : undefined}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/20 to-[#042e2b]/95" />
+        <div className={cn('absolute inset-0 bg-gradient-to-b', visual.overlay)} />
         <div className="absolute inset-x-0 bottom-0 h-3/4 bg-[radial-gradient(circle_at_18%_0%,rgba(16,185,129,0.26),transparent_46%)]" />
       </div>
 
@@ -130,12 +208,12 @@ export function RouteDiscoveryCard({
             </div>
           )}
 
-          <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.16em] text-emerald-200">
+          <p className={cn('mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.16em]', visual.accent)}>
             <MapPin className="h-3.5 w-3.5" />
             {language === 'es' ? 'Circuito cultural' : 'Cultural circuit'}
           </p>
           <h3 className={cn('font-heading font-black leading-[1.03] text-white', featured ? 'text-[1.75rem] sm:text-4xl' : 'text-2xl')}>
-            {getTranslated(route, 'nombre', language)}
+            {routeName}
           </h3>
           <p className="mt-2 line-clamp-2 max-w-2xl text-sm leading-relaxed text-white/80">
             {getTranslated(route, 'intro_story', language) || getTranslated(route, 'descripcion', language)}

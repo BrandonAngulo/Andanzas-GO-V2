@@ -221,7 +221,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                     stopCount={discoveryStopCount}
                 />
 
-                <div id="route-discovery" className="sticky top-0 z-30 mb-5 -mx-1 scroll-mt-2 rounded-2xl border border-border/60 bg-background/92 p-1.5 shadow-sm backdrop-blur-xl">
+                <div id="route-discovery" className="relative z-10 mb-5 scroll-mt-2 rounded-2xl border border-border/60 bg-background p-1.5 shadow-sm">
                     <div className="flex gap-1 overflow-x-auto scrollbar-none">
                         <Button 
                             variant="ghost"
