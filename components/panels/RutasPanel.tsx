@@ -1,28 +1,24 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Plus, Search, Trash2, Edit, CheckCircle, Map, Compass, PenTool, ChevronUp, ChevronDown, Lock, Trophy, MapPin } from 'lucide-react';
+import { Plus, Search, Trash2, Edit, Compass, PenTool, ChevronUp, ChevronDown, Sparkles, Clock3, Gamepad2, Map } from 'lucide-react';
 import { Ruta, Site } from '../../types';
 
-import { PanelBanner } from './shared/PanelBanner';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import { Switch } from '../ui/switch';
 import { cn } from '../../lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Tabs, TabsContent } from '../ui/tabs';
 import { useI18n } from '../../i18n';
-import { getTranslated, formatDuration } from '../../lib/utils';
-import { BADGES } from '../../data/badges';
-import { LazyImage } from '../ui/lazy-image';
-import { imagePositionStyle } from '../shared/ImagePositioner';
+import { getTranslated } from '../../lib/utils';
 import { settingsService } from '../../services/settings.service';
 import { userService } from '../../services/user.service';
 import { useAuth } from '../../contexts/AuthContext';
 import { RequestCustomRouteModal } from './RequestCustomRouteModal';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
+import { RouteDiscoveryCard } from '../routes/RouteDiscoveryCard';
 
 interface RutasPanelProps {
     rutas: Ruta[];
@@ -59,6 +55,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     const [editedDescription, setEditedDescription] = useState('');
     const [editedPoints, setEditedPoints] = useState<Site[]>([]);
     const [activeTab, setActiveTab] = useState("sugeridas");
+    const [routeFilter, setRouteFilter] = useState<'all' | 'short' | 'challenges'>('all');
     
     const [enableCustomRouteRequest, setEnableCustomRouteRequest] = useState(false);
     const [showRequestModal, setShowRequestModal] = useState(false);
@@ -82,8 +79,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         fetchSettingsAndProfile();
     }, [user]);
 
-    const handleToggleSaveRoute = async (e: React.MouseEvent, routeId: string) => {
-        e.stopPropagation();
+    const handleToggleSaveRoute = async (routeId: string) => {
         if (!user) {
             toast.error("Debes iniciar sesión para guardar rutas.");
             return;
@@ -148,6 +144,16 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         return r;
     }, [suggestedRoutes, query, language]);
 
+    const discoveryRoutes = useMemo(() => {
+        if (routeFilter === 'short') {
+            return rutasSugeridas.filter(route => route.duracionMin <= 90);
+        }
+        if (routeFilter === 'challenges') {
+            return rutasSugeridas.filter(route => (route.gamificacion?.length || 0) > 0);
+        }
+        return rutasSugeridas;
+    }, [routeFilter, rutasSugeridas]);
+
     useEffect(() => {
         if (editingRoute) {
             setEditedName(getTranslated(editingRoute, 'nombre', language) as string);
@@ -186,105 +192,12 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         }
     };
 
-    // --- PASSPORT CARD ---
-    const PassportCard = ({ route }: { route: Ruta }) => {
-        const isCompleted = routesCompleted.includes(route.id);
-        const isInProgress = routesInProgress.includes(route.id);
-        const badge = BADGES.find(b => b.id === route.reward_badge_id);
-        const firstPoint = allSites.find(s => s.id === route.puntos[0]);
-        const BadgeIcon = badge?.icono || Trophy;
-        const routeImage = firstPoint?.fotos?.[0] || firstPoint?.logoUrl;
-
-        return (
-            <div
-                className={cn(
-                    "group relative overflow-hidden rounded-2xl cursor-pointer card-hover border bg-card transition-all duration-300",
-                    isCompleted
-                        ? "border-yellow-500/50 shadow-[0_0_20px_-3px_rgba(234,179,8,0.25)] bg-gradient-to-br from-yellow-500/5 to-transparent"
-                        : "border-border/60"
-                )}
-                onClick={() => {
-                    if (route.content_only || !route.puntos || route.puntos.length === 0) {
-                        onOpenDetail(route);
-                    } else {
-                        onStartRoute(route);
-                    }
-                }}
-            >
-                {/* Background Image Area */}
-                <div className="h-32 w-full relative overflow-hidden bg-muted">
-                    <div className="w-full h-full relative">
-                        <LazyImage
-                            src={route.image_url || route.coverUrl || routeImage || ""}
-                            className={cn("w-full h-full object-cover transition-transform duration-700 group-hover:scale-110", isCompleted ? "grayscale-0" : "grayscale-[0.3] group-hover:grayscale-0")}
-                            alt="Route cover"
-                            style={imagePositionStyle(route.image_position)}
-                            textFallback={getTranslated(route, 'nombre', language) as string}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent opacity-90" />
-                    </div>
-
-                    {/* Badge Overlay */}
-                    <div className="absolute top-2 left-2 p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-sm z-10">
-                        <BadgeIcon className={cn("w-5 h-5", isCompleted ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground")} />
-                    </div>
-
-                    <button 
-                        onClick={(e) => handleToggleSaveRoute(e, route.id)}
-                        disabled={savingRoute}
-                        className="absolute top-2 right-2 p-2 rounded-full bg-background/90 backdrop-blur-md border border-border/50 shadow-sm z-20 hover:bg-background transition-colors"
-                        title="Guardar en Por Andar"
-                    >
-                        {savedRouteIds.includes(route.id) 
-                            ? <BookmarkCheck className="w-5 h-5 text-emerald-500" /> 
-                            : <Bookmark className="w-5 h-5 text-muted-foreground" />
-                        }
-                    </button>
-
-                    {/* Status Label */}
-                    {isCompleted && (
-                        <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-yellow-500 text-white text-[10px] font-extrabold shadow-sm flex items-center gap-1 uppercase tracking-wide">
-                            <CheckCircle className="w-3 h-3" /> Conquistada
-                        </div>
-                    )}
-                    {isInProgress && !isCompleted && (
-                        <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-primary text-white text-[10px] font-extrabold shadow-sm flex items-center gap-1 uppercase tracking-wide">
-                            <Compass className="w-3 h-3 animate-spin duration-[4s]" /> En Progreso
-                        </div>
-                    )}
-                </div>
-
-                {/* Content Area */}
-                <div className="p-4 relative">
-                    <h3 className="font-heading font-bold text-base leading-tight mb-1.5 line-clamp-1 group-hover:text-primary transition-colors">
-                        {getTranslated(route, 'nombre', language)}
-                    </h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mb-3 leading-relaxed">
-                        {getTranslated(route, 'descripcion', language)}
-                    </p>
-
-                    <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-3 border-dashed border-border/60">
-                        <span className="flex items-center gap-1.5"><Map className="w-3.5 h-3.5 text-primary" /> {route.puntos.length} paradas</span>
-                        <span className="font-mono text-primary/80 font-bold">{formatDuration(route.duracionMin, language as 'es' | 'en')}</span>
-                    </div>
-                </div>
-
-                {/* Hover Effect Reveal */}
-                {!isCompleted && !isInProgress && (
-                    <div className="absolute inset-0 bg-primary/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {(route.content_only || !route.puntos || route.puntos.length === 0) ? (
-                            <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                <Lock className="w-5 h-5" /> {language === 'es' ? 'En Construcción' : 'Coming Soon'}
-                            </span>
-                        ) : (
-                            <span className="text-white font-heading font-black text-sm tracking-wider uppercase flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                <Compass className="w-5 h-5 animate-spin duration-[3s]" /> {language === 'es' ? 'Iniciar Recorrido' : 'Start Route'}
-                            </span>
-                        )}
-                    </div>
-                )}
-            </div>
-        );
+    const openRoutePresentation = (route: Ruta) => {
+        if (route.content_only || !route.puntos || route.puntos.length === 0) {
+            onOpenDetail(route);
+            return;
+        }
+        onStartRoute(route);
     };
 
     // Keep Custom Route Card simpler
@@ -316,30 +229,37 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
     );
 
     return (
-        <ScrollArea className="h-[72vh]">
-            <div className="p-4 max-w-5xl mx-auto">
-                <PanelBanner
-                    panelKey="rutas"
-                    defaultImage="/images/banners/unified/rutas-v2.webp"
-                    gradientClass="from-emerald-50/95 via-emerald-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
-                    icon={
-                        <div className="bg-emerald-600 p-2.5 rounded-2xl shadow-md text-white">
-                            <Compass className="h-6 w-6" />
-                        </div>
-                    }
-                    titleClassName="text-4xl font-extrabold tracking-tight text-emerald-950 dark:text-emerald-50"
-                    defaultTitle={language === 'es' ? 'Pasaporte de Rutas' : 'Route Passport'}
-                    defaultSubtitle={language === 'es' ? 'Explora circuitos diseñados y colecciona estampillas por cada ruta completada.' : 'Explore curated circuits and collect stamps for every completed route.'}
-                />
+        <div className="h-full overflow-y-auto overscroll-contain">
+            <div className="mx-auto max-w-6xl px-3 pb-28 pt-3 sm:px-5 sm:pb-8">
+                <section className="relative mb-4 min-h-[15rem] overflow-hidden rounded-[2rem] bg-[#063f38] px-6 py-7 text-white shadow-[0_24px_70px_-42px_rgba(6,78,59,0.9)] sm:min-h-[17rem] sm:px-10 sm:py-9">
+                    <div className="absolute inset-0 bg-[url('/images/banners/unified/rutas-v2.webp')] bg-cover bg-center opacity-35" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#063f38] via-[#063f38]/90 to-[#063f38]/30" />
+                    <div className="absolute -right-10 -top-20 h-56 w-56 rounded-full border border-white/15" />
+                    <div className="absolute -right-2 -top-10 h-44 w-44 rounded-full border border-orange-300/20" />
+                    <div className="relative z-10 flex min-h-[11rem] max-w-2xl flex-col justify-center">
+                        <p className="mb-3 flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-orange-300">
+                            <Sparkles className="h-4 w-4" />
+                            {language === 'es' ? 'Explora a tu manera' : 'Explore your way'}
+                        </p>
+                        <h1 className="font-heading text-3xl font-black leading-[1.02] sm:text-5xl">
+                            {language === 'es' ? 'Rutas para vivir la ciudad' : 'Routes to experience the city'}
+                        </h1>
+                        <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
+                            {language === 'es'
+                                ? 'Elige un circuito, conoce sus paradas y deja que cada recorrido te revele una historia.'
+                                : 'Choose a circuit, discover its stops, and let every journey reveal a story.'}
+                        </p>
+                    </div>
+                </section>
 
-                <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex bg-muted p-1 rounded-lg shrink-0">
+                <div className="sticky top-0 z-30 mb-5 -mx-1 rounded-2xl border border-border/60 bg-background/92 p-1.5 shadow-sm backdrop-blur-xl">
+                    <div className="flex gap-1 overflow-x-auto scrollbar-none">
                         <Button 
                             variant="ghost"
                             size="sm" 
                             className={cn(
-                                "h-8 rounded-md text-xs font-medium transition-all",
-                                activeTab === "sugeridas" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                "h-10 shrink-0 rounded-xl px-4 text-xs font-bold transition-all",
+                                activeTab === "sugeridas" ? "bg-emerald-600 text-white shadow-md hover:bg-emerald-600 hover:text-white" : "text-muted-foreground"
                             )}
                             onClick={() => setActiveTab("sugeridas")}
                         >
@@ -349,8 +269,8 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             variant="ghost"
                             size="sm" 
                             className={cn(
-                                "h-8 rounded-md text-xs font-medium transition-all",
-                                activeTab === "por-andar" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                "h-10 shrink-0 rounded-xl px-4 text-xs font-bold transition-all",
+                                activeTab === "por-andar" ? "bg-emerald-600 text-white shadow-md hover:bg-emerald-600 hover:text-white" : "text-muted-foreground"
                             )}
                             onClick={() => setActiveTab("por-andar")}
                         >
@@ -360,8 +280,8 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             variant="ghost"
                             size="sm" 
                             className={cn(
-                                "h-8 rounded-md text-xs font-medium transition-all",
-                                activeTab === "mis-rutas" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                "h-10 shrink-0 rounded-xl px-4 text-xs font-bold transition-all",
+                                activeTab === "mis-rutas" ? "bg-emerald-600 text-white shadow-md hover:bg-emerald-600 hover:text-white" : "text-muted-foreground"
                             )}
                             onClick={() => setActiveTab("mis-rutas")}
                         >
@@ -372,15 +292,59 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
 
                 <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="sugeridas" className="w-full">
                     <TabsContent value="sugeridas" className="mt-0 animate-in fade-in duration-300">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {rutasSugeridas.map((r) => (
-                                <PassportCard key={r.id} route={r} />
+                        <div className="mb-4">
+                            <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">
+                                {language === 'es' ? 'Encuentra tu próxima andanza' : 'Find your next journey'}
+                            </p>
+                            <div className="mt-2 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                                {([
+                                    { id: 'all', label: language === 'es' ? 'Todas' : 'All', icon: Compass },
+                                    { id: 'short', label: language === 'es' ? 'Hasta 90 min' : 'Up to 90 min', icon: Clock3 },
+                                    { id: 'challenges', label: language === 'es' ? 'Con retos' : 'With challenges', icon: Gamepad2 },
+                                ] as const).map(filter => {
+                                    const FilterIcon = filter.icon;
+                                    return (
+                                        <button
+                                            key={filter.id}
+                                            type="button"
+                                            onClick={() => setRouteFilter(filter.id)}
+                                            className={cn(
+                                                'flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-xs font-bold transition-colors',
+                                                routeFilter === filter.id
+                                                    ? 'border-emerald-600 bg-emerald-600 text-white'
+                                                    : 'border-border bg-card text-muted-foreground hover:border-emerald-500/50 hover:text-foreground',
+                                            )}
+                                        >
+                                            <FilterIcon className="h-3.5 w-3.5" />
+                                            {filter.label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            {discoveryRoutes.map((route, index) => (
+                                <div key={route.id} className={cn(index === 0 && discoveryRoutes.length > 2 ? 'md:col-span-2' : '')}>
+                                    <RouteDiscoveryCard
+                                        route={route}
+                                        sites={allSites}
+                                        language={language}
+                                        saved={savedRouteIds.includes(route.id)}
+                                        completed={routesCompleted.includes(route.id)}
+                                        inProgress={routesInProgress.includes(route.id)}
+                                        featured={index === 0 && discoveryRoutes.length > 2}
+                                        saving={savingRoute}
+                                        onOpen={() => openRoutePresentation(route)}
+                                        onToggleSave={() => void handleToggleSaveRoute(route.id)}
+                                    />
+                                </div>
                             ))}
                         </div>
-                        {rutasSugeridas.length === 0 && (
-                            <div className="text-center py-20 text-muted-foreground">
+                        {discoveryRoutes.length === 0 && (
+                            <div className="mt-4 rounded-3xl border-2 border-dashed py-16 text-center text-muted-foreground">
                                 <Search className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                                <p>No se encontraron rutas de conquista.</p>
+                                <p>{language === 'es' ? 'No encontramos rutas con ese filtro.' : 'No routes match this filter.'}</p>
                             </div>
                         )}
                     </TabsContent>
@@ -390,9 +354,20 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             <h3 className="font-bold flex items-center gap-2"><Bookmark className="w-5 h-5 text-primary" /> Rutas Guardadas</h3>
                             <p className="text-sm text-muted-foreground">Tus rutas pendientes para explorar Cali a tu propio ritmo. Elegí una, revisá sus paradas y convertí ese guardado en tu próxima salida.</p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {rutasSugeridas.filter(r => savedRouteIds.includes(r.id)).map((r) => (
-                                <PassportCard key={r.id} route={r} />
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            {rutasSugeridas.filter(route => savedRouteIds.includes(route.id)).map((route) => (
+                                <RouteDiscoveryCard
+                                    key={route.id}
+                                    route={route}
+                                    sites={allSites}
+                                    language={language}
+                                    saved
+                                    completed={routesCompleted.includes(route.id)}
+                                    inProgress={routesInProgress.includes(route.id)}
+                                    saving={savingRoute}
+                                    onOpen={() => openRoutePresentation(route)}
+                                    onToggleSave={() => void handleToggleSaveRoute(route.id)}
+                                />
                             ))}
                         </div>
                         {rutasSugeridas.filter(r => savedRouteIds.includes(r.id)).length === 0 && (
@@ -725,7 +700,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                 open={showRequestModal} 
                 onOpenChange={setShowRequestModal} 
             />
-        </ScrollArea>
+        </div>
     );
 };
 

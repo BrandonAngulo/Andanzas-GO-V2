@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import React, { useEffect, useState } from 'react';
-import { X, PlayCircle, Clock, MapPin, Award } from 'lucide-react';
+import { X, PlayCircle, Clock, MapPin, Award, ChevronRight, Footprints, Navigation, Sparkles } from 'lucide-react';
 import { Ruta, Site } from '../../types';
 import { Button } from '../ui/button';
 import { LazyImage } from '../ui/lazy-image';
@@ -10,6 +10,7 @@ import { useI18n } from '../../i18n';
 import { BADGES } from '../../data/badges';
 import { useAuth } from '../../contexts/AuthContext';
 import { routesService } from '../../services/routes.service';
+import { imagePositionStyle } from '../shared/ImagePositioner';
 
 interface RouteIntroModalProps {
     route: Ruta;
@@ -20,7 +21,7 @@ interface RouteIntroModalProps {
 }
 
 const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart, onClose, onAuthRequired }) => {
-    const { t, language } = useI18n();
+    const { language } = useI18n();
     const { isAuthenticated, user } = useAuth();
     const [isVisible, setIsVisible] = useState(false);
     const [registrationStatus, setRegistrationStatus] = useState<'confirmed' | 'waitlist' | null>(null);
@@ -83,179 +84,183 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
     const firstPoint = sites.find(s => s.id === route.puntos[0]);
     const badge = BADGES.find(b => b.id === route.reward_badge_id);
     const BadgeIcon = badge?.icono || Award;
+    const routePoints = route.puntos
+        .map(pointId => sites.find(site => site.id === pointId))
+        .filter(Boolean) as Site[];
+    const routeImage = route.image_url || route.coverUrl || firstPoint?.fotos?.[0] || firstPoint?.logoUrl || '';
 
     return (
-        <div 
+        <div
             className={cn(
-                "fixed inset-0 z-[1100] flex items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity duration-300",
-                isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+                'fixed inset-0 z-[1100] flex items-end justify-center bg-slate-950/70 backdrop-blur-sm transition-opacity duration-300 md:items-center',
+                isVisible ? 'opacity-100' : 'pointer-events-none opacity-0',
             )}
             onClick={handleClose}
+            role="presentation"
         >
-            <div 
+            <section
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="route-intro-title"
                 className={cn(
-                    "w-full h-full md:w-[90vw] md:h-[80vh] md:max-h-[800px] md:max-w-5xl md:rounded-2xl relative overflow-hidden bg-background text-foreground shadow-2xl transition-transform duration-300 transform",
-                    isVisible ? "scale-100" : "scale-95"
+                    'relative flex h-[96dvh] w-full flex-col overflow-hidden rounded-t-[2rem] bg-background text-foreground shadow-2xl transition-transform duration-300 md:h-[86vh] md:max-h-[860px] md:w-[92vw] md:max-w-6xl md:flex-row md:rounded-[2rem]',
+                    isVisible ? 'translate-y-0 scale-100' : 'translate-y-6 scale-[0.98]',
                 )}
-                onClick={(e) => e.stopPropagation()}
+                onClick={event => event.stopPropagation()}
             >
-                {/* Background Image Layer */}
-                <div className="absolute inset-0 z-0">
-                    {firstPoint?.logoUrl ? (
-                        <div className="w-full h-full animate-zoom-slow">
-                            <LazyImage
-                                src={firstPoint.logoUrl}
-                                className="w-full h-full object-cover opacity-60"
-                                alt="Route background"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent" />
-                        </div>
-                    ) : (
-                        <div className="w-full h-full bg-muted" />
-                    )}
-                </div>
-
-                {/* Close Button */}
                 <button
+                    type="button"
                     onClick={handleClose}
-                    className="absolute top-6 right-6 z-50 p-2 rounded-full bg-foreground/10 hover:bg-foreground/20 backdrop-blur-md transition-colors border border-border/50"
+                    className="absolute right-4 top-4 z-50 grid h-11 w-11 place-items-center rounded-full border border-white/25 bg-black/30 text-white shadow-lg backdrop-blur-md transition-colors hover:bg-black/50"
+                    aria-label={language === 'es' ? 'Cerrar presentación de la ruta' : 'Close route presentation'}
                 >
-                    <X className="w-6 h-6 text-foreground" />
+                    <X className="h-5 w-5" />
                 </button>
 
-                {/* Content Layer */}
-                <div className="relative z-10 w-full h-full flex flex-col md:flex-row">
-                    {/* Left Column: Narrative */}
-                    <div className="flex-1 p-8 md:p-12 flex flex-col justify-end md:justify-center">
-                        <div className="space-y-6 animate-slide-up-fade">
-                            {/* Header Badge */}
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 text-xs font-bold uppercase tracking-widest backdrop-blur-md">
-                                <BadgeIcon className="w-3 h-3" />
-                                {badge?.nombre.toUpperCase() || (language === 'es' ? "RUTA RECOMENDADA" : "RECOMMENDED ROUTE")}
+                <div className="relative h-[39%] shrink-0 overflow-hidden bg-emerald-950 md:h-full md:w-[56%]">
+                    <LazyImage
+                        src={routeImage}
+                        className="h-full w-full object-cover"
+                        alt=""
+                        style={imagePositionStyle(route.image_position)}
+                        textFallback={getTranslated(route, 'nombre', language) as string}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#052f2b] via-black/10 to-black/15 md:bg-gradient-to-r md:from-black/5 md:via-black/10 md:to-[#052f2b]/55" />
+                    <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-7 md:p-10">
+                        <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-200/30 bg-orange-300/90 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-orange-950 shadow-sm">
+                            <BadgeIcon className="h-3.5 w-3.5" />
+                            {badge?.nombre || (language === 'es' ? 'Ruta recomendada' : 'Recommended route')}
+                        </span>
+                        <h1 id="route-intro-title" className="max-w-2xl font-heading text-3xl font-black leading-[1.02] sm:text-4xl md:text-6xl">
+                            {getTranslated(route, 'nombre', language)}
+                        </h1>
+                        <p className="mt-2 line-clamp-2 max-w-xl text-sm font-medium text-white/82 md:text-lg">
+                            {getTranslated(route, 'intro_story', language) || (language === 'es' ? 'Una historia para recorrer paso a paso.' : 'A story to explore one step at a time.')}
+                        </p>
+
+                        {routePoints.length > 0 && (
+                            <div className="mt-5 hidden max-w-lg items-center md:flex">
+                                {routePoints.slice(0, 6).map((site, index) => (
+                                    <React.Fragment key={site.id}>
+                                        <span className={cn(
+                                            'grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 border-white text-xs font-black shadow-lg',
+                                            index === 0 ? 'bg-orange-400 text-orange-950' : 'bg-emerald-600 text-white',
+                                        )}>
+                                            {index + 1}
+                                        </span>
+                                        {index < Math.min(routePoints.length, 6) - 1 && (
+                                            <span className="h-px flex-1 border-t-2 border-dashed border-white/70" />
+                                        )}
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="flex min-h-0 flex-1 flex-col bg-background md:w-[44%]">
+                    <ScrollArea className="min-h-0 flex-1">
+                        <div className="space-y-6 p-5 pb-7 sm:p-7 md:p-9">
+                            <div className="grid grid-cols-3 gap-2">
+                                <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-950 dark:bg-emerald-950/45 dark:text-emerald-50">
+                                    <Clock className="mb-2 h-4 w-4 text-emerald-600" />
+                                    <p className="text-xs font-black">{formatDuration(route.duracionMin, language as 'es' | 'en')}</p>
+                                    <p className="mt-0.5 text-[10px] opacity-65">{language === 'es' ? 'Duración' : 'Duration'}</p>
+                                </div>
+                                <div className="rounded-2xl bg-orange-50 p-3 text-orange-950 dark:bg-orange-950/30 dark:text-orange-50">
+                                    <Footprints className="mb-2 h-4 w-4 text-orange-500" />
+                                    <p className="text-xs font-black">{routePoints.length}</p>
+                                    <p className="mt-0.5 text-[10px] opacity-65">{language === 'es' ? 'Paradas' : 'Stops'}</p>
+                                </div>
+                                <div className="rounded-2xl bg-sky-50 p-3 text-sky-950 dark:bg-sky-950/30 dark:text-sky-50">
+                                    <Navigation className="mb-2 h-4 w-4 text-sky-500" />
+                                    <p className="text-xs font-black">{language === 'es' ? 'Guiada' : 'Guided'}</p>
+                                    <p className="mt-0.5 text-[10px] opacity-65">{language === 'es' ? 'Con mapa' : 'With map'}</p>
+                                </div>
                             </div>
 
-                            {/* Title */}
-                            <h1 className="text-4xl md:text-6xl font-black leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/80">
-                                {getTranslated(route, 'nombre', language)}
-                            </h1>
-
-                            {/* Power Phrase */}
-                            <div className="pl-4 border-l-4 border-primary">
-                                <p className="text-xl md:text-2xl font-medium italic text-foreground/80">
-                                    "{getTranslated(route, 'intro_story', language) || "Explora lo desconocido."}"
+                            <div>
+                                <p className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-700 dark:text-emerald-300">
+                                    <Sparkles className="h-3.5 w-3.5" />
+                                    {language === 'es' ? 'La experiencia' : 'The experience'}
+                                </p>
+                                <p className="text-sm leading-relaxed text-foreground/75">
+                                    {getTranslated(route, 'descripcion', language)}
                                 </p>
                             </div>
 
-                            {/* Meta Info */}
-                            <div className="flex items-center gap-6 text-sm text-muted-foreground font-medium pt-4">
-                                <div className="flex items-center gap-2">
-                                    <Clock className="w-4 h-4 text-primary" />
-                                    {formatDuration(route.duracionMin, language as 'es' | 'en')}
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-primary" />
-                                    {route.puntos.length} {t('routes.points')}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right Column: Justification & Call to Action (Desktop) / Bottom Sheet (Mobile) */}
-                    <div className="md:w-96 bg-background/80 md:bg-background/60 backdrop-blur-xl border-t md:border-l border-border/50 p-6 md:p-10 flex flex-col">
-                        <ScrollArea className="flex-1 -mr-4 pr-4 mb-6">
-                            <div className="space-y-6 animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
+                            {routePoints.length > 0 && (
                                 <div>
-                                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">
-                                        {language === 'es' ? 'Historia de la Ruta' : 'Route Story'}
-                                    </h3>
-                                    <p className="text-foreground/90 leading-relaxed">
-                                        {getTranslated(route, 'descripcion', language)}
-                                    </p>
-                                </div>
-
-                                {route.justificaciones && Array.isArray(route.justificaciones) && route.justificaciones.length > 0 && (
-                                    <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">
-                                            ¿Por qué esta ruta?
-                                        </h3>
-                                        <ul className="space-y-3">
-                                            {route.justificaciones.map((just: string, idx: number) => (
-                                                <li key={idx} className="flex gap-3 text-sm text-foreground/80">
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                                                    {just}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-
-                            {route.puntos && route.puntos.length > 0 && (
-                                <div className="mt-6 pt-6 border-t border-border/50">
-                                    <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">
-                                        Sitios a visitar
-                                    </h3>
-                                    <div className="space-y-2">
-                                        {route.puntos.map((puntoId, idx) => {
-                                            const site = sites.find(s => s.id === puntoId);
-                                            if (!site) return null;
-                                            return (
-                                                <div key={idx} className="flex items-center gap-3 bg-foreground/5 p-2 rounded-lg border border-border/20">
-                                                    <div className="w-5 h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">
-                                                        {idx + 1}
-                                                    </div>
-                                                    <span className="text-sm text-foreground/90 truncate">
-                                                        {getTranslated(site, 'nombre', language)}
-                                                    </span>
+                                    <h2 className="mb-3 text-sm font-black">
+                                        {language === 'es' ? 'Así será tu recorrido' : 'Your route at a glance'}
+                                    </h2>
+                                    <ol className="space-y-0">
+                                        {routePoints.map((site, index) => (
+                                            <li key={site.id} className="relative flex gap-3 pb-4 last:pb-0">
+                                                {index < routePoints.length - 1 && (
+                                                    <span className="absolute left-[15px] top-8 h-[calc(100%-1.25rem)] border-l-2 border-dashed border-emerald-500/35" />
+                                                )}
+                                                <span className={cn(
+                                                    'relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-black',
+                                                    index === 0 ? 'bg-orange-400 text-orange-950' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200',
+                                                )}>
+                                                    {index + 1}
+                                                </span>
+                                                <div className="min-w-0 flex-1 rounded-2xl border border-border/60 bg-card px-3 py-2.5">
+                                                    <p className="truncate text-sm font-bold">{getTranslated(site, 'nombre', language)}</p>
+                                                    <p className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
+                                                        <MapPin className="h-3 w-3" />
+                                                        {language === 'es' ? 'Parada cultural' : 'Cultural stop'}
+                                                    </p>
                                                 </div>
-                                            );
-                                        })}
-                                    </div>
+                                                <ChevronRight className="mt-3 h-4 w-4 shrink-0 text-muted-foreground/50" />
+                                            </li>
+                                        ))}
+                                    </ol>
                                 </div>
-                            )}
-                        </ScrollArea>
-
-                        <div className="mt-auto pt-6 border-t border-border/50 animate-slide-up-fade" style={{ animationDelay: '200ms' }}>
-                            {route.requires_registration && !registrationStatus ? (
-                                <Button
-                                    className="w-full h-14 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_30px_rgba(var(--primary),0.5)] transition-all transform hover:-translate-y-1"
-                                    onClick={handleRegister}
-                                    disabled={isRegistering}
-                                >
-                                    {isRegistering ? 'Procesando...' : 
-                                    (route.max_capacity && route.current_registrations !== undefined && route.current_registrations >= route.max_capacity) 
-                                        ? 'Unirme a la lista de espera'
-                                        : 'Inscribirse a esta ruta'}
-                                </Button>
-                            ) : route.requires_registration && registrationStatus === 'waitlist' ? (
-                                <div className="rounded-xl border border-amber-400/40 bg-amber-500/10 p-4 text-center">
-                                    <p className="font-semibold text-amber-700 dark:text-amber-300">Estás en lista de espera</p>
-                                    <p className="mt-1 text-xs text-muted-foreground">Si se libera un cupo, tu inscripción se confirmará automáticamente.</p>
-                                    <Button className="mt-3" variant="outline" size="sm" disabled={isRegistering} onClick={() => void handleCancelRegistration()}>Salir de la lista</Button>
-                                </div>
-                            ) : (
-                                <>
-                                    <Button
-                                        className="w-full h-14 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_30px_rgba(var(--primary),0.5)] transition-all transform hover:-translate-y-1"
-                                        onClick={handleStart}
-                                    >
-                                        <PlayCircle className="w-6 h-6 mr-2" />
-                                        {language === 'es' ? 'Iniciar Ruta' : 'Start Route'}
-                                    </Button>
-                                    <p className="text-center text-xs text-muted-foreground mt-3">
-                                        {language === 'es' ? 'Esta función utiliza tu ubicación en el mapa para guiarte durante el recorrido.' : 'This feature uses your location on the map to guide you during the route.'}
-                                    </p>
-                                    {route.requires_registration && registrationStatus === 'confirmed' && (
-                                        <Button className="mt-2 w-full" variant="ghost" size="sm" disabled={isRegistering} onClick={() => void handleCancelRegistration()}>Cancelar inscripción</Button>
-                                    )}
-                                </>
                             )}
                         </div>
+                    </ScrollArea>
+
+                    <div className="shrink-0 border-t border-border/60 bg-background/96 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-18px_45px_-34px_rgba(15,23,42,0.6)] backdrop-blur-xl sm:px-7">
+                        {route.requires_registration && !registrationStatus ? (
+                            <Button className="h-14 w-full rounded-2xl text-base font-black" onClick={handleRegister} disabled={isRegistering}>
+                                {isRegistering
+                                    ? (language === 'es' ? 'Procesando...' : 'Processing...')
+                                    : (route.max_capacity && route.current_registrations !== undefined && route.current_registrations >= route.max_capacity)
+                                        ? (language === 'es' ? 'Unirme a la lista de espera' : 'Join waitlist')
+                                        : (language === 'es' ? 'Inscribirme en esta ruta' : 'Register for this route')}
+                            </Button>
+                        ) : route.requires_registration && registrationStatus === 'waitlist' ? (
+                            <div className="flex items-center justify-between gap-3 rounded-2xl border border-amber-400/40 bg-amber-500/10 p-3">
+                                <div>
+                                    <p className="text-sm font-black text-amber-700 dark:text-amber-300">{language === 'es' ? 'Estás en lista de espera' : 'You are on the waitlist'}</p>
+                                    <p className="text-[11px] text-muted-foreground">{language === 'es' ? 'Te avisaremos cuando haya un cupo.' : 'We will notify you when a spot opens.'}</p>
+                                </div>
+                                <Button variant="ghost" size="sm" disabled={isRegistering} onClick={() => void handleCancelRegistration()}>
+                                    {language === 'es' ? 'Salir' : 'Leave'}
+                                </Button>
+                            </div>
+                        ) : (
+                            <>
+                                <Button className="h-14 w-full rounded-2xl bg-emerald-600 text-base font-black text-white shadow-lg shadow-emerald-900/15 hover:bg-emerald-700" onClick={handleStart}>
+                                    <PlayCircle className="mr-2 h-5 w-5" />
+                                    {language === 'es' ? 'Comenzar recorrido' : 'Start route'}
+                                </Button>
+                                <p className="mt-2 text-center text-[10px] text-muted-foreground">
+                                    {language === 'es' ? 'Usaremos tu ubicación solamente para guiarte y registrar tus paradas.' : 'We use your location only to guide you and register stops.'}
+                                </p>
+                                {route.requires_registration && registrationStatus === 'confirmed' && (
+                                    <Button className="mt-1 w-full" variant="ghost" size="sm" disabled={isRegistering} onClick={() => void handleCancelRegistration()}>
+                                        {language === 'es' ? 'Cancelar inscripción' : 'Cancel registration'}
+                                    </Button>
+                                )}
+                            </>
+                        )}
                     </div>
                 </div>
-            </div >
-        </div >
+            </section>
+        </div>
     );
 };
 

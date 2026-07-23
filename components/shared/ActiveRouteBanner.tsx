@@ -210,58 +210,64 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   // Recommendations mapping
   const badge = BADGES.find(b => b.id === route.reward_badge_id);
   const BadgeIcon = badge?.icono || Award;
+  const routeProgress = Math.round(((currentStep + (isCurrentPointVisited ? 1 : 0)) / route.puntos.length) * 100);
+  const currentImage = currentPoint.fotos?.[0] || currentPoint.logoUrl;
 
   return (
     <div
       className={cn(
-        "absolute bottom-24 left-4 right-4 z-[90] md:bottom-6 md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-xl transition-all duration-300 ease-in-out transform",
-        isExpanded ? "bottom-24 h-[75vh] md:bottom-6 md:h-[65vh]" : "h-auto"
+        "absolute bottom-[calc(5.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-[90] transition-all duration-300 ease-in-out md:bottom-6 md:left-1/2 md:right-auto md:w-[95%] md:max-w-xl md:-translate-x-1/2",
+        isExpanded ? "h-[min(76dvh,42rem)]" : "h-auto"
       )}
     >
-      <Card className="h-full bg-background/95 backdrop-blur-md shadow-2xl border-primary/20 ring-1 ring-primary/5 flex flex-col overflow-hidden">
+      <Card className="flex h-full flex-col overflow-hidden rounded-[1.75rem] border-emerald-600/20 bg-background/96 shadow-[0_24px_80px_-30px_rgba(6,78,59,0.8)] ring-1 ring-emerald-500/5 backdrop-blur-xl">
         {/* Slider drag indicator */}
-        <div
-          className="w-full pt-2 pb-1 cursor-pointer hover:bg-muted/30 transition-colors flex flex-col items-center shrink-0"
+        <button
+          type="button"
+          className="flex w-full shrink-0 flex-col items-center pb-1 pt-2 transition-colors hover:bg-muted/30"
           onClick={() => setIsExpanded(prev => !prev)}
+          aria-label={isExpanded
+            ? (language === 'es' ? 'Contraer información de la parada' : 'Collapse stop information')
+            : (language === 'es' ? 'Ampliar información de la parada' : 'Expand stop information')}
         >
-          <div className="w-12 h-1 bg-muted-foreground/30 rounded-full mb-1"></div>
+          <span className="mb-1 h-1 w-12 rounded-full bg-muted-foreground/30" />
           {isExpanded ? (
             <ChevronDown className="h-4 w-4 text-muted-foreground/60" />
           ) : (
-            <ChevronUp className="h-4 w-4 text-muted-foreground/60 animate-bounce" />
+            <ChevronUp className="h-4 w-4 text-muted-foreground/60" />
           )}
-        </div>
+        </button>
 
         {/* Collapsed Header Info */}
-        <div className="px-4 pb-3 border-b border-border/40 shrink-0">
-          <div className="flex items-center justify-between mb-2">
+        <div className="shrink-0 border-b border-border/40 px-4 pb-4">
+          <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Badge
                 variant="outline"
-                className="h-5 px-1.5 text-[10px] bg-primary/15 text-primary border-primary/30 uppercase tracking-wider font-bold cursor-pointer hover:bg-primary/25"
+                className="h-6 cursor-pointer rounded-full border-emerald-500/30 bg-emerald-500/10 px-2 text-[10px] font-black uppercase tracking-[0.12em] text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300"
                 onClick={() => setIsExpanded(prev => !prev)}
               >
                 {t('guidedRoute.activeRoute') || "En Ruta"}
               </Badge>
               
-              <div className="flex items-center gap-1 bg-muted/80 rounded-md px-1 py-0.5 shadow-sm">
+              <div className="flex items-center gap-1 rounded-full bg-muted/80 px-1 py-0.5 shadow-sm">
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className="h-5 w-5 hover:bg-background rounded p-0" 
+                  className="h-6 w-6 rounded-full p-0 hover:bg-background"
                   onClick={onPrev} 
                   disabled={isFirst}
                   title={language === 'es' ? "Anterior" : "Previous"}
                 >
                   <ChevronLeft className="h-3.5 w-3.5 text-foreground/75" />
                 </Button>
-                <span className="text-[10px] font-mono font-bold text-muted-foreground px-1 select-none">
+                <span className="select-none px-1 font-mono text-[10px] font-bold text-muted-foreground">
                   {currentStep + 1} / {route.puntos.length}
                 </span>
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className="h-5 w-5 hover:bg-background rounded p-0" 
+                  className="h-6 w-6 rounded-full p-0 hover:bg-background"
                   onClick={onNext} 
                   disabled={isLast}
                   title={language === 'es' ? "Siguiente" : "Next"}
@@ -274,24 +280,40 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 px-2 text-[10px] font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md"
+              className="h-7 rounded-full px-2 text-[10px] font-bold text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
               onClick={onCancel}
             >
               {language === 'es' ? "SALIR DE RUTA" : "QUIT ROUTE"}
             </Button>
           </div>
 
-          <div className="flex items-end justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1 mb-0.5 cursor-pointer" onClick={() => setIsExpanded(prev => !prev)}>
-                <MapPin className="h-3.5 w-3.5 text-primary animate-pulse" />
-                <span className="text-[10px] font-black text-primary/80 uppercase tracking-widest leading-none">
-                  {isCurrentPointVisited ? (language === 'es' ? "¡CONQUISTADO!" : "CONQUERED!") : (language === 'es' ? "Parada sugerida" : "Suggested Stop")}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-emerald-100 text-left shadow-sm ring-1 ring-emerald-950/10 dark:bg-emerald-950"
+              onClick={() => onOpenSiteDetails?.(currentPoint)}
+              aria-label={language === 'es' ? 'Ver detalles de la parada' : 'View stop details'}
+            >
+              {currentImage ? (
+                <img src={currentImage} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <MapPin className="m-4 h-6 w-6 text-emerald-600" />
+              )}
+              <span className="absolute bottom-1 right-1 grid h-5 w-5 place-items-center rounded-full bg-orange-400 text-[10px] font-black text-orange-950 shadow">
+                {currentStep + 1}
+              </span>
+            </button>
+
+            <div className="min-w-0 flex-1">
+              <button type="button" className="flex items-center gap-1 text-left" onClick={() => setIsExpanded(prev => !prev)}>
+                <MapPin className="h-3.5 w-3.5 text-emerald-600" />
+                <span className="text-[10px] font-black uppercase leading-none tracking-widest text-emerald-700 dark:text-emerald-300">
+                  {isCurrentPointVisited ? (language === 'es' ? "Parada completada" : "Stop completed") : (language === 'es' ? "Tu próxima parada" : "Your next stop")}
                 </span>
-              </div>
-              <div className="flex items-center gap-1.5 group select-none">
+              </button>
+              <div className="group mt-1 flex select-none items-center gap-1.5">
                 <h4 
-                  className="font-extrabold text-base md:text-lg leading-tight truncate text-foreground hover:text-primary hover:underline cursor-pointer flex-1"
+                  className="flex-1 cursor-pointer truncate text-base font-extrabold leading-tight text-foreground hover:text-primary md:text-lg"
                   onClick={() => onOpenSiteDetails && onOpenSiteDetails(currentPoint)}
                   title={language === 'es' ? "Ver detalles de la parada" : "View stop details"}
                 >
@@ -300,7 +322,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className="h-5 w-5 p-0 opacity-50 group-hover:opacity-100 transition-opacity hover:bg-muted"
+                  className="h-6 w-6 p-0 text-muted-foreground transition-opacity hover:bg-muted"
                   onClick={() => onOpenSiteDetails && onOpenSiteDetails(currentPoint)}
                   title={language === 'es' ? "Ver detalles" : "View details"}
                 >
@@ -309,7 +331,13 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 shrink-0">
+          </div>
+
+          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-gradient-to-r from-orange-400 to-emerald-500 transition-[width] duration-500" style={{ width: `${routeProgress}%` }} />
+          </div>
+
+          <div className="mt-3 grid grid-cols-2 gap-2">
               <Button
                 size="sm"
                 variant="outline"
@@ -318,16 +346,16 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                   const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(queryName + ", Cali")}`;
                   window.open(url, '_blank');
                 }}
-                className="h-8 px-2.5 rounded-lg border-primary/20 text-primary hover:bg-primary/10 bg-background/50 text-[10px] font-bold uppercase tracking-wider"
+                className="h-10 rounded-xl border-emerald-600/20 bg-background/50 px-3 text-xs font-bold text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-300"
               >
-                <Navigation className="h-3 w-3 mr-1" /> {language === 'es' ? "Cómo llegar" : "Directions"}
+                <Navigation className="mr-1.5 h-4 w-4" /> {language === 'es' ? "Cómo llegar" : "Directions"}
               </Button>
 
               {isCurrentPointVisited || isCorrect ? (
                 <Button
                   size="sm"
                   onClick={handleNextStep}
-                  className="rounded-lg bg-green-600 hover:bg-green-700 text-white h-8 px-3 text-[10px] font-bold uppercase tracking-wider"
+                  className="h-10 rounded-xl bg-emerald-600 px-3 text-xs font-bold text-white hover:bg-emerald-700"
                 >
                   {isLast ? (language === 'es' ? 'Finalizar' : 'Finish') : (language === 'es' ? 'Siguiente' : 'Next')}
                 </Button>
@@ -335,12 +363,11 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                 <Button
                   size="sm"
                   onClick={() => setIsExpanded(true)}
-                  className="rounded-lg bg-primary hover:bg-primary/95 text-white h-8 px-4 text-[10px] font-bold uppercase tracking-wider"
+                  className="h-10 rounded-xl bg-emerald-600 px-3 text-xs font-bold text-white hover:bg-emerald-700"
                 >
-                  {language === 'es' ? "Ver Relato" : "View Story"}
+                  {language === 'es' ? "Explorar parada" : "Explore stop"}
                 </Button>
               )}
-            </div>
           </div>
         </div>
 
