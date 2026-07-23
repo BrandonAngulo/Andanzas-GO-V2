@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Plus, Search, Trash2, Edit, Compass, PenTool, ChevronUp, ChevronDown, Sparkles, Clock3, Gamepad2, Map } from 'lucide-react';
+import { Bookmark, Plus, Search, Trash2, Compass, PenTool, ChevronUp, ChevronDown, Clock3, Gamepad2, Map } from 'lucide-react';
 import { Ruta, Site } from '../../types';
 
 import { Button } from '../ui/button';
@@ -16,9 +16,11 @@ import { settingsService } from '../../services/settings.service';
 import { userService } from '../../services/user.service';
 import { useAuth } from '../../contexts/AuthContext';
 import { RequestCustomRouteModal } from './RequestCustomRouteModal';
-import { Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
 import { RouteDiscoveryCard } from '../routes/RouteDiscoveryCard';
+import { RoutesEmptyState } from '../routes/RoutesEmptyState';
+import { RoutesHero } from '../routes/RoutesHero';
+import { UserRouteCard } from '../routes/UserRouteCard';
 
 interface RutasPanelProps {
     rutas: Ruta[];
@@ -154,6 +156,16 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         return rutasSugeridas;
     }, [routeFilter, rutasSugeridas]);
 
+    const savedSuggestedRoutes = useMemo(
+        () => rutasSugeridas.filter(route => savedRouteIds.includes(route.id)),
+        [rutasSugeridas, savedRouteIds],
+    );
+
+    const discoveryStopCount = useMemo(
+        () => new Set(suggestedRoutes.flatMap(route => route.puntos || [])).size,
+        [suggestedRoutes],
+    );
+
     useEffect(() => {
         if (editingRoute) {
             setEditedName(getTranslated(editingRoute, 'nombre', language) as string);
@@ -200,59 +212,16 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
         onStartRoute(route);
     };
 
-    // Keep Custom Route Card simpler
-    const RouteCard = ({ route }: { route: Ruta }) => (
-        <Card className="group overflow-hidden border-border bg-card hover:border-primary/50 transition-all cursor-pointer" onClick={() => onOpenDetail(route)}>
-            <CardContent className="p-4 pr-6 flex items-start gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-2xl">
-                    {route.emoji || <PenTool className="w-6 h-6" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                    <h3 className="font-bold truncate">{getTranslated(route, 'nombre', language)}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-1">{getTranslated(route, 'descripcion', language)}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                        <Button size="sm" variant="secondary" className="h-7 text-xs" onClick={(e) => { e.stopPropagation(); onStartRoute(route); }}>
-                            Iniciar
-                        </Button>
-                        <div className="ml-auto flex gap-1">
-                            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={(e) => { e.stopPropagation(); setEditingRoute(route); }}>
-                                <Edit className="w-3 h-3" />
-                            </Button>
-                            <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive" onClick={(e) => { e.stopPropagation(); setRouteToDelete(route); }}>
-                                <Trash2 className="w-3 h-3" />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    );
-
     return (
         <div className="h-full overflow-y-auto overscroll-contain">
             <div className="mx-auto max-w-6xl px-3 pb-28 pt-3 sm:px-5 sm:pb-8">
-                <section className="relative mb-4 min-h-[15rem] overflow-hidden rounded-[2rem] bg-[#063f38] px-6 py-7 text-white shadow-[0_24px_70px_-42px_rgba(6,78,59,0.9)] sm:min-h-[17rem] sm:px-10 sm:py-9">
-                    <div className="absolute inset-0 bg-[url('/images/banners/unified/rutas-v2.webp')] bg-cover bg-center opacity-35" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#063f38] via-[#063f38]/90 to-[#063f38]/30" />
-                    <div className="absolute -right-10 -top-20 h-56 w-56 rounded-full border border-white/15" />
-                    <div className="absolute -right-2 -top-10 h-44 w-44 rounded-full border border-orange-300/20" />
-                    <div className="relative z-10 flex min-h-[11rem] max-w-2xl flex-col justify-center">
-                        <p className="mb-3 flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-orange-300">
-                            <Sparkles className="h-4 w-4" />
-                            {language === 'es' ? 'Explora a tu manera' : 'Explore your way'}
-                        </p>
-                        <h1 className="font-heading text-3xl font-black leading-[1.02] sm:text-5xl">
-                            {language === 'es' ? 'Rutas para vivir la ciudad' : 'Routes to experience the city'}
-                        </h1>
-                        <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
-                            {language === 'es'
-                                ? 'Elige un circuito, conoce sus paradas y deja que cada recorrido te revele una historia.'
-                                : 'Choose a circuit, discover its stops, and let every journey reveal a story.'}
-                        </p>
-                    </div>
-                </section>
+                <RoutesHero
+                    language={language}
+                    routeCount={suggestedRoutes.length}
+                    stopCount={discoveryStopCount}
+                />
 
-                <div className="sticky top-0 z-30 mb-5 -mx-1 rounded-2xl border border-border/60 bg-background/92 p-1.5 shadow-sm backdrop-blur-xl">
+                <div id="route-discovery" className="sticky top-0 z-30 mb-5 -mx-1 scroll-mt-2 rounded-2xl border border-border/60 bg-background/92 p-1.5 shadow-sm backdrop-blur-xl">
                     <div className="flex gap-1 overflow-x-auto scrollbar-none">
                         <Button 
                             variant="ghost"
@@ -263,7 +232,9 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             )}
                             onClick={() => setActiveTab("sugeridas")}
                         >
+                            <Compass className="h-4 w-4" />
                             Descubrir
+                            <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-[10px] dark:bg-white/10">{rutasSugeridas.length}</span>
                         </Button>
                         <Button 
                             variant="ghost"
@@ -274,7 +245,9 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             )}
                             onClick={() => setActiveTab("por-andar")}
                         >
+                            <Bookmark className="h-4 w-4" />
                             Por Andar
+                            <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-[10px] dark:bg-white/10">{savedSuggestedRoutes.length}</span>
                         </Button>
                         <Button 
                             variant="ghost"
@@ -285,7 +258,9 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             )}
                             onClick={() => setActiveTab("mis-rutas")}
                         >
+                            <PenTool className="h-4 w-4" />
                             Mis Rutas
+                            <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-[10px] dark:bg-white/10">{misRutas.length}</span>
                         </Button>
                     </div>
                 </div>
@@ -323,9 +298,9 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {discoveryRoutes.map((route, index) => (
-                                <div key={route.id} className={cn(index === 0 && discoveryRoutes.length > 2 ? 'md:col-span-2' : '')}>
+                                <div key={route.id} className={cn(index === 0 && discoveryRoutes.length > 1 ? 'md:col-span-2 lg:col-span-2' : '')}>
                                     <RouteDiscoveryCard
                                         route={route}
                                         sites={allSites}
@@ -333,7 +308,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                         saved={savedRouteIds.includes(route.id)}
                                         completed={routesCompleted.includes(route.id)}
                                         inProgress={routesInProgress.includes(route.id)}
-                                        featured={index === 0 && discoveryRoutes.length > 2}
+                                        featured={index === 0 && discoveryRoutes.length > 1}
                                         saving={savingRoute}
                                         onOpen={() => openRoutePresentation(route)}
                                         onToggleSave={() => void handleToggleSaveRoute(route.id)}
@@ -342,10 +317,11 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             ))}
                         </div>
                         {discoveryRoutes.length === 0 && (
-                            <div className="mt-4 rounded-3xl border-2 border-dashed py-16 text-center text-muted-foreground">
-                                <Search className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                                <p>{language === 'es' ? 'No encontramos rutas con ese filtro.' : 'No routes match this filter.'}</p>
-                            </div>
+                            <RoutesEmptyState
+                                language={language}
+                                mode={routeFilter === 'all' ? 'catalog' : 'filtered'}
+                                onReset={() => setRouteFilter('all')}
+                            />
                         )}
                     </TabsContent>
 
@@ -354,8 +330,8 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                             <h3 className="font-bold flex items-center gap-2"><Bookmark className="w-5 h-5 text-primary" /> Rutas Guardadas</h3>
                             <p className="text-sm text-muted-foreground">Tus rutas pendientes para explorar Cali a tu propio ritmo. Elegí una, revisá sus paradas y convertí ese guardado en tu próxima salida.</p>
                         </div>
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            {rutasSugeridas.filter(route => savedRouteIds.includes(route.id)).map((route) => (
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {savedSuggestedRoutes.map((route) => (
                                 <RouteDiscoveryCard
                                     key={route.id}
                                     route={route}
@@ -370,11 +346,10 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                 />
                             ))}
                         </div>
-                        {rutasSugeridas.filter(r => savedRouteIds.includes(r.id)).length === 0 && (
-                            <div className="text-center py-20 text-muted-foreground border-2 border-dashed rounded-xl mt-4">
-                                <Bookmark className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                                <p>Aún no has guardado ninguna ruta en "Por Andar".</p>
-                                <Button variant="outline" className="mt-4" onClick={() => setActiveTab("sugeridas")}>Explorar Rutas</Button>
+                        {savedSuggestedRoutes.length === 0 && (
+                            <div>
+                                <RoutesEmptyState language={language} mode="saved" />
+                                <Button variant="outline" className="mx-auto mt-4 flex rounded-full" onClick={() => setActiveTab("sugeridas")}>Explorar Rutas</Button>
                             </div>
                         )}
                     </TabsContent>
@@ -408,7 +383,17 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                     <p className="text-muted-foreground">No has creado rutas propias.</p>
                                 </div>
                             ) : (
-                                misRutas.map(r => <RouteCard key={r.id} route={r} />)
+                                misRutas.map(route => (
+                                    <UserRouteCard
+                                        key={route.id}
+                                        route={route}
+                                        language={language}
+                                        onOpen={() => onOpenDetail(route)}
+                                        onStart={() => onStartRoute(route)}
+                                        onEdit={() => setEditingRoute(route)}
+                                        onDelete={() => setRouteToDelete(route)}
+                                    />
+                                ))
                             )}
                         </div>
                     </TabsContent>

@@ -187,6 +187,24 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                 <p className="text-sm leading-relaxed text-foreground/75">
                                     {getTranslated(route, 'descripcion', language)}
                                 </p>
+                                <div className="mt-4 flex items-center gap-3 overflow-hidden rounded-2xl border border-emerald-700/10 bg-emerald-50/80 px-3 py-2.5 dark:bg-emerald-950/30">
+                                    <img
+                                        src="/brand/andi/andi-frontal-512-transparent-v2.png"
+                                        alt=""
+                                        className="h-14 w-14 shrink-0 object-contain object-bottom"
+                                        aria-hidden="true"
+                                    />
+                                    <div className="min-w-0">
+                                        <p className="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
+                                            {language === 'es' ? 'Andi va contigo' : 'Andi goes with you'}
+                                        </p>
+                                        <p className="mt-0.5 text-xs leading-relaxed text-foreground/70">
+                                            {language === 'es'
+                                                ? 'Te mostraré la siguiente parada y guardaré tu avance durante el recorrido.'
+                                                : 'I will show you the next stop and keep track of your progress along the route.'}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
 
                             {routePoints.length > 0 && (
