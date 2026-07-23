@@ -23,6 +23,7 @@ export const useRouteNavigation = () => {
 
     // UI State for the Guided Mode
     const [activeGuidedRoute, setActiveGuidedRoute] = useState<Ruta | null>(null);
+    const [completedGuidedRoute, setCompletedGuidedRoute] = useState<Ruta | null>(null);
     const [previewRoute, setPreviewRoute] = useState<Ruta | null>(null); // For passport mode preview
     const [visitedRoutePoints, setVisitedRoutePoints] = useState<string[]>([]); // Ephemeral for this session
     const [currentRouteStep, setCurrentRouteStep] = useState(0);
@@ -51,6 +52,7 @@ export const useRouteNavigation = () => {
         updateRouteProgress(newInProgress, routesCompleted); // Sync state
 
         setActiveGuidedRoute(route);
+        setCompletedGuidedRoute(null);
         setVisitedRoutePoints([]);
         setCurrentRouteStep(0);
         setShowRouteModal(false);
@@ -92,6 +94,7 @@ export const useRouteNavigation = () => {
 
         updateRouteProgress(newInProgress, newCompleted);
         setActiveGuidedRoute(null);
+        setCompletedGuidedRoute(route);
 
         const closingMsg = getTranslated(route, 'mensajeCierre', language);
         const defaultMsg = language === 'es' ? '¡Felicitaciones! Has completado una andanza.' : 'Congratulations! You have completed a journey.';
@@ -131,6 +134,7 @@ export const useRouteNavigation = () => {
 
     return {
         activeGuidedRoute, setActiveGuidedRoute,
+        completedGuidedRoute, setCompletedGuidedRoute,
         previewRoute, setPreviewRoute,
         visitedRoutePoints,
         currentRouteStep, setCurrentRouteStep,

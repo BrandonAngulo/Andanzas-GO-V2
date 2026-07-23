@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -12,18 +12,16 @@ import {
   ChevronUp,
   ChevronDown,
   CheckCircle,
-  Clock,
   Award,
   HelpCircle,
-  Compass,
-  Trophy
+  Route as RouteIcon,
+  Sparkles
 } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { cn, getTranslated } from '../../lib/utils';
 import { Site, Ruta, Challenge } from '../../types';
 import { gamificationService } from '../../services/gamification.service';
 import { useAuth } from '../../contexts/AuthContext';
-import { BADGES } from '../../data/badges';
 import { toast } from 'sonner';
 
 interface ActiveRouteBannerProps {
@@ -207,20 +205,21 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
     }
   };
 
-  // Recommendations mapping
-  const badge = BADGES.find(b => b.id === route.reward_badge_id);
-  const BadgeIcon = badge?.icono || Award;
-  const routeProgress = Math.round(((currentStep + (isCurrentPointVisited ? 1 : 0)) / route.puntos.length) * 100);
+  const visitedStopCount = route.puntos.filter(pointId => visitedPoints.includes(pointId)).length;
+  const routeProgress = Math.round((visitedStopCount / route.puntos.length) * 100);
   const currentImage = currentPoint.fotos?.[0] || currentPoint.logoUrl;
+  const routeName = getTranslated(route, 'nombre', language);
+  const currentPointName = getTranslated(currentPoint, 'nombre', language);
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${currentPoint.lat},${currentPoint.lng}`;
 
   return (
     <div
       className={cn(
-        "absolute bottom-[calc(5.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-[90] transition-all duration-300 ease-in-out md:bottom-6 md:left-1/2 md:right-auto md:w-[95%] md:max-w-xl md:-translate-x-1/2",
-        isExpanded ? "h-[min(76dvh,42rem)]" : "h-auto"
+        "absolute bottom-[calc(5.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-[90] transition-all duration-300 ease-in-out md:bottom-5 md:left-auto md:right-5 md:w-[25rem]",
+        isExpanded ? "h-[min(74dvh,40rem)] md:h-[min(76vh,43rem)]" : "h-auto"
       )}
     >
-      <Card className="flex h-full flex-col overflow-hidden rounded-[1.75rem] border-emerald-600/20 bg-background/96 shadow-[0_24px_80px_-30px_rgba(6,78,59,0.8)] ring-1 ring-emerald-500/5 backdrop-blur-xl">
+      <Card className="flex h-full flex-col overflow-hidden rounded-[1.75rem] border-white/20 bg-background/97 shadow-[0_30px_90px_-34px_rgba(3,63,56,0.9)] ring-1 ring-emerald-950/10 backdrop-blur-xl">
         {/* Slider drag indicator */}
         <button
           type="button"
@@ -247,7 +246,8 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                 className="h-6 cursor-pointer rounded-full border-emerald-500/30 bg-emerald-500/10 px-2 text-[10px] font-black uppercase tracking-[0.12em] text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300"
                 onClick={() => setIsExpanded(prev => !prev)}
               >
-                {t('guidedRoute.activeRoute') || "En Ruta"}
+                <RouteIcon className="mr-1 h-3 w-3" />
+                {t('guidedRoute.activeRoute') || "Ruta activa"}
               </Badge>
               
               <div className="flex items-center gap-1 rounded-full bg-muted/80 px-1 py-0.5 shadow-sm">
@@ -283,8 +283,20 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
               className="h-7 rounded-full px-2 text-[10px] font-bold text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
               onClick={onCancel}
             >
-              {language === 'es' ? "SALIR DE RUTA" : "QUIT ROUTE"}
+              {language === 'es' ? "Salir" : "Quit"}
             </Button>
+          </div>
+
+          <div className="mb-3 flex items-center justify-between gap-3 rounded-2xl bg-[#063f38] px-3.5 py-2.5 text-white">
+            <div className="min-w-0">
+              <p className="truncate text-xs font-black">{routeName}</p>
+              <p className="mt-0.5 text-[10px] font-semibold text-white/65">
+                {language === 'es'
+                  ? `${visitedStopCount} de ${route.puntos.length} paradas completadas`
+                  : `${visitedStopCount} of ${route.puntos.length} stops completed`}
+              </p>
+            </div>
+            <span className="shrink-0 font-mono text-sm font-black text-orange-300">{routeProgress}%</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -317,7 +329,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                   onClick={() => onOpenSiteDetails && onOpenSiteDetails(currentPoint)}
                   title={language === 'es' ? "Ver detalles de la parada" : "View stop details"}
                 >
-                  {getTranslated(currentPoint, 'nombre', language)}
+                  {currentPointName}
                 </h4>
                 <Button 
                   variant="ghost" 
@@ -333,7 +345,14 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
 
           </div>
 
-          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
+          <div
+            className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted"
+            role="progressbar"
+            aria-label={language === 'es' ? 'Progreso de la ruta' : 'Route progress'}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={routeProgress}
+          >
             <div className="h-full rounded-full bg-gradient-to-r from-orange-400 to-emerald-500 transition-[width] duration-500" style={{ width: `${routeProgress}%` }} />
           </div>
 
@@ -342,9 +361,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                 size="sm"
                 variant="outline"
                 onClick={() => {
-                  const queryName = currentPoint.nombre;
-                  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(queryName + ", Cali")}`;
-                  window.open(url, '_blank');
+                  window.open(directionsUrl, '_blank', 'noopener,noreferrer');
                 }}
                 className="h-10 rounded-xl border-emerald-600/20 bg-background/50 px-3 text-xs font-bold text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-300"
               >
@@ -365,7 +382,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                   onClick={() => setIsExpanded(true)}
                   className="h-10 rounded-xl bg-emerald-600 px-3 text-xs font-bold text-white hover:bg-emerald-700"
                 >
-                  {language === 'es' ? "Explorar parada" : "Explore stop"}
+                  {challenge?.type === 'TRIVIA'
+                    ? (language === 'es' ? "Resolver reto" : "Solve challenge")
+                    : (language === 'es' ? "Registrar llegada" : "Check in")}
                 </Button>
               )}
           </div>
@@ -376,9 +395,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-6 pb-6">
               {/* Route Progress Stepper */}
-              <div className="bg-muted/30 p-3.5 rounded-xl border border-border/40">
-                <h5 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
-                  Progreso del Recorrido
+              <div className="rounded-2xl border border-border/40 bg-muted/30 p-3.5">
+                <h5 className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">
+                  {language === 'es' ? 'Tu recorrido' : 'Your journey'}
                 </h5>
                 <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                   {route.puntos.map((puntoId, idx) => {
@@ -386,7 +405,8 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                     const isActive = idx === currentStep;
                     const site = sites.find(s => s.id === puntoId);
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={puntoId}
                         className={cn(
                           "flex items-center gap-1.5 shrink-0 px-2.5 py-1 rounded-full border text-xs font-semibold select-none cursor-pointer",
@@ -396,16 +416,15 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                             ? "bg-green-500/10 border-green-500/30 text-green-600"
                             : "bg-background border-border text-muted-foreground opacity-60"
                         )}
-                        onClick={() => {
-                          onSetStep && onSetStep(idx);
-                        }}
+                        onClick={() => onSetStep?.(idx)}
+                        aria-current={isActive ? 'step' : undefined}
                       >
                         <span className="w-4 h-4 rounded-full bg-black/5 flex items-center justify-center text-[10px]">
                           {idx + 1}
                         </span>
                         <span className="max-w-[80px] truncate">{site ? getTranslated(site, 'nombre', language) : 'Sitio'}</span>
                         {isVisited && <CheckCircle className="w-3.5 h-3.5 text-green-600 shrink-0" />}
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
@@ -414,7 +433,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
               {/* Tramo Narrativo / Walk Story */}
               <div className="space-y-2.5">
                 <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-                  Relato del Camino
+                  {language === 'es' ? 'Historia del camino' : 'Story along the way'}
                 </h3>
                 {challenge?.connection_story ? (
                   <div className="pl-4 border-l-4 border-primary">
@@ -424,7 +443,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground italic">
-                    Camina hacia el sitio y prepárate para explorar sus rincones más significativos.
+                    {language === 'es'
+                      ? `Dirígete a ${currentPointName}. Allí te espera la siguiente parte de esta historia.`
+                      : `Head to ${currentPointName}. The next part of this story is waiting there.`}
                   </p>
                 )}
               </div>
@@ -437,12 +458,12 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                 return (
                   <div className="space-y-2.5 pt-2 border-t border-border/40">
                     <h4 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-                      Consejos de Exploración
+                      {language === 'es' ? 'Antes de llegar' : 'Before you arrive'}
                     </h4>
                     <div className="grid grid-cols-1 gap-2">
-                      {stepRecs.map((rec, i) => (
-                        <div key={i} className="flex items-start gap-2.5 bg-primary/5 p-3 rounded-lg border border-primary/10">
-                          <span className="text-lg leading-none mt-0.5">💡</span>
+                      {stepRecs.map((rec) => (
+                        <div key={`${rec.siteId || currentPoint.id}-${rec.titulo}`} className="flex items-start gap-2.5 rounded-xl border border-primary/10 bg-primary/5 p-3">
+                          <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
                           <div>
                             <strong className="text-xs font-bold text-primary block leading-none mb-1">
                               {getTranslated(rec, 'titulo', language)}
@@ -461,7 +482,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
               {/* Active Challenge (Verification) */}
               <div className="pt-4 border-t border-border/40 space-y-4">
                 <h4 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-                  Verificar Parada
+                  {language === 'es' ? 'Completa esta parada' : 'Complete this stop'}
                 </h4>
 
                 {isCurrentPointVisited || isCorrect ? (
@@ -472,16 +493,18 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                     </div>
                     <div>
                       <h4 className="font-extrabold text-green-700 dark:text-green-400">
-                        ¡Parada Conquistada!
+                        {language === 'es' ? '¡Parada descubierta!' : 'Stop discovered!'}
                       </h4>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Has desbloqueado este hito de la ruta.
+                        {language === 'es'
+                          ? 'Tu visita quedó registrada y el recorrido puede continuar.'
+                          : 'Your visit was registered and the journey can continue.'}
                       </p>
                     </div>
 
                     {challenge?.quiz_data?.fun_fact && (
                       <div className="bg-card/80 p-3 rounded-lg text-xs text-foreground/80 text-left border border-border/30">
-                        <strong>Dato Curioso:</strong> {getTranslated(challenge.quiz_data, 'fun_fact', language)}
+                        <strong>{language === 'es' ? 'Dato curioso:' : 'Fun fact:'}</strong> {getTranslated(challenge.quiz_data, 'fun_fact', language)}
                       </div>
                     )}
 
@@ -489,7 +512,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                       onClick={handleNextStep}
                       className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-11 rounded-lg"
                     >
-                      {isLast ? 'Finalizar Recorrido' : 'Siguiente Parada'}
+                      {isLast
+                        ? (language === 'es' ? 'Completar recorrido' : 'Complete journey')
+                        : (language === 'es' ? 'Ir a la siguiente parada' : 'Go to next stop')}
                     </Button>
                   </div>
                 ) : (
@@ -500,19 +525,27 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                         <Award className="h-4 w-4" />
                       </div>
                       <h5 className="font-extrabold text-sm">
-                        {getTranslated(challenge!, 'title', language) || "Desafío de Parada"}
+                        {challenge
+                          ? getTranslated(challenge, 'title', language)
+                          : (language === 'es' ? 'Registra tu llegada' : 'Check in')}
                       </h5>
-                      <span className="ml-auto text-xs font-bold text-yellow-600 dark:text-yellow-500 font-mono">
-                        +{challenge?.points_reward} pts
-                      </span>
+                      {!!challenge?.points_reward && (
+                        <span className="ml-auto font-mono text-xs font-bold text-yellow-600 dark:text-yellow-500">
+                          +{challenge.points_reward} pts
+                        </span>
+                      )}
                     </div>
 
                     <p className="text-xs text-muted-foreground leading-normal">
-                      {getTranslated(challenge!, 'instruction', language)}
+                      {challenge
+                        ? getTranslated(challenge, 'instruction', language)
+                        : (language === 'es'
+                          ? 'Cuando estés en el lugar, usa tu ubicación para registrar la visita.'
+                          : 'When you arrive, use your location to register the visit.')}
                     </p>
 
                     {/* GPS CHECKIN VIEW */}
-                    {challenge?.type === 'CHECKIN' && (
+                    {(!challenge || challenge.type === 'CHECKIN' || challenge.type === 'PHOTO') && (
                       <>
                         {!showManualCheckin ? (
                           <div className="space-y-3">
@@ -521,14 +554,16 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                               disabled={checkingLocation}
                               className="w-full bg-primary hover:bg-primary/95 text-white font-bold h-11 rounded-lg"
                             >
-                              {checkingLocation ? "Verificando GPS..." : "Registrar Visita (GPS)"}
+                              {checkingLocation
+                                ? (language === 'es' ? 'Verificando ubicación...' : 'Checking location...')
+                                : (language === 'es' ? 'Registrar mi llegada' : 'Check in')}
                             </Button>
                             {gpsError && (
                               <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs rounded-lg text-center font-medium">
                                 {gpsError}
                               </div>
                             )}
-                            {challenge.allow_manual_trivia && (
+                            {challenge?.allow_manual_trivia && (
                               <Button
                                 variant="link"
                                 className="w-full text-xs text-muted-foreground"
@@ -538,16 +573,21 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                                   setWrongAnswers([]);
                                 }}
                               >
-                                ¿Problemas con el GPS? Responder pregunta del lugar
+                                {language === 'es'
+                                  ? '¿Problemas con el GPS? Validar con una pregunta'
+                                  : 'GPS problems? Validate with a question'}
                               </Button>
                             )}
                           </div>
                         ) : (
                           <div className="space-y-3 pt-2 border-t border-dashed">
                             <div className="bg-orange-500/10 border border-orange-500/20 p-2.5 rounded-lg text-xs text-orange-600 font-medium">
-                              <strong>Modo Manual:</strong> Responde esta pregunta de observación para validar tu visita.
+                              <strong>{language === 'es' ? 'Validación alternativa:' : 'Alternative validation:'}</strong>{' '}
+                              {language === 'es'
+                                ? 'responde una pregunta de observación sobre el lugar.'
+                                : 'answer an observation question about this place.'}
                             </div>
-                            {challenge.manual_trivia_data && (
+                            {challenge?.manual_trivia_data && (
                               <div className="space-y-2">
                                 <p className="font-bold text-xs text-foreground mb-1">
                                   {getTranslated(challenge.manual_trivia_data, 'question', language)}
@@ -580,14 +620,14 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                                   disabled={!userAnswer}
                                   className="w-full h-10 mt-2 font-bold"
                                 >
-                                  Confirmar Respuesta
+                                  {language === 'es' ? 'Confirmar respuesta' : 'Confirm answer'}
                                 </Button>
                                 <Button
                                   variant="ghost"
                                   className="w-full h-9 text-xs"
                                   onClick={() => setShowManualCheckin(false)}
                                 >
-                                  Volver a intentar con GPS
+                                  {language === 'es' ? 'Volver a intentar con GPS' : 'Try GPS again'}
                                 </Button>
                               </div>
                             )}
@@ -630,7 +670,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                           disabled={!userAnswer}
                           className="w-full h-10 mt-2 font-bold bg-primary hover:bg-primary/95 text-white"
                         >
-                          Confirmar Respuesta
+                          {language === 'es' ? 'Confirmar respuesta' : 'Confirm answer'}
                         </Button>
                       </div>
                     )}

@@ -35,6 +35,7 @@ import ActiveRouteBanner from './components/shared/ActiveRouteBanner';
 import { InfoHint } from "./components/shared/InfoHint";
 import { useHelpContent } from "./hooks/useHelpContent";
 import RouteIntroModal from "./components/views/RouteIntroModal";
+import { RouteCompletionModal } from "./components/routes/RouteCompletionModal";
 import Logo from "./components/layout/Logo";
 import AccessibilityMenu from "./components/layout/AccessibilityMenu";
 import PrivacyPolicy from './components/legal/PrivacyPolicy';
@@ -155,6 +156,7 @@ export default function App() {
   // --- Route Navigation Hook ---
   const {
     activeGuidedRoute, setActiveGuidedRoute,
+    completedGuidedRoute, setCompletedGuidedRoute,
     previewRoute, setPreviewRoute,
     visitedRoutePoints,
     currentRouteStep, setCurrentRouteStep,
@@ -835,6 +837,15 @@ export default function App() {
       </Dialog>
 
       {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} onAuthRequired={() => setAuthDialogOpen(true)} />}
+      <RouteCompletionModal
+        route={completedGuidedRoute}
+        language={language}
+        onClose={() => setCompletedGuidedRoute(null)}
+        onExploreRoutes={() => {
+          setCompletedGuidedRoute(null);
+          setActivePanel('rutas');
+        }}
+      />
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />
