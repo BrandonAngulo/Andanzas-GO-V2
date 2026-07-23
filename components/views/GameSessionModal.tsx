@@ -210,7 +210,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     if (error || !game) {
         return (
             <div className="fixed inset-0 flex flex-col bg-slate-950 items-center justify-center p-4" style={{ zIndex: 99999 }}>
-                <div className="bg-slate-900/80 backdrop-blur-xl border border-white/10 p-8 rounded-3xl max-w-sm w-full shadow-2xl text-center">
+                <div className="w-full max-w-sm rounded-3xl border border-white/10 bg-slate-900/80 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
                     <XCircle className="w-16 h-16 text-red-500 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]" />
                     <h3 className="text-2xl font-bold mb-3 text-white">Error al cargar</h3>
                     <p className="text-white/60 mb-8 leading-relaxed">{error || 'No se pudo cargar el juego.'}</p>
@@ -224,7 +224,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     if (usesWalletLives && livesRemaining <= 0 && !isFinished && !isChecking) {
         return (
             <div className="fixed inset-0 bg-slate-950 text-white grid place-items-center p-5 overflow-y-auto" style={{ zIndex: 99999 }}>
-                <div className="max-w-lg w-full bg-slate-900 border border-white/10 rounded-3xl p-7 text-center shadow-2xl">
+                <div className="w-full max-w-lg rounded-3xl border border-white/10 bg-slate-900 p-5 text-center shadow-2xl sm:p-7">
                     <Heart className="w-16 h-16 mx-auto text-red-500 mb-4" />
                     <h2 className="text-3xl font-black mb-2">Tus vidas se agotaron</h2>
                     <p className="text-white/60 mb-2">Recuperas una vida cada 4 horas, hasta completar {economy?.max_lives || 3}.</p>
@@ -249,7 +249,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
     if (isFinished) {
         return (
-            <div className="fixed inset-0 flex flex-col bg-slate-950 text-slate-50 overflow-y-auto" style={{ zIndex: 99999 }}>
+            <div className="fixed inset-0 flex flex-col overflow-y-auto overscroll-contain bg-slate-950 text-slate-50" style={{ zIndex: 99999 }}>
                 {accuracyPercent >= 50 && (
                     <ReactConfetti recycle={false} numberOfPieces={280} gravity={0.25} colors={[accent, '#FFFFFF', '#FDE68A']} style={{ position: 'fixed', inset: 0, zIndex: 100000, pointerEvents: 'none' }} />
                 )}
@@ -258,39 +258,39 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     <div className="absolute top-[40%] -right-[10%] w-[40vw] h-[40vw] bg-primary/20 rounded-full blur-[100px]" />
                 </div>
 
-                <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center space-y-5 p-4 py-6 text-center">
+                <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-start space-y-4 p-3 py-4 text-center sm:justify-center sm:space-y-5 sm:p-4 sm:py-6">
                     <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", bounce: 0.5 }}
-                        className="mb-1 rounded-full p-5"
+                        className="mb-1 rounded-full p-4 sm:p-5"
                         style={{
                             backgroundColor: `${accent}1A`,
                             boxShadow: `0 0 0 4px ${accent}33, 0 0 40px ${accent}4D`
                         }}
                     >
-                        <Trophy className="h-16 w-16 drop-shadow-md" style={{ color: accent }} />
+                        <Trophy className="h-12 w-12 drop-shadow-md sm:h-16 sm:w-16" style={{ color: accent }} />
                     </motion.div>
                     
-                    <h2 className="text-3xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl">¡Desafío completado!</h2>
+                    <h2 className="text-2xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl">¡Desafío completado!</h2>
                     
-                    <div className="grid grid-cols-2 gap-4 w-full">
-                        <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-4 backdrop-blur-xl">
+                    <div className="grid w-full grid-cols-2 gap-3 sm:gap-4">
+                        <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-xl sm:p-4">
                             <Star className="mb-2 h-6 w-6 fill-yellow-400 text-yellow-400" />
-                            <span className="mb-1 text-3xl font-black text-white">{score}</span>
+                            <span className="mb-1 text-2xl font-black text-white sm:text-3xl">{score}</span>
                             <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Puntos</span>
                         </div>
                         {game?.type !== 'quiz' && (
-                            <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-4 backdrop-blur-xl">
+                            <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-xl sm:p-4">
                                 <Target className="mb-2 h-6 w-6 text-emerald-400" />
-                                <span className="mb-1 text-3xl font-black text-white">{accuracyPercent.toFixed(0)}%</span>
+                                <span className="mb-1 text-2xl font-black text-white sm:text-3xl">{accuracyPercent.toFixed(0)}%</span>
                                 <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Precisión</span>
                             </div>
                         )}
                     </div>
 
                     {(bestCategory || worstCategory) && (
-                        <div className="w-full grid grid-cols-2 gap-4">
+                        <div className="grid w-full grid-cols-1 gap-2 min-[390px]:grid-cols-2 sm:gap-4">
                             {bestCategory && (
                                 <div className="flex flex-col items-center rounded-xl border border-white/5 bg-slate-900/40 p-3 backdrop-blur-md">
                                     <span className="text-xs text-white/40 uppercase tracking-wider mb-1 font-bold">Mejor Categoría</span>
@@ -309,11 +309,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     {rewards && (
                         <div className="w-full rounded-2xl border border-white/10 bg-slate-900/50 p-4">
                             <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-3">Recompensas de la partida</p>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                                <div><strong className="block text-xl text-violet-300">+{rewards.xp}</strong><span className="text-xs text-white/50">XP de perfil</span></div>
-                                <div><strong className="block text-xl text-emerald-300">+{rewards.appPoints}</strong><span className="text-xs text-white/50">Puntos Andanzas</span></div>
-                                <div><strong className="block text-xl text-yellow-300">+{rewards.coins}</strong><span className="text-xs text-white/50">Monedas</span></div>
-                                <div><strong className="block text-xl text-cyan-300">+{rewards.gems}</strong><span className="text-xs text-white/50">Gemas</span></div>
+                            <div className="grid grid-cols-4 gap-2 text-center sm:gap-3">
+                                <div><strong className="block text-lg text-violet-300 sm:text-xl">+{rewards.xp}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">XP de perfil</span></div>
+                                <div><strong className="block text-lg text-emerald-300 sm:text-xl">+{rewards.appPoints}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">Puntos Andanzas</span></div>
+                                <div><strong className="block text-lg text-yellow-300 sm:text-xl">+{rewards.coins}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">Monedas</span></div>
+                                <div><strong className="block text-lg text-cyan-300 sm:text-xl">+{rewards.gems}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">Gemas</span></div>
                             </div>
                         </div>
                     )}
@@ -425,7 +425,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                         className="absolute inset-0 z-[10000] bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
                     >
-                        <div className="bg-slate-900/90 backdrop-blur-xl border border-white/10 p-8 rounded-3xl max-w-sm w-full shadow-2xl text-center">
+                        <div className="w-full max-w-sm rounded-3xl border border-white/10 bg-slate-900/90 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
                             <h3 className="text-2xl font-bold mb-3 text-white">¿Terminar la ronda?</h3>
                             <p className="text-white/60 mb-8 leading-relaxed">
                                 {isTimed
@@ -456,7 +456,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
             )}
 
             {/* Main Area */}
-            <div className="scrollbar-none relative z-10 mx-auto flex h-full w-full max-w-4xl flex-1 flex-col items-center overflow-x-hidden overflow-y-auto p-3 sm:p-4">
+            <div className="scrollbar-none relative z-10 mx-auto flex h-full w-full max-w-4xl flex-1 flex-col items-center overflow-x-hidden overflow-y-auto overscroll-contain p-2.5 sm:p-4">
                 <AnimatePresence mode="wait">
                     {isShuffling ? (
                         <motion.div 
@@ -478,7 +478,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         >
                             <div className="mx-auto mb-3 flex w-full max-w-xl flex-col items-center">
                                 {/* Mascota del juego con anillo de tiempo alrededor */}
-                                <div className="relative mb-2 flex h-20 w-20 items-center justify-center">
+                                <div className="relative mb-1 flex h-20 w-20 items-center justify-center sm:mb-2">
                                     {game?.type !== 'quiz' && (
                                         <svg className="absolute inset-0 h-20 w-20 -rotate-90" viewBox="0 0 96 96">
                                             <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
@@ -543,8 +543,8 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 </div>
                             </div>
 
-                            <div className="relative flex w-full flex-shrink-0 flex-col items-center overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/40 p-5 text-center shadow-2xl backdrop-blur-2xl sm:p-6">
-                                <h2 className="mb-5 mt-1 text-xl font-extrabold leading-tight text-white drop-shadow-md sm:text-2xl lg:text-3xl">
+                            <div className="relative flex w-full flex-shrink-0 flex-col items-center overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-900/40 p-4 text-center shadow-2xl backdrop-blur-2xl sm:rounded-[2rem] sm:p-6">
+                                <h2 className="mb-4 mt-0.5 text-xl font-extrabold leading-tight text-white drop-shadow-md sm:mb-5 sm:mt-1 sm:text-2xl lg:text-3xl">
                                     {currentQuestion?.question_text}
                                 </h2>
 
@@ -572,7 +572,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                         <motion.div 
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            className={`mb-4 mt-3 w-full rounded-[2rem] border-2 p-5 shadow-2xl backdrop-blur-2xl sm:p-6 ${game?.type === 'quiz' ? 'bg-primary/10 border-primary/50' : (isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50'))}`}
+                            className={`mb-4 mt-3 w-full rounded-[1.5rem] border-2 p-4 shadow-2xl backdrop-blur-2xl sm:rounded-[2rem] sm:p-6 ${game?.type === 'quiz' ? 'bg-primary/10 border-primary/50' : (isCorrect ? 'bg-emerald-500/10 border-emerald-500/50' : (hasTimedOut ? 'bg-orange-500/10 border-orange-500/50' : 'bg-red-500/10 border-red-500/50'))}`}
                         >
                             <h3 className={`mb-2 flex items-center text-xl font-black ${game?.type === 'quiz' ? 'text-primary' : (isCorrect ? 'text-emerald-400' : (hasTimedOut ? 'text-orange-400' : 'text-red-400'))}`}>
                                 {game?.type === 'quiz' ? <CheckCircle2 className="mr-2 h-6 w-6" /> : (isCorrect ? <CheckCircle2 className="mr-2 h-6 w-6" /> : (hasTimedOut ? <Clock className="mr-2 h-6 w-6" /> : <XCircle className="mr-2 h-6 w-6" />))}

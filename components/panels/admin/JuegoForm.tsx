@@ -107,8 +107,8 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
 
     return (
         <div className="space-y-6">
-            <form onSubmit={handleSubmit} className="space-y-6 bg-card p-6 rounded-xl border border-border/50 shadow-sm">
-                <div className="flex justify-between items-center mb-4">
+            <form onSubmit={handleSubmit} className="space-y-6 rounded-xl border border-border/50 bg-card p-4 shadow-sm sm:p-6">
+                <div className="mb-4 flex items-center justify-between">
                     <h3 className="text-lg font-semibold">{game ? 'Editar Juego' : 'Nuevo Juego'}</h3>
                     <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
                         <X className="w-4 h-4" />
@@ -312,9 +312,9 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
                     </div>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-border/50">
-                    <Button type="button" variant="outline" onClick={onCancel} disabled={saving}>Cancelar</Button>
-                    <Button type="submit" disabled={saving} className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                <div className="flex flex-col-reverse gap-2 border-t border-border/50 pt-4 sm:flex-row sm:justify-end sm:gap-3">
+                    <Button type="button" variant="outline" onClick={onCancel} disabled={saving} className="w-full sm:w-auto">Cancelar</Button>
+                    <Button type="submit" disabled={saving} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto">
                         <Save className="w-4 h-4 mr-2" />
                         {saving ? 'Guardando...' : (game ? 'Actualizar Datos Base' : 'Crear Juego')}
                     </Button>
@@ -323,7 +323,7 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
 
             {/* Render Questions form only if game already exists (we have an ID) */}
             {game?.id && (
-                <div className="bg-card p-6 rounded-xl border border-border/50 shadow-sm mt-6">
+                <div className="mt-6 rounded-xl border border-border/50 bg-card p-4 shadow-sm sm:p-6">
                     <PreguntasForm gameId={game.id} />
                 </div>
             )}

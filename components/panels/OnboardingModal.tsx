@@ -312,7 +312,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="max-w-2xl sm:max-h-[88vh] overflow-hidden flex flex-col rounded-[30px] border border-primary/10 bg-background/95 p-5 shadow-2xl backdrop-blur-xl sm:p-6">
+            <DialogContent className="flex h-[96dvh] max-h-[96dvh] max-w-2xl flex-col overflow-hidden rounded-t-[26px] border border-primary/10 bg-background/95 p-4 shadow-2xl backdrop-blur-xl sm:h-auto sm:max-h-[88dvh] sm:rounded-[30px] sm:p-6">
                 <DialogHeader className={cn("text-center pb-2 border-b", step === 0 && "hidden")}>
                     {step > 0 && (
                         <div className="mx-auto bg-primary/10 p-2.5 rounded-full mb-2 w-fit">
@@ -341,11 +341,11 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
                     )}
                 </DialogHeader>
 
-                <div className="flex-1 overflow-y-auto py-4 px-1 custom-scrollbar">
+                <div className="min-h-0 flex-1 overflow-y-auto px-1 py-3 custom-scrollbar sm:py-4">
                     {renderStepContent()}
                 </div>
 
-                <DialogFooter className="flex flex-col sm:flex-row gap-3 sm:justify-between items-center pt-4 border-t mt-auto">
+                <DialogFooter className="mt-auto flex flex-col items-stretch gap-2 border-t pt-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:pt-4">
                     {step === 0 ? (
                         <>
                             <Button variant="ghost" onClick={onClose}>

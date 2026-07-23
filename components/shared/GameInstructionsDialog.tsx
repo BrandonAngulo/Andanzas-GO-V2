@@ -96,15 +96,15 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
 
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent className="max-h-[92vh] overflow-y-auto rounded-[2rem] border-emerald-950/10 bg-[#fbfaf6] p-0 shadow-2xl sm:max-w-3xl">
-                    <div className="relative min-h-[10.5rem] overflow-hidden bg-gradient-to-br from-[#063b42] via-[#086052] to-[#10a866] px-6 py-5 text-white sm:px-8">
+                <DialogContent className="max-h-[94dvh] overflow-y-auto rounded-t-[1.75rem] border-emerald-950/10 bg-[#fbfaf6] p-0 shadow-2xl sm:max-w-3xl sm:rounded-[2rem]">
+                    <div className="relative min-h-[9rem] overflow-hidden bg-gradient-to-br from-[#063b42] via-[#086052] to-[#10a866] px-4 py-4 text-white sm:min-h-[10.5rem] sm:px-8 sm:py-5">
                         <div className="pointer-events-none absolute -left-16 -top-20 h-52 w-52 rounded-full border border-white/10" />
                         <div className="pointer-events-none absolute left-28 top-12 h-28 w-28 rounded-full border border-amber-300/20" />
-                        <DialogHeader className="relative z-10 mb-0 max-w-[67%] text-left">
+                        <DialogHeader className="relative z-10 mb-0 max-w-[64%] text-left sm:max-w-[67%]">
                             <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-300">
                                 Andi te acompaña
                             </p>
-                            <DialogTitle className="mt-2 text-3xl font-black leading-tight text-white">
+                            <DialogTitle className="mt-1.5 text-2xl font-black leading-tight text-white sm:mt-2 sm:text-3xl">
                                 Jugar es descubrir
                             </DialogTitle>
                             <DialogDescription className="mt-2 text-sm font-medium leading-relaxed text-white/85">
@@ -114,22 +114,22 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
                         <img
                             src="/brand/andi/andi-frontal-512-transparent-v2.png"
                             alt="Andi presenta las instrucciones de TRIVIA GO."
-                            className="absolute -bottom-3 right-2 h-[10.5rem] w-auto object-contain drop-shadow-2xl sm:right-7 sm:h-[11.5rem]"
+                            className="absolute -bottom-3 right-0 h-[9rem] w-auto object-contain drop-shadow-2xl sm:right-7 sm:h-[11.5rem]"
                             loading="eager"
                             decoding="async"
                         />
                     </div>
 
-                    <div className="space-y-4 p-5 sm:p-6">
+                    <div className="space-y-4 p-4 sm:p-6">
                         <Tabs defaultValue="como" className="w-full">
                             <TabsList className="grid h-auto w-full grid-cols-3 rounded-2xl bg-emerald-950/5 p-1">
-                                <TabsTrigger value="como" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
+                                <TabsTrigger value="como" className="rounded-xl px-1.5 py-2.5 text-[11px] font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900 sm:px-2 sm:text-xs">
                                     Cómo funciona
                                 </TabsTrigger>
-                                <TabsTrigger value="modos" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
+                                <TabsTrigger value="modos" className="rounded-xl px-1.5 py-2.5 text-[11px] font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900 sm:px-2 sm:text-xs">
                                     Modos
                                 </TabsTrigger>
-                                <TabsTrigger value="lugares" className="rounded-xl px-2 py-2.5 text-xs font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900">
+                                <TabsTrigger value="lugares" className="rounded-xl px-1.5 py-2.5 text-[11px] font-bold data-[state=active]:bg-white data-[state=active]:text-emerald-900 sm:px-2 sm:text-xs">
                                     Lugares y temas
                                 </TabsTrigger>
                             </TabsList>

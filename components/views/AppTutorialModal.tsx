@@ -88,19 +88,19 @@ export function AppTutorialModal() {
 
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none shadow-2xl bg-transparent font-sans">
+            <DialogContent className="max-h-[96dvh] overflow-y-auto border-none bg-transparent p-0 font-sans shadow-2xl sm:max-w-md">
                 <div className="absolute inset-0 bg-background/80 backdrop-blur-xl z-0" />
 
                 {/* Decorative gradients */}
                 <div className="absolute -top-10 -left-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl z-0" />
                 <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl z-0" />
 
-                <div className="relative z-10 flex flex-col items-center p-8 text-center h-full">
+                <div className="relative z-10 flex h-full flex-col items-center p-5 text-center sm:p-8">
                     {/* Icon Container with animation key for transition */}
-                    <div key={currentStep + "-icon"} className="mb-6 animate-in zoom-in-50 fade-in duration-300">
+                    <div key={currentStep + "-icon"} className="mb-4 animate-in zoom-in-50 fade-in duration-300 sm:mb-6">
                         {currentStep === 0 ? (
                             /* Logo Vivo Animation for Step 1 */
-                            <div className="flex items-center justify-center p-4">
+                            <div className="flex items-center justify-center p-2 sm:p-4">
                                 <Logo animated variant="hero" />
                             </div>
                         ) : (
@@ -114,8 +114,8 @@ export function AppTutorialModal() {
                     </div>
 
                     {/* Content with animation */}
-                    <div key={currentStep + "-text"} className="space-y-3 mb-8 animate-in fly-in-bottom-4 slide-in-from-bottom-4 fade-in duration-300 fill-mode-both">
-                        <DialogTitle className="text-2xl font-bold tracking-tight text-foreground">
+                    <div key={currentStep + "-text"} className="mb-5 space-y-2.5 animate-in fly-in-bottom-4 slide-in-from-bottom-4 fade-in duration-300 fill-mode-both sm:mb-8 sm:space-y-3">
+                        <DialogTitle className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                             {language === 'es' ? step.title.es : step.title.en}
                         </DialogTitle>
                         <p className="text-muted-foreground text-base leading-relaxed max-w-[280px] mx-auto">
@@ -124,7 +124,7 @@ export function AppTutorialModal() {
                     </div>
 
                     {/* Progress Dots */}
-                    <div className="flex justify-center gap-2 mb-8">
+                    <div className="mb-5 flex justify-center gap-2 sm:mb-8">
                         {STEPS.map((_, idx) => (
                             <button
                                 key={idx}
@@ -139,9 +139,9 @@ export function AppTutorialModal() {
                     </div>
 
                     {/* Footer Actions */}
-                    <div className="flex items-center justify-between w-full gap-4 pt-4 border-t border-white/10">
+                    <div className="flex w-full items-center justify-between gap-2 border-t border-white/10 pt-4 sm:gap-4">
                         {/* Left Action (Skip/Nothing) */}
-                        <div className="w-[80px] flex justify-start">
+                        <div className="flex w-[68px] justify-start sm:w-[80px]">
                             {currentStep < STEPS.length - 1 && (
                                 <Button variant="ghost" onClick={handleClose} className="text-muted-foreground hover:text-foreground -ml-2 rounded-full">
                                     {language === 'es' ? 'Saltar' : 'Skip'}
@@ -158,7 +158,7 @@ export function AppTutorialModal() {
                                 </Button>
                             )}
 
-                            <Button onClick={handleNext} className="rounded-full shadow-lg shadow-primary/25 min-w-[120px]">
+                            <Button onClick={handleNext} className="min-w-[108px] rounded-full shadow-lg shadow-primary/25 sm:min-w-[120px]">
                                 {currentStep === STEPS.length - 1
                                     ? (language === 'es' ? '¡Comenzar!' : 'Get Started!')
                                     : (language === 'es' ? 'Siguiente' : 'Next')

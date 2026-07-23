@@ -259,10 +259,10 @@ const AdminOverview = () => {
 
 const AdminGeneral = () => (
     <Tabs defaultValue="indicadores" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 h-auto p-1">
-            <TabsTrigger value="indicadores" className="py-2">Indicadores</TabsTrigger>
-            <TabsTrigger value="inventario" className="py-2">Inventario</TabsTrigger>
-            <TabsTrigger value="juegos" className="py-2">Analítica de juegos</TabsTrigger>
+        <TabsList className="h-auto w-full justify-start gap-1 overflow-x-auto p-1 scrollbar-none">
+            <TabsTrigger value="indicadores" className="min-w-max flex-none py-2">Indicadores</TabsTrigger>
+            <TabsTrigger value="inventario" className="min-w-max flex-none py-2">Inventario</TabsTrigger>
+            <TabsTrigger value="juegos" className="min-w-max flex-none py-2">Analítica de juegos</TabsTrigger>
         </TabsList>
         <TabsContent value="indicadores"><AdminMetricas /></TabsContent>
         <TabsContent value="inventario"><AdminOverview /></TabsContent>

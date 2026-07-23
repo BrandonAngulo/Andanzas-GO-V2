@@ -152,30 +152,30 @@ export const RutaForm: React.FC<RutaFormProps> = ({ routeId, onClose, onSaved })
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl bg-card p-6 rounded-2xl border border-border">
-            <div className="flex items-center gap-4 mb-6 pb-6 border-b">
-                <Button type="button" variant="ghost" size="icon" onClick={onClose}>
+        <form onSubmit={handleSubmit} className="max-w-4xl space-y-6 rounded-2xl border border-border bg-card p-4 sm:p-6">
+            <div className="mb-5 flex items-center gap-2 border-b pb-4 sm:mb-6 sm:gap-4 sm:pb-6">
+                <Button type="button" variant="ghost" size="icon" onClick={onClose} className="shrink-0">
                     <ArrowLeft className="w-5 h-5" />
                 </Button>
-                <div>
-                    <h2 className="text-2xl font-bold">{routeId ? 'Editar Ruta' : 'Nueva Ruta'}</h2>
-                    <p className="text-muted-foreground text-sm">Crea recorridos guiados seleccionando puntos de interés.</p>
+                <div className="min-w-0 flex-1">
+                    <h2 className="truncate text-xl font-bold sm:text-2xl">{routeId ? 'Editar Ruta' : 'Nueva Ruta'}</h2>
+                    <p className="hidden text-sm text-muted-foreground min-[390px]:block">Crea recorridos guiados seleccionando puntos de interés.</p>
                 </div>
-                <div className="ml-auto">
-                    <Button type="submit" disabled={loading}>
-                        <Save className="w-4 h-4 mr-2" />
-                        {loading ? 'Guardando...' : 'Guardar'}
+                <div className="shrink-0">
+                    <Button type="submit" disabled={loading} aria-label={loading ? 'Guardando ruta' : 'Guardar ruta'} className="h-10 w-10 px-0 sm:w-auto sm:px-4">
+                        <Save className="h-4 w-4 sm:mr-2" />
+                        <span className="hidden sm:inline">{loading ? 'Guardando...' : 'Guardar'}</span>
                     </Button>
                 </div>
             </div>
 
             <Tabs defaultValue="basic" className="w-full">
-                <TabsList className="grid w-full grid-cols-5">
-                    <TabsTrigger value="basic">Básico</TabsTrigger>
-                    <TabsTrigger value="points">Puntos & Historia</TabsTrigger>
-                    <TabsTrigger value="gamification">Gamificación</TabsTrigger>
-                    <TabsTrigger value="registration">Inscripciones</TabsTrigger>
-                    <TabsTrigger value="recommendations">Recomendaciones</TabsTrigger>
+                <TabsList className="h-auto w-full justify-start gap-1 overflow-x-auto p-1 scrollbar-none">
+                    <TabsTrigger value="basic" className="min-w-max flex-none">Básico</TabsTrigger>
+                    <TabsTrigger value="points" className="min-w-max flex-none">Puntos & Historia</TabsTrigger>
+                    <TabsTrigger value="gamification" className="min-w-max flex-none">Gamificación</TabsTrigger>
+                    <TabsTrigger value="registration" className="min-w-max flex-none">Inscripciones</TabsTrigger>
+                    <TabsTrigger value="recommendations" className="min-w-max flex-none">Recomendaciones</TabsTrigger>
                 </TabsList>
 
                 {/* BASIC INFO */}

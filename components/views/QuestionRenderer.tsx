@@ -104,7 +104,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
         const opts: { label: string; image_url: string }[] = question.options || [];
         return (
             <div className="w-full">
-                <div className="w-full grid grid-cols-2 gap-4 lg:gap-5">
+                <div className="grid w-full grid-cols-2 gap-2.5 sm:gap-4 lg:gap-5">
                     {opts.map((opt, idx) => (
                         <button
                             key={idx}
@@ -113,8 +113,8 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
                             className={`relative rounded-2xl overflow-hidden border-2 transition-all duration-300 aspect-square ${stateClassFor(opt.label === question.correct_answer, opt.label === selectedAnswer)} ${!isChecking ? 'hover:scale-[1.02]' : ''}`}
                         >
                             <LazyImage src={opt.image_url} alt={opt.label} className="w-full h-full object-cover" />
-                            <div className="absolute bottom-0 inset-x-0 bg-slate-950/70 backdrop-blur-sm py-2 px-3">
-                                <span className="text-sm font-bold text-white">{opt.label}</span>
+                            <div className="absolute inset-x-0 bottom-0 bg-slate-950/70 px-2 py-1.5 backdrop-blur-sm sm:px-3 sm:py-2">
+                                <span className="text-xs font-bold text-white sm:text-sm">{opt.label}</span>
                             </div>
                         </button>
                     ))}
@@ -273,7 +273,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
                 <p className="text-xs uppercase tracking-widest font-bold text-white/40 mb-4">
                     {activeLeft ? `Ahora tocá la pareja de "${activeLeft}"` : 'Tocá un elemento de la izquierda y luego su pareja'}
                 </p>
-                <div className="w-full grid grid-cols-2 gap-4 mb-6">
+                <div className="mb-5 grid w-full grid-cols-2 gap-2 sm:mb-6 sm:gap-4">
                     <div className="space-y-2">
                         {left.map((item, idx) => {
                             const paired = activeMap[item];
@@ -284,7 +284,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
                                     key={idx}
                                     onClick={() => paired ? clearPair(item) : handleLeftTap(item)}
                                     disabled={isChecking}
-                                    className={`w-full text-left px-4 py-3 rounded-xl border-2 font-semibold text-sm transition-all ${activeLeft === item ? 'bg-primary/20 border-primary text-primary' : isRight ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : isWrong ? 'bg-red-500/20 border-red-500 text-red-400' : paired ? 'bg-white/10 border-white/30 text-white' : 'bg-white/5 border-white/10 text-white/90 hover:bg-white/10'}`}
+                                    className={`w-full rounded-xl border-2 px-2.5 py-3 text-left text-xs font-semibold transition-all sm:px-4 sm:text-sm ${activeLeft === item ? 'bg-primary/20 border-primary text-primary' : isRight ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : isWrong ? 'bg-red-500/20 border-red-500 text-red-400' : paired ? 'bg-white/10 border-white/30 text-white' : 'bg-white/5 border-white/10 text-white/90 hover:bg-white/10'}`}
                                 >
                                     {item}
                                     {paired && <span className="block text-xs opacity-60 mt-1">→ {paired}</span>}
@@ -300,7 +300,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
                                     key={idx}
                                     onClick={() => handleRightTap(item)}
                                     disabled={isChecking || isUsed || !activeLeft}
-                                    className={`w-full text-left px-4 py-3 rounded-xl border-2 font-semibold text-sm transition-all ${isUsed ? 'opacity-40 bg-white/5 border-white/10 text-white/60' : 'bg-white/5 border-white/10 text-white/90 hover:bg-white/10'}`}
+                                    className={`w-full rounded-xl border-2 px-2.5 py-3 text-left text-xs font-semibold transition-all sm:px-4 sm:text-sm ${isUsed ? 'opacity-40 bg-white/5 border-white/10 text-white/60' : 'bg-white/5 border-white/10 text-white/90 hover:bg-white/10'}`}
                                 >
                                     {item}
                                 </button>
