@@ -212,6 +212,7 @@ const es = {
         map: "Mapa",
         explore: "Sitios",
         routes: "Rutas",
+        games: "Jugar",
         favs: "Favs",
         profile: "Perfil"
     },

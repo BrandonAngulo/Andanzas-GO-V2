@@ -1,5 +1,5 @@
 import React from 'react';
-import { Compass, Sparkles, Route, Heart, User } from 'lucide-react';
+import { Compass, Sparkles, Route, Gamepad2, User } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { ActivePanelType } from '../../types';
 import { useI18n } from '../../i18n';
@@ -63,11 +63,11 @@ const BottomNav: React.FC<BottomNavProps> = ({ activePanel, setActivePanel }) =>
                     active={activePanel === "rutas"} 
                     onClick={() => setActivePanel("rutas")} 
                 />
-                <IconTab 
-                    icon={Heart} 
-                    label={t('bottomNav.favs')} 
-                    active={activePanel === "favoritos"} 
-                    onClick={() => setActivePanel("favoritos")} 
+                <IconTab
+                    icon={Gamepad2}
+                    label={t('bottomNav.games')}
+                    active={activePanel === "juegos"}
+                    onClick={() => setActivePanel("juegos")}
                 />
                 <IconTab 
                     icon={User} 

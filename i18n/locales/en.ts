@@ -212,6 +212,7 @@ const en = {
         map: "Map",
         explore: "Sites",
         routes: "Routes",
+        games: "Play",
         favs: "Favs",
         profile: "Profile"
     },
