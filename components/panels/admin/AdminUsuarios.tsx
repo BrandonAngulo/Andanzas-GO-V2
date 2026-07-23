@@ -4,16 +4,19 @@ import { userService } from '../../../services/user.service';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Input } from '../../ui/input';
-import { Search, ShieldAlert, ShieldCheck, User, MoreVertical, MessageSquareWarning, Ban } from 'lucide-react';
+import { Search, ShieldCheck, User, MoreVertical, MessageSquareWarning, Ban, UserCog } from 'lucide-react';
 import { UserReviewsModal } from './UserReviewsModal';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../../ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '../../ui/select';
 
 export const AdminUsuarios = () => {
     const [users, setUsers] = useState<UserProfile[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [reviewModalUser, setReviewModalUser] = useState<UserProfile | null>(null);
-    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [managementUser, setManagementUser] = useState<UserProfile | null>(null);
+    const [selectedRole, setSelectedRole] = useState('user');
     const [actionToConfirm, setActionToConfirm] = useState<{ type: 'role' | 'ban', userId: string, payload: string } | null>(null);
 
     useEffect(() => {
@@ -27,16 +30,21 @@ export const AdminUsuarios = () => {
         setLoading(false);
     };
 
-    const handleRoleChange = (userId: string, currentRole: string) => {
-        const newRole = currentRole === 'admin' ? 'user' : (currentRole === 'editor' ? 'admin' : 'editor');
-        setActionToConfirm({ type: 'role', userId, payload: newRole });
-        setActiveDropdown(null);
+    const openManagement = (user: UserProfile) => {
+        setManagementUser(user);
+        setSelectedRole(user.role || 'user');
+    };
+
+    const handleRoleChange = () => {
+        if (!managementUser || selectedRole === managementUser.role) return;
+        setActionToConfirm({ type: 'role', userId: managementUser.id, payload: selectedRole });
+        setManagementUser(null);
     };
 
     const handleBanUser = (userId: string, currentStatus: string) => {
         const newStatus = currentStatus === 'banned' ? 'active' : 'banned';
         setActionToConfirm({ type: 'ban', userId, payload: newStatus });
-        setActiveDropdown(null);
+        setManagementUser(null);
     };
 
     const confirmAction = async () => {
@@ -59,6 +67,86 @@ export const AdminUsuarios = () => {
 
     return (
         <div className="space-y-6 pb-20">
+            <Dialog open={!!managementUser} onOpenChange={(open) => !open && setManagementUser(null)}>
+                <DialogContent className="overflow-visible rounded-3xl border border-primary/10 p-0 shadow-2xl sm:max-w-md">
+                    {managementUser && (
+                        <>
+                            <div className="rounded-t-3xl bg-gradient-to-br from-[#075f54] to-[#11a66b] px-6 py-5 text-white">
+                                <DialogHeader className="mb-0 pr-8 text-left">
+                                    <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20">
+                                        <UserCog className="h-6 w-6 text-amber-200" />
+                                    </div>
+                                    <DialogTitle className="text-2xl font-black text-white">Gestionar usuario</DialogTitle>
+                                    <DialogDescription className="text-emerald-50">
+                                        {managementUser.full_name || 'Usuario sin nombre'} · {managementUser.email}
+                                    </DialogDescription>
+                                </DialogHeader>
+                            </div>
+
+                            <div className="space-y-5 px-6 py-5">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold" htmlFor="admin-user-role">Rol en la plataforma</label>
+                                    <Select value={selectedRole} onValueChange={setSelectedRole}>
+                                        <SelectTrigger id="admin-user-role" className="h-12 rounded-xl bg-background">
+                                            <span>
+                                                {selectedRole === 'admin' ? 'Administrador' : selectedRole === 'editor' ? 'Editor' : 'Usuario'}
+                                            </span>
+                                        </SelectTrigger>
+                                        <SelectContent className="z-[1600] rounded-xl">
+                                            <SelectItem value="user">Usuario</SelectItem>
+                                            <SelectItem value="editor">Editor</SelectItem>
+                                            <SelectItem value="admin">Administrador</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <p className="text-xs leading-relaxed text-muted-foreground">
+                                        Los editores pueden gestionar contenido. Los administradores también pueden gestionar usuarios y roles.
+                                    </p>
+                                </div>
+
+                                <div className="grid gap-2 border-t pt-4 sm:grid-cols-2">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="justify-start rounded-xl"
+                                        onClick={() => {
+                                            setReviewModalUser(managementUser);
+                                            setManagementUser(null);
+                                        }}
+                                    >
+                                        <MessageSquareWarning className="mr-2 h-4 w-4" />
+                                        Moderar reseñas
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="justify-start rounded-xl text-red-600 hover:bg-red-50 hover:text-red-700"
+                                        onClick={() => handleBanUser(managementUser.id, managementUser.status || 'active')}
+                                    >
+                                        <Ban className="mr-2 h-4 w-4" />
+                                        {managementUser.status === 'banned' ? 'Quitar baneo' : 'Banear usuario'}
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <DialogFooter className="m-0 flex-col gap-2 rounded-b-3xl border-t bg-muted/20 px-6 py-4 sm:flex-row">
+                                <Button type="button" variant="ghost" onClick={() => setManagementUser(null)} className="rounded-xl">
+                                    Cancelar
+                                </Button>
+                                <Button
+                                    type="button"
+                                    onClick={handleRoleChange}
+                                    disabled={selectedRole === (managementUser.role || 'user')}
+                                    className="rounded-xl"
+                                >
+                                    <ShieldCheck className="mr-2 h-4 w-4" />
+                                    Guardar rol
+                                </Button>
+                            </DialogFooter>
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
+
             <ConfirmDialog 
                 open={!!actionToConfirm} 
                 onOpenChange={(open) => !open && setActionToConfirm(null)}
@@ -126,40 +214,15 @@ export const AdminUsuarios = () => {
                                             <div className="text-xs text-muted-foreground">Nivel {user.level}</div>
                                         </div>
                                         
-                                        <div className="relative">
-                                            <Button 
-                                                variant="ghost" 
+                                        <div>
+                                            <Button
+                                                variant="ghost"
                                                 size="sm"
-                                                onClick={() => setActiveDropdown(activeDropdown === user.id ? null : user.id)}
+                                                aria-label={`Gestionar a ${user.full_name || user.email || 'usuario'}`}
+                                                onClick={() => openManagement(user)}
                                             >
                                                 <MoreVertical className="w-5 h-5" />
                                             </Button>
-                                            
-                                            {activeDropdown === user.id && (
-                                                <div className="absolute right-0 top-10 w-48 bg-background border border-border shadow-xl rounded-lg py-1 z-50">
-                                                    <button 
-                                                        className="w-full text-left px-4 py-2 text-sm hover:bg-muted flex items-center"
-                                                        onClick={() => handleRoleChange(user.id, user.role || 'user')}
-                                                    >
-                                                        <ShieldAlert className="w-4 h-4 mr-2" />
-                                                        Cambiar Rol
-                                                    </button>
-                                                    <button 
-                                                        className="w-full text-left px-4 py-2 text-sm hover:bg-muted flex items-center"
-                                                        onClick={() => { setReviewModalUser(user); setActiveDropdown(null); }}
-                                                    >
-                                                        <MessageSquareWarning className="w-4 h-4 mr-2" />
-                                                        Moderar Reseñas
-                                                    </button>
-                                                    <button 
-                                                        className="w-full text-left px-4 py-2 text-sm hover:bg-red-50 text-red-600 flex items-center"
-                                                        onClick={() => handleBanUser(user.id, user.status || 'active')}
-                                                    >
-                                                        <Ban className="w-4 h-4 mr-2" />
-                                                        {user.status === 'banned' ? 'Quitar Baneo' : 'Banear Usuario'}
-                                                    </button>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                 </div>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '../ui/dialog';
 import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
-import { Check, X, Sparkles, Building2, Trees, Music, Utensils, Theater, Camera } from 'lucide-react';
+import { Check, Sparkles, Building2, Trees, Music, Utensils, Theater, Camera, Map, Heart, Compass } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { cn } from '../../lib/utils';
 import { userService } from '../../services/user.service';
@@ -10,7 +9,6 @@ import { useAuth } from '../../contexts/AuthContext';
 
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { Badge } from '../ui/badge';
-import Logo from '../layout/Logo';
 
 interface OnboardingModalProps {
     isOpen: boolean;
@@ -114,33 +112,58 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
         switch (step) {
             case 0:
                 return (
-                    <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500 py-4">
-                        <div className="text-center space-y-4">
-                            <div className="flex justify-center py-6">
-                                <Logo animated variant="hero" />
-                            </div>
-
-                            <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                                {language === 'es' ? '¡Bienvenido a Andanzas GO!' : 'Welcome to Andanzas GO!'}
-                            </h3>
-                            <div className="space-y-4 text-muted-foreground leading-relaxed px-4">
-                                <p>
-                                    {language === 'es'
-                                        ? '¡Qué alegría tenerte aquí! Gracias por sumarte a nuestras Andanzas.'
-                                        : 'So glad to have you here! Thanks for joining our Adventures.'}
-                                </p>
-                                <p>
-                                    {language === 'es'
-                                        ? 'Esta aplicación es tu compañera para redescubrir la ciudad, su arte, su cultura y conectarte con una comunidad vibrante. Prepárate para explorar rutas únicas y dejar tu huella.'
-                                        : 'This app is your companion to rediscover the city, its art, culture, and connect with a vibrant community. Get ready to explore unique routes and leave your mark.'}
-                                </p>
-                                <p className="font-medium text-foreground pt-2">
-                                    {language === 'es'
-                                        ? 'Para comenzar, queremos conocerte un poco mejor y recomendarte las mejores aventuras:'
-                                        : 'To start, we want to get to know you a little better to recommend the best adventures:'}
-                                </p>
+                    <div className="animate-in fade-in zoom-in-95 duration-500">
+                        <div className="relative overflow-hidden rounded-[28px] border border-emerald-200/70 bg-gradient-to-br from-[#075f54] via-[#087a65] to-[#13a86b] px-6 pb-6 pt-7 text-white shadow-[0_24px_70px_-32px_rgba(5,95,84,0.85)] sm:px-8">
+                            <div className="absolute -left-16 top-14 h-40 w-40 rounded-full border border-white/10" />
+                            <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-amber-300/15 blur-2xl" />
+                            <div className="relative grid items-center gap-5 sm:grid-cols-[1fr_190px]">
+                                <div className="order-2 space-y-3 text-center sm:order-1 sm:text-left">
+                                    <Badge className="border-amber-300/40 bg-amber-300/15 text-[11px] font-black tracking-[0.18em] text-amber-200 hover:bg-amber-300/15">
+                                        {language === 'es' ? 'TU COMPAÑERO DE VIAJE' : 'YOUR TRAVEL COMPANION'}
+                                    </Badge>
+                                    <div>
+                                        <p className="text-sm font-bold text-emerald-100">
+                                            {language === 'es' ? 'Hola, soy Andi' : "Hi, I'm Andi"}
+                                        </p>
+                                        <h3 className="mt-1 text-3xl font-black leading-tight sm:text-4xl">
+                                            {language === 'es' ? '¡Te doy la bienvenida a Andanzas GO!' : 'Welcome to Andanzas GO!'}
+                                        </h3>
+                                    </div>
+                                    <p className="text-sm leading-relaxed text-emerald-50 sm:text-base">
+                                        {language === 'es'
+                                            ? 'Voy a acompañarte a descubrir lugares, historias y experiencias que hacen única cada ciudad.'
+                                            : 'I will join you as you discover the places, stories and experiences that make every city unique.'}
+                                    </p>
+                                </div>
+                                <div className="order-1 mx-auto flex h-44 w-44 items-end justify-center rounded-full border border-white/20 bg-white/10 shadow-inner sm:order-2">
+                                    <img
+                                        src="/brand/andi/andi-frontal-512-transparent-v2.png"
+                                        alt={language === 'es' ? 'Andi, compañero de viaje de Andanzas GO.' : 'Andi, the Andanzas GO travel companion.'}
+                                        className="h-[168px] w-auto object-contain object-bottom drop-shadow-[0_14px_20px_rgba(0,0,0,0.28)]"
+                                    />
+                                </div>
                             </div>
                         </div>
+
+                        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                            {[
+                                { icon: Map, title: language === 'es' ? 'Explora' : 'Explore', text: language === 'es' ? 'Rutas y lugares con identidad.' : 'Routes and places with identity.' },
+                                { icon: Compass, title: language === 'es' ? 'Descubre' : 'Discover', text: language === 'es' ? 'Historias y saberes inesperados.' : 'Unexpected stories and knowledge.' },
+                                { icon: Heart, title: language === 'es' ? 'Hazlo tuyo' : 'Make it yours', text: language === 'es' ? 'Recomendaciones según tus gustos.' : 'Recommendations based on your interests.' },
+                            ].map(({ icon: Icon, title, text }) => (
+                                <div key={title} className="rounded-2xl border bg-card/90 p-3.5 shadow-sm">
+                                    <Icon className="mb-2 h-5 w-5 text-primary" />
+                                    <p className="text-sm font-bold">{title}</p>
+                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{text}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <p className="mt-4 text-center text-sm font-medium text-muted-foreground">
+                            {language === 'es'
+                                ? 'Cuéntanos un poco de ti para personalizar tus próximas andanzas.'
+                                : 'Tell us a little about yourself so we can personalize your next adventures.'}
+                        </p>
                     </div>
                 );
             case 1:
@@ -289,8 +312,8 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, isEd
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="max-w-2xl sm:max-h-[85vh] overflow-hidden flex flex-col">
-                <DialogHeader className="text-center pb-2 border-b">
+            <DialogContent className="max-w-2xl sm:max-h-[88vh] overflow-hidden flex flex-col rounded-[30px] border border-primary/10 bg-background/95 p-5 shadow-2xl backdrop-blur-xl sm:p-6">
+                <DialogHeader className={cn("text-center pb-2 border-b", step === 0 && "hidden")}>
                     {step > 0 && (
                         <div className="mx-auto bg-primary/10 p-2.5 rounded-full mb-2 w-fit">
                             <Sparkles className="h-6 w-6 text-primary" />

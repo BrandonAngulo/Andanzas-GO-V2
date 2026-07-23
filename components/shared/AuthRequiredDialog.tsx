@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { LogIn, Sparkles, LockKeyhole } from 'lucide-react';
+import { LogIn, Sparkles, LockKeyhole, ShieldCheck } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getAuthErrorMessage } from '../../services/auth.service';
 
@@ -101,11 +101,20 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
                         />
 
                         {isSignUp && (
-                            <div className="flex flex-col gap-2 mt-2 bg-muted/30 p-3 rounded-lg border border-border/50">
-                                <label className="flex items-start gap-2 text-sm cursor-pointer">
+                            <div className="mt-2 overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/[0.06] to-emerald-500/[0.03]">
+                                <div className="flex items-center gap-2 border-b border-primary/10 px-4 py-3">
+                                    <div className="rounded-full bg-primary/10 p-1.5 text-primary">
+                                        <ShieldCheck className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-bold">{language === 'es' ? 'Registro claro y seguro' : 'Clear and secure registration'}</p>
+                                        <p className="text-xs text-muted-foreground">{language === 'es' ? 'Revisa y confirma antes de continuar.' : 'Review and confirm before continuing.'}</p>
+                                    </div>
+                                </div>
+                                <label className="flex cursor-pointer items-start gap-3 px-4 py-3 text-sm">
                                     <input 
                                         type="checkbox" 
-                                        className="mt-1 accent-primary" 
+                                        className="mt-0.5 h-4 w-4 accent-primary"
                                         checked={ageConfirmed} 
                                         onChange={(e) => setAgeConfirmed(e.target.checked)} 
                                     />
@@ -113,15 +122,36 @@ const AuthRequiredDialog: React.FC<AuthRequiredDialogProps> = ({
                                         {language === 'es' ? 'Confirmo que tengo 14 años o más.' : 'I confirm that I am 14 years or older.'}
                                     </span>
                                 </label>
-                                <label className="flex items-start gap-2 text-sm cursor-pointer">
+                                <div className="mx-4 border-t border-border/60" />
+                                <label className="flex cursor-pointer items-start gap-3 px-4 py-3 text-sm">
                                     <input 
                                         type="checkbox" 
-                                        className="mt-1 accent-primary" 
+                                        className="mt-0.5 h-4 w-4 accent-primary"
                                         checked={termsAccepted} 
                                         onChange={(e) => setTermsAccepted(e.target.checked)} 
                                     />
-                                    <span className="text-muted-foreground leading-tight">
-                                        {language === 'es' ? 'Acepto los Términos y Condiciones y la Política de Privacidad.' : 'I accept the Terms and Conditions and Privacy Policy.'}
+                                    <span className="text-muted-foreground leading-relaxed">
+                                        {language === 'es' ? 'Acepto los ' : 'I accept the '}
+                                        <a
+                                            href="/terms"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="font-semibold text-primary underline-offset-2 hover:underline"
+                                            onClick={(event) => event.stopPropagation()}
+                                        >
+                                            {language === 'es' ? 'Términos de servicio' : 'Terms of Service'}
+                                        </a>
+                                        {language === 'es' ? ' y la ' : ' and the '}
+                                        <a
+                                            href="/privacy"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="font-semibold text-primary underline-offset-2 hover:underline"
+                                            onClick={(event) => event.stopPropagation()}
+                                        >
+                                            {language === 'es' ? 'Política de privacidad' : 'Privacy Policy'}
+                                        </a>
+                                        .
                                     </span>
                                 </label>
                             </div>

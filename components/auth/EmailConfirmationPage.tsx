@@ -28,15 +28,11 @@ export function EmailConfirmationPage() {
                     <div className="inline-flex rounded-xl bg-white px-3 py-2 shadow-lg">
                         <Logo />
                     </div>
-                    <div className="mt-5 max-w-[62%]">
-                        <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-300">Andi te da la bienvenida</p>
+                    <div className="mt-5 max-w-[78%]">
+                        <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-300">Tu cuenta está lista</p>
                         <h1 className="mt-2 text-2xl font-black leading-tight">{error ? 'Revisemos el enlace' : 'Tu correo está confirmado'}</h1>
                     </div>
-                    <img
-                        src="/brand/andi/andi-app-mark-512.png"
-                        alt="Andi celebra tu llegada a Andanzas GO."
-                        className="absolute -bottom-5 right-4 h-36 w-36 rounded-full object-cover shadow-2xl ring-4 ring-white/25"
-                    />
+                    <div className="absolute -bottom-16 -right-12 h-44 w-44 rounded-full border-[26px] border-white/10" />
                 </div>
 
                 <div className="p-7 sm:p-8">
@@ -49,7 +45,7 @@ export function EmailConfirmationPage() {
                     <p className="mt-2 leading-relaxed text-muted-foreground">
                         {error
                             ? 'El enlace puede haber vencido o haber sido utilizado antes. Vuelve a la app e inicia sesión; si tu correo aún está pendiente, solicita un nuevo mensaje.'
-                            : 'Ya puedes ingresar, guardar tus rutas, registrar tus descubrimientos y explorar junto a Andi.'}
+                            : 'Ya puedes ingresar, guardar tus rutas, registrar tus descubrimientos y comenzar a explorar Andanzas GO.'}
                     </p>
                     <Button onClick={goToApp} className="mt-6 h-12 w-full rounded-xl font-black shadow-lg shadow-primary/20">
                         {error ? <MailCheck className="mr-2 h-5 w-5" /> : <CheckCircle2 className="mr-2 h-5 w-5" />}
