@@ -331,7 +331,7 @@ const AdminDashboard: React.FC = () => {
                     </p>
                 </div>
 
-                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-wrap gap-1.5 rounded-2xl border bg-background/95 p-2 shadow-sm backdrop-blur-md md:mb-6 md:gap-2 md:p-3 [&>button]:h-9 [&>button]:px-3 [&>button]:text-xs md:[&>button]:h-10 md:[&>button]:px-4 md:[&>button]:text-sm">
+                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-wrap gap-1 rounded-2xl border bg-background/95 p-1.5 shadow-sm backdrop-blur-md md:mb-6 md:gap-1.5 md:p-2 [&>button]:h-8 [&>button]:px-2.5 [&>button]:text-xs [&>button>svg]:mr-1.5 [&>button>svg]:h-3.5 [&>button>svg]:w-3.5 md:[&>button]:h-9 md:[&>button]:px-3 md:[&>button]:text-xs">
                     <Button 
                         variant={activeTab === 'overview' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('overview')}
