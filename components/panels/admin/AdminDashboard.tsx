@@ -331,7 +331,7 @@ const AdminDashboard: React.FC = () => {
                     </p>
                 </div>
 
-                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-wrap gap-1 rounded-2xl border bg-background/95 p-1.5 shadow-sm backdrop-blur-md md:mb-6 md:gap-1.5 md:p-2 [&>button]:h-8 [&>button]:px-2.5 [&>button]:text-xs [&>button>svg]:mr-1.5 [&>button>svg]:h-3.5 [&>button>svg]:w-3.5 md:[&>button]:h-9 md:[&>button]:px-3 md:[&>button]:text-xs">
+                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-wrap gap-x-2 gap-y-1 rounded-2xl border bg-background/95 p-2 shadow-sm backdrop-blur-md md:mb-6 md:p-2.5 [&>button]:h-8 [&>button]:px-2.5 [&>button]:text-xs [&>button>svg]:mr-1.5 [&>button>svg]:h-3.5 [&>button>svg]:w-3.5 md:[&>button]:h-9 md:[&>button]:px-3 md:[&>button]:text-xs">
                     <Button 
                         variant={activeTab === 'overview' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('overview')}
@@ -384,14 +384,14 @@ const AdminDashboard: React.FC = () => {
                     <Button 
                         variant={activeTab === 'rutas_personalizadas' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('rutas_personalizadas')}
-                        className="rounded-full whitespace-nowrap border-primary/30"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Map className="w-4 h-4 mr-2" /> Solicitudes Rutas
                     </Button>
                     <Button
                         variant={activeTab === 'alianzas' ? 'default' : 'outline'}
                         onClick={() => setActiveTab('alianzas')}
-                        className="rounded-full whitespace-nowrap border-primary/30"
+                        className="rounded-full whitespace-nowrap"
                     >
                         <Handshake className="w-4 h-4 mr-2" /> Alianzas
                     </Button>
