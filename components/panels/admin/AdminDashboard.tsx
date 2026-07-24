@@ -395,6 +395,8 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Handshake className="w-4 h-4 mr-2" /> Alianzas
                     </Button>
+                    {/* Salto de fila forzado tras el 9º botón: en pantallas anchas deja la barra en 2 filas (9 y 9). */}
+                    <div aria-hidden className="hidden basis-full xl:block" />
                     <Button
                         variant={activeTab === 'sitios' ? 'default' : 'outline'}
                         onClick={() => setActiveTab('sitios')}
