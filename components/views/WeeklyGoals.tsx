@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { weeklyService, WeeklyGoal } from '../../services/weekly.service';
-import { Target, Coins, Check, Loader2 } from 'lucide-react';
+import { Target, Coins, Check, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
+import { WeeklyGoalRewardModal } from './WeeklyGoalRewardModal';
 
 // Metas semanales flexibles (manual §4.2): toleran ausencias, se reclaman al completar.
 // Tarjeta compacta pensada para vivir dentro del panel de Juegos.
@@ -9,6 +11,8 @@ export const WeeklyGoals: React.FC = () => {
     const [goals, setGoals] = useState<WeeklyGoal[]>([]);
     const [loading, setLoading] = useState(true);
     const [claiming, setClaiming] = useState<string | null>(null);
+    const [reward, setReward] = useState<{ coins: number; title: string } | null>(null);
+    const reduceMotion = useReducedMotion();
 
     const load = async () => {
         try { setGoals((await weeklyService.getWeeklyGoals()).goals); }
@@ -22,7 +26,8 @@ export const WeeklyGoals: React.FC = () => {
         setClaiming(g.key);
         try {
             const res = await weeklyService.claimWeeklyGoal(g.key);
-            if (res.claimed) toast.success(`¡Meta "${g.title}" reclamada! +${res.coins} monedas 🪙`);
+            if (res.claimed) setReward({ coins: res.coins ?? g.reward_coins, title: g.title });
+            else if (res.already_claimed) toast.info('Esta meta ya estaba reclamada.');
             await load();
         } catch { toast.error('No se pudo reclamar la meta.'); }
         finally { setClaiming(null); }
@@ -57,19 +62,37 @@ export const WeeklyGoals: React.FC = () => {
                             {g.claimed ? (
                                 <div className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400"><Check className="h-3.5 w-3.5" /> Reclamada</div>
                             ) : g.completed ? (
-                                <button
+                                <motion.button
                                     type="button"
                                     disabled={claiming === g.key}
                                     onClick={() => claim(g)}
-                                    className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-emerald-700 disabled:opacity-60"
+                                    animate={reduceMotion || claiming === g.key ? undefined : {
+                                        scale: [1, 1.06, 1],
+                                        boxShadow: [
+                                            '0 0 0 0 rgba(245,158,11,0.45)',
+                                            '0 0 16px 4px rgba(245,158,11,0.7)',
+                                            '0 0 0 0 rgba(245,158,11,0.45)',
+                                        ],
+                                    }}
+                                    transition={{ duration: 1.25, repeat: Infinity, ease: 'easeInOut' }}
+                                    whileHover={{ scale: 1.09 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-3.5 py-1 text-xs font-black text-white shadow-sm disabled:opacity-60"
                                 >
-                                    {claiming === g.key ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Coins className="h-3.5 w-3.5" />} Reclamar
-                                </button>
+                                    {claiming === g.key ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />} ¡Reclamar premio!
+                                </motion.button>
                             ) : null}
                         </div>
                     );
                 })}
             </div>
+
+            <WeeklyGoalRewardModal
+                open={!!reward}
+                onOpenChange={(open) => { if (!open) setReward(null); }}
+                coins={reward?.coins ?? 0}
+                goalTitle={reward?.title ?? ''}
+            />
         </div>
     );
 };
