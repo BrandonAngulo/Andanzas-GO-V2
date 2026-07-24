@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
-import type { AppFeature, DictionaryAdminEntry, DictionaryEntry, DictionaryEntryInput, DictionaryFacets, DictionaryRegion, DictionaryRegionFacet, DictionarySearchParams, DictionarySource, DictionaryTag, DictionaryTagOption } from '../types';
+import type { AppFeature, DictionaryAdminEntry, DictionaryAdminSort, DictionaryEntry, DictionaryEntryInput, DictionaryFacets, DictionaryRegion, DictionaryRegionFacet, DictionarySearchParams, DictionarySource, DictionaryTag, DictionaryTagOption } from '../types';
 
 export const DICTIONARY_FEATURE_KEY = 'dictionary_caleno';
 
@@ -172,14 +172,21 @@ export const dictionaryService = {
     return (data ?? []) as DictionaryTagOption[];
   },
 
-  async listEntries(params: { query?: string; limit?: number; offset?: number } = {}): Promise<{ entries: DictionaryAdminEntry[]; total: number }> {
+  async listEntries(params: { query?: string; status?: string; sort?: DictionaryAdminSort; limit?: number; offset?: number } = {}): Promise<{ entries: DictionaryAdminEntry[]; total: number }> {
     const limit = params.limit ?? 20;
     const offset = params.offset ?? 0;
     let builder = supabase
       .from('dictionary_entries')
-      .select('*, dictionary_entry_tags(tag_id)', { count: 'exact' })
-      .order('term', { ascending: true })
-      .range(offset, offset + limit - 1);
+      .select('*, dictionary_entry_tags(tag_id)', { count: 'exact' });
+    // Orden: A→Z / Z→A por término, o por fecha de creación (recientes/antiguas).
+    switch (params.sort) {
+      case 'za': builder = builder.order('term', { ascending: false }); break;
+      case 'recent': builder = builder.order('created_at', { ascending: false }); break;
+      case 'oldest': builder = builder.order('created_at', { ascending: true }); break;
+      default: builder = builder.order('term', { ascending: true });
+    }
+    builder = builder.range(offset, offset + limit - 1);
+    if (params.status && params.status !== 'all') builder = builder.eq('status', params.status);
     const query = params.query?.trim();
     if (query) {
       const escaped = query.replace(/[%,()]/g, ' ');

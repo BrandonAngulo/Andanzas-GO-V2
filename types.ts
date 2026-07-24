@@ -536,6 +536,9 @@ export interface DictionaryTagOption {
   label: string;
 }
 
+/** Orden de la lista de entradas en el admin. */
+export type DictionaryAdminSort = 'az' | 'za' | 'recent' | 'oldest';
+
 /** Full row shape of `dictionary_entries` as used by the admin editor (base table, not the public search RPC). */
 export interface DictionaryAdminEntry {
   id: string;

@@ -11,7 +11,7 @@ import { dictionaryService } from '../../../services/dictionary.service';
 import { useFeatures } from '../../../contexts/FeatureContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useBulkSelection } from '../../../hooks/useBulkSelection';
-import type { DictionaryAdminEntry, DictionaryTagOption } from '../../../types';
+import type { DictionaryAdminEntry, DictionaryAdminSort, DictionaryTagOption } from '../../../types';
 import { DictionaryEntryEditor } from './DictionaryEntryEditor';
 import { BulkActionsBar } from './BulkActionsBar';
 
@@ -33,6 +33,8 @@ export function AdminDictionary(): JSX.Element {
   const [offset, setOffset] = useState(0);
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
+  const [sort, setSort] = useState<DictionaryAdminSort>('az');
   const [entriesLoading, setEntriesLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
@@ -57,7 +59,7 @@ export function AdminDictionary(): JSX.Element {
   const loadEntries = useCallback(async (nextOffset: number, append: boolean) => {
     if (append) setLoadingMore(true); else setEntriesLoading(true);
     try {
-      const result = await dictionaryService.listEntries({ query: debouncedQuery, limit: PAGE_SIZE, offset: nextOffset });
+      const result = await dictionaryService.listEntries({ query: debouncedQuery, status: statusFilter, sort, limit: PAGE_SIZE, offset: nextOffset });
       setEntries((current) => append ? [...current, ...result.entries] : result.entries);
       setTotal(result.total);
       setOffset(nextOffset);
@@ -69,7 +71,7 @@ export function AdminDictionary(): JSX.Element {
       setEntriesLoading(false);
       setLoadingMore(false);
     }
-  }, [debouncedQuery]);
+  }, [debouncedQuery, statusFilter, sort]);
 
   useEffect(() => { void loadEntries(0, false); }, [loadEntries]);
 
@@ -170,6 +172,29 @@ export function AdminDictionary(): JSX.Element {
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input value={query} onChange={(event) => setQuery(event.target.value)} className="pl-9" placeholder="Buscar por término o definición" aria-label="Buscar entradas" />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-muted-foreground">Estado</span>
+              {([['all', 'Todas'], ['published', 'Publicadas'], ['draft', 'Borradores']] as const).map(([value, label]) => (
+                <Button key={value} size="sm" variant={statusFilter === value ? 'default' : 'outline'} onClick={() => setStatusFilter(value)} aria-pressed={statusFilter === value}>{label}</Button>
+              ))}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-muted-foreground">Orden</span>
+              <select
+                value={sort}
+                onChange={(event) => setSort(event.target.value as DictionaryAdminSort)}
+                className="h-9 rounded-md border bg-background px-2 text-sm"
+                aria-label="Ordenar entradas"
+              >
+                <option value="az">A → Z</option>
+                <option value="za">Z → A</option>
+                <option value="recent">Más recientes</option>
+                <option value="oldest">Más antiguas</option>
+              </select>
+            </div>
           </div>
 
           {entriesLoading ? (
