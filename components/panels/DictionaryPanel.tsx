@@ -91,6 +91,7 @@ export function DictionaryPanel(): JSX.Element {
 
       <section className="space-y-4 rounded-2xl border bg-card p-4" aria-label="Filtros del diccionario">
         <RegionChapterSelector regions={facets.regions} value={regionSlug} onChange={changeRegion} />
+        {!!facets.regions.length && <div className="border-t" />}
         <div><h2 className="mb-2 text-sm font-semibold">Letra inicial</h2><div className="flex flex-wrap gap-1.5"><Button size="sm" variant={!letter ? 'default' : 'outline'} onClick={() => setLetter('')}>Todas</Button>{facets.letters.map((item) => <Button key={item.value} size="sm" variant={letter === item.value ? 'default' : 'outline'} onClick={() => setLetter(item.value)} aria-pressed={letter === item.value}>{item.value}</Button>)}</div></div>
         {!!facets.tags.length && <div>
           <h2 className="mb-2 text-sm font-semibold">Categoría</h2>
