@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useGameEngine, checkAnswerCorrectness, TIMED_ROUND_SECONDS } from '../../hooks/useGameEngine';
 import { Button } from '../ui/button';
-import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw, Coins, Gem } from 'lucide-react';
+import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw, Coins, Gem, Zap, Sparkles, TrendingUp, ArrowUpRight } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
 import { gamesService } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -258,74 +258,78 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     <div className="absolute top-[40%] -right-[10%] w-[40vw] h-[40vw] bg-primary/20 rounded-full blur-[100px]" />
                 </div>
 
-                <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-start space-y-4 p-3 py-4 text-center sm:justify-center sm:space-y-5 sm:p-4 sm:py-6">
+                <div className="relative z-10 mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-start gap-3 p-4 py-5 text-center sm:justify-center sm:gap-3.5 sm:py-7">
                     <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", bounce: 0.5 }}
-                        className="mb-1 rounded-full p-4 sm:p-5"
+                        className="rounded-full p-3.5 sm:p-4"
                         style={{
                             backgroundColor: `${accent}1A`,
                             boxShadow: `0 0 0 4px ${accent}33, 0 0 40px ${accent}4D`
                         }}
                     >
-                        <Trophy className="h-12 w-12 drop-shadow-md sm:h-16 sm:w-16" style={{ color: accent }} />
+                        <Trophy className="h-11 w-11 drop-shadow-md sm:h-14 sm:w-14" style={{ color: accent }} />
                     </motion.div>
-                    
-                    <h2 className="text-2xl font-black tracking-tight text-white drop-shadow-lg sm:text-4xl">¡Desafío completado!</h2>
-                    
-                    <div className="grid w-full grid-cols-2 gap-3 sm:gap-4">
-                        <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-xl sm:p-4">
-                            <Star className="mb-2 h-6 w-6 fill-yellow-400 text-yellow-400" />
-                            <span className="mb-1 text-2xl font-black text-white sm:text-3xl">{score}</span>
-                            <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Puntos</span>
+
+                    <h2 className="text-2xl font-black tracking-tight text-white drop-shadow-lg sm:text-3xl">¡Desafío completado!</h2>
+
+                    {/* Tarjeta unificada: puntaje + precisión + categorías, todo en un bloque cohesivo. */}
+                    <div className="w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl">
+                        <div className={`grid ${game?.type !== 'quiz' ? 'grid-cols-2 divide-x' : 'grid-cols-1'} divide-white/10`}>
+                            <div className="flex flex-col items-center gap-0.5 p-4">
+                                <Star className="mb-1 h-5 w-5 fill-yellow-400 text-yellow-400" />
+                                <span className="text-3xl font-black leading-none text-white">{score}</span>
+                                <span className="text-[11px] font-bold uppercase tracking-widest text-white/45">Puntos</span>
+                            </div>
+                            {game?.type !== 'quiz' && (
+                                <div className="flex flex-col items-center gap-0.5 p-4">
+                                    <Target className="mb-1 h-5 w-5 text-emerald-400" />
+                                    <span className="text-3xl font-black leading-none text-white">{accuracyPercent.toFixed(0)}%</span>
+                                    <span className="text-[11px] font-bold uppercase tracking-widest text-white/45">Precisión</span>
+                                </div>
+                            )}
                         </div>
-                        {game?.type !== 'quiz' && (
-                            <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-3 backdrop-blur-xl sm:p-4">
-                                <Target className="mb-2 h-6 w-6 text-emerald-400" />
-                                <span className="mb-1 text-2xl font-black text-white sm:text-3xl">{accuracyPercent.toFixed(0)}%</span>
-                                <span className="text-xs text-white/50 uppercase tracking-widest font-bold">Precisión</span>
+                        {(bestCategory || worstCategory) && (
+                            <div className="flex flex-wrap items-center justify-center gap-2 border-t border-white/10 px-3 py-2.5">
+                                {bestCategory && (
+                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300"><TrendingUp className="h-3.5 w-3.5" />{bestCategory}</span>
+                                )}
+                                {worstCategory && (
+                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-500/10 px-2.5 py-1 text-xs font-semibold text-orange-300"><ArrowUpRight className="h-3.5 w-3.5" />{worstCategory}</span>
+                                )}
                             </div>
                         )}
                     </div>
 
-                    {(bestCategory || worstCategory) && (
-                        <div className="grid w-full grid-cols-1 gap-2 min-[390px]:grid-cols-2 sm:gap-4">
-                            {bestCategory && (
-                                <div className="flex flex-col items-center rounded-xl border border-white/5 bg-slate-900/40 p-3 backdrop-blur-md">
-                                    <span className="text-xs text-white/40 uppercase tracking-wider mb-1 font-bold">Mejor Categoría</span>
-                                    <span className="text-sm sm:text-base font-bold text-emerald-400 text-center">{bestCategory}</span>
-                                </div>
-                            )}
-                            {worstCategory && (
-                                <div className="flex flex-col items-center rounded-xl border border-white/5 bg-slate-900/40 p-3 backdrop-blur-md">
-                                    <span className="text-xs text-white/40 uppercase tracking-wider mb-1 font-bold">Por Mejorar</span>
-                                    <span className="text-sm sm:text-base font-bold text-orange-400 text-center">{worstCategory}</span>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
                     {rewards && (
-                        <div className="w-full rounded-2xl border border-white/10 bg-slate-900/50 p-4">
-                            <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-3">Recompensas de la partida</p>
-                            <div className="grid grid-cols-4 gap-2 text-center sm:gap-3">
-                                <div><strong className="block text-lg text-violet-300 sm:text-xl">+{rewards.xp}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">XP de perfil</span></div>
-                                <div><strong className="block text-lg text-emerald-300 sm:text-xl">+{rewards.appPoints}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">Puntos Andanzas</span></div>
-                                <div><strong className="block text-lg text-yellow-300 sm:text-xl">+{rewards.coins}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">Monedas</span></div>
-                                <div><strong className="block text-lg text-cyan-300 sm:text-xl">+{rewards.gems}</strong><span className="text-[10px] leading-tight text-white/50 sm:text-xs">Gemas</span></div>
+                        <div className="w-full rounded-2xl border border-white/10 bg-slate-900/50 p-3 sm:p-4">
+                            <p className="mb-2.5 text-[11px] font-bold uppercase tracking-widest text-white/45">Recompensas de la partida</p>
+                            <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
+                                {[
+                                    { Icon: Zap, val: rewards.xp, label: 'XP de perfil', bg: 'bg-violet-500/15', text: 'text-violet-300' },
+                                    { Icon: Sparkles, val: rewards.appPoints, label: 'Puntos Andanzas', bg: 'bg-emerald-500/15', text: 'text-emerald-300' },
+                                    { Icon: Coins, val: rewards.coins, label: 'Monedas', bg: 'bg-yellow-500/15', text: 'text-yellow-300' },
+                                    { Icon: Gem, val: rewards.gems, label: 'Gemas', bg: 'bg-cyan-500/15', text: 'text-cyan-300' },
+                                ].map(({ Icon, val, label, bg, text }) => (
+                                    <div key={label} className="flex flex-col items-center gap-1">
+                                        <div className={`flex h-8 w-8 items-center justify-center rounded-full ${bg}`}><Icon className={`h-4 w-4 ${text}`} /></div>
+                                        <span className={`text-base font-black leading-none sm:text-lg ${text}`}>+{val}</span>
+                                        <span className="text-[10px] leading-tight text-white/45">{label}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}
 
                     {categoryProgress.length > 0 && (
-                        <div className="w-full rounded-2xl border border-white/5 bg-slate-900/40 p-4 text-left backdrop-blur-md">
-                            <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-3">Tu progreso por categoría</p>
-                            <div className="space-y-3">
+                        <div className="w-full rounded-2xl border border-white/5 bg-slate-900/40 p-3.5 text-left backdrop-blur-md sm:p-4">
+                            <p className="mb-2.5 text-[11px] font-bold uppercase tracking-widest text-white/45">Tu progreso por categoría</p>
+                            <div className="space-y-2.5">
                                 {categoryProgress.map(progress => (
                                     <div key={progress.category} className="space-y-1">
-                                        <div className="flex justify-between text-sm"><span className="font-semibold text-white">{progress.category}</span><span className="text-primary font-bold">Nivel {progress.level} · {progress.xp} XP</span></div>
-                                        <div className="h-2 rounded-full bg-white/10 overflow-hidden"><div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(4, Math.min(100, progress.mastery * 100))}%` }} /></div>
+                                        <div className="flex justify-between text-xs sm:text-sm"><span className="font-semibold text-white">{progress.category}</span><span className="font-bold text-primary">Nivel {progress.level} · {progress.xp} XP</span></div>
+                                        <div className="h-1.5 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(4, Math.min(100, progress.mastery * 100))}%` }} /></div>
                                     </div>
                                 ))}
                             </div>
@@ -333,37 +337,42 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     )}
 
                     {game?.related_learn_ids && game.related_learn_ids.length > 0 && (
-                        <div className="w-full rounded-2xl border border-primary/20 bg-primary/10 p-4 text-left backdrop-blur-md">
-                            <p className="font-bold text-white mb-4 flex items-center"><Star className="w-5 h-5 mr-2 text-primary" />Sigue explorando</p>
-                            <Button 
-                                className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-14 font-bold"
-                                onClick={() => onNavigate?.('paquesepas')}
-                            >
-                                Leer más en Pa' que sepás
-                            </Button>
-                        </div>
+                        <button
+                            type="button"
+                            onClick={() => onNavigate?.('paquesepas')}
+                            className="flex w-full items-center justify-between gap-3 rounded-2xl border border-primary/25 bg-primary/10 p-3.5 text-left backdrop-blur-md transition-colors hover:bg-primary/15"
+                        >
+                            <span className="flex items-center gap-2.5">
+                                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/20"><Star className="h-4 w-4 text-primary" /></span>
+                                <span className="flex flex-col">
+                                    <span className="text-sm font-bold text-white">Sigue explorando</span>
+                                    <span className="text-xs text-white/50">Leer más en Pa' que sepás</span>
+                                </span>
+                            </span>
+                            <ArrowUpRight className="h-5 w-5 shrink-0 text-primary" />
+                        </button>
                     )}
 
-                    <div className="w-full space-y-3 pt-2">
+                    <div className="w-full space-y-2.5 pt-1">
                         {onRetry && (
                             <Button
-                                className="h-12 w-full rounded-xl border-none font-bold text-white shadow-lg transition-all hover:scale-[1.01]"
+                                className="h-11 w-full rounded-xl border-none font-bold text-white shadow-lg transition-all hover:scale-[1.01]"
                                 style={{ backgroundColor: accent }}
                                 onClick={onRetry}
                             >
-                                <RotateCcw className="w-6 h-6 mr-3" />
+                                <RotateCcw className="mr-2.5 h-5 w-5" />
                                 Reintentar
                             </Button>
                         )}
                         <Button
-                            className="h-12 w-full rounded-xl border-none bg-gradient-to-r from-indigo-500 to-purple-600 font-bold text-white shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:scale-[1.01] hover:from-indigo-600 hover:to-purple-700"
+                            className="h-11 w-full rounded-xl border-none bg-gradient-to-r from-indigo-500 to-purple-600 font-bold text-white shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:scale-[1.01] hover:from-indigo-600 hover:to-purple-700"
                             onClick={handleChallengeFriend}
                             disabled={isCreatingChallenge}
                         >
-                            <Users className="w-6 h-6 mr-3" />
+                            <Users className="mr-2.5 h-5 w-5" />
                             {isCreatingChallenge ? "Generando Reto..." : "Retar a un amigo"}
                         </Button>
-                        <Button variant="outline" className="h-12 w-full rounded-xl border-white/20 bg-transparent font-bold text-white hover:bg-white/10" onClick={onClose}>
+                        <Button variant="outline" className="h-11 w-full rounded-xl border-white/20 bg-transparent font-bold text-white hover:bg-white/10" onClick={onClose}>
                             Volver a Inicio
                         </Button>
                     </div>
