@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../ui/button';
 import { useUserData } from '../../../contexts/UserDataContext';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar, Smile, MessageSquare, UserX, Image, HelpCircle, User, Handshake } from 'lucide-react';
+import { ShieldAlert, Users, Map, BookOpen, Settings, Gamepad2, Landmark, Megaphone, Activity, Info, Calendar, Smile, MessageSquare, UserX, Image, HelpCircle, User, Handshake, Award } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { useI18n } from '../../../i18n';
 import { AdminCuriosidades } from './AdminCuriosidades';
@@ -27,6 +27,7 @@ import { AdminMetricas } from './AdminMetricas';
 import { AdminAvatarsManager } from './AdminAvatarsManager';
 import { AdminDocumentosLegales } from './AdminDocumentosLegales';
 import { AdminDictionary } from './AdminDictionary';
+import { AdminBadges } from './AdminBadges';
 import { JuegosAnalyticsPanel } from './JuegosAnalyticsPanel';
 import { userService } from '../../../services/user.service';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
@@ -273,7 +274,7 @@ const AdminGeneral = () => (
 const AdminDashboard: React.FC = () => {
     const { userProfile, setUserProfile } = useUserData();
     const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'alianzas' | 'juegos' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'sabias_que' | 'paquesepas' | 'dictionary' | 'rutas' | 'rutas_personalizadas' | 'alianzas' | 'juegos' | 'insignias' | 'sitios' | 'eventos' | 'noticias' | 'usuarios' | 'institucional' | 'legal' | 'settings' | 'avatares' | 'banners' | 'ayuda'>('overview');
     const [showIntroModal, setShowIntroModal] = useState(false);
     const isAdmin = userProfile?.role === 'admin' || userProfile?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com';
     const hasManagementAccess = isAdmin || userProfile?.role === 'editor' || user?.email?.trim().toLowerCase() === 'gruesobrandon@gmail.com';
@@ -425,8 +426,15 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Gamepad2 className="w-4 h-4 mr-2" /> Juegos
                     </Button>
-                    <Button 
-                        variant={activeTab === 'institucional' ? 'default' : 'outline'} 
+                    <Button
+                        variant={activeTab === 'insignias' ? 'default' : 'outline'}
+                        onClick={() => setActiveTab('insignias')}
+                        className="rounded-full whitespace-nowrap"
+                    >
+                        <Award className="w-4 h-4 mr-2" /> Insignias
+                    </Button>
+                    <Button
+                        variant={activeTab === 'institucional' ? 'default' : 'outline'}
                         onClick={() => setActiveTab('institucional')}
                         className="rounded-full whitespace-nowrap"
                     >
@@ -477,6 +485,7 @@ const AdminDashboard: React.FC = () => {
                     {activeTab === 'eventos' && <AdminEventos />}
                     {activeTab === 'noticias' && <AdminNoticias />}
                     {activeTab === 'juegos' && <AdminJuegos />}
+                    {activeTab === 'insignias' && <AdminBadges />}
                     {activeTab === 'institucional' && <AdminInstitucional />}
                     {activeTab === 'legal' && <AdminDocumentosLegales />}
                     {activeTab === 'usuarios' && <AdminUsuarios />}

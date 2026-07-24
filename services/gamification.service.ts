@@ -18,7 +18,7 @@ export interface EconomySummary {
     shop_offers: { key: string; title: string; quantity: number; currency: 'coin' | 'gem'; price: number }[];
 }
 
-const iconMap: Record<string, any> = {
+export const iconMap: Record<string, any> = {
     'Heart': Heart,
     'PenTool': PenTool,
     'MapIcon': MapIcon,
