@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Bookmark, Plus, Search, Trash2, Compass, PenTool, ChevronUp, ChevronDown, Clock3, Gamepad2, Map } from 'lucide-react';
+import { Bookmark, Plus, Search, Trash2, Compass, PenTool, ChevronUp, ChevronDown, Clock3, Gamepad2, Map, ChevronRight, Sparkles } from 'lucide-react';
 import { Ruta, Site } from '../../types';
 
 import { Button } from '../ui/button';
@@ -297,6 +297,24 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
                                 })}
                             </div>
                         </div>
+
+                        {enableCustomRouteRequest && (
+                            <button
+                                type="button"
+                                onClick={() => setShowRequestModal(true)}
+                                className="group mb-4 flex w-full items-center gap-4 overflow-hidden rounded-2xl border border-emerald-400/30 bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-50 p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-400/60 hover:shadow-lg dark:from-emerald-950/30 dark:via-teal-950/20 dark:to-emerald-950/20"
+                            >
+                                <div className="relative shrink-0 rounded-2xl bg-emerald-600 p-3 text-white shadow-md">
+                                    <Sparkles className="h-5 w-5" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700 dark:text-emerald-300">A tu medida</p>
+                                    <h3 className="mt-0.5 font-black text-foreground">{language === 'es' ? '¿Necesitas una ruta exclusiva?' : 'Need a private route?'}</h3>
+                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{language === 'es' ? 'La diseñamos según tu grupo, tiempo e intereses. Solicítala aquí.' : 'We design it around your group, time and interests. Request it here.'}</p>
+                                </div>
+                                <ChevronRight className="h-5 w-5 shrink-0 text-emerald-600 transition-transform group-hover:translate-x-1" />
+                            </button>
+                        )}
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {discoveryRoutes.map((route, index) => (

@@ -58,6 +58,15 @@ export const customRoutesService = {
         return true;
     },
 
+    async remove(id: string): Promise<void> {
+        // La política RLS "Admins can delete route requests" ya permite esto a admin/editor.
+        const { error } = await supabase.from('custom_route_requests').delete().eq('id', id);
+        if (error) {
+            console.error('Error deleting route request:', error);
+            throw error;
+        }
+    },
+
     async updateManagement(id: string, updates: Partial<CustomRouteRequest>): Promise<boolean> {
         const { id: _id, user_id: _userId, created_at: _createdAt, ...safeUpdates } = updates as CustomRouteRequest;
         const { error } = await supabase.from('custom_route_requests').update(safeUpdates).eq('id', id);
