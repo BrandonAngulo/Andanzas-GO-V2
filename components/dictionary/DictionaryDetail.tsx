@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Badge } from '../ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { dictionaryService, joinScope, vigenciaLabel } from '../../services/dictionary.service';
+import { dictionaryService, joinScope, regionBreadcrumb, vigenciaLabel } from '../../services/dictionary.service';
 import type { DictionaryEntry, DictionarySource, DictionaryTag } from '../../types';
 
 interface DictionaryDetailProps {
@@ -36,7 +36,9 @@ export function DictionaryDetail({ entry, onClose }: DictionaryDetailProps): JSX
         {entry && <>
           <DialogHeader className="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-800 to-teal-700 p-7 text-white">
             <div className="pointer-events-none absolute -right-5 -top-16 font-serif text-[12rem] font-black text-white/5" aria-hidden="true">{entry.term.charAt(0)}</div>
-            <p className="relative text-xs font-bold uppercase tracking-[0.2em] text-emerald-100">Diccionario de la caleñidad</p>
+            <p className="relative text-xs font-bold uppercase tracking-[0.2em] text-emerald-100">
+              {regionBreadcrumb(entry.regions) || 'Diccionario de jergas y culturas'}
+            </p>
             <DialogTitle className="relative pr-8 font-serif text-4xl font-black text-white">{entry.term}</DialogTitle>
             <div className="flex flex-wrap gap-2 pt-2">
               {entry.word_class && <Badge className="border-white/20 bg-white/15 text-white">{entry.word_class}</Badge>}

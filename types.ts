@@ -463,6 +463,30 @@ export interface DictionarySource {
   citation?: string;
 }
 
+/** Nivel de la jerarquía geográfica: capítulo (país) > agrupador (departamento) > apartado (ciudad). */
+export type DictionaryRegionLevel = 'country' | 'region' | 'city';
+
+/** Región asociada a una entrada, tal como la devuelve `search_dictionary_cards`. */
+export interface DictionaryRegion {
+  slug: string;
+  name: string;
+  level: DictionaryRegionLevel;
+  /** Región de origen de la palabra; las demás indican usos compartidos. */
+  is_primary?: boolean;
+  scope_note?: string | null;
+}
+
+/** Nodo del árbol de regiones que devuelve `get_dictionary_facets`, con conteo del subárbol. */
+export interface DictionaryRegionFacet {
+  slug: string;
+  name: string;
+  level: DictionaryRegionLevel;
+  parent_slug?: string | null;
+  emoji_flag?: string | null;
+  cover_url?: string | null;
+  count?: number;
+}
+
 export interface DictionaryEntry {
   id: string;
   term: string;
@@ -483,6 +507,7 @@ export interface DictionaryEntry {
   is_featured?: boolean;
   first_letter?: string | null;
   tags?: DictionaryTag[] | string[] | null;
+  regions?: DictionaryRegion[] | null;
   sources?: DictionarySource[];
   total_count?: number;
 }
@@ -491,6 +516,7 @@ export interface DictionaryFacets {
   letters: Array<{ value: string; count?: number }>;
   tags: DictionaryTag[];
   temporalStatuses: Array<{ value: string; count?: number }>;
+  regions: DictionaryRegionFacet[];
 }
 
 export interface DictionarySearchParams {
@@ -498,6 +524,8 @@ export interface DictionarySearchParams {
   letter?: string;
   tag?: string;
   temporalStatus?: string;
+  /** Filtra por capítulo/apartado; incluye recursivamente todo el subárbol de la región. */
+  regionSlug?: string;
   limit?: number;
   offset?: number;
 }

@@ -136,7 +136,7 @@ export function AdminDictionary(): JSX.Element {
 
   const isEnabled = dictionaryFeature?.status === 'published' && dictionaryFeature.is_enabled;
   const confirmation = pendingAction === 'enable'
-    ? { title: '¿Activar y publicar el diccionario?', description: 'Esta acción cambiará el estado a published y hará visible el Diccionario de la caleñidad en el menú público.', confirm: 'Activar y publicar' }
+    ? { title: '¿Activar y publicar el diccionario?', description: 'Esta acción cambiará el estado a published y hará visible el Diccionario de jergas y culturas en el menú público.', confirm: 'Activar y publicar' }
     : pendingAction === 'disable'
       ? { title: '¿Desactivar el diccionario?', description: 'La herramienta dejará de estar disponible para los usuarios y volverá al estado ready.', confirm: 'Desactivar' }
       : pendingAction === 'show'
@@ -145,7 +145,7 @@ export function AdminDictionary(): JSX.Element {
 
   return (
     <div className="space-y-6">
-      <div><h2 className="flex items-center gap-2 text-2xl font-bold"><BookOpen className="h-6 w-6 text-primary" />Diccionario de la caleñidad</h2><p className="mt-1 text-muted-foreground">Controla su publicación y gestiona las entradas: crear, editar y eliminar.</p></div>
+      <div><h2 className="flex items-center gap-2 text-2xl font-bold"><BookOpen className="h-6 w-6 text-primary" />Diccionario de jergas y culturas</h2><p className="mt-1 text-muted-foreground">Controla su publicación y gestiona las entradas: crear, editar y eliminar.</p></div>
       <div className="grid gap-4 md:grid-cols-2">
         <Card><CardHeader><CardTitle>Estado de la función</CardTitle><CardDescription>Clave: dictionary_caleno</CardDescription></CardHeader><CardContent className="space-y-3"><div className="flex flex-wrap gap-2"><Badge variant={dictionaryFeature?.status === 'published' ? 'default' : 'secondary'}>{dictionaryFeature?.status ?? 'no disponible'}</Badge><Badge variant={dictionaryFeature?.is_enabled ? 'default' : 'outline'}>{dictionaryFeature?.is_enabled ? 'Habilitada' : 'Deshabilitada'}</Badge><Badge variant={dictionaryFeature?.show_in_menu ? 'default' : 'outline'}>{dictionaryFeature?.show_in_menu ? 'Visible en menú' : 'Oculta del menú'}</Badge></div>{dictionaryFeature?.release_at && <p className="text-sm text-muted-foreground">Fecha de publicación: {new Date(dictionaryFeature.release_at).toLocaleString('es-CO')}</p>}</CardContent></Card>
         <Card><CardHeader><CardTitle>Entradas disponibles</CardTitle><CardDescription>Contenido almacenado en Supabase</CardDescription></CardHeader><CardContent><p className="text-4xl font-bold">{entryCount ?? '—'}</p><p className="mt-2 text-sm text-muted-foreground">Gestiona el contenido en la sección de abajo.</p></CardContent></Card>

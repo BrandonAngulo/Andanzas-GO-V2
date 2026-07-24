@@ -5,11 +5,12 @@ import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
 import { DictionaryCard } from '../dictionary/DictionaryCard';
 import { DictionaryDetail } from '../dictionary/DictionaryDetail';
+import { RegionChapterSelector } from '../dictionary/RegionChapterSelector';
 import { WordOfTheDayCard } from '../dictionary/WordOfTheDayCard';
 import { dictionaryService } from '../../services/dictionary.service';
 import type { DictionaryEntry, DictionaryFacets } from '../../types';
 
-const EMPTY_FACETS: DictionaryFacets = { letters: [], tags: [], temporalStatuses: [] };
+const EMPTY_FACETS: DictionaryFacets = { letters: [], tags: [], temporalStatuses: [], regions: [] };
 const PAGE_SIZE = 24;
 
 export function DictionaryPanel(): JSX.Element {
@@ -18,6 +19,7 @@ export function DictionaryPanel(): JSX.Element {
   const [letter, setLetter] = useState('');
   const [tag, setTag] = useState('');
   const [temporalStatus, setTemporalStatus] = useState('');
+  const [regionSlug, setRegionSlug] = useState('');
   const [showAllCats, setShowAllCats] = useState(false);
   const CATS_COLLAPSED = 12;
   const [entries, setEntries] = useState<DictionaryEntry[]>([]);
@@ -34,27 +36,35 @@ export function DictionaryPanel(): JSX.Element {
     return () => window.clearTimeout(timer);
   }, [query]);
 
+  // Las letras, categorías y vigencias se recalculan dentro del capítulo activo.
   useEffect(() => {
-    dictionaryService.getFacets().then(setFacets).catch((cause) => console.error('No se pudieron cargar los filtros:', cause));
-  }, []);
+    dictionaryService.getFacets(regionSlug).then(setFacets).catch((cause) => console.error('No se pudieron cargar los filtros:', cause));
+  }, [regionSlug]);
 
   useEffect(() => {
     let active = true;
     setLoading(true);
     setError('');
     setOffset(0);
-    dictionaryService.search({ query: debouncedQuery, letter, tag, temporalStatus, limit: PAGE_SIZE, offset: 0 })
+    dictionaryService.search({ query: debouncedQuery, letter, tag, temporalStatus, regionSlug, limit: PAGE_SIZE, offset: 0 })
       .then(({ entries: nextEntries, total: nextTotal }) => { if (active) { setEntries(nextEntries); setTotal(nextTotal); } })
       .catch(() => { if (active) { setEntries([]); setTotal(0); setError('No pudimos consultar el diccionario. Intenta nuevamente.'); } })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
-  }, [debouncedQuery, letter, tag, temporalStatus]);
+  }, [debouncedQuery, letter, tag, temporalStatus, regionSlug]);
+
+  /** Al cambiar de capítulo, limpia letra y categoría: pueden no existir en el nuevo alcance. */
+  const changeRegion = (slug: string) => {
+    setRegionSlug(slug);
+    setLetter('');
+    setTag('');
+  };
 
   const loadMore = async () => {
     const nextOffset = offset + PAGE_SIZE;
     setLoadingMore(true);
     try {
-      const result = await dictionaryService.search({ query: debouncedQuery, letter, tag, temporalStatus, limit: PAGE_SIZE, offset: nextOffset });
+      const result = await dictionaryService.search({ query: debouncedQuery, letter, tag, temporalStatus, regionSlug, limit: PAGE_SIZE, offset: nextOffset });
       setEntries((current) => [...current, ...result.entries]);
       setTotal(result.total);
       setOffset(nextOffset);
@@ -69,8 +79,8 @@ export function DictionaryPanel(): JSX.Element {
     <ScrollArea className="h-full">
     <div className="mx-auto w-full max-w-6xl space-y-6 p-1 pb-20 md:p-4 md:pb-20">
       <header className="rounded-2xl border bg-card p-6 shadow-sm">
-        <div className="flex items-center gap-3"><BookOpen className="h-8 w-8 text-primary" /><h1 className="text-3xl font-bold tracking-tight">Diccionario de la caleñidad</h1></div>
-        <p className="mt-2 text-muted-foreground">Palabras que cuentan cómo hablamos, vivimos y recordamos a Cali</p>
+        <div className="flex items-center gap-3"><BookOpen className="h-8 w-8 text-primary" /><h1 className="text-3xl font-bold tracking-tight">Diccionario de jergas y culturas</h1></div>
+        <p className="mt-2 text-muted-foreground">Palabras que cuentan cómo hablamos, vivimos y recordamos. Un capítulo por territorio.</p>
         <div className="relative mt-5" role="search">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input value={query} onChange={(event) => setQuery(event.target.value)} className="pl-9" placeholder="Buscar una palabra o definición" aria-label="Buscar en el diccionario" />
@@ -80,6 +90,7 @@ export function DictionaryPanel(): JSX.Element {
       <WordOfTheDayCard onOpen={setSelectedEntry} />
 
       <section className="space-y-4 rounded-2xl border bg-card p-4" aria-label="Filtros del diccionario">
+        <RegionChapterSelector regions={facets.regions} value={regionSlug} onChange={changeRegion} />
         <div><h2 className="mb-2 text-sm font-semibold">Letra inicial</h2><div className="flex flex-wrap gap-1.5"><Button size="sm" variant={!letter ? 'default' : 'outline'} onClick={() => setLetter('')}>Todas</Button>{facets.letters.map((item) => <Button key={item.value} size="sm" variant={letter === item.value ? 'default' : 'outline'} onClick={() => setLetter(item.value)} aria-pressed={letter === item.value}>{item.value}</Button>)}</div></div>
         {!!facets.tags.length && <div>
           <h2 className="mb-2 text-sm font-semibold">Categoría</h2>

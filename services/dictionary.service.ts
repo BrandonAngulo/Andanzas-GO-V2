@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
-import type { AppFeature, DictionaryAdminEntry, DictionaryEntry, DictionaryEntryInput, DictionaryFacets, DictionarySearchParams, DictionarySource, DictionaryTag, DictionaryTagOption } from '../types';
+import type { AppFeature, DictionaryAdminEntry, DictionaryEntry, DictionaryEntryInput, DictionaryFacets, DictionaryRegion, DictionaryRegionFacet, DictionarySearchParams, DictionarySource, DictionaryTag, DictionaryTagOption } from '../types';
 
 export const DICTIONARY_FEATURE_KEY = 'dictionary_caleno';
 
@@ -37,6 +37,47 @@ const normalizeFacet = (item: unknown): { value: string; count?: number } | null
   return value ? { value, count: typeof record.count === 'number' ? record.count : undefined } : null;
 };
 
+const normalizeRegion = (item: unknown): DictionaryRegion | null => {
+  if (!item || typeof item !== 'object') return null;
+  const record = item as Record<string, unknown>;
+  const slug = String(record.slug ?? '');
+  const name = String(record.name ?? slug);
+  if (!slug || !name) return null;
+  return {
+    slug,
+    name,
+    level: (record.level as DictionaryRegion['level']) ?? 'city',
+    is_primary: Boolean(record.is_primary),
+    scope_note: (record.scope_note as string | null) ?? null,
+  };
+};
+
+const normalizeRegionFacet = (item: unknown): DictionaryRegionFacet | null => {
+  if (!item || typeof item !== 'object') return null;
+  const record = item as Record<string, unknown>;
+  const slug = String(record.slug ?? '');
+  if (!slug) return null;
+  return {
+    slug,
+    name: String(record.name ?? slug),
+    level: (record.level as DictionaryRegionFacet['level']) ?? 'city',
+    parent_slug: (record.parent_slug as string | null) ?? null,
+    emoji_flag: (record.emoji_flag as string | null) ?? null,
+    cover_url: (record.cover_url as string | null) ?? null,
+    count: typeof record.count === 'number' ? record.count : undefined,
+  };
+};
+
+/** Ruta completa de una región hasta su capítulo raíz, p. ej. Colombia › Valle del Cauca › Cali. */
+export const regionBreadcrumb = (regions: DictionaryRegion[] | null | undefined): string => {
+  const order: Record<DictionaryRegion['level'], number> = { country: 0, region: 1, city: 2 };
+  return (regions ?? [])
+    .filter((region) => region.is_primary || region.level === 'country')
+    .sort((a, b) => order[a.level] - order[b.level])
+    .map((region) => region.name)
+    .join(' › ');
+};
+
 const normalizeTag = (item: unknown): DictionaryTag | null => {
   if (typeof item === 'string') return { name: item, slug: item };
   if (!item || typeof item !== 'object') return null;
@@ -70,23 +111,27 @@ export const dictionaryService = {
       p_temporal_status: params.temporalStatus || null,
       p_limit: params.limit ?? 24,
       p_offset: params.offset ?? 0,
+      p_region_slug: params.regionSlug || null,
     });
     if (error) throw error;
     const entries = ((data ?? []) as DictionaryEntry[]).map((entry) => ({
       ...entry,
       tags: Array.isArray(entry.tags) ? entry.tags.map(normalizeTag).filter(Boolean) as DictionaryTag[] : [],
+      regions: Array.isArray(entry.regions) ? entry.regions.map(normalizeRegion).filter(Boolean) as DictionaryRegion[] : [],
     }));
     return { entries, total: Number(entries[0]?.total_count ?? entries.length) };
   },
 
-  async getFacets(): Promise<DictionaryFacets> {
-    const { data, error } = await supabase.rpc('get_dictionary_facets');
+  /** Facetas del diccionario. Con `regionSlug`, letras/categorías/vigencias se acotan a ese capítulo. */
+  async getFacets(regionSlug?: string): Promise<DictionaryFacets> {
+    const { data, error } = await supabase.rpc('get_dictionary_facets', { p_region_slug: regionSlug || null });
     if (error) throw error;
     const record = (Array.isArray(data) ? data[0] : data ?? {}) as Record<string, unknown>;
     const letters = ((record.letters ?? record.first_letters ?? []) as unknown[]).map(normalizeFacet).filter(Boolean) as DictionaryFacets['letters'];
     const tags = ((record.tags ?? record.categories ?? []) as unknown[]).map(normalizeTag).filter(Boolean) as DictionaryTag[];
     const temporalStatuses = ((record.temporal_statuses ?? record.temporalStatus ?? record.vigencias ?? []) as unknown[]).map(normalizeFacet).filter(Boolean) as DictionaryFacets['temporalStatuses'];
-    return { letters, tags, temporalStatuses };
+    const regions = ((record.regions ?? []) as unknown[]).map(normalizeRegionFacet).filter(Boolean) as DictionaryRegionFacet[];
+    return { letters, tags, temporalStatuses, regions };
   },
 
   async getSources(entryId: string): Promise<DictionarySource[]> {

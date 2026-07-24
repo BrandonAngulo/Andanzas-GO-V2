@@ -51,7 +51,7 @@ const en = {
         noticias: "News & Updates",
         paquesepas: "Did you know?",
         juegos: "Play Zone",
-        diccionario: "Diccionario de la caleñidad",
+        diccionario: "Slang & Culture Dictionary",
         admin: "Admin Dashboard"
     },
 
@@ -93,9 +93,10 @@ const en = {
             ]
         },
         diccionario: {
-            title: "Dictionary of caleñidad",
+            title: "Slang & Culture Dictionary",
             body: [
-                "A glossary of Cali's slang and culture.",
+                "A glossary of local slang and culture, organised into chapters by territory.",
+                "The first chapter is caleñidad; pick a chapter to explore its words.",
                 "Tap any highlighted word in the app to learn what it means."
             ]
         },

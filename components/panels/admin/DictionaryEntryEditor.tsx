@@ -168,7 +168,7 @@ export function DictionaryEntryEditor({ open, entry, tags, userId, onOpenChange,
       <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{isEdit ? 'Editar entrada' : 'Nueva entrada'}</DialogTitle>
-          <DialogDescription>Diccionario de la caleñidad · los cambios se guardan en Supabase.</DialogDescription>
+          <DialogDescription>Diccionario de jergas y culturas · los cambios se guardan en Supabase.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">

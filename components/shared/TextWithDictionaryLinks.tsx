@@ -12,7 +12,7 @@ interface TextWithDictionaryLinksProps {
 const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /**
- * Resalta en un texto los términos del Diccionario de la caleñidad (y sus variantes)
+ * Resalta en un texto los términos del Diccionario de jergas y culturas (y sus variantes)
  * y los convierte en enlaces que abren la ficha correspondiente. Enlaza solo la primera
  * aparición de cada término para no saturar. No modifica el texto si no hay coincidencias.
  */

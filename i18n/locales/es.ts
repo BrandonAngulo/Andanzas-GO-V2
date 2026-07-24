@@ -51,7 +51,7 @@ const es = {
         noticias: "Noticias y Novedades",
         paquesepas: "Pa' que sepás",
         juegos: "Entretenimiento",
-        diccionario: "Diccionario de la caleñidad",
+        diccionario: "Diccionario de jergas y culturas",
         admin: "Panel de Administración"
     },
 
@@ -93,9 +93,10 @@ const es = {
             ]
         },
         diccionario: {
-            title: "Diccionario de la caleñidad",
+            title: "Diccionario de jergas y culturas",
             body: [
-                "Un glosario del habla y la cultura caleña.",
+                "Un glosario del habla y la cultura, organizado en capítulos por territorio.",
+                "El primer capítulo es la caleñidad; elige un capítulo para explorar sus palabras.",
                 "Toca cualquier palabra resaltada en la app para conocer su significado."
             ]
         },
