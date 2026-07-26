@@ -19,7 +19,7 @@ import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen
 const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ site, onOpenSite }) => {
   const { t, language } = useI18n();
   return (
-    <Card className="overflow-hidden flex h-full min-h-[300px] flex-col rounded-2xl border-border/70">
+    <Card className="overflow-hidden flex h-full min-h-0 flex-col rounded-2xl border-border/70 sm:min-h-[300px]">
       <LazyImage
         src={site.logoUrl}
         alt={getTranslated(site, 'nombre', language) as string}
@@ -214,21 +214,22 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
             </h3>
           </div>
           {/* Grid uniforme: todas las tarjetas del mismo tamaño y alineadas. */}
+          {/* Móvil: carrusel horizontal con snap; escritorio: grid uniforme. */}
           {promotedBanners.length === 0 && !bannersLoaded ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 scrollbar-none sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
               {[1,2,3].map(i => (
-                <div key={i} className="rounded-2xl bg-muted animate-pulse h-52" />
+                <div key={i} className="h-52 w-[82%] shrink-0 snap-start rounded-2xl bg-muted animate-pulse sm:w-auto sm:shrink" />
               ))}
             </div>
           ) : promotedBanners.length === 0 ? null : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 scrollbar-none sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
               {promotedBanners.map(banner => {
                 const Icon = banner.target_type ? TARGET_TYPE_ICON[banner.target_type] : null;
                 return (
                   <button
                     type="button"
                     key={banner.id}
-                    className="cursor-pointer group rounded-2xl overflow-hidden relative shadow-md hover:shadow-xl transition-all duration-300 h-52 text-left"
+                    className="group relative h-52 w-[82%] shrink-0 cursor-pointer snap-start overflow-hidden rounded-2xl text-left shadow-md transition-all duration-300 hover:shadow-xl sm:w-auto sm:shrink"
                     onClick={() => handleBannerClick(banner)}
                   >
                     <LazyImage

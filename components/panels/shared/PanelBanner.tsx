@@ -92,7 +92,7 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
                         {icon}
                         <h2 className={titleClassName}>{title}</h2>
                     </div>
-                    <p className={cn("max-w-[90%] font-medium leading-relaxed text-muted-foreground", compact ? "text-sm md:text-base" : "text-sm sm:text-base md:text-lg")}>
+                    <p className={cn("max-w-[90%] font-medium leading-relaxed text-muted-foreground line-clamp-2 sm:line-clamp-none", compact ? "text-sm md:text-base" : "text-sm sm:text-base md:text-lg")}>
                         {subtitle}
                     </p>
                 </div>
