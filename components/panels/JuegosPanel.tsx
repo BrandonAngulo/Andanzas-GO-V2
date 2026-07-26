@@ -309,19 +309,19 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                 </TabsContent>
                 
                 <TabsContent value="musica">
-                    <div className="relative overflow-hidden rounded-3xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-950 via-purple-900 to-indigo-900 p-8 text-white shadow-xl">
-                        <Music className="mb-5 h-10 w-10 text-fuchsia-300" />
+                    <div className="relative overflow-hidden rounded-3xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-950 via-purple-900 to-indigo-900 p-5 text-white shadow-xl sm:p-8">
+                        <Music className="mb-4 h-9 w-9 text-fuchsia-300 sm:mb-5 sm:h-10 sm:w-10" />
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-200">Música para andar</p>
-                        <h3 className="mt-2 text-3xl font-black">{musicContent?.title_es || 'Una playlist para cada recorrido'}</h3>
+                        <h3 className="mt-2 text-2xl font-black sm:text-3xl">{musicContent?.title_es || 'Una playlist para cada recorrido'}</h3>
                         <p className="mt-3 max-w-2xl text-white/80">{musicContent?.subtitle_es || 'Muy pronto vas a encontrar selecciones musicales para ponerle ritmo a tus caminatas, visitas y rutas.'}</p>
                         <div className="mt-6 inline-flex items-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold"><Headphones className="mr-2 h-4 w-4" /> Próximamente</div>
                     </div>
                 </TabsContent>
 
                 <TabsContent value="podcasts">
-                    <div className="rounded-3xl border border-dashed border-orange-500/30 bg-orange-500/5 p-8 text-center">
-                        <Mic2 className="mx-auto mb-4 h-10 w-10 text-orange-500" />
-                        <h3 className="text-2xl font-bold">{storiesContent?.title_es || 'Relatos, pódcast y voces de la ciudad'}</h3>
+                    <div className="rounded-3xl border border-dashed border-orange-500/30 bg-orange-500/5 p-5 text-center sm:p-8">
+                        <Mic2 className="mx-auto mb-4 h-9 w-9 text-orange-500 sm:h-10 sm:w-10" />
+                        <h3 className="text-xl font-bold sm:text-2xl">{storiesContent?.title_es || 'Relatos, pódcast y voces de la ciudad'}</h3>
                         <p className="mx-auto mt-2 max-w-2xl text-muted-foreground">{storiesContent?.subtitle_es || 'Muy pronto podrás escuchar historias, voces y relatos que le dan vida a Cali mientras andás.'}</p>
                         <span className="mt-5 inline-block rounded-full bg-orange-500/10 px-4 py-2 text-sm font-semibold text-orange-700">Próximamente</span>
                     </div>

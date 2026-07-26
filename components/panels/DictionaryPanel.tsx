@@ -78,8 +78,8 @@ export function DictionaryPanel(): JSX.Element {
   return (
     <ScrollArea className="h-full">
     <div className="mx-auto w-full max-w-6xl space-y-6 p-1 pb-20 md:p-4 md:pb-20">
-      <header className="rounded-2xl border bg-card p-6 shadow-sm">
-        <div className="flex items-center gap-3"><BookOpen className="h-8 w-8 text-primary" /><h1 className="text-3xl font-bold tracking-tight">Diccionario de jergas y culturas</h1></div>
+      <header className="rounded-2xl border bg-card p-4 shadow-sm sm:p-6">
+        <div className="flex items-center gap-3"><BookOpen className="h-7 w-7 shrink-0 text-primary sm:h-8 sm:w-8" /><h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Diccionario de jergas y culturas</h1></div>
         <p className="mt-2 text-muted-foreground">Palabras que cuentan cómo hablamos, vivimos y recordamos. Un capítulo por territorio.</p>
         <div className="relative mt-5" role="search">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
