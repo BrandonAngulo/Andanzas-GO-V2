@@ -36,6 +36,53 @@ const timeSince = (date: Date): string => {
 const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, onMarkAsRead, onMarkAllAsRead, onOpenNews, onNotificationClick }) => {
   const { t, language } = useI18n();
 
+  // Agrupa por Hoy / Ayer / Anteriores para una lectura más clara.
+  const groups = React.useMemo(() => {
+    const startOfToday = new Date(); startOfToday.setHours(0, 0, 0, 0);
+    const startOfYesterday = new Date(startOfToday); startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+    const buckets: { hoy: Notificacion[]; ayer: Notificacion[]; anteriores: Notificacion[] } = { hoy: [], ayer: [], anteriores: [] };
+    notifications.forEach(n => {
+      const d = new Date(n.fecha);
+      if (d >= startOfToday) buckets.hoy.push(n);
+      else if (d >= startOfYesterday) buckets.ayer.push(n);
+      else buckets.anteriores.push(n);
+    });
+    return buckets;
+  }, [notifications]);
+
+  const groupLabels: Record<'hoy' | 'ayer' | 'anteriores', string> = {
+    hoy: language === 'es' ? 'Hoy' : 'Today',
+    ayer: language === 'es' ? 'Ayer' : 'Yesterday',
+    anteriores: language === 'es' ? 'Anteriores' : 'Earlier',
+  };
+
+  const renderItem = (n: Notificacion) => {
+    const Icon = n.icono || Bell;
+    return (
+      <div
+        key={n.id}
+        className={cn("flex items-start gap-3 p-2 rounded-lg relative", !n.leida ? "bg-secondary" : "", onNotificationClick ? "cursor-pointer hover:bg-muted/80" : "")}
+        onClick={() => {
+          if (!n.leida) onMarkAsRead(n.id);
+          if (onNotificationClick) onNotificationClick(n);
+        }}
+      >
+        {!n.leida && <div className="absolute top-2 left-2 h-2 w-2 rounded-full bg-primary" />}
+        <div className="mt-1 flex-shrink-0">
+          <Icon className="h-5 w-5 text-muted-foreground" />
+        </div>
+        <div className="flex-1 pointer-events-none">
+          <p className="text-sm font-medium leading-tight">{getTranslated(n, 'titulo', language)}</p>
+          <p className="text-xs text-muted-foreground">{getTranslated(n, 'descripcion', language)}</p>
+        </div>
+        <div className="text-xs text-muted-foreground flex-shrink-0 pointer-events-none">{timeSince(new Date(n.fecha))}</div>
+        {!n.leida && (
+          <Button variant="ghost" size="sm" className="p-0 h-auto text-xs z-10 relative" onClick={(e) => { e.stopPropagation(); onMarkAsRead(n.id); }}>{t('notifications.read')}</Button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <Card className="fixed left-2 right-2 top-14 z-[1200] max-h-[calc(100dvh-5rem)] overflow-hidden shadow-2xl md:absolute md:left-auto md:right-0 md:top-12 md:w-96">
       <Tabs defaultValue="alertas" className="w-full">
@@ -60,34 +107,14 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, 
               </Button>
             </div>
             <ScrollArea className="h-[300px]">
-          <div className="p-2 space-y-1">
+          <div className="p-2 space-y-2">
             {notifications.length === 0 && <p className="text-sm text-muted-foreground text-center p-4">{t('notifications.noNotifications')}</p>}
-            {notifications.map(n => {
-              const Icon = n.icono || Bell;
-              return (
-                <div 
-                  key={n.id} 
-                  className={cn("flex items-start gap-3 p-2 rounded-lg relative", !n.leida ? "bg-secondary" : "", onNotificationClick ? "cursor-pointer hover:bg-muted/80" : "")}
-                  onClick={() => {
-                    if (!n.leida) onMarkAsRead(n.id);
-                    if (onNotificationClick) onNotificationClick(n);
-                  }}
-                >
-                  {!n.leida && <div className="absolute top-2 left-2 h-2 w-2 rounded-full bg-primary" />}
-                   <div className="mt-1 flex-shrink-0">
-                     <Icon className="h-5 w-5 text-muted-foreground" />
-                   </div>
-                  <div className="flex-1 pointer-events-none">
-                    <p className="text-sm font-medium leading-tight">{getTranslated(n, 'titulo', language)}</p>
-                    <p className="text-xs text-muted-foreground">{getTranslated(n, 'descripcion', language)}</p>
-                  </div>
-                  <div className="text-xs text-muted-foreground flex-shrink-0 pointer-events-none">{timeSince(new Date(n.fecha))}</div>
-                   {!n.leida && (
-                     <Button variant="ghost" size="sm" className="p-0 h-auto text-xs z-10 relative" onClick={(e) => { e.stopPropagation(); onMarkAsRead(n.id); }}>{t('notifications.read')}</Button>
-                   )}
-                </div>
-              );
-            })}
+            {(['hoy', 'ayer', 'anteriores'] as const).map(key => groups[key].length > 0 && (
+              <div key={key}>
+                <p className="px-2 pb-1 pt-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/80">{groupLabels[key]}</p>
+                <div className="space-y-1">{groups[key].map(renderItem)}</div>
+              </div>
+            ))}
           </div>
             </ScrollArea>
           </TabsContent>
