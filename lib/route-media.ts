@@ -70,6 +70,11 @@ const SITE_IMAGES: Record<string, string> = {
   s2: '/images/imperdibles/banner_ruta_colonial.png',
   s3: '/images/banners/banner_bulevar_rio.png',
   s19: '/images/capilla_san_antonio.png',
+  // La ruta de naturaleza conserva imágenes locales aun si una URL editorial expira.
+  s20: '/routes/ruta_naturaleza.jpg',
+  s30: '/routes/ruta_naturaleza.jpg',
+  s65: '/images/banners/banner_tres_cruces.png',
+  s5: '/images/imperdibles/banner_ruta_colonial.png',
 };
 
 export function normalizeMediaName(name = '') {

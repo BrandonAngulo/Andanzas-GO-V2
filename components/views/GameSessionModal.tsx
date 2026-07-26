@@ -305,14 +305,14 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                     {rewards && (
                         <div className="w-full rounded-2xl border border-white/10 bg-slate-900/50 p-3 sm:p-4">
                             <p className="mb-2.5 text-[11px] font-bold uppercase tracking-widest text-white/45">Recompensas de la partida</p>
-                            <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
+                            <div className="grid grid-cols-2 gap-2 min-[390px]:grid-cols-4">
                                 {[
                                     { Icon: Zap, val: rewards.xp, label: 'XP de perfil', bg: 'bg-violet-500/15', text: 'text-violet-300' },
                                     { Icon: Sparkles, val: rewards.appPoints, label: 'Puntos Andanzas', bg: 'bg-emerald-500/15', text: 'text-emerald-300' },
                                     { Icon: Coins, val: rewards.coins, label: 'Monedas', bg: 'bg-yellow-500/15', text: 'text-yellow-300' },
                                     { Icon: Gem, val: rewards.gems, label: 'Gemas', bg: 'bg-cyan-500/15', text: 'text-cyan-300' },
                                 ].map(({ Icon, val, label, bg, text }) => (
-                                    <div key={label} className="flex flex-col items-center gap-1">
+                                    <div key={label} className="flex min-w-0 flex-col items-center gap-1 rounded-xl bg-white/[0.025] px-1.5 py-2 min-[390px]:bg-transparent min-[390px]:px-0 min-[390px]:py-0">
                                         <div className={`flex h-8 w-8 items-center justify-center rounded-full ${bg}`}><Icon className={`h-4 w-4 ${text}`} /></div>
                                         <span className={`text-base font-black leading-none sm:text-lg ${text}`}>+{val}</span>
                                         <span className="text-[10px] leading-tight text-white/45">{label}</span>
