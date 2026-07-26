@@ -29,7 +29,6 @@ import { BannerGalleryModal, AVAILABLE_BANNERS } from './BannerGalleryModal';
 import { RewardUnlockModal } from './RewardUnlockModal';
 import { imagePositionStyle, normalizeImagePosition } from '../shared/ImagePositioner';
 
-import { InfoTooltip } from '../ui/tooltip';
 import { getTranslated, getMacroCategory, cn } from '../../lib/utils';
 import { COLOMBIAN_CITIES } from '../../lib/locations';
 
@@ -208,37 +207,114 @@ function LevelGuide({ currentLevel }: { currentLevel: number }) {
     );
 }
 
-function EconomyTile({ icon, value, label, help, animOnHover }: { icon: React.ReactNode; value: string | number; label: string; help: { title: string; body: string }; animOnHover?: string }) {
+type EconomyResourceKey = keyof typeof ECONOMY_HELP;
+
+interface EconomyResourcesProps {
+    values: Record<EconomyResourceKey, string | number>;
+    desktop?: boolean;
+}
+
+function EconomyResources({ values, desktop = false }: EconomyResourcesProps) {
+    const [activeKey, setActiveKey] = useState<EconomyResourceKey | null>(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const keys = Object.keys(ECONOMY_HELP) as EconomyResourceKey[];
+    const activeItem = activeKey ? ECONOMY_HELP[activeKey] : null;
+    const activeMeta = activeKey ? ECONOMY_META[activeKey] : null;
+    const ActiveIcon = activeMeta?.icon;
+
+    const selectResource = (key: EconomyResourceKey) => {
+        setActiveKey(key);
+        if (!desktop) setDialogOpen(true);
+    };
+
     return (
-        <InfoTooltip title={help.title} body={help.body}>
-            <button type="button" className="group flex min-h-12 w-full items-center gap-2 rounded-xl border border-border/70 bg-background/80 p-2 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}>
-                <span className={cn('grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-muted/70 ring-1 ring-border/50', animOnHover)}>{icon}</span>
-                <span className="min-w-0 leading-tight">
-                    <strong className="block text-[15px] leading-none text-foreground">{value}</strong>
-                    <span className="mt-0.5 block truncate text-[10px] font-medium text-muted-foreground">{label}</span>
-                </span>
-            </button>
-        </InfoTooltip>
+        <div
+            className="relative"
+            onMouseLeave={desktop ? () => setActiveKey(null) : undefined}
+        >
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-2">
+                {keys.map((key) => {
+                    const help = ECONOMY_HELP[key];
+                    const meta = ECONOMY_META[key];
+                    const Icon = meta.icon;
+                    return (
+                        <button
+                            key={key}
+                            type="button"
+                            className={cn(
+                                'group flex min-h-12 w-full items-center gap-2 rounded-xl border bg-background/80 p-2 text-left shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                                activeKey === key ? 'border-primary/50 bg-background shadow-md' : 'border-border/70 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-md',
+                            )}
+                            aria-label={`${help.title}: ${values[key]}. Ver explicación`}
+                            onMouseEnter={desktop ? () => setActiveKey(key) : undefined}
+                            onFocus={() => setActiveKey(key)}
+                            onClick={() => selectResource(key)}
+                        >
+                            <span className={cn('grid h-7 w-7 shrink-0 place-items-center rounded-lg ring-1 ring-border/40', meta.ring)}>
+                                <Icon className={cn('h-4 w-4', meta.color, meta.hoverAnim)} />
+                            </span>
+                            <span className="min-w-0 leading-tight">
+                                <strong className="block text-[15px] leading-none text-foreground">{values[key]}</strong>
+                                <span className="mt-0.5 block truncate text-[10px] font-medium text-muted-foreground">{key === 'points' ? 'Puntos' : help.title}</span>
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+
+            {desktop && activeItem && activeMeta && ActiveIcon && (
+                <div className="absolute right-[calc(100%+0.75rem)] top-1/2 z-30 w-72 -translate-y-1/2 rounded-2xl border border-primary/15 bg-popover p-4 text-left shadow-2xl animate-in fade-in-0 slide-in-from-right-2">
+                    <div className="flex items-start gap-3">
+                        <span className={cn('grid h-10 w-10 shrink-0 place-items-center rounded-xl', activeMeta.ring)}>
+                            <ActiveIcon className={cn('h-5 w-5', activeMeta.color)} />
+                        </span>
+                        <div>
+                            <p className="font-bold text-foreground">{activeItem.title}</p>
+                            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{activeItem.body}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {!desktop && (
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                    <DialogContent className="max-w-[calc(100vw-2rem)] rounded-3xl sm:max-w-sm">
+                        {activeItem && activeMeta && ActiveIcon && (
+                            <>
+                                <DialogHeader>
+                                    <DialogTitle className="flex items-center gap-3">
+                                        <span className={cn('grid h-11 w-11 place-items-center rounded-2xl', activeMeta.ring)}>
+                                            <ActiveIcon className={cn('h-5 w-5', activeMeta.color)} />
+                                        </span>
+                                        {activeItem.title}
+                                    </DialogTitle>
+                                </DialogHeader>
+                                <p className="text-sm leading-relaxed text-muted-foreground">{activeItem.body}</p>
+                            </>
+                        )}
+                    </DialogContent>
+                </Dialog>
+            )}
+        </div>
     );
 }
 
 // Guía animada de recursos usada dentro del diálogo "¿Cómo funcionan los puntos?".
 function EconomyResourceCards() {
     return (
-        <div className="grid gap-2.5 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
             {(Object.keys(ECONOMY_HELP) as (keyof typeof ECONOMY_HELP)[]).map(key => {
                 const meta = ECONOMY_META[key];
                 const item = ECONOMY_HELP[key];
                 const Icon = meta.icon;
                 return (
-                    <div key={key} className="flex gap-3 rounded-2xl border bg-gradient-to-br from-muted/50 to-transparent p-3 shadow-sm">
-                        <span className={cn('grid h-10 w-10 shrink-0 place-items-center rounded-xl', meta.ring)}>
+                    <div key={key} className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-shadow hover:shadow-md">
+                        <div className={cn('absolute inset-x-0 top-0 h-1', meta.ring)} />
+                        <span className={cn('grid h-11 w-11 shrink-0 place-items-center rounded-2xl', meta.ring)}>
                             <Icon className={cn('h-5 w-5', meta.color, meta.anim)} />
                         </span>
-                        <div className="min-w-0">
-                            <h4 className="font-semibold text-foreground">{item.title}</h4>
-                            <p className="mt-0.5 text-xs leading-snug">{item.body}</p>
-                        </div>
+                        <h4 className="mt-3 font-bold text-foreground">{item.title}</h4>
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.body}</p>
                     </div>
                 );
             })}
@@ -260,11 +336,28 @@ const EARN_WAYS = [
 function EconomyGuide() {
     return (
         <div className="space-y-4">
-            <div className="flex gap-3 rounded-2xl border bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-4">
+            <div className="relative min-h-44 overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-800 to-primary p-5 text-white shadow-lg sm:min-h-48 sm:p-6">
+                <div className="absolute -left-10 -top-12 h-36 w-36 rounded-full border border-white/10" />
+                <div className="absolute left-20 top-8 h-24 w-24 rounded-full border border-white/10" />
+                <div className="relative z-10 max-w-[68%]">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-amber-300">Andi te acompaña</p>
+                    <h4 className="mt-2 text-xl font-extrabold leading-tight sm:text-2xl">Cada experiencia impulsa tu recorrido</h4>
+                    <p className="mt-2 text-xs leading-relaxed text-white/80 sm:text-sm">
+                        Explorar, aprender, jugar y aportar te da XP y recursos distintos. Cada uno cumple una función en tu aventura.
+                    </p>
+                </div>
+                <img
+                    src="/brand/andi/andi-frontal-512-transparent-v2.png"
+                    alt="Andi presenta los recursos del perfil"
+                    className="absolute -bottom-5 -right-3 h-44 w-auto object-contain drop-shadow-2xl sm:-right-1 sm:h-52"
+                />
+            </div>
+
+            <div className="flex gap-3 rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-4">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary"><TrendingUp className="h-5 w-5" /></span>
                 <div className="min-w-0">
                     <h4 className="font-semibold text-foreground">Nivel y experiencia (XP)</h4>
-                    <p className="mt-0.5 text-xs leading-snug text-muted-foreground">Cada actividad te da XP y te hace subir de nivel, desde <strong className="font-semibold text-foreground">Explorador Novato</strong> hasta <strong className="font-semibold text-foreground">Leyenda de Cali</strong>. Tu nivel acompaña siempre a tu avatar.</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">La XP hace avanzar tu nivel, desde <strong className="font-semibold text-foreground">Explorador Novato</strong> hasta <strong className="font-semibold text-foreground">Leyenda de Cali</strong>. Los puntos, monedas, gemas y vidas son recursos diferentes: no reemplazan la XP.</p>
                 </div>
             </div>
 
@@ -840,12 +933,15 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             <p className="text-left text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Tus recursos</p>
                             <p className="mt-0.5 text-[10px] text-muted-foreground">Pasa el cursor para conocer cada uno.</p>
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
-                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />
-                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} animOnHover={ECONOMY_META.coins.hoverAnim} />
-                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} animOnHover={ECONOMY_META.gems.hoverAnim} />
-                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} animOnHover={ECONOMY_META.lives.hoverAnim} />
-                        </div>
+                        <EconomyResources
+                            desktop
+                            values={{
+                                points: economy?.app_points ?? userProfile?.points ?? 0,
+                                coins: economy?.coins ?? 0,
+                                gems: economy?.gems ?? 0,
+                                lives: `${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`,
+                            }}
+                        />
                     </aside>
 
                     <div className="relative z-10 flex flex-col items-center p-6 pt-12 text-center xl:min-h-[300px] xl:justify-center">
@@ -918,16 +1014,19 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Tus recursos</p>
                                 <p className="text-[10px] text-muted-foreground">Toca para saber más</p>
                             </div>
-                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                                <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />
-                                <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} animOnHover={ECONOMY_META.coins.hoverAnim} />
-                                <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} animOnHover={ECONOMY_META.gems.hoverAnim} />
-                                <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} animOnHover={ECONOMY_META.lives.hoverAnim} />
-                            </div>
+                            <EconomyResources
+                                values={{
+                                    points: economy?.app_points ?? userProfile?.points ?? 0,
+                                    coins: economy?.coins ?? 0,
+                                    gems: economy?.gems ?? 0,
+                                    lives: `${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`,
+                                }}
+                            />
                         </div>
 
                         <InfoHint
                             title={economyHelp.title}
+                            contentClassName="sm:max-w-[720px]"
                             trigger={
                                 <button type="button" className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline">
                                     <Info className="w-3.5 h-3.5" /> {language === 'es' ? '¿Cómo funcionan los puntos?' : 'How do points work?'}

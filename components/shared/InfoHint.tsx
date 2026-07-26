@@ -51,6 +51,8 @@ interface InfoHintProps {
     /** Optional icon override (defaults to a help circle). */
     icon?: React.ReactNode;
     className?: string;
+    /** Optional classes for the explanatory dialog container. */
+    contentClassName?: string;
     /** Size of the trigger button. */
     size?: 'sm' | 'md';
     /** Optional custom trigger; when provided it replaces the default icon button. */
@@ -69,6 +71,7 @@ export const InfoHint: React.FC<InfoHintProps> = ({
     label = 'Más información',
     icon,
     className,
+    contentClassName,
     size = 'md',
     trigger,
 }) => {
@@ -95,7 +98,7 @@ export const InfoHint: React.FC<InfoHintProps> = ({
                     </button>
                 )}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[480px] max-h-[85vh] overflow-y-auto rounded-3xl border border-primary/10 shadow-2xl">
+            <DialogContent className={cn("sm:max-w-[480px] max-h-[85vh] overflow-y-auto rounded-3xl border border-primary/10 shadow-2xl", contentClassName)}>
                 {/* Sutil acento superior */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/10 to-transparent" />
                 <DialogHeader className="relative">
