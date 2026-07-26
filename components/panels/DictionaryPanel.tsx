@@ -81,15 +81,19 @@ export function DictionaryPanel(): JSX.Element {
       <header className="rounded-2xl border bg-card p-4 shadow-sm">
         <div className="flex items-center gap-3"><BookOpen className="h-7 w-7 shrink-0 text-primary sm:h-8 sm:w-8" /><h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Diccionario de jergas y culturas</h1></div>
         <p className="mt-2 text-muted-foreground">Palabras que cuentan cómo hablamos, vivimos y recordamos. Un capítulo por territorio.</p>
-        <div className="relative mt-4" role="search">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input value={query} onChange={(event) => setQuery(event.target.value)} className="pl-9" placeholder="Buscar una palabra o definición" aria-label="Buscar en el diccionario" />
-        </div>
       </header>
 
       <WordOfTheDayCard onOpen={setSelectedEntry} />
 
       <section className="space-y-4 rounded-2xl border bg-card p-4" aria-label="Filtros del diccionario">
+        <div role="search">
+          <h2 className="mb-2 text-sm font-semibold">Buscar en el diccionario</h2>
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input value={query} onChange={(event) => setQuery(event.target.value)} className="pl-9" placeholder="Escribe una palabra o definición" aria-label="Buscar en el diccionario" />
+          </div>
+        </div>
+        <div className="border-t" />
         <RegionChapterSelector regions={facets.regions} value={regionSlug} onChange={changeRegion} />
         {!!facets.regions.length && <div className="border-t" />}
         <div><h2 className="mb-2 text-sm font-semibold">Letra inicial</h2><div className="flex flex-nowrap items-center gap-1 overflow-x-auto pb-1 scrollbar-none"><Button size="sm" variant={!letter ? 'default' : 'outline'} onClick={() => setLetter('')} className="shrink-0">Todas</Button>{facets.letters.map((item) => <Button key={item.value} size="sm" variant={letter === item.value ? 'default' : 'outline'} onClick={() => setLetter(item.value)} aria-pressed={letter === item.value} className="h-8 w-8 shrink-0 p-0">{item.value}</Button>)}</div></div>
