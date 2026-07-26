@@ -255,7 +255,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                             onClick={() => setSelectedEntry(entry)}
                         >
                             {entry.image_url ? (
-                                <div className="h-48 relative overflow-hidden bg-muted">
+                                <div className="h-40 relative overflow-hidden bg-muted sm:h-48">
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
                                     <img src={entry.image_url} alt={entry.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={imagePositionStyle(entry.image_position)} />
                                     <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-md">
@@ -273,12 +273,12 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                                 </div>
                             )}
 
-                            <div className="p-6 relative z-10 flex flex-col flex-grow">
-                                <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors leading-tight font-heading">
+                            <div className="p-4 relative z-10 flex flex-col flex-grow sm:p-6">
+                                <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors leading-tight font-heading sm:text-xl sm:mb-3">
                                     {getTranslated(entry, 'title', language)}
                                 </h3>
-                                
-                                <p className="text-muted-foreground/90 text-sm line-clamp-3 mb-6 leading-relaxed flex-grow font-serif">
+
+                                <p className="text-muted-foreground/90 text-sm line-clamp-3 mb-4 leading-relaxed flex-grow font-serif sm:mb-6">
                                     {(getTranslated(entry, 'content_full', language) as string || getTranslated(entry, 'content_simple', language) as string || '').split('\n\n')[0]}
                                 </p>
                                 
