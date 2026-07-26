@@ -18,6 +18,7 @@ import { useHelpContent } from '../../hooks/useHelpContent';
 import { gamificationService } from '../../services/gamification.service';
 import { useI18n } from '../../i18n';
 import { useAuth } from '../../contexts/AuthContext';
+import { useUserData } from '../../contexts/UserDataContext';
 import { getAuthErrorMessage } from '../../services/auth.service';
 import { userService } from '../../services/user.service';
 import OnboardingModal from '../panels/OnboardingModal';
@@ -275,6 +276,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const { t, language } = useI18n();
     const { getHelp } = useHelpContent();
     const { user, signIn, signUp, logout, isAuthenticated, resetPassword, signInWithGoogle } = useAuth();
+    const { addNotification } = useUserData();
 
     const [isRegistering, setIsRegistering] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
@@ -398,9 +400,22 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 const first = res.newly_unlocked[0];
                 setUnlockData({ type: 'banner', name: first.name, description: first.description || '¡Desbloqueaste una ilustración exclusiva para tu perfil!' });
                 setShowUnlockModal(true);
+                addNotification({
+                    titulo: '¡Nuevo fondo de perfil!',
+                    titulo_en: 'New profile background!',
+                    descripcion: first.name,
+                    descripcion_en: first.name,
+                    leida: false,
+                    icono: ImageIcon,
+                    icono_name: 'Sparkles',
+                    tipo: 'reward',
+                    dedupe_key: `profile-banner:${first.id}`,
+                    target_type: 'profile',
+                    target_id: first.id,
+                });
             }
         }).catch(() => { /* silencioso: no bloquea el perfil */ });
-    }, [myReviews.length, userProfile?.saved_routes?.length, economy?.level, routesCompletedCount, insigniasCount]);
+    }, [myReviews.length, userProfile?.saved_routes?.length, economy?.level, routesCompletedCount, insigniasCount, addNotification]);
 
     const handleDeleteReview = async (reviewId: string) => {
         toast((t('deleteConfirm') || "¿Estás seguro de eliminar esta reseña?"), {

@@ -63,8 +63,8 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, 
         key={n.id}
         className={cn("flex items-start gap-3 p-2 rounded-lg relative", !n.leida ? "bg-secondary" : "", onNotificationClick ? "cursor-pointer hover:bg-muted/80" : "")}
         onClick={() => {
-          if (!n.leida) onMarkAsRead(n.id);
           if (onNotificationClick) onNotificationClick(n);
+          else if (!n.leida) onMarkAsRead(n.id);
         }}
       >
         {!n.leida && <div className="absolute top-2 left-2 h-2 w-2 rounded-full bg-primary" />}

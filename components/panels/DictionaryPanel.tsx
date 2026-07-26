@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AlertCircle, BookOpen, Loader2, Search } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -13,7 +13,12 @@ import type { DictionaryEntry, DictionaryFacets } from '../../types';
 const EMPTY_FACETS: DictionaryFacets = { letters: [], tags: [], temporalStatuses: [], regions: [] };
 const PAGE_SIZE = 24;
 
-export function DictionaryPanel(): JSX.Element {
+interface DictionaryPanelProps {
+  initialEntryId?: string | null;
+  onInitialConsumed?: () => void;
+}
+
+export function DictionaryPanel({ initialEntryId, onInitialConsumed }: DictionaryPanelProps): JSX.Element {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [letter, setLetter] = useState('');
@@ -30,6 +35,18 @@ export function DictionaryPanel(): JSX.Element {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
   const [selectedEntry, setSelectedEntry] = useState<DictionaryEntry | null>(null);
+  const consumedInitialEntryRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!initialEntryId || consumedInitialEntryRef.current === initialEntryId) return;
+    consumedInitialEntryRef.current = initialEntryId;
+    let active = true;
+    dictionaryService.getEntryById(initialEntryId)
+      .then((entry) => { if (active && entry) setSelectedEntry(entry); })
+      .catch((cause) => console.error('No se pudo abrir la palabra notificada:', cause))
+      .finally(() => { if (active) onInitialConsumed?.(); });
+    return () => { active = false; };
+  }, [initialEntryId, onInitialConsumed]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(query), 300);

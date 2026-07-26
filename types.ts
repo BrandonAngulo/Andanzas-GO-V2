@@ -381,6 +381,16 @@ export interface Notificacion {
   icono: React.ElementType;
   /** Enrutamiento del clic en la bandeja: 'daily_question' | 'badge_earned' | 'broadcast' | ... */
   tipo?: string;
+  /** Clave estable usada por el servidor para evitar entregas duplicadas. */
+  dedupe_key?: string;
+  /** Destino funcional que debe abrirse al consultar la notificación. */
+  target_type?: 'daily_question' | 'dictionary' | 'learn' | 'route' | 'event' | 'game' | 'url' | 'weekly_goals' | 'profile' | string;
+  target_id?: string;
+  payload?: Record<string, unknown>;
+  /** Solo se establece al abrir el contenido asociado, no al marcar como leída. */
+  consultada_at?: string;
+  /** Nombre serializable del icono; `icono` sigue siendo el componente renderizable. */
+  icono_name?: string;
 }
 
 export interface Insignia {

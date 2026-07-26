@@ -7,6 +7,7 @@ import { Ruta, Site } from '../types';
 import { gamificationService } from '../services/gamification.service';
 import { routesService } from '../services/routes.service';
 import { analyticsService } from '../services/analytics.service';
+import { notificationsService } from '../services/notifications.service';
 import { getTranslated } from '../lib/utils';
 import { Route } from 'lucide-react';
 import { toast } from 'sonner';
@@ -136,6 +137,7 @@ export const useRouteNavigation = () => {
 
         updateRouteProgress(newInProgress, newCompleted);
         setActiveGuidedRoute(null);
+        void notificationsService.markMatchingAsConsulted('route_reminder', route.id);
 
         const closingMsg =
             getTranslated(route, 'closing_text', language) ||
@@ -165,6 +167,11 @@ export const useRouteNavigation = () => {
                         descripcion_en: routeBadge?.nombre_en || routeBadge?.nombre || routeBadgeId,
                         leida: false,
                         icono: routeBadge?.icono || Route as any,
+                        icono_name: 'Award',
+                        tipo: 'badge_earned',
+                        dedupe_key: `badge:${routeBadgeId}`,
+                        target_type: 'profile',
+                        target_id: routeBadgeId,
                     });
                 }
 
@@ -179,6 +186,11 @@ export const useRouteNavigation = () => {
                             descripcion_en: progressBadge.nombre_en || progressBadge.nombre,
                             leida: false,
                             icono: progressBadge.icono,
+                            icono_name: 'Award',
+                            tipo: 'badge_earned',
+                            dedupe_key: `badge:${progressBadge.id}`,
+                            target_type: 'profile',
+                            target_id: progressBadge.id,
                         });
                     }
                 }
@@ -192,6 +204,11 @@ export const useRouteNavigation = () => {
             descripcion_en: closingMsg || defaultMsg, // Simplification
             leida: false,
             icono: Route as any,
+            icono_name: 'Route',
+            tipo: 'route_completed',
+            dedupe_key: `route-completed:${route.id}`,
+            target_type: 'route',
+            target_id: route.id,
         });
 
         setShowRouteModal(false);

@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient';
 import { analyticsService } from './analytics.service';
+import { notificationsService } from './notifications.service';
 
 export interface WeeklyGoal {
     key: string;
@@ -29,7 +30,10 @@ export const weeklyService = {
         const { data, error } = await supabase.rpc('claim_weekly_goal', { p_goal_key: goalKey });
         if (error) throw error;
         const res = data as { claimed?: boolean; coins?: number; already_claimed?: boolean };
-        if (res.claimed) analyticsService.trackEvent('weekly_goal_claimed', 'weekly', goalKey, { coins: res.coins ?? 0 });
+        if (res.claimed) {
+            analyticsService.trackEvent('weekly_goal_claimed', 'weekly', goalKey, { coins: res.coins ?? 0 });
+            void notificationsService.markMatchingAsConsulted('weekly_goal', goalKey);
+        }
         return res;
     },
 };

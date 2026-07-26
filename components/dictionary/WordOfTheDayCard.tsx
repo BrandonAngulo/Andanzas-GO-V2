@@ -66,6 +66,11 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
               descripcion_en: `You unlocked: ${result.badgeName ?? 'Caleñólogo'}`,
               leida: false,
               icono: Sparkles as any,
+              icono_name: 'Award',
+              tipo: 'badge_earned',
+              dedupe_key: 'badge:badge-calenologo',
+              target_type: 'profile',
+              target_id: 'badge-calenologo',
             });
             toast.success(`¡Insignia desbloqueada: ${result.badgeName ?? 'Caleñólogo'}! 🏅`);
           }

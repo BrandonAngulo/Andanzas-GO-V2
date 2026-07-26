@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import { Review, Notificacion, Insignia, UserProfile } from '../types';
 import { userService } from '../services/user.service';
@@ -28,6 +28,7 @@ interface UserDataContextType {
     addNotification: (notif: Omit<Notificacion, 'id' | 'fecha'>) => void;
     registerEarnedBadge: (badgeId: string) => void;
     markAsRead: (id: string) => void;
+    markAsConsulted: (id: string) => void;
     markAllAsRead: () => void;
 
     // Route progress (could arguably be in RouteContext, but it's user data)
@@ -54,8 +55,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         if (isAuthenticated && user) {
             userService.getFavorites(user.id).then(setFavIds);
             reviewsService.getByUserId(user.id).then(setReviews);
-            // Genera (si toca) la notificación de la Pregunta del día antes de leer la bandeja.
-            notificationsService.ensureDailyNotification().finally(() => {
+            // Orquesta todas las fuentes idempotentes antes de leer la bandeja.
+            notificationsService.ensureAppNotifications().finally(() => {
                 if (active) notificationsService.getUserNotifications(user.id).then(n => { if (active) setNotifications(n); });
             });
             gamificationService.getUserBadgeIds(user.id).then(setEarnedInsignias);
@@ -77,9 +78,27 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         return () => { active = false; };
     }, [isAuthenticated, user]);
 
-    const addNotification = (notif: Omit<Notificacion, 'id' | 'fecha'>) => {
-        setNotifications(prev => [{ ...notif, id: `n_${Date.now()}`, fecha: new Date().toISOString() }, ...prev]);
-    };
+    const addNotification = useCallback((notif: Omit<Notificacion, 'id' | 'fecha'>) => {
+        const tempId = `n_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const optimistic = { ...notif, id: tempId, fecha: new Date().toISOString() };
+        setNotifications(prev => [
+            optimistic,
+            ...prev.filter(item => !notif.dedupe_key || item.dedupe_key !== notif.dedupe_key),
+        ]);
+        if (isAuthenticated && user) {
+            void notificationsService.addNotification(notif, user.id).then(saved => {
+                if (!saved) return;
+                setNotifications(prev => [
+                    saved,
+                    ...prev.filter(item =>
+                        item.id !== tempId &&
+                        item.id !== saved.id &&
+                        (!saved.dedupe_key || item.dedupe_key !== saved.dedupe_key)
+                    ),
+                ]);
+            });
+        }
+    }, [isAuthenticated, user]);
 
     const registerEarnedBadge = (badgeId: string) => {
         if (!badgeId) return;
@@ -110,6 +129,11 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                             descripcion_en: 'You unlocked: ' + (newBadge.nombre_en || newBadge.nombre),
                             leida: false,
                             icono: Award as any,
+                            icono_name: 'Award',
+                            tipo: 'badge_earned',
+                            dedupe_key: `badge:${newBadge.id}`,
+                            target_type: 'profile',
+                            target_id: newBadge.id,
                         });
                         registerEarnedBadge(newBadge.id);
                     }
@@ -143,7 +167,12 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                         descripcion: 'Has desbloqueado: ' + newBadge.nombre,
                         descripcion_en: 'You unlocked: ' + (newBadge.nombre_en || newBadge.nombre),
                         leida: false,
-                        icono: Award as any
+                        icono: Award as any,
+                        icono_name: 'Award',
+                        tipo: 'badge_earned',
+                        dedupe_key: `badge:${newBadge.id}`,
+                        target_type: 'profile',
+                        target_id: newBadge.id,
                     });
                     registerEarnedBadge(newBadge.id);
                 }
@@ -157,6 +186,11 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
     const markAsRead = (id: string) => {
         setNotifications(prev => prev.map(n => n.id === id ? { ...n, leida: true } : n));
         if (!id.startsWith('n_')) notificationsService.markAsRead(id);
+    };
+    const markAsConsulted = (id: string) => {
+        const consultedAt = new Date().toISOString();
+        setNotifications(prev => prev.map(n => n.id === id ? { ...n, leida: true, consultada_at: consultedAt } : n));
+        if (!id.startsWith('n_')) notificationsService.markAsConsulted(id);
     };
     const markAllAsRead = () => {
         setNotifications(prev => prev.map(n => ({ ...n, leida: true })));
@@ -184,6 +218,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             addNotification,
             registerEarnedBadge,
             markAsRead,
+            markAsConsulted,
             markAllAsRead,
             updateRouteProgress
         }}>

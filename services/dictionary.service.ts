@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient';
 import type { AppFeature, DictionaryAdminEntry, DictionaryAdminSort, DictionaryEntry, DictionaryEntryInput, DictionaryFacets, DictionaryRegion, DictionaryRegionFacet, DictionarySearchParams, DictionarySource, DictionaryTag, DictionaryTagOption } from '../types';
+import { notificationsService } from './notifications.service';
 
 export const DICTIONARY_FEATURE_KEY = 'dictionary_caleno';
 
@@ -258,15 +259,28 @@ export const dictionaryService = {
 
   /** Devuelve la palabra del día: cualquier entrada publicada del diccionario, misma para todos y rotando a diario. */
   async getWordOfTheDay(): Promise<DictionaryEntry | null> {
+    const { data, error } = await supabase.rpc('get_word_of_the_day');
+    if (error) throw error;
+    if (!data) return null;
+    const row = data as any;
+    return {
+      ...row,
+      variants: Array.isArray(row.variants) ? row.variants : [],
+      geographic_scope: Array.isArray(row.geographic_scope) ? row.geographic_scope.join(', ') : row.geographic_scope,
+      social_register: Array.isArray(row.social_register) ? row.social_register.join(', ') : row.social_register,
+    } as DictionaryEntry;
+  },
+
+  async getEntryById(id: string): Promise<DictionaryEntry | null> {
     const { data, error } = await supabase
       .from('dictionary_entries')
       .select('*')
+      .eq('id', id)
       .eq('status', 'published')
-      .order('id', { ascending: true });
+      .maybeSingle();
     if (error) throw error;
-    if (!data || data.length === 0) return null;
-    const dayNumber = Math.floor(Date.now() / 86_400_000); // día UTC desde epoch
-    const row = data[dayNumber % data.length] as any;
+    if (!data) return null;
+    const row = data as any;
     return {
       ...row,
       variants: Array.isArray(row.variants) ? row.variants : [],
@@ -296,7 +310,7 @@ export const dictionaryService = {
     const { data, error } = await supabase.rpc('claim_word_of_the_day');
     if (error) throw error;
     const r = (data ?? {}) as Record<string, unknown>;
-    return {
+    const result = {
       ok: Boolean(r.ok),
       alreadyClaimed: Boolean(r.already_claimed),
       awardedPoints: Number(r.awarded_points ?? 0),
@@ -305,6 +319,10 @@ export const dictionaryService = {
       badgeUnlocked: Boolean(r.badge_unlocked),
       badgeName: (r.badge_name as string | null) ?? null,
     };
+    if (result.ok || result.alreadyClaimed) {
+      void notificationsService.markMatchingAsConsulted('word_of_day');
+    }
+    return result;
   },
 
   /** Racha actual del usuario para la palabra del día (para mostrarla en la tarjeta). */
@@ -317,7 +335,12 @@ export const dictionaryService = {
       .maybeSingle();
     if (error) { console.error('No se pudo leer la racha:', error); return null; }
     if (!data) return { currentStreak: 0, bestStreak: 0, claimedToday: false };
-    const today = new Date().toISOString().slice(0, 10);
+    const today = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Bogota',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date());
     return {
       currentStreak: data.current_streak ?? 0,
       bestStreak: data.best_streak ?? 0,

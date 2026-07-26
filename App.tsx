@@ -133,6 +133,7 @@ export default function App() {
     toggleFav,
     addReview,
     markAsRead,
+    markAsConsulted,
     markAllAsRead,
     addNotification,
     registerEarnedBadge,
@@ -213,6 +214,7 @@ export default function App() {
   }, [activePanel]);
   // Entrada de "Pa' que sepás" a abrir directamente al navegar (p. ej. desde un dato curioso).
   const [pendingLearnEntryId, setPendingLearnEntryId] = useState<string | null>(null);
+  const [pendingDictionaryEntryId, setPendingDictionaryEntryId] = useState<string | null>(null);
   // Recuerda cuál era el panel activo justo antes de entrar a 'perfil' (sin importar la
   // entrada: avatar del header, Sidebar, BottomNav o clic en notificación), para que el
   // botón de "cerrar perfil" regrese ahí en vez de saltar siempre al mapa.
@@ -502,6 +504,11 @@ export default function App() {
           descripcion_en: 'You unlocked: ' + (newBadge.nombre_en || newBadge.nombre),
           leida: false,
           icono: Award as any,
+          icono_name: 'Award',
+          tipo: 'badge_earned',
+          dedupe_key: `badge:${newBadge.id}`,
+          target_type: 'profile',
+          target_id: newBadge.id,
         });
       }
     } catch (e) {
@@ -677,13 +684,40 @@ export default function App() {
                       setShowNotifications(false);
                   }}
                   onNotificationClick={(notif) => {
-                      if (notif.tipo === 'daily_question') {
-                          markAsRead(notif.id);
+                      markAsConsulted(notif.id);
+                      setShowNotifications(false);
+
+                      if (notif.target_type === 'daily_question' || notif.tipo === 'daily_question') {
                           setShowDailyGlobal(true);
-                          setShowNotifications(false);
-                      } else if (notif.tipo === 'badge_earned' || notif.tipo === 'reward' || notif.titulo.includes('Insignia') || notif.titulo.includes('Banner')) {
+                      } else if (notif.target_type === 'dictionary' || notif.tipo === 'word_of_day') {
+                          setPendingDictionaryEntryId(notif.target_id || null);
+                          setActivePanel('diccionario');
+                      } else if (notif.target_type === 'learn' || notif.tipo === 'curious_fact') {
+                          setPendingLearnEntryId(notif.target_id || null);
+                          setActivePanel('paquesepas');
+                      } else if (notif.target_type === 'route') {
+                          const route = rutasTematicas.find(item => item.id === notif.target_id);
+                          if (route) openRoute(route);
+                          else setActivePanel('rutas');
+                      } else if (notif.target_type === 'event') {
+                          const event = eventos.find(item => item.id === notif.target_id);
+                          if (event) openEvent(event);
+                          else setActivePanel('eventos');
+                      } else if (notif.target_type === 'game') {
+                          setActivePanel('juegos');
+                          if (notif.target_id) {
+                              window.setTimeout(() => window.dispatchEvent(new CustomEvent('open-game', {
+                                  detail: { gameId: notif.target_id },
+                              })), 250);
+                          }
+                      } else if (notif.target_type === 'weekly_goals' || notif.tipo === 'weekly_goal') {
+                          setActivePanel('juegos');
+                      } else if (notif.target_type === 'url' && notif.target_id) {
+                          window.open(notif.target_id, '_blank', 'noopener,noreferrer');
+                      } else if (notif.target_type === 'profile' || notif.tipo === 'badge_earned' || notif.tipo === 'reward' || notif.titulo.includes('Insignia') || notif.titulo.includes('Banner')) {
                           setActivePanel('perfil');
-                          setShowNotifications(false);
+                      } else if (notif.tipo === 'broadcast') {
+                          setActivePanel('noticias');
                       }
                   }}
               />}
@@ -763,7 +797,12 @@ export default function App() {
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} dictionaryVisible={dictionaryVisible} onOpenDictionary={() => setActivePanel('diccionario')} />}
               {activePanel === 'juegos' && isAuthenticated && <JuegosPanel onPlayGame={(gameId, mode, theme) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme } }))} />}
-              {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && <DictionaryPanel />}
+              {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && (
+                <DictionaryPanel
+                  initialEntryId={pendingDictionaryEntryId}
+                  onInitialConsumed={() => setPendingDictionaryEntryId(null)}
+                />
+              )}
               {activePanel === 'admin' && <AdminDashboard />}
 
               {/* Full View: overlay que cubre el panel dentro del CardContent (no debajo). */}
