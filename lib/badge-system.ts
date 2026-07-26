@@ -20,6 +20,40 @@ export const FAMILY_TIER_THRESHOLDS: Record<string, number[]> = {
   route_complete: [1, 5, 10],
 };
 
+export const OFFICIAL_ILLUSTRATED_BADGE_IDS = new Set([
+  'badge-afro',
+  'badge-arch',
+  'badge-art',
+  'badge-calenologo',
+  'badge-eco',
+  'badge-food',
+  'badge-history',
+  'badge-lit',
+  'badge-salsa',
+  'badge-sport',
+  'badge-theater',
+  'insignia-fav-1',
+  'insignia-fav-2',
+  'insignia-fav-3',
+  'insignia-review-1',
+  'insignia-review-2',
+  'insignia-review-3',
+  'insignia-route-1',
+  'insignia-route-2',
+  'insignia-route-3',
+  'insignia-route-complete',
+  'insignia-route-complete-2',
+  'insignia-route-complete-3',
+]);
+
+export function getBadgeIllustrationPath(insignia: Insignia): string | undefined {
+  if (OFFICIAL_ILLUSTRATED_BADGE_IDS.has(insignia.id)) {
+    return `/images/badges-v2/${insignia.id}.webp`;
+  }
+
+  return insignia.image_url || undefined;
+}
+
 const FAMILY_VISUALS: Record<string, Omit<BadgeVisual, 'ruleLabel' | 'connected'>> = {
   fav: {
     group: 'progress',

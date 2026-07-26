@@ -1,8 +1,8 @@
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { Lock, Sparkles } from 'lucide-react';
 import type { Insignia } from '../../types';
 import { cn } from '../../lib/utils';
-import { getBadgeVisual } from '../../lib/badge-system';
+import { getBadgeIllustrationPath, getBadgeVisual } from '../../lib/badge-system';
 
 interface AchievementEmblemProps {
   insignia: Insignia;
@@ -20,6 +20,9 @@ export function AchievementEmblem({
   const rawId = useId();
   const id = rawId.replace(/:/g, '');
   const visual = getBadgeVisual(insignia);
+  const illustrationPath = getBadgeIllustrationPath(insignia);
+  const [failedIllustrationPath, setFailedIllustrationPath] = useState<string | null>(null);
+  const illustrationFailed = failedIllustrationPath === illustrationPath;
   const Icon = insignia.icono;
   const tier = Math.max(0, Math.min(insignia.tier || 0, 3));
 
@@ -33,7 +36,20 @@ export function AchievementEmblem({
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
-      <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full overflow-visible">
+      {illustrationPath && !illustrationFailed ? (
+        <img
+          src={illustrationPath}
+          alt=""
+          draggable={false}
+          className={cn(
+            'absolute inset-0 h-full w-full select-none object-contain',
+            obtained ? 'opacity-100' : 'opacity-55',
+          )}
+          onError={() => setFailedIllustrationPath(illustrationPath)}
+        />
+      ) : (
+        <>
+          <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full overflow-visible">
         <defs>
           <linearGradient id={`outer-${id}`} x1="18" y1="12" x2="102" y2="108" gradientUnits="userSpaceOnUse">
             <stop stopColor={obtained ? visual.secondary : '#D1D5DB'} />
@@ -84,30 +100,32 @@ export function AchievementEmblem({
             ))}
           </g>
         )}
-      </svg>
+          </svg>
 
-      <span
-        className="relative z-10 grid place-items-center rounded-full"
-        style={{
-          width: size * 0.38,
-          height: size * 0.38,
-          color: obtained ? visual.deep : '#4B5563',
-          transform: `translateY(${-size * 0.05}px)`,
-        }}
-      >
-        <Icon style={{ width: size * 0.27, height: size * 0.27 }} strokeWidth={2.35} />
-      </span>
+          <span
+            className="relative z-10 grid place-items-center rounded-full"
+            style={{
+              width: size * 0.38,
+              height: size * 0.38,
+              color: obtained ? visual.deep : '#4B5563',
+              transform: `translateY(${-size * 0.05}px)`,
+            }}
+          >
+            <Icon style={{ width: size * 0.27, height: size * 0.27 }} strokeWidth={2.35} />
+          </span>
+        </>
+      )}
 
-      {obtained ? (
+      {obtained && (!illustrationPath || illustrationFailed) ? (
         <Sparkles
           className="absolute right-[8%] top-[8%] z-20 animate-pulse"
           style={{ width: size * 0.18, height: size * 0.18, color: visual.secondary }}
         />
-      ) : (
+      ) : !obtained ? (
         <span className="absolute bottom-[10%] right-[8%] z-20 grid rounded-full border border-white/70 bg-slate-800 p-1.5 text-white shadow-lg">
           <Lock style={{ width: size * 0.13, height: size * 0.13 }} />
         </span>
-      )}
+      ) : null}
     </div>
   );
 }
