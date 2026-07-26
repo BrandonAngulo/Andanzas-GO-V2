@@ -6,8 +6,8 @@ import { Switch } from '../ui/switch';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
-import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2, Calendar, Gift, TrendingUp, Move } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2, Calendar, Gift, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
 import { BadgeDetailDialog } from '../shared/BadgeDetailDialog';
@@ -27,7 +27,7 @@ import { reviewsService } from '../../services/reviews.service';
 import { bannerService } from '../../services/banner.service';
 import { BannerGalleryModal, AVAILABLE_BANNERS } from './BannerGalleryModal';
 import { RewardUnlockModal } from './RewardUnlockModal';
-import { ImagePositioner, imagePositionStyle, DEFAULT_IMAGE_POSITION, normalizeImagePosition, ImagePosition } from '../shared/ImagePositioner';
+import { imagePositionStyle, normalizeImagePosition } from '../shared/ImagePositioner';
 
 import { InfoTooltip } from '../ui/tooltip';
 import { getTranslated, getMacroCategory, cn } from '../../lib/utils';
@@ -141,14 +141,81 @@ const ECONOMY_META = {
     lives: { icon: Heart, color: 'text-red-500', ring: 'bg-red-500/10', hoverAnim: 'group-hover:animate-[heartbeat_1.4s_ease-in-out_infinite] motion-reduce:animate-none', anim: 'animate-[heartbeat_1.8s_ease-in-out_infinite] motion-reduce:animate-none' },
 } as const;
 
+const LEVEL_TIERS = [
+    {
+        min: 1,
+        max: 2,
+        title: 'Explorador Novato',
+        titleEn: 'Novice Explorer',
+        meaning: 'Estás creando tus primeras huellas: conoces las funciones esenciales y comienzas a guardar lugares, jugar y recorrer.',
+    },
+    {
+        min: 3,
+        max: 5,
+        title: 'Caminante Urbano',
+        titleEn: 'Urban Trekker',
+        meaning: 'Ya exploras con constancia. Tu perfil empieza a reunir rutas, hallazgos y aportes que cuentan cómo vives la ciudad.',
+    },
+    {
+        min: 6,
+        max: 9,
+        title: 'Maestro Cultural',
+        titleEn: 'Culture Master',
+        meaning: 'Has conectado recorridos, saberes y experiencias. Tu trayectoria demuestra una relación amplia con la cultura local.',
+    },
+    {
+        min: 10,
+        max: Number.POSITIVE_INFINITY,
+        title: 'Leyenda de Cali',
+        titleEn: 'Legend of Cali',
+        meaning: 'Tu memoria de ciudad es extensa y diversa. Este nivel reconoce una trayectoria sostenida de exploración y participación.',
+    },
+] as const;
+
+const getLevelTier = (level: number) => LEVEL_TIERS.find(tier => level >= tier.min && level <= tier.max) ?? LEVEL_TIERS[0];
+
+function LevelGuide({ currentLevel }: { currentLevel: number }) {
+    const currentTier = getLevelTier(currentLevel);
+    return (
+        <div className="space-y-3">
+            <p className="text-sm leading-relaxed text-foreground/80">
+                Tu nivel resume la experiencia que has acumulado en Andanzas GO. No mide qué tan “bueno” eres: muestra cuánto has explorado, aprendido, jugado y aportado.
+            </p>
+            <div className="space-y-2">
+                {LEVEL_TIERS.map((tier) => {
+                    const isCurrent = tier.title === currentTier.title;
+                    const range = Number.isFinite(tier.max) ? `Niveles ${tier.min}–${tier.max}` : `Desde el nivel ${tier.min}`;
+                    return (
+                        <div
+                            key={tier.title}
+                            className={cn(
+                                'rounded-2xl border p-3 transition-colors',
+                                isCurrent ? 'border-primary/35 bg-primary/10' : 'border-border/70 bg-muted/25',
+                            )}
+                        >
+                            <div className="flex items-center justify-between gap-3">
+                                <p className="text-sm font-bold text-foreground">{tier.title}</p>
+                                <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-semibold', isCurrent ? 'bg-primary text-primary-foreground' : 'bg-background text-muted-foreground')}>
+                                    {isCurrent ? `Tu etapa · nivel ${currentLevel}` : range}
+                                </span>
+                            </div>
+                            <p className="mt-1 text-xs leading-snug text-muted-foreground">{tier.meaning}</p>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
 function EconomyTile({ icon, value, label, help, animOnHover }: { icon: React.ReactNode; value: string | number; label: string; help: { title: string; body: string }; animOnHover?: string }) {
     return (
         <InfoTooltip title={help.title} body={help.body}>
-            <button type="button" className="group flex w-full items-center gap-2 rounded-lg border bg-background/70 px-2 py-1.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}>
-                <span className={cn('shrink-0', animOnHover)}>{icon}</span>
+            <button type="button" className="group flex min-h-12 w-full items-center gap-2 rounded-xl border border-border/70 bg-background/80 p-2 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-background hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={`${label}: ${value}. Ver explicación`}>
+                <span className={cn('grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-muted/70 ring-1 ring-border/50', animOnHover)}>{icon}</span>
                 <span className="min-w-0 leading-tight">
-                    <strong className="block text-sm leading-none">{value}</strong>
-                    <span className="block truncate text-[10px] text-muted-foreground">{label}</span>
+                    <strong className="block text-[15px] leading-none text-foreground">{value}</strong>
+                    <span className="mt-0.5 block truncate text-[10px] font-medium text-muted-foreground">{label}</span>
                 </span>
             </button>
         </InfoTooltip>
@@ -330,9 +397,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     
     // Gamification Modals
     const [showBannerGallery, setShowBannerGallery] = useState(false);
-    const [showReposition, setShowReposition] = useState(false);
-    const [tempBannerPos, setTempBannerPos] = useState<ImagePosition>(DEFAULT_IMAGE_POSITION);
-    const [savingPos, setSavingPos] = useState(false);
     const [showUnlockModal, setShowUnlockModal] = useState(false);
     const [unlockData, setUnlockData] = useState({ type: 'banner' as 'banner' | 'badge', name: '', description: '' });
 
@@ -672,15 +736,9 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const displayName = userProfile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Explorador";
     const economyHelp = getHelp('economy');
 
-    const getLevelTitle = (lvl: number) => {
-        if (!lvl || lvl < 3) return language === 'es' ? 'Explorador Novato' : 'Novice Explorer';
-        if (lvl < 6) return language === 'es' ? 'Caminante Urbano' : 'Urban Trekker';
-        if (lvl < 10) return language === 'es' ? 'Maestro Cultural' : 'Culture Master';
-        return language === 'es' ? 'Leyenda de Cali' : 'Legend of Cali';
-    };
-
     // Gamification Progress Math
     const currentLevel = economy?.level || userProfile?.level || 1;
+    const currentLevelTier = getLevelTier(currentLevel);
     const currentXp = economy?.experience_points || userProfile?.experience_points || 0;
     const levelStartXp = economy?.level_start_xp || (100 * Math.pow(currentLevel - 1, 2));
     const nextLevelXp = economy?.next_level_xp || (100 * Math.pow(currentLevel, 2));
@@ -697,26 +755,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const activeBannerUrl = activeBanner?.image_url ?? null;
     // El encuadre del usuario manda; si no reposicionó, hereda el encuadre por defecto del catálogo.
     const bannerPosition = normalizeImagePosition((userProfile as any)?.banner_position ?? (activeBanner as any)?.image_position);
-
-    const openReposition = () => {
-        setTempBannerPos(normalizeImagePosition((userProfile as any)?.banner_position ?? (activeBanner as any)?.image_position));
-        setShowReposition(true);
-    };
-    const saveReposition = async () => {
-        if (!user) return;
-        setSavingPos(true);
-        try {
-            await userService.updateProfileData(user.id, { banner_position: tempBannerPos });
-            setUserProfile(prev => prev ? ({ ...prev, banner_position: tempBannerPos } as any) : prev);
-            toast.success('Banner reposicionado.');
-            setShowReposition(false);
-        } catch (e) {
-            console.error(e);
-            toast.error('No se pudo guardar la posición.');
-        } finally {
-            setSavingPos(false);
-        }
-    };
 
     return (
         <ScrollArea className="h-full w-full">
@@ -750,55 +788,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </div>
                 )}
 
-                {/* Profile actions live outside the artwork so they never cover the banner. */}
-                <div className="flex flex-col gap-2 rounded-2xl border border-border/60 bg-card/80 p-2.5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-                    <InfoHint
-                        title="Tu memoria de ciudad"
-                        trigger={
-                            <button
-                                type="button"
-                                className="inline-flex h-9 items-center justify-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:justify-start"
-                            >
-                                <Info className="h-4 w-4 text-primary" />
-                                Sobre tu perfil
-                            </button>
-                        }
-                    >
-                        <CityMemoryGuide />
-                    </InfoHint>
-                    <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-end">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-9 rounded-full px-3"
-                            onClick={() => setShowSettingsModal(true)}
-                        >
-                            <Settings className="mr-2 h-4 w-4" />
-                            Ajustes
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-9 rounded-full px-3"
-                            onClick={() => setShowBannerGallery(true)}
-                        >
-                            <ImageIcon className="mr-2 h-4 w-4" />
-                            Cambiar fondo
-                        </Button>
-                        {activeBannerUrl && (
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="col-span-2 h-9 rounded-full px-3 sm:col-span-1"
-                                onClick={openReposition}
-                            >
-                                <Move className="mr-2 h-4 w-4" />
-                                Ajustar encuadre
-                            </Button>
-                        )}
-                    </div>
-                </div>
-
                 {/* Header Profile Section */}
                 <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50">
                     {activeBannerUrl ? (
@@ -810,9 +799,48 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50" />
                     )}
 
-                    <aside className="absolute right-6 top-1/2 z-10 hidden w-56 -translate-y-1/2 rounded-2xl border bg-background/75 p-3 shadow-sm backdrop-blur-md xl:block">
-                        <p className="mb-2 text-left text-[11px] font-bold uppercase tracking-widest text-primary">Tus recursos</p>
-                        <div className="grid grid-cols-2 gap-1.5">
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        className="absolute right-4 top-4 z-20 rounded-full border border-border/50 bg-background/60 shadow-md backdrop-blur-md hover:bg-background/90"
+                        onClick={() => setShowBannerGallery(true)}
+                        title="Cambiar fondo y ajustar encuadre"
+                        aria-label="Cambiar fondo y ajustar encuadre"
+                    >
+                        <ImageIcon className="h-4 w-4 text-foreground" />
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        className="absolute right-16 top-4 z-20 rounded-full border border-border/50 bg-background/60 shadow-md backdrop-blur-md hover:bg-background/90"
+                        onClick={() => setShowSettingsModal(true)}
+                        title="Ajustes del perfil"
+                        aria-label="Ajustes del perfil"
+                    >
+                        <Settings className="h-4 w-4 text-foreground" />
+                    </Button>
+                    <InfoHint
+                        title="Tu memoria de ciudad"
+                        trigger={
+                            <button
+                                type="button"
+                                aria-label="Qué reúne tu perfil"
+                                title="Qué reúne tu perfil"
+                                className="absolute left-4 top-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/50 bg-background/60 text-foreground shadow-md backdrop-blur-md transition-colors hover:bg-background/90"
+                            >
+                                <Info className="h-4 w-4" />
+                            </button>
+                        }
+                    >
+                        <CityMemoryGuide />
+                    </InfoHint>
+
+                    <aside className="absolute right-6 top-1/2 z-10 hidden w-64 -translate-y-1/2 rounded-3xl border border-white/60 bg-background/85 p-3.5 shadow-lg backdrop-blur-md xl:block">
+                        <div className="mb-2.5">
+                            <p className="text-left text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Tus recursos</p>
+                            <p className="mt-0.5 text-[10px] text-muted-foreground">Pasa el cursor para conocer cada uno.</p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
                             <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />
                             <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} animOnHover={ECONOMY_META.coins.hoverAnim} />
                             <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} animOnHover={ECONOMY_META.gems.hoverAnim} />
@@ -856,9 +884,21 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </button>
 
                         <h2 className="text-2xl font-bold mb-1 mt-2">{displayName}</h2>
-                        <p className="text-sm text-muted-foreground flex items-center justify-center gap-1.5 mb-2">
-                            {getLevelTitle(currentLevel)}
-                        </p>
+                        <InfoHint
+                            title={`Tu nivel: ${language === 'es' ? currentLevelTier.title : currentLevelTier.titleEn}`}
+                            icon={<TrendingUp className="h-5 w-5" />}
+                            trigger={
+                                <button
+                                    type="button"
+                                    className="mb-2 inline-flex items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/70 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                >
+                                    {language === 'es' ? currentLevelTier.title : currentLevelTier.titleEn}
+                                    <Info className="h-3.5 w-3.5" />
+                                </button>
+                            }
+                        >
+                            <LevelGuide currentLevel={currentLevel} />
+                        </InfoHint>
                         <p className="text-xs text-primary font-medium flex items-center justify-center gap-1.5 mb-5 bg-primary/10 px-3 py-1 rounded-full">
                             {xpWithinLevel} / {xpNeededThisLevel} XP para el siguiente nivel
                         </p>
@@ -873,11 +913,17 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Aportes</span>
                             </button>
                         </div>
-                        <div className="mt-4 grid w-full max-w-md grid-cols-2 gap-2 sm:grid-cols-4 xl:hidden">
-                            <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />
-                            <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} animOnHover={ECONOMY_META.coins.hoverAnim} />
-                            <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} animOnHover={ECONOMY_META.gems.hoverAnim} />
-                            <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} animOnHover={ECONOMY_META.lives.hoverAnim} />
+                        <div className="mt-4 w-full max-w-md rounded-2xl border border-white/50 bg-background/55 p-3 shadow-sm backdrop-blur-sm xl:hidden">
+                            <div className="mb-2 flex items-center justify-between gap-2">
+                                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Tus recursos</p>
+                                <p className="text-[10px] text-muted-foreground">Toca para saber más</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                                <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />
+                                <EconomyTile icon={<Coins className="h-4 w-4 text-yellow-500" />} value={economy?.coins ?? 0} label="Monedas" help={ECONOMY_HELP.coins} animOnHover={ECONOMY_META.coins.hoverAnim} />
+                                <EconomyTile icon={<Gem className="h-4 w-4 text-cyan-500" />} value={economy?.gems ?? 0} label="Gemas" help={ECONOMY_HELP.gems} animOnHover={ECONOMY_META.gems.hoverAnim} />
+                                <EconomyTile icon={<Heart className="h-4 w-4 text-red-500" />} value={`${economy?.lives ?? 0}/${economy?.max_lives ?? 3}`} label="Vidas" help={ECONOMY_HELP.lives} animOnHover={ECONOMY_META.lives.hoverAnim} />
+                            </div>
                         </div>
 
                         <InfoHint
@@ -1316,17 +1362,23 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
                 {/* Settings Modal */}
                 <Dialog open={showSettingsModal} onOpenChange={setShowSettingsModal}>
-                    <DialogContent className="max-w-sm rounded-3xl p-6">
-                        <DialogHeader>
-                            <DialogTitle className="text-xl font-bold flex items-center gap-2">
-                                <Settings className="h-5 w-5 text-primary" /> 
-                                Configuración
+                    <DialogContent className="max-h-[90dvh] max-w-md overflow-y-auto rounded-3xl border-primary/10 p-0">
+                        <DialogHeader className="relative overflow-hidden border-b border-primary/10 bg-gradient-to-br from-primary/12 via-primary/5 to-transparent p-6 pb-5">
+                            <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-primary/10 blur-2xl" />
+                            <DialogTitle className="relative flex items-center gap-3 text-xl font-bold">
+                                <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary/12 text-primary ring-1 ring-primary/15">
+                                    <Settings className="h-5 w-5" />
+                                </span>
+                                <span>
+                                    Configuración
+                                    <span className="mt-0.5 block text-xs font-normal text-muted-foreground">Tu identidad, preferencias y privacidad.</span>
+                                </span>
                             </DialogTitle>
                         </DialogHeader>
                         
-                        <div className="space-y-4 py-4">
+                        <div className="space-y-3 p-5">
                             {isEditingProfile ? (
-                                <div className="space-y-3 bg-muted/20 p-4 rounded-xl border border-muted">
+                                <div className="space-y-3 rounded-2xl border border-primary/20 bg-primary/5 p-4">
                                     <div className="space-y-1">
                                         <label className="text-xs font-medium">Alias o Seudónimo</label>
                                         <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-9" placeholder="Tu alias" />
@@ -1351,19 +1403,23 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
-                                    <div>
-                                        <h4 className="text-sm font-semibold">Datos del Explorador</h4>
-                                        <p className="text-xs text-muted-foreground mt-0.5">{editName || displayName}</p>
+                                <div className="flex items-center gap-3 rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 to-transparent p-4">
+                                    <UserAvatar userProfile={userProfile} className="h-12 w-12 shrink-0 border-2 border-background shadow-sm" />
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Datos del explorador</p>
+                                        <h4 className="mt-0.5 truncate text-sm font-bold">{editName || displayName}</h4>
+                                        <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                                            {editCity || userProfile?.city || 'Ciudad por completar'} · {userProfile?.email || user?.email}
+                                        </p>
                                     </div>
-                                    <Button size="sm" variant="outline" onClick={() => setIsEditingProfile(true)} className="rounded-full h-8">
+                                    <Button size="sm" variant="outline" onClick={() => setIsEditingProfile(true)} className="h-8 shrink-0 rounded-full">
                                         <Edit2 className="h-3.5 w-3.5 mr-1.5" />
                                         {t('edit')}
                                     </Button>
                                 </div>
                             )}
 
-                            <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
+                            <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-card p-3.5">
                                 <div>
                                     <h4 className="text-sm font-semibold">{language === 'es' ? 'Preferencias de Viaje' : 'Travel Preferences'}</h4>
                                     <p className="text-xs text-muted-foreground mt-0.5">
@@ -1378,7 +1434,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </Button>
                             </div>
                             
-                            <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
+                            <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-card p-3.5">
                                 <div>
                                     <h4 className="text-sm font-semibold">{t('profile.enableNotifications')}</h4>
                                     <p className="text-xs text-muted-foreground mt-0.5">Alertas de rutas y logros</p>
@@ -1386,7 +1442,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 <Switch defaultChecked id="notifications-switch" />
                             </div>
                             
-                            <div className="flex items-center justify-between p-3 bg-muted/40 rounded-xl">
+                            <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-card p-3.5">
                                 <div>
                                     <h4 className="text-sm font-semibold">Perfil Accesible</h4>
                                     <p className="text-xs text-muted-foreground mt-0.5">Guardar preferencias de accesibilidad en tu cuenta</p>
@@ -1406,8 +1462,8 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 />
                             </div>
 
-                            <div className="flex flex-col gap-2 p-3 bg-muted/40 rounded-xl">
-                                <h4 className="text-sm font-semibold">Documentos Legales</h4>
+                            <div className="flex flex-col gap-2 rounded-2xl border border-border/70 bg-card p-3.5">
+                                <h4 className="text-sm font-semibold">Privacidad y documentos</h4>
                                 <div className="flex gap-4 mt-1">
                                     <a href="/terms" className="text-xs text-primary hover:underline">Términos de Servicio</a>
                                     <a href="/privacy" className="text-xs text-primary hover:underline">Política de Privacidad</a>
@@ -1437,37 +1493,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 onOpenChange={setShowBannerGallery}
                 unlockedBanners={userProfile?.unlocked_banners || []}
                 selectedBannerId={userProfile?.selected_banner_id}
-                onBannerSelected={(id) => {
-                    // Al equipar otro banner, la posición vuelve a centrada (la persiste el modal).
-                    setUserProfile(prev => prev ? ({ ...prev, selected_banner_id: id, banner_position: null } as any) : null);
+                selectedPosition={(userProfile as any)?.banner_position}
+                onBannerSelected={(id, position) => {
+                    setUserProfile(prev => prev ? ({ ...prev, selected_banner_id: id, banner_position: position } as any) : null);
                 }}
                 dynamicBanners={dynamicBanners}
             />
-
-            {/* Ajustar el encuadre del banner equipado con el mismo componente del administrador. */}
-            <Dialog open={showReposition} onOpenChange={setShowReposition}>
-                <DialogContent className="sm:max-w-[560px]">
-                    <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2"><Move className="h-5 w-5 text-primary" /> Ajustar el encuadre</DialogTitle>
-                        <DialogDescription>Arrastrá la imagen y usá el zoom para elegir qué parte se ve en tu perfil.</DialogDescription>
-                    </DialogHeader>
-                    {activeBannerUrl && (
-                        <ImagePositioner
-                            imageUrl={activeBannerUrl}
-                            value={tempBannerPos}
-                            onChange={setTempBannerPos}
-                            aspectClassName="aspect-[16/6]"
-                        />
-                    )}
-                    <p className="text-xs text-muted-foreground">Vista aproximada: en el perfil el alto varía un poco según el dispositivo.</p>
-                    <div className="mt-2 flex items-center justify-end gap-2">
-                        <Button variant="ghost" className="rounded-full" onClick={() => setShowReposition(false)} disabled={savingPos}>Cancelar</Button>
-                        <Button className="rounded-full" onClick={saveReposition} disabled={savingPos}>
-                            {savingPos ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Guardar'}
-                        </Button>
-                    </div>
-                </DialogContent>
-            </Dialog>
 
             <RewardUnlockModal
                 open={showUnlockModal}

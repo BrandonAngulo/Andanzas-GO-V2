@@ -16,19 +16,30 @@ interface InfoTooltipProps {
  */
 export const InfoTooltip: React.FC<InfoTooltipProps> = ({ title, body, children, className }) => {
   const [open, setOpen] = useState(false);
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const [coords, setCoords] = useState<{ top: number; left: number; placement: 'top' | 'bottom' } | null>(null);
   const anchorRef = useRef<HTMLElement | null>(null);
 
   const place = useCallback(() => {
     const el = anchorRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    setCoords({ top: r.top, left: r.left + r.width / 2 });
+    const placement = r.top >= 150 ? 'top' : 'bottom';
+    const viewportWidth = window.innerWidth;
+    const left = Math.min(viewportWidth - 124, Math.max(124, r.left + r.width / 2));
+    setCoords({
+      top: placement === 'top' ? r.top - 10 : r.bottom + 10,
+      left,
+      placement,
+    });
   }, []);
 
   const show = useCallback(() => { place(); setOpen(true); }, [place]);
   const hide = useCallback(() => setOpen(false), []);
-  const toggle = useCallback(() => { place(); setOpen(o => !o); }, [place]);
+  const toggle = useCallback(() => {
+    place();
+    const isTouchLike = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    setOpen(current => isTouchLike ? true : !current);
+  }, [place]);
 
   useEffect(() => {
     if (!open) return;
@@ -65,12 +76,24 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({ title, body, children,
       {open && coords && createPortal(
         <div
           role="tooltip"
-          style={{ position: 'fixed', top: coords.top - 10, left: coords.left, transform: 'translate(-50%, -100%)' }}
+          style={{
+            position: 'fixed',
+            top: coords.top,
+            left: coords.left,
+            transform: coords.placement === 'top' ? 'translate(-50%, -100%)' : 'translateX(-50%)',
+          }}
           className={cn('pointer-events-none z-[1600] w-56 rounded-xl border bg-popover p-3 text-left shadow-xl animate-in fade-in-0 zoom-in-95 duration-150', className)}
         >
           <p className="text-xs font-semibold text-foreground">{title}</p>
           <p className="mt-1 text-[11px] leading-snug text-muted-foreground">{body}</p>
-          <span className="absolute left-1/2 top-full h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r bg-popover" />
+          <span
+            className={cn(
+              'absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 rotate-45 bg-popover',
+              coords.placement === 'top'
+                ? 'top-full -translate-y-1/2 border-b border-r'
+                : 'bottom-full translate-y-1/2 border-l border-t',
+            )}
+          />
         </div>,
         document.body
       )}
