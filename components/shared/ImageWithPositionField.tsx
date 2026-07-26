@@ -60,7 +60,7 @@ export const ImageWithPositionField: React.FC<ImageWithPositionFieldProps> = ({
                                     onClick={() => setEditing(true)}
                                     className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium transition-colors hover:bg-muted"
                                 >
-                                    <Move className="h-3.5 w-3.5" /> Reposicionar imagen
+                                    <Move className="h-3.5 w-3.5" /> Ajustar encuadre
                                 </button>
                             </div>
                         </div>

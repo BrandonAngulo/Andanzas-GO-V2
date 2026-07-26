@@ -5,7 +5,7 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { toast } from 'sonner';
-import { Save, Image as ImageIcon, Loader2, Edit, Trash2, Plus } from 'lucide-react';
+import { Save, Image as ImageIcon, Loader2, Edit, Trash2, Plus, Move, ChevronUp } from 'lucide-react';
 import { bannerService, Banner, promotedBannerService, PromotedBanner } from '../../../services/banner.service';
 import { Switch } from '../../ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
@@ -62,6 +62,7 @@ export const AdminBanners = () => {
     const [editingBanner, setEditingBanner] = useState<EditingBanner | null>(null);
     const [savingEdit, setSavingEdit] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
+    const [adjustingFrame, setAdjustingFrame] = useState(false);
 
     // Promoted Banner Edit State
     const [promoModalOpen, setPromoModalOpen] = useState(false);
@@ -181,6 +182,7 @@ export const AdminBanners = () => {
             image_position: (currentData as any)?.image_position ?? null,
             defaultImg
         });
+        setAdjustingFrame(false);
         setEditModalOpen(true);
     };
 
@@ -372,23 +374,51 @@ export const AdminBanners = () => {
                     </DialogHeader>
                     {editingBanner && (
                         <div className="space-y-4 py-4">
-                            <div className="h-32 w-full rounded-md border overflow-hidden relative group">
-                                <img src={editingBanner.image_url} alt="Preview" className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <label className="cursor-pointer bg-white text-black px-4 py-2 rounded-md font-medium text-sm flex items-center shadow-lg">
-                                        {uploadingImage ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ImageIcon className="w-4 h-4 mr-2" />}
-                                        Cambiar Imagen
-                                        <input type="file" className="hidden" accept="image/*" onChange={(e) => {
-                                            if (e.target.files?.[0]) handleImageUpload(e.target.files[0]);
-                                        }} disabled={uploadingImage} />
-                                    </label>
+                            <div className="overflow-hidden rounded-xl border border-border/70 bg-muted/30">
+                                <div className="aspect-[16/6] w-full overflow-hidden bg-muted">
+                                    <img
+                                        src={editingBanner.image_url}
+                                        alt={`Vista previa de ${editingBanner.label}`}
+                                        className="h-full w-full"
+                                        style={imagePositionStyle(editingBanner.image_position)}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2 border-t border-border/70 bg-background/90 p-2.5 sm:flex-row sm:items-center sm:justify-between">
+                                    <p className="text-xs text-muted-foreground">
+                                        Vista previa del recorte visible.
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        <label className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border border-border bg-background px-3 text-xs font-medium transition-colors hover:bg-muted">
+                                            {uploadingImage ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImageIcon className="h-3.5 w-3.5" />}
+                                            Cambiar imagen
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    if (e.target.files?.[0]) handleImageUpload(e.target.files[0]);
+                                                }}
+                                                disabled={uploadingImage}
+                                            />
+                                        </label>
+                                        <Button
+                                            type="button"
+                                            size="sm"
+                                            variant="outline"
+                                            className="h-8 rounded-full px-3 text-xs"
+                                            onClick={() => setAdjustingFrame((current) => !current)}
+                                        >
+                                            {adjustingFrame ? <ChevronUp className="mr-1.5 h-3.5 w-3.5" /> : <Move className="mr-1.5 h-3.5 w-3.5" />}
+                                            {adjustingFrame ? 'Cerrar ajuste' : 'Ajustar encuadre'}
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
 
-                            {editingBanner.image_url && (
+                            {editingBanner.image_url && adjustingFrame && (
                                 <div className="rounded-xl border border-border/70 bg-muted/30 p-3">
                                     <p className="mb-2 text-xs font-medium text-muted-foreground">
-                                        Encuadre (arrastrá + zoom){editingBanner.isProfile ? ': encuadre inicial; cada usuario puede reposicionar el suyo.' : ': cómo se recorta la imagen del encabezado.'}
+                                        Arrastrá la imagen y ajustá el zoom{editingBanner.isProfile ? '. Este será el encuadre inicial del usuario.' : ' para definir el encabezado.'}
                                     </p>
                                     <ImagePositioner
                                         imageUrl={editingBanner.image_url}

@@ -750,6 +750,55 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </div>
                 )}
 
+                {/* Profile actions live outside the artwork so they never cover the banner. */}
+                <div className="flex flex-col gap-2 rounded-2xl border border-border/60 bg-card/80 p-2.5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+                    <InfoHint
+                        title="Tu memoria de ciudad"
+                        trigger={
+                            <button
+                                type="button"
+                                className="inline-flex h-9 items-center justify-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:justify-start"
+                            >
+                                <Info className="h-4 w-4 text-primary" />
+                                Sobre tu perfil
+                            </button>
+                        }
+                    >
+                        <CityMemoryGuide />
+                    </InfoHint>
+                    <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-end">
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-9 rounded-full px-3"
+                            onClick={() => setShowSettingsModal(true)}
+                        >
+                            <Settings className="mr-2 h-4 w-4" />
+                            Ajustes
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-9 rounded-full px-3"
+                            onClick={() => setShowBannerGallery(true)}
+                        >
+                            <ImageIcon className="mr-2 h-4 w-4" />
+                            Cambiar fondo
+                        </Button>
+                        {activeBannerUrl && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="col-span-2 h-9 rounded-full px-3 sm:col-span-1"
+                                onClick={openReposition}
+                            >
+                                <Move className="mr-2 h-4 w-4" />
+                                Ajustar encuadre
+                            </Button>
+                        )}
+                    </div>
+                </div>
+
                 {/* Header Profile Section */}
                 <div className="relative rounded-3xl overflow-hidden bg-muted/30 border border-border/50">
                     {activeBannerUrl ? (
@@ -760,52 +809,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50" />
                     )}
-                    
-                    <Button 
-                        variant="secondary" 
-                        size="icon" 
-                        className="absolute top-4 right-4 z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80"
-                        onClick={() => setShowBannerGallery(true)}
-                        title="Cambiar fondo"
-                    >
-                        <ImageIcon className="h-4 w-4 text-foreground" />
-                    </Button>
-                    {activeBannerUrl && (
-                        <Button
-                            variant="secondary"
-                            size="icon"
-                            className="absolute top-4 right-16 z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80"
-                            onClick={openReposition}
-                            title="Reposicionar banner"
-                        >
-                            <Move className="h-4 w-4 text-foreground" />
-                        </Button>
-                    )}
-                    <Button
-                        variant="secondary"
-                        size="icon"
-                        className={`absolute top-4 ${activeBannerUrl ? 'right-28' : 'right-16'} z-20 rounded-full shadow-md bg-background/50 backdrop-blur-md border border-border/50 hover:bg-background/80`}
-                        onClick={() => setShowSettingsModal(true)}
-                        title="Ajustes de perfil"
-                    >
-                        <Settings className="h-4 w-4 text-foreground" />
-                    </Button>
-
-                    <InfoHint
-                        title="Tu memoria de ciudad"
-                        trigger={
-                            <button
-                                type="button"
-                                aria-label="Qué es tu perfil"
-                                title="Qué es tu perfil"
-                                className="absolute left-4 top-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/50 bg-background/50 text-foreground shadow-md backdrop-blur-md transition-colors hover:bg-background/80"
-                            >
-                                <Info className="h-4 w-4" />
-                            </button>
-                        }
-                    >
-                        <CityMemoryGuide />
-                    </InfoHint>
 
                     <aside className="absolute right-6 top-1/2 z-10 hidden w-56 -translate-y-1/2 rounded-2xl border bg-background/75 p-3 shadow-sm backdrop-blur-md xl:block">
                         <p className="mb-2 text-left text-[11px] font-bold uppercase tracking-widest text-primary">Tus recursos</p>
@@ -1441,11 +1444,11 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                 dynamicBanners={dynamicBanners}
             />
 
-            {/* Reposicionar el banner equipado: arrastrar + zoom (mismo componente que usará admin) */}
+            {/* Ajustar el encuadre del banner equipado con el mismo componente del administrador. */}
             <Dialog open={showReposition} onOpenChange={setShowReposition}>
                 <DialogContent className="sm:max-w-[560px]">
                     <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2"><Move className="h-5 w-5 text-primary" /> Reposicionar tu banner</DialogTitle>
+                        <DialogTitle className="flex items-center gap-2"><Move className="h-5 w-5 text-primary" /> Ajustar el encuadre</DialogTitle>
                         <DialogDescription>Arrastrá la imagen y usá el zoom para elegir qué parte se ve en tu perfil.</DialogDescription>
                     </DialogHeader>
                     {activeBannerUrl && (
