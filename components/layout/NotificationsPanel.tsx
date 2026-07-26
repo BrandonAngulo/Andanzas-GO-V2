@@ -90,11 +90,11 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, 
           <TabsList className="w-full grid grid-cols-2 bg-muted/50 h-9">
             <TabsTrigger value="alertas" className="text-xs font-semibold">
               <Bell className="w-3.5 h-3.5 mr-2" />
-              Alertas
+              {language === 'es' ? 'Para ti' : 'For you'}
             </TabsTrigger>
             <TabsTrigger value="noticias" className="text-xs font-semibold">
               <Activity className="w-3.5 h-3.5 mr-2" />
-              Noticias
+              {language === 'es' ? 'Noticias' : 'News'}
             </TabsTrigger>
           </TabsList>
         </CardHeader>
