@@ -43,26 +43,27 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
   return (
     <Card
       className={cn(
-        "overflow-hidden flex flex-col group cursor-pointer border shadow-sm hover:shadow-md transition-all duration-300 bg-card rounded-2xl",
+        // Móvil: fila horizontal compacta (imagen + contenido). sm+: tarjeta vertical.
+        "group flex cursor-pointer flex-row overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:shadow-md sm:flex-col",
         isPast ? "opacity-75 grayscale-[0.3]" : ""
       )}
       onClick={() => onOpenEvent(event)}
     >
-      <div className="relative h-48 w-full bg-muted overflow-hidden">
+      <div className="relative w-28 shrink-0 self-stretch overflow-hidden bg-muted sm:h-48 sm:w-full sm:self-auto">
         {event.img ? (
           <img src={event.img} alt={event.titulo} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" style={imagePositionStyle(event.image_position)} />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary/40">
-            <Calendar className="w-12 h-12" />
+            <Calendar className="w-10 h-10 sm:w-12 sm:h-12" />
           </div>
         )}
-        <div className="absolute top-3 left-3 bg-background/95 backdrop-blur-md px-2 py-1.5 rounded-lg shadow-sm flex flex-col items-center justify-center border leading-none">
+        <div className="absolute top-2 left-2 bg-background/95 backdrop-blur-md px-2 py-1 rounded-lg shadow-sm flex flex-col items-center justify-center border leading-none sm:top-3 sm:left-3 sm:py-1.5">
           <span className="text-[10px] font-bold text-muted-foreground uppercase">{monthStr}</span>
           <span className="text-base font-extrabold">{dayStr}</span>
         </div>
       </div>
 
-      <CardContent className="p-4 flex-grow flex flex-col">
+      <CardContent className="p-3 flex-grow flex flex-col sm:p-4">
         <div className="flex items-center gap-1.5 mb-2 flex-wrap">
           <span 
             className="text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider bg-primary/10 text-primary border border-primary/20"
@@ -101,7 +102,7 @@ const EventCard: React.FC<{ event: Evento; onOpenEvent: (event: Evento) => void;
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="hidden p-4 pt-0 sm:flex">
         <Button variant="outline" className="w-full rounded-xl group-hover:bg-primary group-hover:text-primary-foreground transition-colors border-primary/20 bg-primary/5">
           {t('seeMore')} <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
@@ -115,6 +116,8 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'week'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('Todos los tipos');
   const [specificDate, setSpecificDate] = useState<string>('');
+  const [showFilters, setShowFilters] = useState(false); // colapsado por defecto en móvil
+  const activeFilterCount = (specificDate ? 1 : 0) + (dateFilter !== 'all' ? 1 : 0) + (categoryFilter !== 'Todos los tipos' ? 1 : 0);
 
   // --- 1. Extract Categories Safely ---
   const eventCategories = useMemo(() => {
@@ -228,9 +231,22 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           
-          {/* Left Sidebar - Filters */}
-          <div className="w-full lg:w-72 shrink-0 space-y-6">
-            <div className="bg-card p-5 rounded-2xl border shadow-sm">
+          {/* Left Sidebar - Filters (colapsable en móvil) */}
+          <div className="w-full lg:w-72 shrink-0 space-y-3 lg:space-y-6">
+            <button
+              type="button"
+              onClick={() => setShowFilters(v => !v)}
+              className="flex w-full items-center justify-between rounded-2xl border bg-card px-4 py-3 text-left shadow-sm lg:hidden"
+            >
+              <span className="flex items-center gap-2 font-semibold">
+                <Filter className="h-5 w-5 text-primary" /> Filtros
+                {activeFilterCount > 0 && (
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-bold text-primary-foreground">{activeFilterCount}</span>
+                )}
+              </span>
+              <span className="text-xs text-muted-foreground">{filteredEvents.length} eventos · {showFilters ? 'Ocultar' : 'Ver'}</span>
+            </button>
+            <div className={cn("bg-card p-5 rounded-2xl border shadow-sm", showFilters ? "block" : "hidden lg:block")}>
               <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
                 <Filter className="w-5 h-5 text-primary" /> Filtrado por:
               </h3>
