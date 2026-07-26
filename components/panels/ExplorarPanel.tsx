@@ -97,15 +97,10 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
     const loadData = async () => {
       try {
         const [facts, banners] = await Promise.all([
-          curiositiesService.getPublished('home'),
+          curiositiesService.getDailyFact(),
           promotedBannerService.getAll()
         ]);
-        if (facts && facts.length > 0) {
-          // Dato del día: determinista por fecha (UTC) para que sea el mismo todo el día,
-          // cambie a diario y recorra todo el pool antes de repetir.
-          const dayNumber = Math.floor(Date.now() / 86_400_000);
-          setRandomFact(facts[dayNumber % facts.length]);
-        }
+        setRandomFact(facts);
         setPromotedBanners(banners);
       } catch (err) {
         console.error("Failed to load ExplorarPanel data", err);

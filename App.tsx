@@ -692,7 +692,12 @@ export default function App() {
                       } else if (notif.target_type === 'dictionary' || notif.tipo === 'word_of_day') {
                           setPendingDictionaryEntryId(notif.target_id || null);
                           setActivePanel('diccionario');
-                      } else if (notif.target_type === 'learn' || notif.tipo === 'curious_fact') {
+                      } else if (notif.target_type === 'learn') {
+                          setPendingLearnEntryId(notif.target_id || null);
+                          setActivePanel('paquesepas');
+                      } else if (notif.target_type === 'explore' || notif.tipo === 'daily_fact') {
+                          setActivePanel('explorar');
+                      } else if (notif.tipo === 'curious_fact') {
                           setPendingLearnEntryId(notif.target_id || null);
                           setActivePanel('paquesepas');
                       } else if (notif.target_type === 'route') {

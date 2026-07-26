@@ -127,11 +127,17 @@ export const notificationsService = {
     /** Orquesta todas las fuentes idempotentes antes de leer la bandeja. */
     async ensureAppNotifications(): Promise<{ created: number; resurfaced: number }> {
         try {
-            const { data, error } = await supabase.rpc('ensure_app_notifications');
-            if (error) return { created: 0, resurfaced: 0 };
+            const [appResult, dailyFactResult] = await Promise.all([
+                supabase.rpc('ensure_app_notifications'),
+                supabase.rpc('ensure_daily_curiosity_notification'),
+            ]);
+            const data = appResult.data as any;
+            const dailyFact = dailyFactResult.data as any;
             return {
-                created: Number((data as any)?.created || 0),
-                resurfaced: Number((data as any)?.resurfaced || 0),
+                created:
+                    (appResult.error ? 0 : Number(data?.created || 0)) +
+                    (dailyFactResult.error ? 0 : Number(dailyFact?.created || 0)),
+                resurfaced: appResult.error ? 0 : Number(data?.resurfaced || 0),
             };
         } catch {
             return { created: 0, resurfaced: 0 };

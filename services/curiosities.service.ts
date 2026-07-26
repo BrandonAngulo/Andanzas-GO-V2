@@ -43,6 +43,26 @@ export const curiositiesService = {
   },
 
   /**
+   * Obtiene el mismo dato editorial para todas las personas durante el día.
+   * La selección vive en la base de datos para mantener sincronizadas la
+   * tarjeta de Explorar y su notificación.
+   */
+  async getDailyFact(): Promise<CuriousFact | null> {
+    const { data, error } = await supabase
+      .rpc('get_daily_curious_fact')
+      .maybeSingle();
+
+    if (!error && data) return data as CuriousFact;
+
+    // Compatibilidad durante despliegues en los que el frontend llegue antes
+    // que la migración: conserva la rotación diaria anterior.
+    const facts = await this.getPublished('home');
+    if (facts.length === 0) return null;
+    const dayNumber = Math.floor(Date.now() / 86_400_000);
+    return facts[dayNumber % facts.length];
+  },
+
+  /**
    * Crea una nueva curiosidad
    */
   async createCuriosity(curiosity: Omit<CuriousFact, 'id' | 'created_at' | 'updated_at'>): Promise<CuriousFact | null> {
