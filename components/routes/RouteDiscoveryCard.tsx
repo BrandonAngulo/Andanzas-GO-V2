@@ -13,6 +13,7 @@ import { Ruta, Site } from '../../types';
 import { cn, formatDuration, getTranslated } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { imagePositionStyle } from '../shared/ImagePositioner';
+import { getRouteImage, getRouteVisual, getSiteImage } from '../../lib/route-media';
 
 interface RouteDiscoveryCardProps {
   route: Ruta;
@@ -25,82 +26,6 @@ interface RouteDiscoveryCardProps {
   saving?: boolean;
   onOpen: () => void;
   onToggleSave: () => void;
-}
-
-interface RouteVisual {
-  image: string;
-  overlay: string;
-  accent: string;
-}
-
-const ROUTE_VISUALS: Array<{ keywords: string[]; visual: RouteVisual }> = [
-  {
-    keywords: ['histor', 'colonial'],
-    visual: {
-      image: '/routes/ruta_historica.jpg',
-      overlay: 'from-amber-950/5 via-orange-950/20 to-[#3b1f10]/95',
-      accent: 'text-amber-200',
-    },
-  },
-  {
-    keywords: ['pincel', 'mural', 'arte', 'calle'],
-    visual: {
-      image: '/routes/ruta_arte.jpg',
-      overlay: 'from-fuchsia-950/5 via-violet-950/20 to-[#29104d]/95',
-      accent: 'text-fuchsia-200',
-    },
-  },
-  {
-    keywords: ['clave', 'barrio', 'salsa', 'musica'],
-    visual: {
-      image: '/routes/ruta_salsa.jpg',
-      overlay: 'from-rose-950/5 via-red-950/20 to-[#3b1015]/95',
-      accent: 'text-rose-200',
-    },
-  },
-  {
-    keywords: ['naturaleza', 'verde', 'ecolog'],
-    visual: {
-      image: '/routes/ruta_naturaleza.jpg',
-      overlay: 'from-emerald-950/5 via-green-950/20 to-[#0b3927]/95',
-      accent: 'text-emerald-200',
-    },
-  },
-  {
-    keywords: ['papel', 'liter', 'libro', 'letra'],
-    visual: {
-      image: '/routes/ruta_literatura.jpg',
-      overlay: 'from-sky-950/5 via-blue-950/20 to-[#102a43]/95',
-      accent: 'text-sky-200',
-    },
-  },
-  {
-    keywords: ['fogon', 'gastronom', 'cocina', 'sabor'],
-    visual: {
-      image: '/routes/ruta_gastronomia.jpg',
-      overlay: 'from-orange-950/5 via-amber-950/25 to-[#3a2109]/95',
-      accent: 'text-orange-200',
-    },
-  },
-];
-
-const DEFAULT_ROUTE_VISUAL: RouteVisual = {
-  image: '/routes/ruta_historica.jpg',
-  overlay: 'from-emerald-950/5 via-teal-950/20 to-[#042e2b]/95',
-  accent: 'text-emerald-200',
-};
-
-function normalizeRouteName(name: string) {
-  return name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
-}
-
-function getRouteVisual(routeName: string): RouteVisual {
-  const normalizedName = normalizeRouteName(routeName);
-  return ROUTE_VISUALS.find(({ keywords }) => keywords.some((keyword) => normalizedName.includes(keyword)))?.visual
-    || DEFAULT_ROUTE_VISUAL;
 }
 
 export function RouteDiscoveryCard({
@@ -118,11 +43,10 @@ export function RouteDiscoveryCard({
   const routeSites = route.puntos
     .map((pointId) => sites.find((site) => site.id === pointId))
     .filter(Boolean) as Site[];
-  const firstPoint = routeSites[0];
   const routeName = getTranslated(route, 'nombre', language) as string;
-  const visual = getRouteVisual(route.nombre || routeName);
+  const visual = getRouteVisual(route);
   const editorialImage = route.image_url || route.coverUrl;
-  const routeImage = editorialImage || visual.image || firstPoint?.fotos?.[0] || firstPoint?.logoUrl || '';
+  const routeImage = getRouteImage(route);
   const status = completed
     ? { label: language === 'es' ? 'Completada' : 'Completed', icon: CheckCircle2, tone: 'bg-amber-300 text-amber-950' }
     : inProgress
@@ -187,7 +111,7 @@ export function RouteDiscoveryCard({
                 <React.Fragment key={site.id}>
                   <span className="relative h-9 w-9 shrink-0 overflow-visible rounded-full border-2 border-white/90 bg-emerald-700 shadow-md">
                     <LazyImage
-                      src={site.fotos?.[0] || site.logoUrl || ''}
+                      src={getSiteImage(site, route)}
                       alt=""
                       className="h-full w-full rounded-full object-cover"
                       textFallback={String(index + 1)}

@@ -28,6 +28,8 @@ import { Site, Ruta, Challenge } from '../../types';
 import { gamificationService } from '../../services/gamification.service';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
+import { LazyImage } from '../ui/lazy-image';
+import { getSiteImage } from '../../lib/route-media';
 
 interface ActiveRouteBannerProps {
   route: Ruta;
@@ -260,7 +262,10 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
     }
     return -1;
   })();
-  const currentImage = currentPoint.fotos?.[0] || currentPoint.logoUrl;
+  const currentImage = getSiteImage(currentPoint, route);
+  const routeStops = route.puntos
+    .map(pointId => sites.find(site => site.id === pointId))
+    .filter(Boolean) as Site[];
   const routeName = getTranslated(route, 'nombre', language);
   const currentPointName = getTranslated(currentPoint, 'nombre', language);
   const ChallengeIcon =
@@ -277,8 +282,8 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
   return (
     <div
       className={cn(
-        "absolute bottom-[calc(5.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-[90] transition-all duration-300 ease-in-out md:bottom-5 md:left-auto md:right-5 md:w-[25rem]",
-        isExpanded ? "h-[min(74dvh,40rem)] md:h-[min(76vh,43rem)]" : "h-auto"
+        "absolute bottom-[calc(5.55rem+env(safe-area-inset-bottom))] left-2 right-2 z-[90] transition-all duration-300 ease-in-out md:bottom-5 md:left-auto md:right-5 md:w-[26rem]",
+        isExpanded ? "h-[min(64dvh,36rem)] md:h-[min(76vh,43rem)]" : "h-auto"
       )}
     >
       <Card className="flex h-full flex-col overflow-hidden rounded-[1.75rem] border-white/20 bg-background/97 shadow-[0_30px_90px_-34px_rgba(3,63,56,0.9)] ring-1 ring-emerald-950/10 backdrop-blur-xl">
@@ -300,8 +305,8 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
         </button>
 
         {/* Collapsed Header Info */}
-        <div className="shrink-0 border-b border-border/40 px-4 pb-4">
-          <div className="mb-3 flex items-center justify-between">
+        <div className="shrink-0 border-b border-border/40 px-3 pb-3 md:px-4 md:pb-4">
+          <div className="mb-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Badge
                 variant="outline"
@@ -311,6 +316,9 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
                 <RouteIcon className="mr-1 h-3 w-3" />
                 {t('guidedRoute.activeRoute') || "Ruta activa"}
               </Badge>
+              <span className="max-w-[9rem] truncate text-[11px] font-black text-foreground/75 md:hidden">
+                {routeName}
+              </span>
               
               <div className="flex items-center gap-1 rounded-full bg-muted/80 px-1 py-0.5 shadow-sm">
                 <Button 
@@ -349,7 +357,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
             </Button>
           </div>
 
-          <div className="mb-3 flex items-center justify-between gap-3 rounded-2xl bg-[#063f38] px-3.5 py-2.5 text-white">
+          <div className="mb-3 hidden items-center justify-between gap-3 rounded-2xl bg-[#063f38] px-3.5 py-2.5 text-white md:flex">
             <div className="min-w-0">
               <p className="truncate text-xs font-black">{routeName}</p>
               <p className="mt-0.5 text-[10px] font-semibold text-white/65">
@@ -361,6 +369,58 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
             <span className="shrink-0 font-mono text-sm font-black text-orange-300">{routeProgress}%</span>
           </div>
 
+          <div className="mb-3 flex items-center gap-2">
+            <div className="min-w-0 flex-1 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex min-w-max items-center pr-1">
+                {routeStops.map((stop, index) => {
+                  const isVisited = visitedPoints.includes(stop.id);
+                  const isActive = index === currentStep;
+                  return (
+                    <React.Fragment key={stop.id}>
+                      <button
+                        type="button"
+                        onClick={() => onSetStep?.(index)}
+                        className={cn(
+                          'relative h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 bg-emerald-100 shadow-sm transition-transform',
+                          isActive ? 'scale-110 border-orange-400 ring-2 ring-orange-200' : 'border-white',
+                          isVisited && 'ring-2 ring-emerald-400',
+                        )}
+                        aria-label={`${language === 'es' ? 'Elegir parada' : 'Choose stop'} ${index + 1}: ${getTranslated(stop, 'nombre', language)}`}
+                      >
+                        <LazyImage
+                          src={getSiteImage(stop, route)}
+                          alt=""
+                          className="h-full w-full"
+                          textFallback={`${index + 1}`}
+                        />
+                        <span className={cn(
+                          'absolute inset-x-0 bottom-0 z-30 grid h-4 place-items-center text-[9px] font-black text-white',
+                          isVisited ? 'bg-emerald-600' : isActive ? 'bg-orange-500' : 'bg-slate-900/65',
+                        )}>
+                          {isVisited ? <CheckCircle className="h-3 w-3" /> : index + 1}
+                        </span>
+                      </button>
+                      {index < routeStops.length - 1 && (
+                        <span className={cn(
+                          'h-px w-3 shrink-0 border-t-2 border-dotted',
+                          isVisited ? 'border-emerald-500' : 'border-emerald-300',
+                        )} />
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-emerald-50 ring-1 ring-emerald-200">
+              <img
+                src="/brand/andi/andi-frontal-512-transparent-v2.png"
+                alt=""
+                className="h-12 w-12 translate-y-1 object-contain"
+                aria-hidden="true"
+              />
+            </div>
+          </div>
+
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -368,11 +428,12 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
               onClick={() => onOpenSiteDetails?.(currentPoint)}
               aria-label={language === 'es' ? 'Ver detalles de la parada' : 'View stop details'}
             >
-              {currentImage ? (
-                <img src={currentImage} alt="" className="h-full w-full object-cover" />
-              ) : (
-                <MapPin className="m-4 h-6 w-6 text-emerald-600" />
-              )}
+              <LazyImage
+                src={currentImage}
+                alt=""
+                className="h-full w-full"
+                textFallback={currentPointName}
+              />
               <span className="absolute bottom-1 right-1 grid h-5 w-5 place-items-center rounded-full bg-orange-400 text-[10px] font-black text-orange-950 shadow">
                 {currentStep + 1}
               </span>
@@ -410,7 +471,7 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
           </div>
 
           <div
-            className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted"
+            className="mt-2 h-1 overflow-hidden rounded-full bg-muted md:mt-3 md:h-1.5"
             role="progressbar"
             aria-label={language === 'es' ? 'Progreso de la ruta' : 'Route progress'}
             aria-valuemin={0}
@@ -420,7 +481,11 @@ const ActiveRouteBanner: React.FC<ActiveRouteBannerProps> = ({
             <div className="h-full rounded-full bg-gradient-to-r from-orange-400 to-emerald-500 transition-[width] duration-500" style={{ width: `${routeProgress}%` }} />
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-2">
+          <p className="mt-2 text-center text-[10px] font-semibold text-muted-foreground md:hidden">
+            {language === 'es' ? 'Orden sugerido · puedes elegir cualquier parada' : 'Suggested order · choose any stop'}
+          </p>
+
+          <div className="mt-2 grid grid-cols-2 gap-2 md:mt-3">
               <Button
                 size="sm"
                 variant="outline"

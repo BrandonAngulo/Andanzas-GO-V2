@@ -11,6 +11,7 @@ import { BADGES } from '../../data/badges';
 import { useAuth } from '../../contexts/AuthContext';
 import { routesService } from '../../services/routes.service';
 import { imagePositionStyle } from '../shared/ImagePositioner';
+import { getRouteImage, getSiteImage } from '../../lib/route-media';
 
 interface RouteIntroModalProps {
     route: Ruta;
@@ -81,13 +82,12 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
         }
     };
 
-    const firstPoint = sites.find(s => s.id === route.puntos[0]);
     const badge = BADGES.find(b => b.id === route.reward_badge_id);
     const BadgeIcon = badge?.icono || Award;
     const routePoints = route.puntos
         .map(pointId => sites.find(site => site.id === pointId))
         .filter(Boolean) as Site[];
-    const routeImage = route.image_url || route.coverUrl || firstPoint?.fotos?.[0] || firstPoint?.logoUrl || '';
+    const routeImage = getRouteImage(route);
 
     return (
         <div
@@ -244,13 +244,21 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                         {routePoints.map((site, index) => (
                                             <li key={site.id} className="relative flex gap-3 pb-4 last:pb-0">
                                                 {index < routePoints.length - 1 && (
-                                                    <span className="absolute left-[15px] top-8 h-[calc(100%-1.25rem)] border-l-2 border-dashed border-emerald-500/35" />
+                                                    <span className="absolute left-[21px] top-10 h-[calc(100%-1.55rem)] border-l-2 border-dashed border-emerald-500/35" />
                                                 )}
-                                                <span className={cn(
-                                                    'relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-black',
-                                                    index === 0 ? 'bg-orange-400 text-orange-950' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200',
-                                                )}>
-                                                    {index + 1}
+                                                <span className="relative z-10 h-11 w-11 shrink-0 overflow-hidden rounded-2xl border-2 border-white bg-emerald-100 shadow-sm dark:bg-emerald-950">
+                                                    <LazyImage
+                                                        src={getSiteImage(site, route)}
+                                                        alt=""
+                                                        className="h-full w-full"
+                                                        textFallback={getTranslated(site, 'nombre', language) as string}
+                                                    />
+                                                    <span className={cn(
+                                                        'absolute bottom-0.5 right-0.5 z-30 grid h-5 w-5 place-items-center rounded-full text-[10px] font-black shadow',
+                                                        index === 0 ? 'bg-orange-400 text-orange-950' : 'bg-emerald-600 text-white',
+                                                    )}>
+                                                        {index + 1}
+                                                    </span>
                                                 </span>
                                                 <div className="min-w-0 flex-1 rounded-2xl border border-border/60 bg-card px-3 py-2.5">
                                                     <p className="truncate text-sm font-bold">{getTranslated(site, 'nombre', language)}</p>
