@@ -49,7 +49,7 @@ export function SupportUsModal({ isOpen, onClose, onOpenAlliances }: SupportUsMo
             <DialogContent className="max-w-md p-0 overflow-hidden rounded-3xl border-0 shadow-2xl">
                 
                 {/* Header Decoration */}
-                <div className="bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 h-32 relative overflow-hidden">
+                <div className="bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 h-24 relative overflow-hidden sm:h-32">
                     <div className="absolute inset-0 bg-white/20 [mask-image:linear-gradient(0deg,transparent,white)]" />
                     <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-background rounded-full flex items-center justify-center p-2 shadow-lg">
                         <div className="w-full h-full bg-orange-100 rounded-full flex items-center justify-center">
@@ -65,7 +65,7 @@ export function SupportUsModal({ isOpen, onClose, onOpenAlliances }: SupportUsMo
                     </p>
                 </div>
 
-                <ScrollArea className="max-h-[50vh] px-6 pb-6">
+                <ScrollArea className="max-h-[60vh] px-6 pb-6 sm:max-h-[50vh]">
                     <div className="space-y-4">
                         
                         {/* Aporte Económico */}

@@ -43,7 +43,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ site, isOpen, onClose, onSubm
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleSkip()}>
-            <DialogContent className="sm:max-w-lg border-none shadow-2xl bg-card/95 backdrop-blur-xl">
+            <DialogContent className="sm:max-w-lg border-none shadow-2xl bg-card/95 backdrop-blur-xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader className="items-center text-center pb-2">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary animate-in zoom-in spin-in-12 duration-500">
                         <Star className="w-6 h-6 fill-primary" />
