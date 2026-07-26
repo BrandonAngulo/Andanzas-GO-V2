@@ -624,6 +624,28 @@ export default function App() {
           </div>
 
           <div className="flex shrink-0 items-center gap-0.5 sm:gap-1 md:gap-1.5">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 rounded-full hover:bg-muted sm:hidden"
+              aria-label={language === 'es' ? 'Compartir Andanzas GO' : 'Share Andanzas GO'}
+              title={language === 'es' ? 'Compartir' : 'Share'}
+              onClick={handleShare}
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 rounded-full text-destructive hover:bg-destructive/10 hover:text-destructive sm:hidden"
+              aria-label={language === 'es' ? 'Abrir ayuda de emergencia' : 'Open emergency help'}
+              title={language === 'es' ? 'Ayuda de emergencia' : 'Emergency help'}
+              onClick={() => handleShowSOS(true)}
+            >
+              <AlertTriangle className="h-5 w-5" />
+            </Button>
+
             <div className="relative" ref={notificationsRef}>
               <Button id="notifications-bell" variant="ghost" size="icon" className="h-9 w-9 rounded-full hover:bg-muted md:h-10 md:w-10" aria-label={language === 'es' ? 'Notificaciones' : 'Notifications'} onClick={() => handleShowNotifications(!showNotifications)}>
                 <Bell className="h-5 w-5" />
@@ -774,7 +796,7 @@ export default function App() {
       <BottomNav activePanel={activePanel} setActivePanel={setActivePanel} />
 
       {/* Floating Buttons */}
-      <div className="fixed bottom-24 md:bottom-8 right-4 flex flex-col-reverse items-end gap-2 z-[500]">
+      <div className="fixed bottom-8 right-4 z-[500] hidden flex-col-reverse items-end gap-2 md:flex">
         <Button variant="destructive" size="icon" className="rounded-full shadow-lg h-11 w-11 hover:scale-110" onClick={() => handleShowSOS(true)}><AlertTriangle className="h-5 w-5" /></Button>
         <Button variant="secondary" size="icon" className="rounded-full shadow-md h-9 w-9" onClick={handleShare}><Share2 className="h-4 w-4" /></Button>
       </div>
