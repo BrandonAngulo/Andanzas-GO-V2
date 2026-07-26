@@ -280,6 +280,20 @@ export default function App() {
   const allRutas = useMemo(() => [...rutasTematicas, ...userRoutes], [rutasTematicas, userRoutes]);
   const unreadCount = notifications.filter(n => !n.leida).length;
   const panelTitle = t(`panelTitles.${activePanel}`);
+  // Vistas con portada o encabezado editorial propio. En escritorio, la
+  // carcasa general no repite el mismo título; en móvil conserva la barra
+  // compacta como referencia de navegación.
+  const panelOwnsDesktopHeader = [
+    'explorar',
+    'eventos',
+    'rutas',
+    'perfil',
+    'noticias',
+    'paquesepas',
+    'juegos',
+    'diccionario',
+    'admin',
+  ].includes(activePanel);
   const tendencias = useMemo(() => [...sites].sort((a, b) => b.visitas + b.rating * 100 - (a.visitas + a.rating * 100)).slice(0, 10), [sites]);
   const gridClass = "grid grid-cols-1 md:grid-cols-[260px_1fr]";
   const isFiltered = query.trim() !== '' || selectedCategories.length > 0;
@@ -570,7 +584,7 @@ export default function App() {
       </a>
 
       {/* Header */}
-      <header className={cn("z-[1000] mx-auto w-full flex-shrink-0 pt-[env(safe-area-inset-top)] transition-all duration-300 md:max-w-7xl md:px-4 md:pt-3", activeGuidedRoute && "hidden")}>
+      <header className={cn("z-[1000] mx-auto w-full flex-shrink-0 pt-[env(safe-area-inset-top)] transition-all duration-300 md:max-w-[100rem] md:px-4 md:pt-3", activeGuidedRoute && "hidden")}>
         <div className="glass-panel flex w-full items-center gap-1.5 border-b px-2 py-2 shadow-sm sm:gap-2 sm:px-3 md:gap-3 md:rounded-2xl md:border md:px-4 md:py-3 md:shadow-md">
           <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full md:h-10 md:w-10" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="mr-1 flex shrink-0 items-center gap-2 md:mr-2"><Logo /></div>
@@ -690,11 +704,14 @@ export default function App() {
         </div>
       </header>
 
-      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto w-full max-w-7xl flex-1 min-h-0 px-0 pb-[calc(4.6rem+env(safe-area-inset-bottom))] pt-1.5 focus:outline-none md:px-4 md:pb-4 md:pt-6", "gap-2 md:gap-6")}>
+      <main ref={mainRef} id="main-content" tabIndex={-1} className={cn("mx-auto w-full max-w-[100rem] flex-1 min-h-0 px-0 pb-[calc(4.6rem+env(safe-area-inset-bottom))] pt-1.5 focus:outline-none md:px-4 md:pb-3 md:pt-3", "gap-2 md:gap-4")}>
         <section className="relative h-full flex flex-col min-h-0 w-full">
           <Card className="flex h-full flex-col overflow-hidden rounded-none border-none bg-card/80 shadow-none ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10 md:rounded-xl md:shadow-medium">
-            <CardHeader className="flex min-h-[3.2rem] flex-row items-center justify-between border-b bg-muted/30 px-3 py-2 md:min-h-0 md:px-6 md:py-4">
-              <CardTitle className="flex min-w-0 items-center gap-1.5 text-base text-foreground/80 md:gap-2 md:text-xl">
+            <CardHeader className={cn(
+              "flex min-h-[3.2rem] flex-row items-center justify-between border-b bg-muted/30 px-3 py-2 md:min-h-0 md:px-5 md:py-2.5",
+              panelOwnsDesktopHeader && "md:hidden",
+            )}>
+              <CardTitle className="flex min-w-0 items-center gap-1.5 text-base text-foreground/80 md:gap-2 md:text-lg">
                 {activePanel !== 'mapa' && (
                   <Button type="button" size="icon" variant="ghost" className="-ml-2 h-9 w-9 shrink-0 rounded-full md:-ml-3 md:h-10 md:w-10" aria-label="Volver al panel anterior" title="Volver" onClick={() => window.history.back()}>
                     <ArrowLeft className="h-5 w-5" />
@@ -825,7 +842,7 @@ export default function App() {
 
       {/* Menus / Modals */}
       <Sheet open={openMenu} onOpenChange={setOpenMenu} side="left">
-        <SheetContent className="w-80 p-0" showCloseButton={false}>
+        <SheetContent className="w-[18rem] p-0 sm:w-[19rem]" showCloseButton={false}>
           <Sidebar onNavigate={(k) => { if (k === 'diccionario' && !isAuthenticated) { setAuthDialogOpen(true); } else { setActivePanel(k as any); } setOpenMenu(false); }} onClose={() => setOpenMenu(false)} activePanel={activePanel} showDictionary={dictionaryVisible} onOpenSupport={() => { setShowSupportModal(true); setOpenMenu(false); }} onOpenAlliances={() => { setShowAlliancesModal(true); setOpenMenu(false); }} />
         </SheetContent>
       </Sheet>

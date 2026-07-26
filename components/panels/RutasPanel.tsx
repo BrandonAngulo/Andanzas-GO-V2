@@ -214,7 +214,7 @@ const RutasPanel: React.FC<RutasPanelProps> = ({ rutas, suggestedRoutes, newPoin
 
     return (
         <div className="h-full overflow-y-auto overscroll-contain">
-            <div className="mx-auto max-w-6xl px-3 pb-28 pt-3 sm:px-5 sm:pb-8">
+            <div className="mx-auto max-w-[92rem] px-3 pb-28 pt-3 sm:px-5 sm:pb-8">
                 <RoutesHero
                     language={language}
                     routeCount={suggestedRoutes.length}

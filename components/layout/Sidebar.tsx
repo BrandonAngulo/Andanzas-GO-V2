@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
       <button
         onClick={() => onNavigate(id)}
         className={cn(
-          "w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 transition-all duration-200 group",
+          "group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-all duration-200",
           isActive
             ? "bg-primary/10 text-primary font-semibold shadow-sm"
             : "hover:bg-muted/80 text-foreground/80 hover:text-foreground"
@@ -47,14 +47,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
 
   return (
     <div className="flex flex-col h-full bg-background/50 backdrop-blur-sm">
-      <div className="p-4 border-b flex items-center justify-between flex-shrink-0 bg-background/30">
+      <div className="flex flex-shrink-0 items-center justify-between border-b bg-background/30 px-4 py-3">
         <h3 className="font-semibold tracking-tight">{t('menu')}</h3>
         <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={onClose}>
           <X className="h-4 w-4" />
         </Button>
       </div>
       <ScrollArea className="flex-1">
-        <div className="space-y-1 p-3">
+        <div className="space-y-0.5 p-2.5">
           <div className="text-xs font-medium text-muted-foreground px-3 py-2 uppercase tracking-wider opacity-70">
             Explorar
           </div>
@@ -86,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
           {onOpenAlliances && (
             <button
               onClick={() => { onOpenAlliances(); onClose(); }}
-              className="w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 transition-all duration-200 group text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 font-semibold"
+              className="group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left font-semibold text-emerald-600 transition-all duration-200 hover:bg-emerald-500/10 dark:text-emerald-400"
             >
               <Handshake className="h-4 w-4 transition-colors" />
               Alianzas
@@ -95,7 +95,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
           {onOpenSupport && (
             <button
               onClick={() => { onOpenSupport(); onClose(); }}
-              className="w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 transition-all duration-200 group text-pink-600 dark:text-pink-400 hover:bg-pink-500/10 font-semibold"
+              className="group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left font-semibold text-pink-600 transition-all duration-200 hover:bg-pink-500/10 dark:text-pink-400"
             >
               <Heart className="h-4 w-4 fill-current transition-colors" />
               Apóyanos
@@ -113,7 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onNavigate, onClose, activePanel, onO
         </div>
       </ScrollArea>
 
-      <div className="p-4 border-t bg-background/50 backdrop-blur-sm mt-auto">
+      <div className="mt-auto border-t bg-background/50 p-3 backdrop-blur-sm">
         {isAuthenticated ? (
           <Button
             variant="ghost"

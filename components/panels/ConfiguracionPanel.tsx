@@ -67,7 +67,7 @@ const ConfiguracionPanel: React.FC<ConfiguracionPanelProps> = ({ theme, setTheme
 
     return (
         <ScrollArea className="h-full">
-            <div className="p-3 space-y-4">
+            <div className="mx-auto grid w-full max-w-[78rem] gap-4 p-3 md:grid-cols-2 md:p-5">
 
                 {/* Appearance */}
                 <Card>

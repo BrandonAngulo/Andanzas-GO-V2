@@ -38,7 +38,7 @@ const SobrePanel: React.FC = () => {
 
     return (
         <ScrollArea className="h-full">
-            <div className="flex flex-col gap-6 p-4 max-w-2xl mx-auto">
+            <div className="mx-auto flex max-w-[78rem] flex-col gap-5 p-4 md:p-5">
 
                 {/* Hero Section */}
                 <div className="flex flex-col items-center justify-center py-10 bg-gradient-to-b from-muted/50 to-background rounded-3xl border border-border/50 shadow-sm relative overflow-hidden">
@@ -60,7 +60,7 @@ const SobrePanel: React.FC = () => {
                     </Button>
                 </div>
 
-                <div className="grid gap-4">
+                <div className="grid gap-4 lg:grid-cols-3">
                     {/* Mission */}
                     <Card className="group overflow-hidden border-border/50 bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/20 dark:to-background hover:shadow-md transition-all">
                         <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6">

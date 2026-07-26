@@ -201,8 +201,9 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
 
     return (
         <ScrollArea className="h-full bg-muted/20">
-            <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+            <div className="mx-auto max-w-[92rem] p-4 md:p-5">
                 <PanelBanner
+                    compact
                     panelKey="paquesepas"
                     defaultImage="/images/banners/unified/aprende-v2.webp"
                     gradientClass="from-indigo-50/95 via-indigo-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
@@ -220,7 +221,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                 />
                 {showDaily && <DailyQuestion onClose={() => setShowDaily(false)} />}
 
-                <section className="mb-8">
+                <section className="mb-5">
                     <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
                         <div>
                             <p className="text-xs font-bold uppercase tracking-widest text-indigo-600">Herramientas para aprender</p>
@@ -247,7 +248,7 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                     </div>
                 </section>
 
-                <div ref={storiesRef} className="grid scroll-mt-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div ref={storiesRef} className="grid scroll-mt-6 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                     {entries.map(entry => (
                         <div 
                             key={entry.id} 

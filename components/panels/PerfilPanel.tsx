@@ -703,7 +703,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
 
     return (
         <ScrollArea className="h-full w-full">
-            <div className="p-3 pr-5 sm:pr-6 space-y-6 w-full max-w-full overflow-x-hidden pb-12">
+            <div className="mx-auto w-full max-w-[92rem] space-y-4 overflow-x-hidden p-3 pb-12 pr-5 sm:pr-6 md:p-5 md:pb-12">
 
                 {/* Incomplete Profile Banner */}
                 {userProfile && (!userProfile.full_name || !currentAvatarUrl || !userProfile.interests?.length) && (
@@ -801,7 +801,12 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </aside>
 
                     <div className="relative z-10 flex flex-col items-center p-6 pt-12 text-center xl:min-h-[300px] xl:justify-center">
-                        <div className="relative mb-4 cursor-pointer group" onClick={() => setShowAvatarModal(true)}>
+                        <button
+                            type="button"
+                            className="group relative mb-4"
+                            onClick={() => setShowAvatarModal(true)}
+                            aria-label="Cambiar avatar"
+                        >
                             {/* Circular Progress SVG */}
                             <svg className="absolute -inset-2 w-[112px] h-[112px] -rotate-90">
                                 <circle 
@@ -828,7 +833,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                             <div className="absolute -bottom-2 transform left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm whitespace-nowrap z-10">
                                 Lvl {currentLevel}
                             </div>
-                        </div>
+                        </button>
 
                         <h2 className="text-2xl font-bold mb-1 mt-2">{displayName}</h2>
                         <p className="text-sm text-muted-foreground flex items-center justify-center gap-1.5 mb-2">
@@ -839,14 +844,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                         </p>
 
                         <div className="flex gap-4 w-full max-w-sm justify-center">
-                            <div className="flex flex-col items-center p-3 bg-background/50 rounded-xl flex-1 backdrop-blur-sm border shadow-sm cursor-pointer hover:bg-background/80 transition-colors" onClick={() => setActiveTab('badges')}>
+                            <button type="button" className="flex flex-1 flex-col items-center rounded-xl border bg-background/50 p-3 shadow-sm backdrop-blur-sm transition-colors hover:bg-background/80" onClick={() => setActiveTab('badges')}>
                                 <span className="text-xl font-bold text-foreground">{insigniasCount}</span>
                                 <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">{t('profile.badges')}</span>
-                            </div>
-                            <div className="flex flex-col items-center p-3 bg-background/50 rounded-xl flex-1 backdrop-blur-sm border shadow-sm cursor-pointer hover:bg-background/80 transition-colors" onClick={() => setActiveTab('activity')}>
+                            </button>
+                            <button type="button" className="flex flex-1 flex-col items-center rounded-xl border bg-background/50 p-3 shadow-sm backdrop-blur-sm transition-colors hover:bg-background/80" onClick={() => setActiveTab('activity')}>
                                 <span className="text-xl font-bold text-foreground">{myReviews.length + myFavorites.length}</span>
                                 <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider">Aportes</span>
-                            </div>
+                            </button>
                         </div>
                         <div className="mt-4 grid w-full max-w-md grid-cols-2 gap-2 sm:grid-cols-4 xl:hidden">
                             <EconomyTile icon={<Sparkles className="h-4 w-4 text-emerald-500" />} value={economy?.app_points ?? userProfile?.points ?? 0} label="Puntos" help={ECONOMY_HELP.points} animOnHover={ECONOMY_META.points.hoverAnim} />

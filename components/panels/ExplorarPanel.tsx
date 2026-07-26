@@ -19,7 +19,7 @@ import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen
 const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ site, onOpenSite }) => {
   const { t, language } = useI18n();
   return (
-    <Card className="overflow-hidden flex h-full min-h-0 flex-col rounded-2xl border-border/70 sm:min-h-[300px]">
+    <Card className="group overflow-hidden flex h-full min-h-0 flex-col rounded-2xl border-border/70 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg sm:min-h-[14rem]">
       <LazyImage
         src={site.logoUrl}
         alt={getTranslated(site, 'nombre', language) as string}
@@ -27,10 +27,10 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
         className="w-full h-32 object-cover bg-muted"
         style={imagePositionStyle(site.image_position)}
       />
-      <CardHeader className="px-4 pb-2 pt-4">
+      <CardHeader className="px-4 pb-1.5 pt-3">
         <CardTitle className="text-sm leading-tight truncate">{getTranslated(site, 'nombre', language)}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow px-4 text-xs text-muted-foreground space-y-2">
+      <CardContent className="flex-grow px-4 text-xs text-muted-foreground space-y-1.5">
         <div>{getMacroCategory(getTranslated(site, 'tipo', language) as string, language)} · ⭐ {site.rating}</div>
         {site.accessibility_features && site.accessibility_features.length > 0 && (
           <div className="flex gap-1 flex-wrap">
@@ -52,7 +52,7 @@ const SiteCard: React.FC<{ site: Site; onOpenSite: (site: Site) => void }> = ({ 
           </div>
         )}
       </CardContent>
-      <CardFooter className="mt-auto px-4 pb-4 pt-3">
+      <CardFooter className="mt-auto px-4 pb-3 pt-2">
         <Button size="sm" variant="outline" onClick={() => onOpenSite(site)}>{t('seeMore')}</Button>
       </CardFooter>
     </Card>
@@ -190,6 +190,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
               ? 'No somos solo un mapa. Elegí una experiencia y dejá que te guiemos paso a paso por lo mejor de la ciudad.'
               : 'We are not just a map. Choose an experience and let us guide you step by step through the best of the city.'
           }
+          compact
         >
           <CategoryCarousel
             categories={CATEGORY_TAGS.map(tag => ({
@@ -206,7 +207,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
 
       {/* Imperdibles Banners — dynamic, grid layout */}
       {!query && !categoryFilter && (
-        <div className="px-4 md:px-8 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="px-4 md:px-6 mb-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-xl flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-yellow-500" />
@@ -263,9 +264,9 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
 
       {/* Sabías que Banner */}
       {!query && !categoryFilter && randomFact && (
-        <div className="px-4 md:px-8 mb-8">
+        <div className="px-4 md:px-6 mb-5">
           <div
-            className="bg-card border border-primary/20 rounded-2xl p-5 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-4 relative overflow-hidden"
+            className="bg-card border border-primary/20 rounded-2xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-3 relative overflow-hidden"
             onClick={openRelatedStory}
           >
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
@@ -291,7 +292,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
         </div>
       )}
 
-      <div className="px-4 pb-12 md:px-8 md:pb-16">
+      <div className="px-4 pb-12 md:px-6 md:pb-12">
         {(query || categoryFilter) && (
           <div className="flex items-center justify-between mb-3 ml-1">
             <h3 className="font-semibold text-lg text-muted-foreground">Resultados de búsqueda</h3>
@@ -303,7 +304,7 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
         {!query && !categoryFilter && (
           <h3 className="font-semibold text-lg mb-4 ml-1">Lugares Destacados</h3>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         {feedItems.length > 0 ? (
           feedItems.map((item) => {
             if (item.type === 'site') {

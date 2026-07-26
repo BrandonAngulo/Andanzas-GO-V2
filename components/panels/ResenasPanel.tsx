@@ -27,8 +27,8 @@ const ResenasPanel: React.FC<ResenasPanelProps> = ({ reviews, sites }) => {
     );
   }
   return (
-    <ScrollArea className="h-full p-3">
-      <div className="grid gap-3">
+    <ScrollArea className="h-full">
+      <div className="mx-auto grid w-full max-w-[92rem] gap-4 p-3 md:grid-cols-2 md:p-5 xl:grid-cols-3">
         {reviews.map((r) => {
           const site = sites.find((s) => s.id === r.siteId);
           return (

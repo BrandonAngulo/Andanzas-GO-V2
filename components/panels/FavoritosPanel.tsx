@@ -51,8 +51,8 @@ const FavoritosPanel: React.FC<FavoritosPanelProps> = ({ ids, query, onOpen, onT
   }
 
   return (
-    <ScrollArea className="h-full p-3">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+    <ScrollArea className="h-full">
+      <div className="mx-auto grid w-full max-w-[92rem] grid-cols-1 gap-4 p-3 sm:grid-cols-2 md:p-5 xl:grid-cols-3 2xl:grid-cols-4">
         {favs.map((s) => (
           <Card key={s.id} className="overflow-hidden">
             <LazyImage

@@ -28,8 +28,8 @@ const TendenciasPanel: React.FC<TendenciasPanelProps> = ({ items, query, onOpenS
   }, [items, query, language]);
 
   return (
-    <ScrollArea className="h-full p-3">
-      <div className="grid gap-3">
+    <ScrollArea className="h-full">
+      <div className="mx-auto grid w-full max-w-[92rem] gap-4 p-3 md:grid-cols-2 md:p-5 xl:grid-cols-3">
         {filteredItems.length === 0 && <p className="text-center text-muted-foreground p-4">No se encontraron resultados</p>}
         {filteredItems.map((s, idx) => (
           <Card key={s.id} className="group overflow-hidden border border-border bg-gradient-to-br from-card via-card/50 to-muted/20 dark:from-background dark:to-muted/5 hover:shadow-xl hover:border-primary/50 transition-all duration-300">

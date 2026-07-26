@@ -77,11 +77,11 @@ export function DictionaryPanel(): JSX.Element {
 
   return (
     <ScrollArea className="h-full">
-    <div className="mx-auto w-full max-w-6xl space-y-6 p-1 pb-20 md:p-4 md:pb-20">
-      <header className="rounded-2xl border bg-card p-4 shadow-sm sm:p-6">
+    <div className="mx-auto w-full max-w-[92rem] space-y-4 p-1 pb-20 md:p-5 md:pb-16">
+      <header className="rounded-2xl border bg-card p-4 shadow-sm">
         <div className="flex items-center gap-3"><BookOpen className="h-7 w-7 shrink-0 text-primary sm:h-8 sm:w-8" /><h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Diccionario de jergas y culturas</h1></div>
         <p className="mt-2 text-muted-foreground">Palabras que cuentan cómo hablamos, vivimos y recordamos. Un capítulo por territorio.</p>
-        <div className="relative mt-5" role="search">
+        <div className="relative mt-4" role="search">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input value={query} onChange={(event) => setQuery(event.target.value)} className="pl-9" placeholder="Buscar una palabra o definición" aria-label="Buscar en el diccionario" />
         </div>
@@ -111,7 +111,7 @@ export function DictionaryPanel(): JSX.Element {
       {loading && <div className="flex min-h-48 items-center justify-center" role="status"><Loader2 className="h-8 w-8 animate-spin text-primary" /><span className="sr-only">Cargando diccionario</span></div>}
       {!loading && error && <div className="flex min-h-40 flex-col items-center justify-center rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center text-destructive" role="alert"><AlertCircle className="mb-2 h-8 w-8" /><p>{error}</p></div>}
       {!loading && !error && entries.length === 0 && <div className="min-h-40 rounded-xl border border-dashed p-10 text-center"><BookOpen className="mx-auto mb-3 h-10 w-10 text-muted-foreground" /><h2 className="font-semibold">No encontramos palabras</h2><p className="mt-1 text-sm text-muted-foreground">Prueba con otra búsqueda o limpia los filtros.</p></div>}
-      {!loading && entries.length > 0 && <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">{entries.map((entry) => <DictionaryCard key={entry.id} entry={entry} onOpen={setSelectedEntry} />)}</div>}
+      {!loading && entries.length > 0 && <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">{entries.map((entry) => <DictionaryCard key={entry.id} entry={entry} onOpen={setSelectedEntry} />)}</div>}
       {!loading && entries.length < total && <div className="flex justify-center"><Button onClick={loadMore} disabled={loadingMore}>{loadingMore && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Cargar más</Button></div>}
       <DictionaryDetail entry={selectedEntry} onClose={() => setSelectedEntry(null)} />
     </div>

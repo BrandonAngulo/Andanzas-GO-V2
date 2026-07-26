@@ -121,14 +121,19 @@ const NoticiasPanel: React.FC<NoticiasPanelProps> = ({ feed, onOpenSite, sites }
                             "{item.review.text}"
                         </p>
 
-                        <div className="bg-card border rounded-xl p-2.5 flex items-center gap-3 hover:bg-muted/80 cursor-pointer transition-colors shadow-sm" onClick={() => onOpenSite(site)}>
+                        <button
+                            type="button"
+                            className="flex w-full items-center gap-3 rounded-xl border bg-card p-2.5 text-left shadow-sm transition-colors hover:bg-muted/80"
+                            onClick={() => onOpenSite(site)}
+                            aria-label={`Ver detalles de ${getTranslated(site, 'nombre', language)}`}
+                        >
                             <LazyImage src={site.logoUrl} alt={getTranslated(site, 'nombre', language) as string} className="h-10 w-10 rounded-lg object-cover bg-white" />
                             <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold truncate">{getTranslated(site, 'nombre', language)}</p>
                                 <p className="text-xs text-muted-foreground truncate">Ver detalles del sitio</p>
                             </div>
                             <ArrowRight className="h-4 w-4 text-muted-foreground mr-1" />
-                        </div>
+                        </button>
                     </CardContent>
                 </Card>
             );
@@ -138,9 +143,9 @@ const NoticiasPanel: React.FC<NoticiasPanelProps> = ({ feed, onOpenSite, sites }
 
     return (
         <ScrollArea className="h-full bg-muted/10">
-            <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+            <div className="mx-auto max-w-[92rem] p-4 md:p-5">
                 {/* Header Hero */}
-                <div className="mb-6 pb-6 border-b flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="mb-4 flex flex-col justify-between gap-4 border-b pb-4 md:flex-row md:items-end">
                     <div>
                         <h2 className="text-3xl font-bold tracking-tight mb-2 flex items-center gap-2">
                             <Activity className="h-8 w-8 text-primary" />
@@ -176,7 +181,7 @@ const NoticiasPanel: React.FC<NoticiasPanelProps> = ({ feed, onOpenSite, sites }
                         <p className="text-sm">Intenta seleccionar otra categoría de filtro.</p>
                     </div>
                 ) : (
-                    <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                    <div className="columns-1 gap-4 space-y-4 md:columns-2 lg:columns-3 2xl:columns-4">
                         {filteredFeed.map(item => (
                             <div key={item.id} className="break-inside-avoid shadow-sm rounded-2xl">
                                 {renderFeedCard(item)}

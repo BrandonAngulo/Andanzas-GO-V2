@@ -86,7 +86,7 @@ const SoportePanel: React.FC = () => {
 
     return (
         <ScrollArea className="h-full">
-            <div className="p-3">
+            <div className="mx-auto w-full max-w-[78rem] p-3 md:p-5">
                 <Tabs defaultValue="faq" className="w-full">
                     <TabsList className="mb-4">
                         <TabsTrigger value="faq" className="gap-2"><HelpCircle className="h-4 w-4" /> {t('support.helpCenter')}</TabsTrigger>
@@ -101,7 +101,7 @@ const SoportePanel: React.FC = () => {
                             <CardContent>
                                 <Accordion defaultValue="item-0">
                                     {faqs.map((faq, index) => (
-                                        <AccordionItem value={`item-${index}`} key={index}>
+                                        <AccordionItem value={`item-${index}`} key={faq.question}>
                                             <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
                                             <AccordionContent className="text-muted-foreground">
                                                 {faq.answer}
@@ -114,7 +114,7 @@ const SoportePanel: React.FC = () => {
                     </TabsContent>
 
                     <TabsContent value="contact">
-                        <div className="grid gap-4">
+                        <div className="grid gap-4 lg:grid-cols-2">
                             {/* Call Me Back Section */}
                             <Card className="border-l-4 border-l-primary">
                                 <CardHeader className="pb-2">

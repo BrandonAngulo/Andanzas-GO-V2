@@ -79,6 +79,7 @@ export function RouteDiscoveryCard({
           style={editorialImage ? imagePositionStyle(route.image_position) : undefined}
         />
         <div className={cn('absolute inset-0 bg-gradient-to-b', visual.overlay)} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-3/4 bg-[radial-gradient(circle_at_18%_0%,rgba(16,185,129,0.26),transparent_46%)]" />
       </div>
 
@@ -138,10 +139,10 @@ export function RouteDiscoveryCard({
             <MapPin className="h-3.5 w-3.5" />
             {language === 'es' ? 'Circuito cultural' : 'Cultural circuit'}
           </p>
-          <h3 className={cn('font-heading font-black leading-[1.03] text-white', featured ? 'text-[1.75rem] sm:text-4xl' : 'text-2xl')}>
+          <h3 className={cn('font-heading font-black leading-[1.03] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.75)]', featured ? 'text-[1.75rem] sm:text-4xl' : 'text-2xl')}>
             {routeName}
           </h3>
-          <p className="mt-2 line-clamp-2 max-w-2xl text-sm leading-relaxed text-white/80">
+          <p className="mt-2 line-clamp-2 max-w-2xl text-sm leading-relaxed text-white/90 drop-shadow-[0_1px_5px_rgba(0,0,0,0.7)]">
             {getTranslated(route, 'intro_story', language) || getTranslated(route, 'descripcion', language)}
           </p>
 

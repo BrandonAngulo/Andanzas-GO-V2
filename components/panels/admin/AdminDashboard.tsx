@@ -315,9 +315,9 @@ const AdminDashboard: React.FC = () => {
 
     return (
         <ScrollArea className="h-full bg-muted/20">
-            <div className="mx-auto max-w-6xl p-3 md:p-6">
+            <div className="mx-auto max-w-[92rem] p-3 md:p-5">
                 <AdminIntroModal isOpen={showIntroModal} isAdmin={isAdmin} onClose={() => setShowIntroModal(false)} onComplete={completeIntro} />
-                <div className="mb-5 md:mb-8">
+                <div className="mb-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight md:text-3xl">
                             <ShieldAlert className="h-7 w-7 text-primary md:h-8 md:w-8" />
@@ -332,7 +332,7 @@ const AdminDashboard: React.FC = () => {
                     </p>
                 </div>
 
-                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-wrap gap-x-2 gap-y-1 rounded-2xl border bg-background/95 p-2 shadow-sm backdrop-blur-md md:mb-6 md:p-2.5 [&>button]:h-8 [&>button]:px-2.5 [&>button]:text-xs [&>button>svg]:mr-1.5 [&>button>svg]:h-3.5 [&>button>svg]:w-3.5 md:[&>button]:h-9 md:[&>button]:px-3 md:[&>button]:text-xs">
+                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-nowrap gap-1.5 overflow-x-auto rounded-2xl border bg-background/95 p-2 shadow-sm backdrop-blur-md scrollbar-none [&>button]:h-9 [&>button]:shrink-0 [&>button]:px-3 [&>button]:text-xs [&>button>svg]:mr-1.5 [&>button>svg]:h-3.5 [&>button>svg]:w-3.5">
                     <Button 
                         variant={activeTab === 'overview' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('overview')}
@@ -396,8 +396,6 @@ const AdminDashboard: React.FC = () => {
                     >
                         <Handshake className="w-4 h-4 mr-2" /> Alianzas
                     </Button>
-                    {/* Salto de fila forzado tras el 9º botón: en pantallas anchas deja la barra en 2 filas (9 y 9). */}
-                    <div aria-hidden className="hidden basis-full xl:block" />
                     <Button
                         variant={activeTab === 'sitios' ? 'default' : 'outline'}
                         onClick={() => setActiveTab('sitios')}

@@ -212,10 +212,11 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
 
   return (
     <ScrollArea className="h-full bg-muted/10">
-      <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      <div className="mx-auto max-w-[92rem] p-4 md:p-5">
         
         {/* Header Hero */}
         <PanelBanner
+            compact
             panelKey="eventos"
             defaultImage="/images/banners/unified/eventos-v2.webp"
             gradientClass="from-orange-50/95 via-orange-50/70 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 dark:to-transparent"
@@ -229,10 +230,10 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
             defaultSubtitle={language === 'es' ? 'Cali vibra con cultura todos los días. Explora lo que está ocurriendo hoy, lo que se viene o ese plan perfecto a tu medida.' : 'Cali pulses with culture every day. Explore what is happening today, what is coming, or the perfect plan for you.'}
         />
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+        <div className="flex flex-col gap-5 lg:flex-row">
           
           {/* Left Sidebar - Filters (colapsable en móvil) */}
-          <div className="w-full lg:w-72 shrink-0 space-y-3 lg:space-y-6">
+          <div className="w-full shrink-0 space-y-3 lg:w-64 lg:space-y-4">
             <button
               type="button"
               onClick={() => setShowFilters(v => !v)}
@@ -324,7 +325,7 @@ const EventosPanel: React.FC<EventosPanelProps> = ({ eventos, query, sites, onOp
             />
 
             {filteredEvents.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                 {filteredEvents.map(event => (
                   <EventCard key={event.id} event={event} onOpenEvent={onOpenEvent} sites={sites} onCategoryClick={setCategoryFilter} />
                 ))}
