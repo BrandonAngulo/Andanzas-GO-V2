@@ -171,8 +171,8 @@ const ConfiguracionPanel: React.FC<ConfiguracionPanelProps> = ({ theme, setTheme
                     <CardContent>
                         <div className="flex flex-col gap-2">
                             <p className="text-xs text-muted-foreground mb-2">Si tienes problemas con la aplicación, borrar la caché local puede ayudar. Esto no eliminará tu cuenta.</p>
-                            <Button variant="destructive" size="sm" onClick={handleClearCache} className="w-full sm:w-auto">
-                                <Trash2 className="h-4 w-4 mr-2" /> {t('config.clearCache')}
+                            <Button variant="outline" size="sm" onClick={handleClearCache} className="w-full sm:w-auto">
+                                <Database className="h-4 w-4 mr-2" /> {t('config.clearCache')}
                             </Button>
                         </div>
                     </CardContent>
