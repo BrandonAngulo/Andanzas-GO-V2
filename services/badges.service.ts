@@ -30,6 +30,16 @@ export const badgesService = {
         return (data ?? []) as BadgeRow[];
     },
 
+    async listLinkedRouteBadgeIds(): Promise<string[]> {
+        const { data, error } = await supabase
+            .from('routes')
+            .select('reward_badge_id')
+            .eq('is_published', true)
+            .not('reward_badge_id', 'is', null);
+        if (error) throw error;
+        return [...new Set((data ?? []).map(route => String(route.reward_badge_id)))];
+    },
+
     async create(input: BadgeInput): Promise<BadgeRow> {
         const { data, error } = await supabase.from('badges').insert(input).select().single();
         if (error) throw error;

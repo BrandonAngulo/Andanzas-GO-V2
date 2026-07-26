@@ -10,6 +10,9 @@ import { ConfirmDialog } from '../../ui/confirm-dialog';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../ui/dialog';
 import { badgesService, BadgeRow, BadgeInput } from '../../../services/badges.service';
 import { iconMap } from '../../../services/gamification.service';
+import type { Insignia } from '../../../types';
+import { AchievementEmblem } from '../../shared/AchievementEmblem';
+import { getBadgeVisual, isRouteBadge } from '../../../lib/badge-system';
 
 const ICON_NAMES = Object.keys(iconMap);
 const slugify = (s: string) => s.normalize('NFD').replace(/[^\x00-\x7F]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -25,8 +28,22 @@ const toForm = (b: BadgeRow): BadgeForm => ({
     icono_name: b.icono_name, image_url: b.image_url ?? '', family_key: b.family_key ?? '', tier: b.tier != null ? String(b.tier) : '',
 });
 
+const toInsignia = (badge: Pick<BadgeRow, 'id' | 'nombre' | 'nombre_en' | 'descripcion' | 'descripcion_en' | 'icono_name' | 'image_url' | 'family_key' | 'tier'>): Insignia => ({
+    id: badge.id || 'insignia-nueva',
+    nombre: badge.nombre || 'Nueva insignia',
+    nombre_en: badge.nombre_en ?? undefined,
+    descripcion: badge.descripcion || 'Define qué reconoce esta insignia.',
+    descripcion_en: badge.descripcion_en ?? undefined,
+    icono: iconMap[badge.icono_name] || Award,
+    image_url: badge.image_url ?? undefined,
+    family_key: badge.family_key ?? undefined,
+    tier: badge.tier ?? undefined,
+    obtenida: true,
+});
+
 export function AdminBadges(): JSX.Element {
     const [badges, setBadges] = useState<BadgeRow[]>([]);
+    const [linkedRouteBadgeIds, setLinkedRouteBadgeIds] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState('');
 
@@ -40,7 +57,14 @@ export function AdminBadges(): JSX.Element {
 
     const load = useCallback(async () => {
         setLoading(true);
-        try { setBadges(await badgesService.list()); }
+        try {
+            const [badgeRows, routeBadgeIds] = await Promise.all([
+                badgesService.list(),
+                badgesService.listLinkedRouteBadgeIds(),
+            ]);
+            setBadges(badgeRows);
+            setLinkedRouteBadgeIds(routeBadgeIds);
+        }
         catch (error) { console.error(error); toast.error('No se pudieron cargar las insignias.'); }
         finally { setLoading(false); }
     }, []);
@@ -91,14 +115,21 @@ export function AdminBadges(): JSX.Element {
         finally { setDeleting(false); }
     };
 
-    const PreviewIcon = iconMap[form.icono_name] || Award;
+    const previewBadge = toInsignia({
+        ...form,
+        tier: form.tier ? Number(form.tier) : null,
+        nombre_en: form.nombre_en || null,
+        descripcion_en: form.descripcion_en || null,
+        image_url: form.image_url || null,
+        family_key: form.family_key || null,
+    });
 
     return (
         <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h2 className="flex items-center gap-2 text-2xl font-bold"><Award className="h-6 w-6 text-primary" />Gestión de insignias</h2>
-                    <p className="mt-1 text-muted-foreground">Crea, edita y elimina las insignias que ganan los usuarios.</p>
+                    <p className="mt-1 text-muted-foreground">Administra la colección, su identidad visual y la forma en que se obtiene cada logro.</p>
                 </div>
                 <Button onClick={openCreate}><Plus className="mr-2 h-4 w-4" />Nueva insignia</Button>
             </div>
@@ -124,18 +155,27 @@ export function AdminBadges(): JSX.Element {
                     ) : (
                         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                             {filtered.map(b => {
-                                const Icon = iconMap[b.icono_name] || Award;
+                                const displayBadge = toInsignia(b);
+                                const visual = getBadgeVisual(displayBadge);
+                                const connected = isRouteBadge(displayBadge)
+                                    ? linkedRouteBadgeIds.includes(b.id)
+                                    : visual.connected;
+                                const ruleLabel = isRouteBadge(displayBadge) && !connected
+                                    ? 'Ninguna ruta publicada entrega esta insignia'
+                                    : visual.ruleLabel;
                                 return (
-                                    <div key={b.id} className="flex items-start gap-3 rounded-xl border p-3">
-                                        <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary/10">
-                                            {b.image_url ? <img src={b.image_url} alt={b.nombre} className="h-full w-full object-cover" /> : <Icon className="h-6 w-6 text-primary" />}
-                                        </div>
+                                    <div key={b.id} className="flex items-start gap-3 rounded-2xl border bg-card p-3 shadow-sm">
+                                        <AchievementEmblem insignia={displayBadge} obtained size={72} />
                                         <div className="min-w-0 flex-1">
-                                            <div className="flex items-center gap-1.5">
+                                            <div className="flex flex-wrap items-center gap-1.5">
                                                 <span className="truncate font-semibold">{b.nombre}</span>
                                                 {b.family_key && <Badge variant="secondary" className="text-[10px]">{b.family_key}{b.tier ? ` · T${b.tier}` : ''}</Badge>}
                                             </div>
                                             <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{b.descripcion}</p>
+                                            <Badge className={connected ? 'mt-2 border-emerald-500/25 bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/10' : 'mt-2 border-amber-500/25 bg-amber-500/10 text-amber-700 hover:bg-amber-500/10'}>
+                                                {connected ? 'Regla conectada' : 'Falta conectar'}
+                                            </Badge>
+                                            <p className="mt-1 text-[11px] font-semibold text-foreground/75">{ruleLabel}</p>
                                             <p className="mt-1 font-mono text-[10px] text-muted-foreground/70">{b.id}</p>
                                         </div>
                                         <div className="flex shrink-0 flex-col gap-1">
@@ -155,15 +195,13 @@ export function AdminBadges(): JSX.Element {
                     <DialogHeader><DialogTitle>{isNew ? 'Nueva insignia' : `Editar «${form.nombre}»`}</DialogTitle></DialogHeader>
                     <div className="space-y-4 py-2">
                         <div className="flex items-center gap-4 rounded-xl border bg-muted/30 p-3">
-                            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary/10">
-                                {form.image_url ? <img src={form.image_url} alt="preview" className="h-full w-full object-cover" /> : <PreviewIcon className="h-8 w-8 text-primary" />}
-                            </div>
+                            <AchievementEmblem insignia={previewBadge} obtained size={88} />
                             <div className="min-w-0 flex-1">
                                 <label className="text-sm font-medium">Ícono</label>
                                 <select value={form.icono_name} onChange={e => set({ icono_name: e.target.value })} className="mt-1 h-10 w-full rounded-md border bg-background px-2 text-sm">
                                     {ICON_NAMES.map(n => <option key={n} value={n}>{n}</option>)}
                                 </select>
-                                <p className="mt-1 text-[11px] text-muted-foreground">Se usa cuando no hay imagen. La imagen (opcional) tiene prioridad.</p>
+                                <p className="mt-1 text-[11px] text-muted-foreground">El ícono define el motivo central. El sistema conserva el volumen, color y acabado de toda la colección.</p>
                             </div>
                         </div>
 

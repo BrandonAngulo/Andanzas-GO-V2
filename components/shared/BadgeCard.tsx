@@ -1,122 +1,129 @@
-import React, { useState } from 'react';
-import { Card } from '../ui/card';
-import { Insignia } from '../../types';
+import type { Insignia } from '../../types';
 import { cn, getTranslated } from '../../lib/utils';
 import { useI18n } from '../../i18n';
-import { Lock } from 'lucide-react';
-import { TierMedal, MedalTier } from './TierMedal';
-import { FAMILY_TIER_THRESHOLDS } from '../../services/gamification.service';
+import { CheckCircle2, Compass, LockKeyhole } from 'lucide-react';
+import { AchievementEmblem } from './AchievementEmblem';
+import { getBadgeThreshold, getBadgeTierLabel, getBadgeVisual } from '../../lib/badge-system';
 
 interface BadgeCardProps {
-    insignia: Insignia;
-    obtenida: boolean;
-    compact?: boolean;
-    // Conteo actual del usuario en la familia de esta insignia (favoritos/reseñas/rutas...),
-    // solo relevante para insignias progresivas (con family_key), para mostrar el avance
-    // hacia el siguiente tier.
-    progress?: number;
+  insignia: Insignia;
+  obtenida: boolean;
+  compact?: boolean;
+  progress?: number;
 }
 
-export const BadgeCard: React.FC<BadgeCardProps> = ({ insignia, obtenida, compact = false, progress }) => {
-    const { language, t } = useI18n();
-    const [showHint, setShowHint] = useState(false);
+export function BadgeCard({
+  insignia,
+  obtenida,
+  compact = false,
+  progress,
+}: BadgeCardProps): JSX.Element {
+  const { language } = useI18n();
+  const visual = getBadgeVisual(insignia);
+  const threshold = getBadgeThreshold(insignia);
+  const current = Math.max(0, progress || 0);
+  const percentage = threshold ? Math.min(100, Math.round((current / threshold) * 100)) : obtenida ? 100 : 0;
+  const tierLabel = getBadgeTierLabel(insignia.tier);
 
-    // Icon can be a component or string, handling both if needed, but assuming component here as per previous code
-    const Icon = insignia.icono;
-
-    const threshold = insignia.family_key && insignia.tier
-        ? FAMILY_TIER_THRESHOLDS[insignia.family_key]?.[insignia.tier - 1]
-        : undefined;
-    const showProgressBar = !obtenida && threshold !== undefined && typeof progress === 'number';
-
+  if (compact) {
     return (
-        <Card
-            className={cn(
-                "relative overflow-hidden transition-all duration-300 group cursor-pointer h-full flex flex-col items-center justify-center",
-                obtenida
-                    ? "border-yellow-500/50 bg-gradient-to-br from-yellow-50/50 to-orange-50/50 dark:from-yellow-900/10 dark:to-orange-900/10 hover:scale-[1.02] hover:shadow-md"
-                    : "border-dashed border-muted-foreground/20 bg-muted/10 opacity-70 grayscale hover:grayscale-0 hover:opacity-100",
-                compact ? "p-3" : "p-4"
-            )}
-            onClick={() => !obtenida && setShowHint(!showHint)}
-        >
-            {/* Background Glow Effect for Earned */}
-            {obtenida && (
-                <div className="absolute -top-10 -right-10 w-24 h-24 bg-yellow-400/20 rounded-full blur-2xl group-hover:bg-yellow-400/30 transition-all" />
-            )}
-
-            {insignia.family_key && insignia.tier ? (
-                <div className={compact ? "" : "mb-3"}>
-                    <TierMedal icon={Icon} tier={insignia.tier as MedalTier} locked={!obtenida} size={compact ? 56 : 80} />
-                </div>
-            ) : insignia.image_url ? (
-                <div className={cn(
-                    "relative rounded-2xl overflow-hidden transition-transform duration-500 group-hover:scale-105 flex-shrink-0",
-                    obtenida ? "shadow-md ring-2 ring-yellow-400/60" : "grayscale opacity-60",
-                    compact ? "w-16 h-16" : "w-24 h-24 mb-3"
-                )}>
-                    <img src={insignia.image_url} alt={getTranslated(insignia, 'nombre', language) as string} className="w-full h-full object-cover" />
-                    {!obtenida && (
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                            <div className="bg-background/90 rounded-full p-1.5 shadow-sm">
-                                <Lock className="w-3.5 h-3.5 text-muted-foreground" />
-                            </div>
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div className={cn(
-                    "relative rounded-full transition-transform duration-500 group-hover:rotate-12 flex-shrink-0 flex items-center justify-center",
-                    obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted text-muted-foreground/60 shadow-inner",
-                    compact ? "w-12 h-12 p-2" : "w-16 h-16 p-3 mb-3"
-                )}>
-                    <Icon className="w-full h-full" strokeWidth={obtenida ? 2 : 1.5} />
-                    {!obtenida && (
-                        <div className="absolute -bottom-1 -right-1 bg-background rounded-full p-1 shadow-sm border border-border">
-                            <Lock className="w-3 h-3 text-muted-foreground" />
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {!compact && (
-                <div className="w-full flex flex-col items-center mt-2">
-                    <h4 className={cn(
-                        "font-bold text-sm mb-1 leading-tight text-balance text-center",
-                        obtenida ? "text-foreground" : "text-muted-foreground"
-                    )}>
-                        {getTranslated(insignia, 'nombre', language)}
-                    </h4>
-
-                    <div className="text-xs text-muted-foreground mt-1 w-full text-center">
-                        {obtenida ? (
-                            <span>{getTranslated(insignia, 'descripcion', language)}</span>
-                        ) : (
-                            showHint ? (
-                                <span className="text-primary font-medium animate-in fade-in slide-in-from-bottom-1">
-                                    {getTranslated(insignia, 'descripcion', language)}
-                                </span>
-                            ) : (
-                                <span className="italic text-[10px] opacity-70">{t('insignias.locked') || "Bloqueada"}</span>
-                            )
-                        )}
-                    </div>
-
-                    {showProgressBar && (
-                        <div className="w-full mt-2">
-                            <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                                <div
-                                    className="h-full bg-gradient-to-r from-primary to-teal-400 rounded-full transition-all duration-700"
-                                    style={{ width: `${Math.min(100, ((progress || 0) / threshold!) * 100)}%` }}
-                                />
-                            </div>
-                            <span className="text-[10px] text-muted-foreground mt-1 block text-center">
-                                {Math.min(progress || 0, threshold!)} / {threshold}
-                            </span>
-                        </div>
-                    )}
-                </div>
-            )}
-        </Card>
+      <div className="flex items-center gap-3 rounded-2xl border bg-card p-3">
+        <AchievementEmblem insignia={insignia} obtained={obtenida} size={64} />
+        <div className="min-w-0">
+          <p className="truncate text-sm font-black">{getTranslated(insignia, 'nombre', language)}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{obtenida ? 'Conseguida' : visual.ruleLabel}</p>
+        </div>
+      </div>
     );
-};
+  }
+
+  return (
+    <article
+      className={cn(
+        'group relative flex min-h-[24rem] flex-col overflow-hidden rounded-[1.6rem] border bg-card p-4 transition-all duration-300',
+        obtenida
+          ? 'border-emerald-500/25 shadow-[0_18px_50px_-35px_rgba(6,78,59,0.7)] hover:-translate-y-1 hover:shadow-xl'
+          : 'border-border/80 bg-muted/20',
+      )}
+      style={{
+        backgroundImage: obtenida
+          ? `radial-gradient(circle at 82% 8%, ${visual.glow}, transparent 32%), linear-gradient(145deg, rgba(255,255,255,.82), transparent 55%)`
+          : undefined,
+      }}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <span
+          className="inline-flex max-w-[72%] items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em]"
+          style={{ backgroundColor: `${visual.primary}18`, color: visual.deep }}
+        >
+          <Compass className="h-3 w-3" />
+          {visual.groupLabel}
+        </span>
+        <span className={cn(
+          'inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold',
+          obtenida ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300',
+        )}>
+          {obtenida ? <CheckCircle2 className="h-3 w-3" /> : <LockKeyhole className="h-3 w-3" />}
+          {obtenida ? 'Conseguida' : 'Por descubrir'}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col items-center pt-3 text-center">
+        <AchievementEmblem
+          insignia={insignia}
+          obtained={obtenida}
+          size={118}
+          className="motion-safe:group-hover:scale-105"
+        />
+
+        <div className="mt-2">
+          {tierLabel && (
+            <p className="mb-1 text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: visual.primary }}>
+              Nivel {insignia.tier} · {tierLabel}
+            </p>
+          )}
+          <h3 className="text-balance font-heading text-lg font-black leading-tight">
+            {getTranslated(insignia, 'nombre', language)}
+          </h3>
+          <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+            {getTranslated(insignia, 'descripcion', language)}
+          </p>
+        </div>
+
+        <div className="mt-auto w-full pt-4 text-left">
+          <div className="rounded-2xl border bg-background/70 p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.14em] text-muted-foreground">
+              {obtenida ? 'Cómo la conseguiste' : 'Cómo conseguirla'}
+            </p>
+            <p className="mt-1 text-xs font-semibold leading-snug text-foreground/80">{visual.ruleLabel}</p>
+          </div>
+
+          {threshold !== undefined && (
+            <div className="mt-3">
+              <div className="mb-1.5 flex items-center justify-between text-[11px] font-bold">
+                <span className="text-muted-foreground">Tu progreso</span>
+                <span>{Math.min(current, threshold)} / {threshold}</span>
+              </div>
+              <div
+                className="h-2.5 overflow-hidden rounded-full bg-muted"
+                role="progressbar"
+                aria-label={`Progreso para ${insignia.nombre}`}
+                aria-valuemin={0}
+                aria-valuemax={threshold}
+                aria-valuenow={Math.min(current, threshold)}
+              >
+                <div
+                  className="h-full rounded-full transition-all duration-700"
+                  style={{
+                    width: `${percentage}%`,
+                    background: `linear-gradient(90deg, ${visual.primary}, ${visual.secondary})`,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}

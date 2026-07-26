@@ -5,6 +5,7 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { dictionaryService } from '../../services/dictionary.service';
 import { useAuth } from '../../contexts/AuthContext';
+import { useUserData } from '../../contexts/UserDataContext';
 import type { DictionaryEntry } from '../../types';
 
 interface WordOfTheDayCardProps {
@@ -13,6 +14,7 @@ interface WordOfTheDayCardProps {
 
 export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element | null {
   const { user } = useAuth();
+  const { addNotification, registerEarnedBadge } = useUserData();
   const [entry, setEntry] = useState<DictionaryEntry | null>(null);
   const [loading, setLoading] = useState(true);
   const [streak, setStreak] = useState(0);
@@ -56,6 +58,15 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
           setStreak(result.streak);
           toast.success(`+${result.awardedPoints} puntos · Racha de ${result.streak} día${result.streak === 1 ? '' : 's'} 🔥`);
           if (result.badgeUnlocked) {
+            registerEarnedBadge('badge-calenologo');
+            addNotification({
+              titulo: '¡Nueva insignia!',
+              titulo_en: 'New badge!',
+              descripcion: `Has desbloqueado: ${result.badgeName ?? 'Caleñólogo'}`,
+              descripcion_en: `You unlocked: ${result.badgeName ?? 'Caleñólogo'}`,
+              leida: false,
+              icono: Sparkles as any,
+            });
             toast.success(`¡Insignia desbloqueada: ${result.badgeName ?? 'Caleñólogo'}! 🏅`);
           }
         } else if (result.alreadyClaimed) {

@@ -135,6 +135,7 @@ export default function App() {
     markAsRead,
     markAllAsRead,
     addNotification,
+    registerEarnedBadge,
     userProfile
   } = useUserData();
   const { theme, setTheme } = useTheme();
@@ -489,9 +490,11 @@ export default function App() {
       if (savedRoute) {
         setUserRoutes(prev => prev.map(r => r.id === ruta.id ? savedRoute : r));
       }
+      if (!savedRoute) return;
       // insignia-route-1 (familia route_create) nunca se disparaba desde aquí; se conecta ahora.
       const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'route_create');
       if (newBadge) {
+        registerEarnedBadge(newBadge.id);
         addNotification({
           titulo: '¡Nueva Insignia!',
           titulo_en: 'New Badge!',
@@ -874,7 +877,7 @@ export default function App() {
         </DialogContent>
       </Dialog>
 
-      {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} onAuthRequired={() => setAuthDialogOpen(true)} />}
+      {previewRoute && <RouteIntroModal route={previewRoute} sites={sites} badges={allInsignias} onStart={() => { confirmStartRoute(); setActivePanel('mapa'); }} onClose={() => setPreviewRoute(null)} onAuthRequired={() => setAuthDialogOpen(true)} />}
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />

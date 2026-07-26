@@ -1,177 +1,153 @@
-
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
+import { useMemo, useState } from 'react';
+import { Award, CheckCircle2, Compass, LockKeyhole, Sparkles } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
 import { ScrollArea } from '../ui/scroll-area';
-import { Insignia } from '../../types';
-import { cn, getTranslated } from '../../lib/utils';
-import { useI18n } from '../../i18n';
-import { Lock, Award } from 'lucide-react';
-import { Card } from '../ui/card';
 import { Button } from '../ui/button';
-import { TierMedal, MedalTier } from '../shared/TierMedal';
-import { FAMILY_TIER_THRESHOLDS } from '../../services/gamification.service';
+import type { Insignia } from '../../types';
+import { BadgeCard } from '../shared/BadgeCard';
+import { getBadgeVisual, sortBadges, type BadgeGroup } from '../../lib/badge-system';
 
 interface InsigniasModalProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    earnedInsigniaIds: string[];
-    allInsignias: Insignia[];
-    badgeProgress?: Record<string, number>;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  earnedInsigniaIds: string[];
+  allInsignias: Insignia[];
+  badgeProgress?: Record<string, number>;
 }
 
-const InsigniaCard: React.FC<{ insignia: Insignia, obtenida: boolean, progress?: number }> = ({ insignia, obtenida, progress }) => {
-    const { language, t } = useI18n();
-    const [showHint, setShowHint] = useState(false);
-    const Icon = insignia.icono;
+type Filter = 'all' | 'earned' | 'locked';
 
-    const threshold = insignia.family_key && insignia.tier
-        ? FAMILY_TIER_THRESHOLDS[insignia.family_key]?.[insignia.tier - 1]
-        : undefined;
-    const showProgressBar = !obtenida && threshold !== undefined && typeof progress === 'number';
+const GROUP_TITLES: Record<BadgeGroup, { title: string; description: string }> = {
+  progress: {
+    title: 'Tu trayectoria',
+    description: 'Evolucionan con tus acciones: explorar, aportar y completar recorridos.',
+  },
+  route: {
+    title: 'Recuerdos de ruta',
+    description: 'Cada una conserva el símbolo de una experiencia cultural completada.',
+  },
+  knowledge: {
+    title: 'Cultura y lenguaje',
+    description: 'Reconocen lo que aprendes y descubres sobre los territorios.',
+  },
+  special: {
+    title: 'Logros especiales',
+    description: 'Reconocimientos únicos vinculados a experiencias y campañas.',
+  },
+};
 
-    return (
-        <Card
-            className={cn(
-                "relative overflow-hidden transition-all duration-300 group cursor-pointer h-full flex flex-col",
-                obtenida
-                    ? "border-yellow-500/50 bg-gradient-to-br from-yellow-50/50 to-orange-50/50 dark:from-yellow-900/10 dark:to-orange-900/10 hover:scale-[1.02] hover:shadow-md"
-                    : "border-muted bg-muted/20 opacity-80 hover:opacity-100"
-            )}
-            onClick={() => !obtenida && setShowHint(!showHint)}
-        >
-            {/* Background Glow Effect for Earned */}
-            {obtenida && (
-                <div className="absolute -top-10 -right-10 w-24 h-24 bg-yellow-400/20 rounded-full blur-2xl group-hover:bg-yellow-400/30 transition-all" />
-            )}
+export default function InsigniasModal({
+  open,
+  onOpenChange,
+  earnedInsigniaIds,
+  allInsignias,
+  badgeProgress = {},
+}: InsigniasModalProps): JSX.Element {
+  const [filter, setFilter] = useState<Filter>('all');
+  const earnedSet = useMemo(() => new Set(earnedInsigniaIds), [earnedInsigniaIds]);
+  const earnedCount = allInsignias.filter((badge) => earnedSet.has(badge.id)).length;
+  const totalCount = allInsignias.length;
+  const percentage = totalCount ? Math.round((earnedCount / totalCount) * 100) : 0;
 
-            <div className="p-4 flex flex-col items-center text-center gap-3 relative z-10 flex-1">
-                {insignia.family_key && insignia.tier ? (
-                    <TierMedal icon={Icon} tier={insignia.tier as MedalTier} locked={!obtenida} size={80} />
-                ) : (
-                    <div className={cn(
-                        "relative transition-transform duration-500 group-hover:rotate-12 flex-shrink-0 rounded-full",
-                        insignia.image_url
-                            ? (obtenida ? "" : "grayscale opacity-70")
-                            : cn("p-4", obtenida ? "bg-white dark:bg-background shadow-sm text-yellow-600 dark:text-yellow-400" : "bg-muted text-muted-foreground")
-                    )}>
-                        {insignia.image_url ? (
-                            <img src={insignia.image_url} alt={insignia.nombre} className="h-20 w-20 object-contain drop-shadow-md" />
-                        ) : (
-                            <Icon className={cn("h-10 w-10", !obtenida && "opacity-50")} />
-                        )}
-                        {!obtenida && !insignia.image_url && (
-                            <div className="absolute inset-0 grid place-items-center">
-                                <Lock className="h-6 w-6 text-foreground/50" />
-                            </div>
-                        )}
-                        {!obtenida && insignia.image_url && (
-                             <div className="absolute inset-0 grid place-items-center bg-background/20 rounded-full backdrop-blur-[1px]">
-                                <Lock className="h-6 w-6 text-foreground/70 drop-shadow-lg" />
-                            </div>
-                        )}
-                    </div>
-                )}
+  const grouped = useMemo(() => {
+    const visible = [...allInsignias]
+      .sort(sortBadges)
+      .filter((badge) => filter === 'all' || (filter === 'earned' ? earnedSet.has(badge.id) : !earnedSet.has(badge.id)));
+    return visible.reduce((result, badge) => {
+      const group = getBadgeVisual(badge).group;
+      (result[group] ||= []).push(badge);
+      return result;
+    }, {} as Partial<Record<BadgeGroup, Insignia[]>>);
+  }, [allInsignias, earnedSet, filter]);
 
-                <div className="w-full flex flex-col items-center">
-                    <h4 className={cn(
-                        "font-bold text-sm mb-2 leading-tight text-balance",
-                        obtenida ? "text-foreground" : "text-muted-foreground"
-                    )}>
-                        {getTranslated(insignia, 'nombre', language)}
-                    </h4>
-                    {obtenida && (
-                        <span className="inline-flex items-center rounded-full border border-yellow-200 bg-yellow-50 px-2 py-0.5 text-[10px] font-semibold text-yellow-800 dark:border-yellow-900 dark:bg-yellow-950 dark:text-yellow-300 mb-2">
-                            {t('insignias.congrats')}
-                        </span>
-                    )}
-                </div>
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="flex max-h-[92vh] max-w-6xl flex-col overflow-hidden rounded-[2rem] border-0 p-0 shadow-2xl">
+        <DialogHeader className="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#064e43] via-[#08775c] to-[#10a66a] px-5 pb-5 pt-6 text-left text-white sm:px-7">
+          <div className="pointer-events-none absolute -right-10 -top-20 h-64 w-64 rounded-full border border-white/10" />
+          <div className="pointer-events-none absolute right-20 top-4 h-32 w-32 rounded-full bg-orange-300/15 blur-3xl" />
+          <img
+            src="/brand/andi/andi-frontal-512-transparent-v2.png"
+            alt=""
+            className="pointer-events-none absolute -bottom-5 right-4 hidden h-40 object-contain sm:block"
+            aria-hidden="true"
+          />
 
-                {/* Description logic */}
-                <div className="text-xs text-muted-foreground mt-auto flex items-center justify-center w-full">
-                    {obtenida ? (
-                        <span className="text-center">{getTranslated(insignia, 'descripcion', language)}</span>
-                    ) : (
-                        showHint ? (
-                            <span className="text-primary font-medium animate-in fade-in slide-in-from-bottom-1 text-center">
-                                {t('insignias.howToEarn')}: {getTranslated(insignia, 'descripcion', language)}
-                            </span>
-                        ) : (
-                            <span className="italic text-[10px] opacity-70">{t('insignias.locked')}</span>
-                        )
-                    )}
-                </div>
+          <div className="relative max-w-3xl pr-0 sm:pr-32">
+            <p className="mb-2 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.18em] text-orange-200">
+              <Sparkles className="h-4 w-4" />
+              Pasaporte de logros
+            </p>
+            <DialogTitle className="flex items-center gap-2 font-heading text-2xl font-black text-white sm:text-3xl">
+              <Award className="h-7 w-7 text-orange-300" />
+              Tus insignias cuentan por dónde has andado
+            </DialogTitle>
+            <DialogDescription className="mt-2 max-w-2xl text-sm leading-relaxed text-emerald-50/80">
+              Cada insignia está vinculada a una acción real. Consulta el objetivo, sigue tu avance y conserva los símbolos de las rutas que completas.
+            </DialogDescription>
 
-                {showProgressBar && (
-                    <div className="w-full">
-                        <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                            <div
-                                className="h-full bg-gradient-to-r from-primary to-teal-400 rounded-full transition-all duration-700"
-                                style={{ width: `${Math.min(100, ((progress || 0) / threshold!) * 100)}%` }}
-                            />
-                        </div>
-                        <span className="text-[10px] text-muted-foreground mt-1 block text-center">
-                            {Math.min(progress || 0, threshold!)} / {threshold}
-                        </span>
-                    </div>
-                )}
+            <div className="mt-4 max-w-xl">
+              <div className="mb-1.5 flex justify-between text-xs font-bold text-white/80">
+                <span>Colección descubierta</span>
+                <span>{earnedCount} de {totalCount} · {percentage}%</span>
+              </div>
+              <div className="h-2.5 overflow-hidden rounded-full bg-black/20">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-orange-300 to-yellow-200 transition-all duration-700"
+                  style={{ width: `${percentage}%` }}
+                />
+              </div>
             </div>
-        </Card>
-    );
-};
+          </div>
+        </DialogHeader>
 
-const InsigniasModal: React.FC<InsigniasModalProps> = ({ open, onOpenChange, earnedInsigniaIds, allInsignias, badgeProgress = {} }) => {
-    const { t, language } = useI18n();
-    const earnedCount = earnedInsigniaIds.length;
-    const totalCount = allInsignias.length;
-    const progress = Math.round((earnedCount / totalCount) * 100);
+        <div className="flex shrink-0 gap-2 overflow-x-auto border-b bg-background px-4 py-3 scrollbar-none sm:px-6">
+          <Button size="sm" variant={filter === 'all' ? 'default' : 'outline'} onClick={() => setFilter('all')} className="shrink-0 rounded-full">
+            <Compass className="mr-1.5 h-4 w-4" /> Todas
+          </Button>
+          <Button size="sm" variant={filter === 'earned' ? 'default' : 'outline'} onClick={() => setFilter('earned')} className="shrink-0 rounded-full">
+            <CheckCircle2 className="mr-1.5 h-4 w-4" /> Conseguidas · {earnedCount}
+          </Button>
+          <Button size="sm" variant={filter === 'locked' ? 'default' : 'outline'} onClick={() => setFilter('locked')} className="shrink-0 rounded-full">
+            <LockKeyhole className="mr-1.5 h-4 w-4" /> Por descubrir · {Math.max(0, totalCount - earnedCount)}
+          </Button>
+        </div>
 
-    return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col p-0 overflow-hidden bg-background">
-                <DialogHeader className="p-6 pb-4 shrink-0 border-b">
-                    <DialogTitle className="text-2xl flex items-center gap-2">
-                        <Award className="h-7 w-7 text-yellow-500 fill-yellow-500/20" />
-                        {t('insignias.title')}
-                    </DialogTitle>
-                    <DialogDescription>
-                        {t('insignias.description')}
-                    </DialogDescription>
+        <ScrollArea className="min-h-0 flex-1 bg-muted/20">
+          <div className="space-y-8 p-4 sm:p-6">
+            {(Object.keys(GROUP_TITLES) as BadgeGroup[]).map((group) => {
+              const badges = grouped[group];
+              if (!badges?.length) return null;
+              const copy = GROUP_TITLES[group];
+              return (
+                <section key={group} aria-labelledby={`badge-group-${group}`}>
+                  <div className="mb-3">
+                    <h2 id={`badge-group-${group}`} className="font-heading text-xl font-black">{copy.title}</h2>
+                    <p className="mt-1 text-sm text-muted-foreground">{copy.description}</p>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {badges.map((badge) => (
+                      <BadgeCard
+                        key={badge.id}
+                        insignia={badge}
+                        obtenida={earnedSet.has(badge.id)}
+                        progress={badge.family_key ? badgeProgress[badge.family_key] : undefined}
+                      />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
 
-                    {/* Progress Bar */}
-                    <div className="mt-4 pt-2">
-                        <div className="flex justify-between text-sm mb-1.5 font-medium text-muted-foreground">
-                            <span>{t('insignias.progress')}</span>
-                            <span className="text-foreground">{earnedCount} / {totalCount}</span>
-                        </div>
-                        <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
-                            <div
-                                className="h-full bg-gradient-to-r from-primary to-teal-400 transition-all duration-1000 ease-out rounded-full"
-                                style={{ width: `${progress}%` }}
-                            />
-                        </div>
-                    </div>
-                </DialogHeader>
-
-                <ScrollArea className="flex-1 w-full min-h-0 bg-muted/20">
-                    <div className="p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {allInsignias.map(insignia => (
-                            <InsigniaCard
-                                key={insignia.id}
-                                insignia={insignia}
-                                obtenida={earnedInsigniaIds.includes(insignia.id)}
-                                progress={insignia.family_key ? badgeProgress[insignia.family_key] : undefined}
-                            />
-                        ))}
-                    </div>
-                </ScrollArea>
-                <div className="pt-4 border-t mt-2">
-                    <Button onClick={() => onOpenChange(false)} className="w-full">
-                        {language === 'es' ? 'Cerrar' : 'Close'}
-                    </Button>
-                </div>
-            </DialogContent>
-        </Dialog>
-    );
-};
-
-export default InsigniasModal;
+            {Object.keys(grouped).length === 0 && (
+              <div className="rounded-3xl border border-dashed bg-card p-10 text-center">
+                <Award className="mx-auto h-10 w-10 text-muted-foreground" />
+                <p className="mt-3 font-bold">Todavía no hay insignias en esta vista.</p>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+}

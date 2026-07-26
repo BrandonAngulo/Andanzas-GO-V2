@@ -26,6 +26,7 @@ interface UserDataContextType {
     toggleFav: (id: string, siteName: string) => Promise<void>;
     addReview: (siteId: string, text: string, rating: number, fotos: File[]) => Promise<void>;
     addNotification: (notif: Omit<Notificacion, 'id' | 'fecha'>) => void;
+    registerEarnedBadge: (badgeId: string) => void;
     markAsRead: (id: string) => void;
     markAllAsRead: () => void;
 
@@ -80,6 +81,11 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         setNotifications(prev => [{ ...notif, id: `n_${Date.now()}`, fecha: new Date().toISOString() }, ...prev]);
     };
 
+    const registerEarnedBadge = (badgeId: string) => {
+        if (!badgeId) return;
+        setEarnedInsignias(prev => prev.includes(badgeId) ? prev : [...prev, badgeId]);
+    };
+
     const toggleFav = async (id: string, siteName: string) => {
         const isCurrentlyFav = favIds.includes(id);
         // Optimistic update
@@ -91,9 +97,11 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                     await userService.removeFavorite(user.id, id);
                 } else {
                     await userService.addFavorite(user.id, id);
-                    await gamificationService.claimActionPoints('favorite', id);
+                    const claim = await gamificationService.claimActionPoints('favorite', id);
 
-                    const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'fav');
+                    const newBadge = claim && !claim.already_claimed
+                        ? await gamificationService.incrementFamilyProgress(user.id, 'fav')
+                        : null;
                     if (newBadge) {
                         addNotification({
                             titulo: '¡Nueva Insignia!',
@@ -103,7 +111,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                             leida: false,
                             icono: Award as any,
                         });
-                        setEarnedInsignias(prev => [...prev, newBadge.id]);
+                        registerEarnedBadge(newBadge.id);
                     }
                 }
             } catch (error) {
@@ -122,8 +130,12 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         if (isAuthenticated && user) {
             try {
                 const savedReview = await reviewsService.addReview({ siteId, text, rating, fotos }, user.id);
-                if (savedReview) await gamificationService.claimActionPoints('review', savedReview.id);
-                const newBadge = await gamificationService.incrementFamilyProgress(user.id, 'review');
+                const claim = savedReview
+                    ? await gamificationService.claimActionPoints('review', savedReview.id)
+                    : null;
+                const newBadge = claim && !claim.already_claimed
+                    ? await gamificationService.incrementFamilyProgress(user.id, 'review')
+                    : null;
                 if (newBadge) {
                     addNotification({
                         titulo: '¡Nueva Insignia!',
@@ -133,7 +145,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                         leida: false,
                         icono: Award as any
                     });
-                    setEarnedInsignias(prev => [...prev, newBadge.id]);
+                    registerEarnedBadge(newBadge.id);
                 }
             } catch (e) {
                 console.error(e);
@@ -170,6 +182,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             toggleFav,
             addReview,
             addNotification,
+            registerEarnedBadge,
             markAsRead,
             markAllAsRead,
             updateRouteProgress

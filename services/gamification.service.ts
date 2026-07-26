@@ -1,16 +1,11 @@
 import { supabase } from '../lib/supabaseClient';
 import { Insignia, PassportStamp } from '../types';
-import { Heart, PenTool, Map as MapIcon, Flag, Award, Bell, Utensils, Palette, Feather, Music, Church, Cat, Footprints, Unlock, Trophy } from 'lucide-react';
+import { Heart, PenTool, Map as MapIcon, Flag, Award, Bell, Utensils, Palette, Feather, Music, Church, Cat, Footprints, Unlock, Trophy, Leaf } from 'lucide-react';
+import { FAMILY_TIER_THRESHOLDS, isRouteBadge, sortBadges } from '../lib/badge-system';
+export { FAMILY_TIER_THRESHOLDS } from '../lib/badge-system';
 
 // Umbrales de conteo por tier (1=bronce, 2=plata, 3=oro) para cada familia de insignias
 // progresivas. Ajustar aquí si se necesita recalibrar la dificultad de un nivel.
-export const FAMILY_TIER_THRESHOLDS: Record<string, number[]> = {
-    fav: [1, 10, 25],
-    review: [1, 5, 15],
-    route_create: [1, 3, 7],
-    route_complete: [1, 5, 10],
-};
-
 export interface EconomySummary {
     level: number; experience_points: number; level_start_xp: number; next_level_xp: number;
     app_points: number; coins: number; gems: number; lives: number; max_lives: number;
@@ -33,7 +28,8 @@ export const iconMap: Record<string, any> = {
     'Cat': Cat,
     'Footprints': Footprints,
     'Unlock': Unlock,
-    'Trophy': Trophy
+    'Trophy': Trophy,
+    'Leaf': Leaf
 };
 
 export const gamificationService = {
@@ -68,15 +64,22 @@ export const gamificationService = {
     },
 
     async getAllBadges(): Promise<Insignia[]> {
-        const { data, error } = await supabase
-            .from('badges')
-            .select('*');
+        const [{ data, error }, { data: routes, error: routeError }] = await Promise.all([
+            supabase.from('badges').select('*'),
+            supabase.from('routes').select('reward_badge_id').eq('is_published', true),
+        ]);
 
         if (error) {
             console.error('Error fetching badges:', error);
             return [];
         }
-        return data.map(mapBadge);
+        const linkedRouteBadgeIds = new Set(
+            (routes ?? []).map(route => route.reward_badge_id).filter(Boolean),
+        );
+        return data
+            .map(mapBadge)
+            .filter(badge => routeError || !isRouteBadge(badge) || linkedRouteBadgeIds.has(badge.id))
+            .sort(sortBadges);
     },
 
     async getUserBadgeIds(userId: string): Promise<string[]> {

@@ -12,13 +12,13 @@ import { Route } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const useRouteNavigation = () => {
-    const { sites, rutasTematicas } = useAppData();
+    const { sites, rutasTematicas, allInsignias } = useAppData();
     const {
         routesInProgress,
         routesCompleted,
         updateRouteProgress,
         addNotification,
-        earnedInsignias
+        registerEarnedBadge
     } = useUserData();
     const { user, isAuthenticated } = useAuth();
     const { language } = useI18n();
@@ -148,11 +148,41 @@ export const useRouteNavigation = () => {
                 stops_total: route.puntos.length,
                 points_reward: route.points_reward || 0,
             });
-            void gamificationService.claimActionPoints('route_complete', route.id).then(result => {
+            void gamificationService.claimActionPoints('route_complete', route.id).then(async result => {
                 const points = Number(result?.points_awarded || 0);
                 if (points > 0) toast.success(`Bono final de ruta: +${points} puntos`);
+
+                const routeBadgeId = typeof result?.badge_id === 'string'
+                    ? result.badge_id
+                    : route.reward_badge_id;
+                if (result?.badge_unlocked && routeBadgeId) {
+                    registerEarnedBadge(routeBadgeId);
+                    const routeBadge = allInsignias.find(badge => badge.id === routeBadgeId);
+                    addNotification({
+                        titulo: language === 'es' ? '¡Recuerdo de ruta desbloqueado!' : 'Route keepsake unlocked!',
+                        titulo_en: 'Route keepsake unlocked!',
+                        descripcion: routeBadge?.nombre || routeBadgeId,
+                        descripcion_en: routeBadge?.nombre_en || routeBadge?.nombre || routeBadgeId,
+                        leida: false,
+                        icono: routeBadge?.icono || Route as any,
+                    });
+                }
+
+                if (result && !result.already_claimed) {
+                    const progressBadge = await gamificationService.incrementFamilyProgress(user.id, 'route_complete');
+                    if (progressBadge) {
+                        registerEarnedBadge(progressBadge.id);
+                        addNotification({
+                            titulo: language === 'es' ? '¡Nueva insignia de trayectoria!' : 'New journey badge!',
+                            titulo_en: 'New journey badge!',
+                            descripcion: progressBadge.nombre,
+                            descripcion_en: progressBadge.nombre_en || progressBadge.nombre,
+                            leida: false,
+                            icono: progressBadge.icono,
+                        });
+                    }
+                }
             });
-            gamificationService.incrementFamilyProgress(user.id, 'route_complete');
         }
 
         addNotification({

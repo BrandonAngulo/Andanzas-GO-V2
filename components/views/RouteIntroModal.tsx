@@ -1,27 +1,28 @@
 import { toast } from "sonner";
 import React, { useEffect, useState } from 'react';
 import { X, PlayCircle, Clock, MapPin, Award, ChevronRight, Footprints, Navigation, Sparkles, Flag } from 'lucide-react';
-import { Ruta, Site } from '../../types';
+import { Insignia, Ruta, Site } from '../../types';
 import { Button } from '../ui/button';
 import { LazyImage } from '../ui/lazy-image';
 import { ScrollArea } from '../ui/scroll-area';
 import { cn, getTranslated, formatDuration } from '../../lib/utils';
 import { useI18n } from '../../i18n';
-import { BADGES } from '../../data/badges';
 import { useAuth } from '../../contexts/AuthContext';
 import { routesService } from '../../services/routes.service';
 import { imagePositionStyle } from '../shared/ImagePositioner';
 import { getRouteImage, getSiteImage } from '../../lib/route-media';
+import { AchievementEmblem } from '../shared/AchievementEmblem';
 
 interface RouteIntroModalProps {
     route: Ruta;
     sites: Site[];
+    badges: Insignia[];
     onStart: () => void;
     onClose: () => void;
     onAuthRequired?: () => void;
 }
 
-const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart, onClose, onAuthRequired }) => {
+const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, badges, onStart, onClose, onAuthRequired }) => {
     const { language } = useI18n();
     const { isAuthenticated, user } = useAuth();
     const [isVisible, setIsVisible] = useState(false);
@@ -82,7 +83,7 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
         }
     };
 
-    const badge = BADGES.find(b => b.id === route.reward_badge_id);
+    const badge = badges.find(b => b.id === route.reward_badge_id);
     const BadgeIcon = badge?.icono || Award;
     const routePoints = route.puntos
         .map(pointId => sites.find(site => site.id === pointId))
@@ -226,6 +227,22 @@ const RouteIntroModal: React.FC<RouteIntroModalProps> = ({ route, sites, onStart
                                         </p>
                                     </div>
                                 </div>
+                                {badge && (
+                                    <div className="mt-4 flex items-center gap-3 rounded-2xl border border-orange-300/45 bg-gradient-to-r from-orange-50 to-emerald-50 p-3 dark:border-orange-500/25 dark:from-orange-950/25 dark:to-emerald-950/30">
+                                        <AchievementEmblem insignia={badge} obtained={false} size={74} />
+                                        <div className="min-w-0">
+                                            <p className="text-[10px] font-black uppercase tracking-[0.14em] text-orange-700 dark:text-orange-300">
+                                                {language === 'es' ? 'Recuerdo de esta andanza' : 'This journey keepsake'}
+                                            </p>
+                                            <p className="mt-0.5 font-heading text-base font-black">{getTranslated(badge, 'nombre', language)}</p>
+                                            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                                                {language === 'es'
+                                                    ? 'Completa todas las paradas para sumar esta insignia a tu colección.'
+                                                    : 'Complete every stop to add this badge to your collection.'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {routePoints.length > 0 && (
