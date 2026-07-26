@@ -65,6 +65,33 @@ export const checkAnswerCorrectness = (question: GameQuestion, selectedAnswer: a
 // Segundos totales de una ronda Contrarreloj (15 preguntas contra un solo reloj).
 export const TIMED_ROUND_SECONDS = 120;
 
+// "Firma de plantilla": las primeras palabras normalizadas de la pregunta. Sirve para
+// agrupar preguntas de la misma forma ("¿Cuál es la capital de X?") aunque el dato cambie.
+const templateKey = (q: any): string =>
+    String(q?.question_text || '')
+        .toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/[^a-z0-9\s]/g, ' ').trim().split(/\s+/).slice(0, 5).join(' ');
+
+// Evita que una misma "forma" de pregunta domine una partida: limita a `cap` por plantilla
+// y, si eso deja huecos, rellena desde el pool respetando el mismo tope. Ordena por nivel.
+// Nota: es una red de seguridad; si el pool es casi todo la misma plantilla (p. ej. "capital
+// de X"), no puede inventar variedad que no existe — ahí el arreglo real es de contenido.
+const diversifyByTemplate = (selected: any[], pool: any[], cap: number): any[] => {
+    const target = selected.length;
+    const counts: Record<string, number> = {};
+    const chosen = new Set<string>();
+    const out: any[] = [];
+    const tryAdd = (q: any): boolean => {
+        if (!q || chosen.has(q.id)) return false;
+        const k = templateKey(q);
+        if ((counts[k] || 0) >= cap) return false;
+        counts[k] = (counts[k] || 0) + 1; chosen.add(q.id); out.push(q); return true;
+    };
+    for (const q of selected) tryAdd(q);
+    if (out.length < target) { for (const q of pool) { if (out.length >= target) break; tryAdd(q); } }
+    return out.sort((a, b) => (Number(a.level) || 1) - (Number(b.level) || 1));
+};
+
 export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' | 'timed' = 'levels', theme?: string) => {
     const [state, setState] = useState<GameEngineState>({
         game: null,
@@ -272,6 +299,13 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                 // Sin distribución por nivel: respeta questions_per_match (antes cargaba TODO el banco).
                 const qpm = game.questions_per_match || 15;
                 finalQuestions = [...source].sort((a, b) => (a.level || 1) - (b.level || 1)).slice(0, qpm);
+            }
+
+            // Red de seguridad de variedad: ninguna "forma" de pregunta domina la partida.
+            // Se omite en Historia (legend) para no aplanar su cola de dificultad ascendente.
+            if (mode !== 'legend' && finalQuestions.length > 0) {
+                const cap = Math.max(2, Math.round((game.questions_per_match || 15) / 5));
+                finalQuestions = diversifyByTemplate(finalQuestions, source, cap);
             }
 
             questions = finalQuestions.map((q: any) => {

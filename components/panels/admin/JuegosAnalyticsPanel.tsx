@@ -14,8 +14,12 @@ export const JuegosAnalyticsPanel = () => {
         // Instrumentación Fase 0 (desde analytics_events + game_answers)
         funnel: { viewed: 0, started: 0, completed: 0 },
         byMode: [] as { mode: string, started: number, completed: number }[],
-        accuracyByLevel: [] as { level: number, correct: number, total: number }[]
+        accuracyByLevel: [] as { level: number, correct: number, total: number }[],
+        // Monotonía del banco: % de preguntas con una "gemela" (misma forma) en su categoría.
+        templateConcentration: [] as { category: string, total: number, con_gemela: number, pct_monotonia: number }[]
     });
+
+    const TRIVIA_GO_ID = '81111111-1111-1111-1111-111111111111';
 
     useEffect(() => {
         loadMetrics();
@@ -116,6 +120,15 @@ export const JuegosAnalyticsPanel = () => {
                 .map(([level, v]) => ({ level: Number(level), ...v }))
                 .sort((a, b) => a.level - b.level);
 
+            // 6. Monotonía por categoría (concentración de plantillas) vía RPC.
+            const { data: tplConc } = await supabase.rpc('get_template_concentration', { p_game_id: TRIVIA_GO_ID });
+            const templateConcentration = ((tplConc || []) as any[]).map(r => ({
+                category: r.category,
+                total: Number(r.total),
+                con_gemela: Number(r.con_gemela),
+                pct_monotonia: Number(r.pct_monotonia)
+            }));
+
             setMetrics({
                 totalSessions: total,
                 completedSessions: completed,
@@ -124,7 +137,8 @@ export const JuegosAnalyticsPanel = () => {
                 reports,
                 funnel,
                 byMode,
-                accuracyByLevel
+                accuracyByLevel,
+                templateConcentration
             });
 
         } catch (error) {
@@ -302,6 +316,43 @@ export const JuegosAnalyticsPanel = () => {
                     </CardContent>
                 </Card>
             </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                        <Layers className="w-5 h-5 text-primary" /> Monotonía del banco (concentración de plantillas)
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                        "% monotonía" = preguntas de la categoría que tienen otra muy parecida (misma forma) adentro. Alto = plantillero → conviene diversificar las formas de pregunta.
+                    </p>
+                </CardHeader>
+                <CardContent>
+                    {metrics.templateConcentration.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">No hay datos suficientes.</p>
+                    ) : (
+                        <div className="max-h-[420px] overflow-y-auto">
+                            <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+                                {metrics.templateConcentration.map((row) => {
+                                    const tone = row.pct_monotonia >= 60 ? 'bg-red-500' : row.pct_monotonia >= 30 ? 'bg-amber-500' : 'bg-emerald-500';
+                                    const chip = row.pct_monotonia >= 60 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : row.pct_monotonia >= 30 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400';
+                                    return (
+                                        <div key={row.category} className="rounded-lg border bg-muted/20 p-2.5">
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className="truncate text-sm font-medium" title={row.category}>{row.category}</span>
+                                                <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${chip}`}>{row.pct_monotonia}%</span>
+                                            </div>
+                                            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-muted">
+                                                <div className={`h-full rounded-full ${tone}`} style={{ width: `${Math.min(100, row.pct_monotonia)}%` }} />
+                                            </div>
+                                            <p className="mt-1 text-[11px] text-muted-foreground">{row.con_gemela}/{row.total} con gemela</p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
         </div>
     );
 };
