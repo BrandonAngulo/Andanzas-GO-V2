@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Heart, MessageSquare, Route as RouteIcon, Flag, Trophy, Award, LogIn, UserCircle, UserPlus, Loader2, Chrome, Settings, MapPin, Share2, Map, Star, Trash2, Camera, Edit2, Info, ImageIcon, Coins, Gem, Sparkles, Flame, Target, Gamepad2, Calendar, Gift, TrendingUp, Move } from 'lucide-react';
 import { toast } from 'sonner';
 import { BadgeCard } from '../shared/BadgeCard';
+import { BadgeDetailDialog } from '../shared/BadgeDetailDialog';
 import { GameMascot } from '../views/GameMascot';
 import { UserAvatar } from '../shared/UserAvatar';
 import { InfoHint } from '../shared/InfoHint';
@@ -294,6 +295,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
     const [earnedBadgeIds, setEarnedBadgeIds] = useState<string[]>([]);
     const [badgeProgress, setBadgeProgress] = useState<Record<string, number>>({});
+    const [selectedBadge, setSelectedBadge] = useState<Insignia | null>(null);
     const [stamps, setStamps] = useState<PassportStamp[]>([]);
     const [dynamicBanners, setDynamicBanners] = useState(AVAILABLE_BANNERS);
     const [myReviews, setMyReviews] = useState<Review[]>([]);
@@ -1043,14 +1045,14 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     </TabsContent>
 
                     <TabsContent value="badges" className="mt-0">
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                             {allBadges.length > 0 ? (
                                 allBadges.map(badge => (
                                     <BadgeCard
                                         key={badge.id}
                                         insignia={badge}
                                         obtenida={earnedBadgeIds.includes(String(badge.id))}
-                                        progress={badge.family_key ? badgeProgress[badge.family_key] : undefined}
+                                        onSelect={setSelectedBadge}
                                     />
                                 ))
                             ) : (
@@ -1060,6 +1062,15 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                                 </div>
                             )}
                         </div>
+                        <BadgeDetailDialog
+                            insignia={selectedBadge}
+                            open={selectedBadge !== null}
+                            onOpenChange={(detailOpen) => {
+                                if (!detailOpen) setSelectedBadge(null);
+                            }}
+                            obtenida={selectedBadge ? earnedBadgeIds.includes(String(selectedBadge.id)) : false}
+                            progress={selectedBadge?.family_key ? badgeProgress[selectedBadge.family_key] : undefined}
+                        />
                     </TabsContent>
 
                     <TabsContent value="games" className="mt-0 space-y-6">

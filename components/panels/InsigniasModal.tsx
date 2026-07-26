@@ -5,6 +5,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
 import type { Insignia } from '../../types';
 import { BadgeCard } from '../shared/BadgeCard';
+import { BadgeDetailDialog } from '../shared/BadgeDetailDialog';
 import { getBadgeVisual, sortBadges, type BadgeGroup } from '../../lib/badge-system';
 
 interface InsigniasModalProps {
@@ -44,6 +45,7 @@ export default function InsigniasModal({
   badgeProgress = {},
 }: InsigniasModalProps): JSX.Element {
   const [filter, setFilter] = useState<Filter>('all');
+  const [selectedBadge, setSelectedBadge] = useState<Insignia | null>(null);
   const earnedSet = useMemo(() => new Set(earnedInsigniaIds), [earnedInsigniaIds]);
   const earnedCount = allInsignias.filter((badge) => earnedSet.has(badge.id)).length;
   const totalCount = allInsignias.length;
@@ -61,8 +63,9 @@ export default function InsigniasModal({
   }, [allInsignias, earnedSet, filter]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[92vh] max-w-6xl flex-col overflow-hidden rounded-[2rem] border-0 p-0 shadow-2xl">
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="flex max-h-[92vh] max-w-6xl flex-col overflow-hidden rounded-[2rem] border-0 p-0 shadow-2xl">
         <DialogHeader className="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#064e43] via-[#08775c] to-[#10a66a] px-5 pb-5 pt-6 text-left text-white sm:px-7">
           <div className="pointer-events-none absolute -right-10 -top-20 h-64 w-64 rounded-full border border-white/10" />
           <div className="pointer-events-none absolute right-20 top-4 h-32 w-32 rounded-full bg-orange-300/15 blur-3xl" />
@@ -125,13 +128,13 @@ export default function InsigniasModal({
                     <h2 id={`badge-group-${group}`} className="font-heading text-xl font-black">{copy.title}</h2>
                     <p className="mt-1 text-sm text-muted-foreground">{copy.description}</p>
                   </div>
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {badges.map((badge) => (
                       <BadgeCard
                         key={badge.id}
                         insignia={badge}
                         obtenida={earnedSet.has(badge.id)}
-                        progress={badge.family_key ? badgeProgress[badge.family_key] : undefined}
+                        onSelect={setSelectedBadge}
                       />
                     ))}
                   </div>
@@ -147,7 +150,18 @@ export default function InsigniasModal({
             )}
           </div>
         </ScrollArea>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+
+      <BadgeDetailDialog
+        insignia={selectedBadge}
+        open={selectedBadge !== null}
+        onOpenChange={(detailOpen) => {
+          if (!detailOpen) setSelectedBadge(null);
+        }}
+        obtenida={selectedBadge ? earnedSet.has(selectedBadge.id) : false}
+        progress={selectedBadge?.family_key ? badgeProgress[selectedBadge.family_key] : undefined}
+      />
+    </>
   );
 }
