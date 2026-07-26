@@ -11,6 +11,7 @@ import { useI18n } from '../../i18n';
 import { cn, getTranslated, getCategoryIcon, getCategoryColor } from '../../lib/utils';
 import { LazyImage } from '../ui/lazy-image';
 import { Switch } from '../ui/switch';
+import { getSiteImage } from '../../lib/route-media';
 
 // ... (Rest of imports and interfaces same as before)
 interface MapaGoogleProps {
@@ -93,15 +94,20 @@ const MapLegend = ({ language }: { language: 'es' | 'en' }) => {
     );
 };
 
-const CustomPin = ({ color, icon, number }: { color: string, icon: string, number?: number }) => (
-    <div className="relative group cursor-pointer transform transition-all duration-300 hover:scale-110 hover:-translate-y-1 origin-bottom">
+const CustomPin = ({ color, icon, number, active = false }: { color: string, icon: string, number?: number, active?: boolean }) => (
+    <div className={cn(
+        "relative group cursor-pointer transform origin-bottom transition-all duration-300 hover:scale-110 hover:-translate-y-1",
+        active && "scale-110 -translate-y-1"
+    )}>
+        {active && <div className="absolute -inset-2 rounded-full bg-orange-300/35 blur-md" />}
         <div className="absolute top-[34px] left-1/2 -translate-x-1/2 w-3 h-1.5 bg-black/20 rounded-full blur-[1px]"></div>
-        <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-sm opacity-80 group-hover:opacity-100 transition-opacity">
+        <svg width="38" height="47" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative drop-shadow-lg transition-opacity">
             <path d="M17 0C7.61116 0 0 7.61116 0 17C0 29.75 17 42.5 17 42.5C17 42.5 34 29.75 34 17C34 7.61116 26.3888 0 17 0Z" fill={color} />
-            <circle cx="17" cy="17" r="13" fill="white" fillOpacity="0.4" />
+            <circle cx="17" cy="17" r="13" fill="white" fillOpacity={active ? "0.72" : "0.48"} />
+            <circle cx="17" cy="17" r="15" stroke="white" strokeWidth="1.5" strokeOpacity="0.9" />
         </svg>
-        <div className="absolute top-0 left-0 w-full h-[34px] flex items-center justify-center text-[18px] leading-none select-none pointer-events-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
-            {number ? <span className="font-bold text-white text-sm">{number}</span> : icon}
+        <div className="absolute top-0 left-0 w-[38px] h-[38px] flex items-center justify-center text-[18px] leading-none select-none pointer-events-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.16)' }}>
+            {number ? <span className={cn("text-sm font-black", active ? "text-orange-950" : "text-white")}>{number}</span> : icon}
         </div>
     </div>
 );
@@ -224,12 +230,18 @@ const MapContent = ({
             {sites.map((site) => {
                 const type = getTranslated(site, 'tipo', language) as string;
                 const icon = getCategoryIcon(type);
-                const color = getCategoryColor(type);
+                let color = getCategoryColor(type);
 
                 let number: number | undefined;
+                let isActiveStop = false;
                 if (activeRoute) {
                     const idx = activeRoute.puntos.indexOf(site.id);
-                    if (idx !== -1) number = idx + 1;
+                    if (idx !== -1) {
+                        number = idx + 1;
+                        isActiveStop = idx === activeRouteStep;
+                        const routePalette = ['#fb923c', '#10b981', '#0ea5e9', '#8b5cf6', '#ec4899', '#eab308'];
+                        color = routePalette[idx % routePalette.length];
+                    }
                 }
 
                 return (
@@ -241,7 +253,7 @@ const MapContent = ({
                         zIndex={20}
                         className="custom-marker-host"
                     >
-                        <CustomPin color={color} icon={icon} number={number} />
+                        <CustomPin color={color} icon={icon} number={number} active={isActiveStop} />
                     </AdvancedMarker>
                 );
             })}
@@ -262,7 +274,7 @@ const MapContent = ({
                     <div className="min-w-[200px] max-w-[240px] p-0 font-sans">
                         <div className="relative w-full h-24 mb-2 rounded-md overflow-hidden bg-muted">
                             <LazyImage
-                                src={previewSite.logoUrl || previewSite.fotos?.[0] || ""}
+                                src={getSiteImage(previewSite, activeRoute || undefined)}
                                 alt={previewSite.nombre}
                                 textFallback={previewSite.nombre}
                                 className="w-full h-full object-cover"
@@ -288,7 +300,7 @@ const MapContent = ({
                 </InfoWindow>
             )}
 
-            {activePath.length > 1 && <RoutePolyline points={activePath} color="#22c55e" />}
+            {activePath.length > 1 && <RoutePolyline points={activePath} color="#10b981" dashed />}
             {plannedPath.length > 1 && <RoutePolyline points={plannedPath} color="#3b82f6" dashed />}
         </>
     );
@@ -459,7 +471,11 @@ const MapWrapper = (props: MapaGoogleProps) => {
                         </Button>
 
                         {showFilterPanel && (
-                            <Card className="absolute top-full right-0 mt-3 w-64 shadow-2xl border-border/50 bg-card/95 backdrop-blur z-[1000] animate-in fade-in slide-in-from-top-2 rounded-2xl overflow-hidden">
+                            <>
+                            {/* Fondo para cerrar en móvil (la hoja inferior cubre parte de la pantalla). */}
+                            <div className="fixed inset-0 z-[999] bg-black/40 md:hidden" onClick={() => setShowFilterPanel(false)} aria-hidden />
+                            {/* Móvil: hoja inferior a lo ancho; escritorio: dropdown anclado al botón. */}
+                            <Card className="fixed inset-x-0 bottom-0 z-[1000] w-full max-h-[78vh] rounded-t-2xl shadow-2xl border-border/50 bg-card/95 backdrop-blur animate-in fade-in slide-in-from-bottom-4 overflow-hidden md:absolute md:inset-x-auto md:bottom-auto md:top-full md:right-0 md:mt-3 md:w-64 md:max-h-none md:rounded-2xl md:slide-in-from-top-2">
                                 <div className="p-3 border-b bg-muted/20 flex items-center justify-between w-full">
                                     <h3 className="text-sm font-bold text-foreground flex items-center gap-2 m-0">
                                         <Filter className="h-4 w-4 text-primary" />
@@ -468,7 +484,7 @@ const MapWrapper = (props: MapaGoogleProps) => {
                                     <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-background shadow-sm border hover:bg-muted flex-shrink-0" onClick={() => setShowFilterPanel(false)}><X className="h-3.5 w-3.5" /></Button>
                                 </div>
                                 <div className="p-0 flex flex-col">
-                                    <ScrollArea className="h-[200px] p-2">
+                                    <ScrollArea className="h-[36vh] p-2 md:h-[200px]">
                                         <div className="space-y-1">
                                             {props.allCategories.map(cat => (
                                                 <label key={cat} className="flex items-center gap-2 p-2 hover:bg-muted/50 rounded-md cursor-pointer text-sm">
@@ -521,13 +537,14 @@ const MapWrapper = (props: MapaGoogleProps) => {
                                     )}
                                 </div>
                             </Card>
+                            </>
                         )}
                     </div>
                 </div>
             </div>
 
             {/* Map Legend */}
-            <MapLegend language={language} />
+            {!props.activeRoute && <MapLegend language={language} />}
 
         </div>
     );
