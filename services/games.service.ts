@@ -194,6 +194,17 @@ export const gamesService = {
         return data as GameQuestion[];
     },
 
+    // Sube una imagen de opción (preguntas image_choice) al bucket público `content`
+    // y devuelve su URL pública. Las imágenes deben seguir la línea de diseño de la app.
+    async uploadQuestionImage(file: File): Promise<string> {
+        const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+        const path = `questions/q_${Date.now()}_${Math.random().toString(36).slice(2, 7)}.${ext}`;
+        const { error } = await supabase.storage.from('content').upload(path, file, { upsert: false, contentType: file.type || undefined });
+        if (error) throw error;
+        const { data } = supabase.storage.from('content').getPublicUrl(path);
+        return data.publicUrl;
+    },
+
     async createQuestion(question: Partial<GameQuestion>): Promise<GameQuestion | null> {
         const { data, error } = await supabase.from('game_questions').insert(question).select().single();
         if (error) throw error;

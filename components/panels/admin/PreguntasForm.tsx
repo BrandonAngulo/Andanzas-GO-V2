@@ -7,7 +7,7 @@ import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
-import { Save, X, Plus, Trash2, Edit2, Search, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
+import { Save, X, Plus, Trash2, Edit2, Search, ChevronLeft, ChevronRight, ShieldCheck, Upload, Loader2 } from 'lucide-react';
 import { ConfirmDialog } from '../../ui/confirm-dialog';
 
 export const PreguntasForm = ({ gameId }: { gameId: string }) => {
@@ -16,6 +16,7 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [editingQuestion, setEditingQuestion] = useState<Partial<GameQuestion> | null>(null);
     const [learnEntries, setLearnEntries] = useState<LearnEntry[]>([]);
     const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [uploadingImgIdx, setUploadingImgIdx] = useState<number | null>(null);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [statusFilter, setStatusFilter] = useState('all');
     const [levelFilter, setLevelFilter] = useState('all');
@@ -325,6 +326,20 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
         setEditingQuestion({ ...editingQuestion, options: opts });
     };
 
+    const handleUploadOptionImage = async (idx: number, file: File) => {
+        setUploadingImgIdx(idx);
+        try {
+            const url = await gamesService.uploadQuestionImage(file);
+            updateImageOption(idx, 'image_url', url);
+            toast.success('Imagen subida.');
+        } catch (error: any) {
+            console.error(error);
+            toast.error('No se pudo subir la imagen: ' + (error?.message ?? ''));
+        } finally {
+            setUploadingImgIdx(null);
+        }
+    };
+
     const toggleMultiSelectCorrect = (opt: string) => {
         if (!editingQuestion) return;
         const current: string[] = Array.isArray(editingQuestion.correct_answer) ? editingQuestion.correct_answer : [];
@@ -624,26 +639,33 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                             <label className="text-sm font-medium text-foreground">Opciones con imagen (selecciona la correcta)</label>
                             {editingQuestion.options?.map((opt: { label: string; image_url: string }, idx: number) => (
                                 <div key={idx} className="flex items-center gap-2">
-                                    <input 
-                                        type="radio" 
-                                        name="correctImageAnswer" 
+                                    <input
+                                        type="radio"
+                                        name="correctImageAnswer"
                                         checked={editingQuestion.correct_answer === opt.label && opt.label !== ''}
                                         onChange={() => setEditingQuestion({ ...editingQuestion, correct_answer: opt.label })}
-                                        className="w-4 h-4 text-primary"
+                                        className="w-4 h-4 shrink-0 text-primary"
                                     />
-                                    <Input 
-                                        value={opt.label} 
-                                        onChange={e => updateImageOption(idx, 'label', e.target.value)} 
-                                        placeholder={`Nombre ${idx + 1}`} 
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md border bg-muted/40">
+                                        {opt.image_url ? <img src={opt.image_url} alt={opt.label} className="h-full w-full object-cover" /> : <span className="text-[9px] text-muted-foreground">sin img</span>}
+                                    </div>
+                                    <Input
+                                        value={opt.label}
+                                        onChange={e => updateImageOption(idx, 'label', e.target.value)}
+                                        placeholder={`Nombre ${idx + 1}`}
                                         className="flex-1"
                                     />
-                                    <Input 
-                                        value={opt.image_url} 
-                                        onChange={e => updateImageOption(idx, 'image_url', e.target.value)} 
-                                        placeholder="URL de la imagen" 
+                                    <Input
+                                        value={opt.image_url}
+                                        onChange={e => updateImageOption(idx, 'image_url', e.target.value)}
+                                        placeholder="URL o subí una imagen →"
                                         className="flex-[2]"
                                     />
-                                    <Button size="icon" variant="ghost" className="text-red-500" onClick={() => removeOptionRow(idx)}><Trash2 className="w-4 h-4" /></Button>
+                                    <label className="flex h-10 shrink-0 cursor-pointer items-center gap-1 rounded-md border px-2.5 text-xs font-medium hover:bg-muted">
+                                        {uploadingImgIdx === idx ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                                        <input type="file" className="hidden" accept="image/*" disabled={uploadingImgIdx !== null} onChange={e => { if (e.target.files?.[0]) void handleUploadOptionImage(idx, e.target.files[0]); e.target.value = ''; }} />
+                                    </label>
+                                    <Button size="icon" variant="ghost" className="text-red-500 shrink-0" onClick={() => removeOptionRow(idx)}><Trash2 className="w-4 h-4" /></Button>
                                 </div>
                             ))}
                             <Button size="sm" variant="outline" onClick={addOptionRow}><Plus className="w-4 h-4 mr-1" /> Añadir opción</Button>
