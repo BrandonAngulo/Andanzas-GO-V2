@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUserData } from '../../contexts/UserDataContext';
 import { toast } from 'sonner';
 import { QuestionRenderer } from './QuestionRenderer';
+import { LazyImage } from '../ui/lazy-image';
 import { GameMascot, MascotState } from './GameMascot';
 import ReactConfetti from 'react-confetti';
 import { dictionaryService } from '../../services/dictionary.service';
@@ -556,6 +557,12 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                                 <h2 className="mb-4 mt-0.5 text-xl font-extrabold leading-tight text-white drop-shadow-md sm:mb-5 sm:mt-1 sm:text-2xl lg:text-3xl">
                                     {currentQuestion?.question_text}
                                 </h2>
+
+                                {currentQuestion?.prompt_image_url && (
+                                    <div className="mx-auto mb-4 flex max-h-[26vh] w-full max-w-sm items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-1 sm:mb-5">
+                                        <LazyImage src={currentQuestion.prompt_image_url} alt="" className="max-h-[24vh] w-auto rounded-xl object-contain" />
+                                    </div>
+                                )}
 
                                 <div className="scrollbar-none max-h-[46vh] w-full overflow-y-auto pb-1">
                                     {currentQuestion && (

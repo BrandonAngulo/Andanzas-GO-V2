@@ -77,6 +77,28 @@ La opción **correcta debe ser inequívoca**; los distractores, plausibles pero 
 
 ---
 
+---
+
+## Patrón eficiente: 1 imagen + opciones de TEXTO
+Nuevo soporte del motor: cualquier pregunta puede tener una **imagen en el enunciado**
+(`prompt_image_url`) con opciones de **texto**. Ventaja: **1 sola imagen por pregunta** (vs 4
+del `image_choice`) y otra forma cognitiva ("nombrá lo que ves"). Se edita en el mismo editor,
+campo **"Imagen del enunciado (opcional)"**. Ejemplos ya cargados como borrador (falta subir 1 imagen c/u):
+
+- **Instrumento (Música y salsa, L2):** "¿Cómo se llama este instrumento del Pacífico?" →
+  Marimba de chonta ✓ / Guasá / Cununo / Bombo. **Imagen:** marimba de chonta (teclas de madera + resonadores).
+- **Postre (Gastronomía, L1):** "¿Cómo se llama este postre callejero de Cali?" →
+  Cholado ✓ / Lulada / Champús / Salpicón. **Imagen:** cholado (vaso con hielo raspado, frutas y siropes).
+- **Fruta (Gastronomía, L1):** "Este alimento se come cocido, con sal y miel… ¿cuál es?" →
+  Chontaduro ✓ / Borojó / Lulo / Zapote. **Imagen:** chontaduro cocido y partido, pulpa amarilla.
+- **Lugar (Cultura e identidad, L1):** "¿Qué monumento de Cali aparece en la imagen?" →
+  Gato del Río ✓ / Cristo Rey / La Ermita / Las Tres Cruces. **Imagen:** escultura del Gato del Río junto al río.
+
+> **Recomendación:** priorizar este patrón (1 imagen) para la mayoría; reservar el `image_choice`
+> (4 imágenes) para cuando comparar visualmente ES la gracia de la pregunta.
+
+---
+
 ## Flujo para completar
 1. Generar las 4 imágenes de cada pregunta con la herramienta de imágenes (usar el estilo de arriba).
 2. En admin → Juegos → Preguntas, filtrar **borrador / imagen**, abrir cada una.

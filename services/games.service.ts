@@ -69,6 +69,8 @@ export interface GameQuestion {
     // - ordering: string[] (los mismos ítems de 'options', en el orden correcto)
     // - matching: Record<string, string> (mapa left -> right correcto)
     correct_answer: any; // jsonb
+    // Imagen opcional del ENUNCIADO (patrón "1 imagen + opciones de texto"). Independiente del tipo.
+    prompt_image_url?: string | null;
     explanation?: string;
     points_reward: number;
     time_limit_sec: number;

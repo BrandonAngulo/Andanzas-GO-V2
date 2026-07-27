@@ -17,6 +17,7 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [learnEntries, setLearnEntries] = useState<LearnEntry[]>([]);
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [uploadingImgIdx, setUploadingImgIdx] = useState<number | null>(null);
+    const [uploadingPrompt, setUploadingPrompt] = useState(false);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [statusFilter, setStatusFilter] = useState('all');
     const [levelFilter, setLevelFilter] = useState('all');
@@ -326,6 +327,20 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
         setEditingQuestion({ ...editingQuestion, options: opts });
     };
 
+    const handleUploadPromptImage = async (file: File) => {
+        setUploadingPrompt(true);
+        try {
+            const url = await gamesService.uploadQuestionImage(file);
+            setEditingQuestion(prev => prev ? { ...prev, prompt_image_url: url } : prev);
+            toast.success('Imagen del enunciado subida.');
+        } catch (error: any) {
+            console.error(error);
+            toast.error('No se pudo subir la imagen: ' + (error?.message ?? ''));
+        } finally {
+            setUploadingPrompt(false);
+        }
+    };
+
     const handleUploadOptionImage = async (idx: number, file: File) => {
         setUploadingImgIdx(idx);
         try {
@@ -520,6 +535,31 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                                 </SelectContent>
                             </Select>
                         </div>
+
+                        {/* Imagen del enunciado (opcional) — patrón "1 imagen + opciones de texto". Sirve para cualquier tipo. */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Imagen del enunciado (opcional)</label>
+                            <div className="flex items-center gap-2">
+                                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md border bg-muted/40">
+                                    {editingQuestion.prompt_image_url ? <img src={editingQuestion.prompt_image_url} alt="" className="h-full w-full object-cover" /> : <span className="text-[9px] text-muted-foreground">sin img</span>}
+                                </div>
+                                <Input
+                                    value={editingQuestion.prompt_image_url || ''}
+                                    onChange={e => setEditingQuestion({ ...editingQuestion, prompt_image_url: e.target.value })}
+                                    placeholder="URL, o subí una imagen →"
+                                    className="flex-1"
+                                />
+                                <label className="flex h-10 shrink-0 cursor-pointer items-center gap-1 rounded-md border px-2.5 text-xs font-medium hover:bg-muted">
+                                    {uploadingPrompt ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                                    <input type="file" className="hidden" accept="image/*" disabled={uploadingPrompt} onChange={e => { if (e.target.files?.[0]) void handleUploadPromptImage(e.target.files[0]); e.target.value = ''; }} />
+                                </label>
+                                {editingQuestion.prompt_image_url && (
+                                    <Button size="icon" variant="ghost" className="shrink-0 text-red-500" onClick={() => setEditingQuestion({ ...editingQuestion, prompt_image_url: '' })}><Trash2 className="w-4 h-4" /></Button>
+                                )}
+                            </div>
+                            <p className="text-xs text-muted-foreground">Muestra 1 imagen arriba del enunciado con opciones de texto (ej. "¿Cómo se llama este instrumento?"). Más eficiente que "Identificar en imagen".</p>
+                        </div>
+
                         {editingQuestion.question_type === 'multiple_choice' && (
                             <div className="space-y-2">
                                 <label className="text-xs font-medium text-foreground">Variante (solo cambia el encabezado)</label>
