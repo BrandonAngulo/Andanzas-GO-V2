@@ -1,5 +1,19 @@
 import { supabase } from '../lib/supabaseClient';
 
+// Modos de juego que consumen preguntas. La elegibilidad por modo se decide por regla
+// automática (fn_mode_default_eligible) con override manual (tabla game_mode_eligibility).
+export type GameMode = 'reto' | 'contrarreloj' | 'duelo' | 'diaria' | 'practica' | 'aventura';
+export const GAME_MODES: { key: GameMode; label: string; hint: string }[] = [
+    { key: 'reto', label: 'Reto', hint: 'Todo el banco publicado' },
+    { key: 'contrarreloj', label: 'Contrarreloj', hint: 'Solo opción múltiple (rápidas)' },
+    { key: 'duelo', label: 'Duelo', hint: 'Opción múltiple/imagen con explicación' },
+    { key: 'diaria', label: 'Pregunta del día', hint: 'MC con explicación, nivel ≤ 3' },
+    { key: 'practica', label: 'Práctica', hint: 'Todo el banco (adaptativo)' },
+    { key: 'aventura', label: 'Aventura', hint: 'Solo por asignación a capítulo' },
+];
+export interface ModePoolSize { mode: GameMode; elegibles: number; publicadas: number; overrides: number; }
+export interface QuestionModeEligibility { mode: GameMode; eligible: boolean; source: 'rule' | 'override'; note: string | null; }
+
 export interface Game {
     id: string;
     title: string;
@@ -261,6 +275,40 @@ export const gamesService = {
         const { error } = await supabase.from('game_questions').delete().eq('id', id);
         if (error) throw error;
         return true;
+    },
+
+    // ---- ELEGIBILIDAD POR MODO ----
+    // Modelo: regla por defecto (automática) + override manual. Las preguntas nuevas se
+    // clasifican solas; el override es la excepción. Ver docs/trivia-mode-eligibility.md.
+    async getModePoolSizes(gameId: string): Promise<ModePoolSize[]> {
+        const { data, error } = await supabase.rpc('get_mode_pool_sizes', { p_game_id: gameId });
+        if (error) throw error;
+        return (data || []) as ModePoolSize[];
+    },
+
+    // Elegibilidad efectiva (regla u override) de UNA pregunta en los 6 modos.
+    async getQuestionModeEligibility(questionId: string): Promise<QuestionModeEligibility[]> {
+        const { data, error } = await supabase
+            .from('v_question_mode_eligibility')
+            .select('mode, eligible, source, note')
+            .eq('question_id', questionId);
+        if (error) throw error;
+        return (data || []) as QuestionModeEligibility[];
+    },
+
+    // Fija un override manual (excepción a la regla) para (pregunta, modo).
+    async setQuestionModeOverride(questionId: string, mode: GameMode, eligible: boolean, note?: string): Promise<void> {
+        const { error } = await supabase.from('game_mode_eligibility').upsert({
+            question_id: questionId, mode, eligible, note: note ?? null, updated_at: new Date().toISOString(),
+        }, { onConflict: 'question_id,mode' });
+        if (error) throw error;
+    },
+
+    // Quita el override → la pregunta vuelve a regirse por la regla por defecto.
+    async clearQuestionModeOverride(questionId: string, mode: GameMode): Promise<void> {
+        const { error } = await supabase.from('game_mode_eligibility')
+            .delete().eq('question_id', questionId).eq('mode', mode);
+        if (error) throw error;
     },
 
     // ---- REPORTS ----

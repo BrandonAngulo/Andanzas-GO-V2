@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
+import { gamesService, GAME_MODES, type ModePoolSize } from '../../../services/games.service';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
-import { Activity, AlertTriangle, XCircle, CheckCircle2, Filter, Layers, Gauge } from 'lucide-react';
+import { Activity, AlertTriangle, XCircle, CheckCircle2, Filter, Layers, Gauge, SlidersHorizontal } from 'lucide-react';
 
 export const JuegosAnalyticsPanel = () => {
     const [loading, setLoading] = useState(true);
@@ -16,7 +17,9 @@ export const JuegosAnalyticsPanel = () => {
         byMode: [] as { mode: string, started: number, completed: number }[],
         accuracyByLevel: [] as { level: number, correct: number, total: number }[],
         // Monotonía del banco: % de preguntas con una "gemela" (misma forma) en su categoría.
-        templateConcentration: [] as { category: string, total: number, con_gemela: number, pct_monotonia: number }[]
+        templateConcentration: [] as { category: string, total: number, con_gemela: number, pct_monotonia: number }[],
+        // Tamaño del pool elegible por modo (regla automática + overrides).
+        modePools: [] as ModePoolSize[]
     });
 
     const TRIVIA_GO_ID = '81111111-1111-1111-1111-111111111111';
@@ -129,6 +132,13 @@ export const JuegosAnalyticsPanel = () => {
                 pct_monotonia: Number(r.pct_monotonia)
             }));
 
+            // 7. Pool elegible por modo de juego.
+            let modePools: ModePoolSize[] = [];
+            try {
+                const raw = await gamesService.getModePoolSizes(TRIVIA_GO_ID);
+                modePools = raw.map(r => ({ mode: r.mode, elegibles: Number(r.elegibles), publicadas: Number(r.publicadas), overrides: Number(r.overrides) }));
+            } catch { /* la vista puede no existir en entornos viejos */ }
+
             setMetrics({
                 totalSessions: total,
                 completedSessions: completed,
@@ -138,7 +148,8 @@ export const JuegosAnalyticsPanel = () => {
                 funnel,
                 byMode,
                 accuracyByLevel,
-                templateConcentration
+                templateConcentration,
+                modePools
             });
 
         } catch (error) {
@@ -316,6 +327,43 @@ export const JuegosAnalyticsPanel = () => {
                     </CardContent>
                 </Card>
             </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                        <SlidersHorizontal className="w-5 h-5 text-primary" /> Pool elegible por modo
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                        Preguntas publicadas que cada modo puede usar (regla automática + overrides). Al sumar preguntas, este pool se actualiza solo. Aventura queda en 0 hasta que existan capítulos.
+                    </p>
+                </CardHeader>
+                <CardContent>
+                    {metrics.modePools.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">No hay datos suficientes.</p>
+                    ) : (
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                            {metrics.modePools
+                                .slice()
+                                .sort((a, b) => GAME_MODES.findIndex(m => m.key === a.mode) - GAME_MODES.findIndex(m => m.key === b.mode))
+                                .map((p) => {
+                                    const meta = GAME_MODES.find(m => m.key === p.mode);
+                                    const pct = p.publicadas > 0 ? Math.round((p.elegibles / p.publicadas) * 100) : 0;
+                                    return (
+                                        <div key={p.mode} className="rounded-xl border border-border/60 bg-muted/30 p-3">
+                                            <div className="text-sm font-bold">{meta?.label || p.mode}</div>
+                                            <div className="mt-1 text-2xl font-black tabular-nums">{p.elegibles.toLocaleString()}</div>
+                                            <div className="text-xs text-muted-foreground">de {p.publicadas.toLocaleString()} ({pct}%)</div>
+                                            {p.overrides > 0 && (
+                                                <div className="mt-1 text-[11px] font-medium text-amber-600">{p.overrides} override{p.overrides === 1 ? '' : 's'}</div>
+                                            )}
+                                            {meta?.hint && <div className="mt-1 text-[11px] leading-tight text-muted-foreground">{meta.hint}</div>}
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
 
             <Card>
                 <CardHeader>

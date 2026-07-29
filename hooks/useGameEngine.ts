@@ -163,22 +163,29 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             // Se solicita un pool amplio para que la distribución configurada por niveles siga
             // teniendo candidatos suficientes; el recorte final ocurre más abajo.
             const adaptiveLimit = 500;
+            // El modo de juego define qué preguntas son elegibles (p. ej. Contrarreloj usa solo
+            // opción múltiple). Leyenda y niveles comparten el pool amplio de "reto".
+            const composerMode = mode === 'timed' ? 'contrarreloj' : 'reto';
             const { data: adaptiveData, error: adaptiveError } = await supabase.rpc('compose_game_questions', {
                 p_game_id: gameId,
                 p_user_id: userId,
                 p_limit: adaptiveLimit,
-                p_theme: theme && theme !== 'all' ? theme : null
+                p_theme: theme && theme !== 'all' ? theme : null,
+                p_mode: composerMode
             });
             let questionsData: any[] | null = adaptiveData as any[] | null;
             let qError = adaptiveError;
             const adaptivelyComposed = !adaptiveError && !!adaptiveData?.length;
 
             if (!adaptivelyComposed) {
-                const fallback = await supabase
+                let fb = supabase
                     .from('game_questions')
                     .select('*')
                     .eq('game_id', gameId)
                     .eq('status', 'published');
+                // Contrarreloj: sin el composer, al menos respetar solo opción múltiple.
+                if (composerMode === 'contrarreloj') fb = fb.eq('question_type', 'multiple_choice');
+                const fallback = await fb;
                 questionsData = fallback.data as any[] | null;
                 qError = fallback.error;
             }

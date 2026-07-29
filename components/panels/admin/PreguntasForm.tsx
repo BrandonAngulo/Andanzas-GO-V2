@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import React, { useState, useEffect, useMemo } from 'react';
-import { GameQuestion, QuestionEditorialCheck, gamesService } from '../../../services/games.service';
+import { GameQuestion, QuestionEditorialCheck, gamesService, GAME_MODES, type GameMode, type QuestionModeEligibility } from '../../../services/games.service';
 import { learningService } from '../../../services/learning.service';
 import { LearnEntry } from '../../../types';
 import { Button } from '../../ui/button';
@@ -28,6 +28,33 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
     const [actionLoading, setActionLoading] = useState(false);
     const [editorialChecks, setEditorialChecks] = useState<Record<string, QuestionEditorialCheck>>({});
+    const [modeElig, setModeElig] = useState<QuestionModeEligibility[] | null>(null);
+    const [modeEligBusy, setModeEligBusy] = useState<GameMode | null>(null);
+
+    // Carga la elegibilidad por modo de la pregunta en edición (solo aplica a publicadas).
+    useEffect(() => {
+        const id = editingQuestion?.id;
+        if (!id) { setModeElig(null); return; }
+        let cancel = false;
+        gamesService.getQuestionModeEligibility(id)
+            .then(rows => { if (!cancel) setModeElig(rows); })
+            .catch(() => { if (!cancel) setModeElig([]); });
+        return () => { cancel = true; };
+    }, [editingQuestion?.id]);
+
+    const applyModeOverride = async (mode: GameMode, eligible: boolean | null) => {
+        if (!editingQuestion?.id) return;
+        setModeEligBusy(mode);
+        try {
+            if (eligible === null) await gamesService.clearQuestionModeOverride(editingQuestion.id, mode);
+            else await gamesService.setQuestionModeOverride(editingQuestion.id, mode, eligible);
+            setModeElig(await gamesService.getQuestionModeEligibility(editingQuestion.id));
+        } catch {
+            toast.error('No se pudo actualizar la elegibilidad.');
+        } finally {
+            setModeEligBusy(null);
+        }
+    };
 
     const pageSize = 50;
 
@@ -559,6 +586,42 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                             </div>
                             <p className="text-xs text-muted-foreground">Muestra 1 imagen arriba del enunciado con opciones de texto (ej. "¿Cómo se llama este instrumento?"). Más eficiente que "Identificar en imagen".</p>
                         </div>
+
+                        {/* Elegibilidad por modo: regla automática + override manual. Solo para preguntas publicadas. */}
+                        {editingQuestion.id && (
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium text-foreground">Elegibilidad por modo</label>
+                                {modeElig === null ? (
+                                    <p className="text-xs text-muted-foreground">Cargando…</p>
+                                ) : modeElig.length === 0 ? (
+                                    <p className="text-xs text-muted-foreground">Disponible cuando la pregunta esté publicada. Por defecto cada modo aplica su regla automática.</p>
+                                ) : (
+                                    <div className="space-y-1.5 rounded-lg border border-border/60 bg-muted/20 p-2">
+                                        {GAME_MODES.map(meta => {
+                                            const row = modeElig.find(r => r.mode === meta.key);
+                                            if (!row) return null;
+                                            const isOverride = row.source === 'override';
+                                            const busy = modeEligBusy === meta.key;
+                                            return (
+                                                <div key={meta.key} className="flex items-center gap-2 text-xs">
+                                                    <span className={`inline-flex h-2 w-2 shrink-0 rounded-full ${row.eligible ? 'bg-emerald-500' : 'bg-red-400'}`} />
+                                                    <span className="w-28 shrink-0 font-medium">{meta.label}</span>
+                                                    <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] ${isOverride ? 'bg-amber-100 text-amber-700' : 'bg-muted text-muted-foreground'}`}>
+                                                        {row.eligible ? 'Sí' : 'No'} · {isOverride ? 'override' : 'regla'}
+                                                    </span>
+                                                    <div className="ml-auto flex shrink-0 gap-1">
+                                                        <Button size="sm" variant={row.eligible ? 'secondary' : 'ghost'} disabled={busy} className="h-6 px-2 text-[10px]" onClick={() => applyModeOverride(meta.key, true)}>Sí</Button>
+                                                        <Button size="sm" variant={!row.eligible ? 'secondary' : 'ghost'} disabled={busy} className="h-6 px-2 text-[10px]" onClick={() => applyModeOverride(meta.key, false)}>No</Button>
+                                                        {isOverride && <Button size="sm" variant="ghost" disabled={busy} className="h-6 px-2 text-[10px]" onClick={() => applyModeOverride(meta.key, null)}>Regla</Button>}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                        <p className="pt-1 text-[10px] leading-tight text-muted-foreground">Verde = elegible. "regla" = automático por tipo/nivel/explicación; "override" = fijado a mano. "Regla" quita el override.</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {editingQuestion.question_type === 'multiple_choice' && (
                             <div className="space-y-2">
