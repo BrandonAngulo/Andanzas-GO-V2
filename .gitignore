@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 *.local
+/tmp/
 
 # Local environment files
 .env

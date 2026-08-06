@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { challengeService, GameChallenge } from '../../services/challenge.service';
 import { gamesService } from '../../services/games.service';
 import { Button } from '../ui/button';
-import { Swords, Trophy, Clock, XCircle, ArrowRight, Info } from 'lucide-react';
+import { Swords, Trophy, Clock, XCircle, ArrowRight, Info, ArrowLeft, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import GameInstructionsDialog from '../shared/GameInstructionsDialog';
 
@@ -36,7 +36,7 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
 
     if (loading) {
         return (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background p-4">
+            <div className="fixed inset-0 z-[10050] flex items-center justify-center bg-background p-4">
                 <div className="animate-pulse flex flex-col items-center">
                     <Swords className="w-12 h-12 text-primary mb-4 animate-bounce" />
                     <p className="text-lg font-medium">Cargando Reto...</p>
@@ -47,7 +47,7 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
 
     if (!challenge || !game) {
         return (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background p-4">
+            <div className="fixed inset-0 z-[10050] flex items-center justify-center bg-background p-4">
                 <div className="bg-card p-6 rounded-2xl max-w-sm w-full text-center shadow-lg border border-border">
                     <XCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
                     <h3 className="text-xl font-bold mb-2">Reto no encontrado</h3>
@@ -60,7 +60,7 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
 
     if (challenge.status === 'completed') {
         return (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background p-4">
+            <div className="fixed inset-0 z-[10050] flex items-center justify-center bg-background p-4">
                 <div className="bg-card p-6 rounded-2xl max-w-sm w-full text-center shadow-lg border border-border">
                     <Trophy className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
                     <h3 className="text-xl font-bold mb-2">Este reto ya terminó</h3>
@@ -73,7 +73,8 @@ export const ChallengeLobby: React.FC<{ challengeId: string; onClose: () => void
     }
 
     return (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background p-4 sm:p-8">
+        <div className="fixed inset-0 z-[10050] flex flex-col items-center justify-center overflow-y-auto bg-background p-4 pt-16 sm:p-8 sm:pt-20" style={{ paddingTop: 'max(env(safe-area-inset-top), 4rem)' }}>
+            <div className="fixed left-3 right-3 top-2 z-20 flex items-center justify-between" style={{ top: 'max(env(safe-area-inset-top), 0.5rem)' }}><button type="button" onClick={onClose} aria-label="Volver" className="flex h-10 w-10 items-center justify-center rounded-full border bg-white shadow"><ArrowLeft className="h-5 w-5" /></button><button type="button" onClick={onClose} aria-label="Cerrar reto" className="flex h-10 w-10 items-center justify-center rounded-full border bg-white shadow"><X className="h-5 w-5" /></button></div>
             <motion.div 
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}

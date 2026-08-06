@@ -3,7 +3,7 @@ import { useGameEngine, checkAnswerCorrectness, TIMED_ROUND_SECONDS } from '../.
 import { Button } from '../ui/button';
 import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw, Coins, Gem, Zap, Sparkles, TrendingUp, ArrowUpRight } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
-import { gamesService } from '../../services/games.service';
+import { gamesService, type GameSessionMode } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserData } from '../../contexts/UserDataContext';
 import { toast } from 'sonner';
@@ -23,9 +23,10 @@ interface GameSessionModalProps {
     onRetry?: () => void;
     mode?: 'levels' | 'legend' | 'timed';
     theme?: string;
+    sessionMode?: GameSessionMode;
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, mode = 'levels', theme }) => {
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, mode = 'levels', theme, sessionMode = 'reto' }) => {
     const isLegend = mode === 'legend';
     const isTimed = mode === 'timed';
     const { userProfile } = useUserData();
@@ -52,7 +53,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         purchaseLives,
         sessionId,
         livesRemaining
-    } = useGameEngine(gameId, userProfile?.id, mode, theme);
+    } = useGameEngine(gameId, userProfile?.id, mode, theme, sessionMode);
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
     const [purchasingOffer, setPurchasingOffer] = useState<string | null>(null);

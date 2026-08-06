@@ -50,3 +50,7 @@ Banco total publicado tras la limpieza: **1.151**.
 ## 4. Nota de reutilización
 
 El patrón "40 hechos × 3 plantillas" es un anti-patrón a vigilar en futuras expansiones: subir el nivel de dificultad **no** puede ser reetiquetar el mismo hecho con un enunciado más rebuscado. Un dato = idealmente una pregunta; para subir de nivel, preguntar **otro atributo** del mismo tema o exigir integración real de varios datos. La herramienta `get_template_concentration(game_id)` (admin → Juegos → Analítica) mide esta monotonía por categoría.
+
+## 5. Clasificación operativa corregida
+
+`expansion_300_2026` identifica el lote editorial, no un territorio ni un modo. El valor se conserva en `content_batch`; las preguntas se adscriben al ámbito jugable `city_cali`, acorde con el contenido local auditado. De esta manera el lote puede filtrarse y gestionarse sin aparecer como una quinta escala en **Jugar por lugar**.

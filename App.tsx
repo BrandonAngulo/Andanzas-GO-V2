@@ -58,6 +58,7 @@ import { ChallengeLobby } from './components/views/ChallengeLobby';
 import { ChallengeVerdict } from './components/views/ChallengeVerdict';
 import { DuelSession } from './components/views/DuelSession';
 import { challengeService, DuelPlay } from './services/challenge.service';
+import type { GameSessionMode } from './services/games.service';
 import { DailyQuestion } from './components/views/DailyQuestion';
 import { DictionaryPanel } from './components/panels/DictionaryPanel';
 import { EmailConfirmationPage } from './components/auth/EmailConfirmationPage';
@@ -254,6 +255,7 @@ export default function App() {
   const duelStartingRef = useRef(false);
   const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend' | 'timed'>('levels');
   const [activeGameTheme, setActiveGameTheme] = useState<string | undefined>(undefined);
+  const [activeGameSessionMode, setActiveGameSessionMode] = useState<GameSessionMode>('reto');
   // Se incrementa en cada "Reintentar" para forzar un remount limpio de GameSessionModal
   // (mismo gameId no cambia por sí solo, así que se necesita este nonce en la key).
   const [gameSessionNonce, setGameSessionNonce] = useState(0);
@@ -399,8 +401,19 @@ export default function App() {
           return;
         }
         const m = e.detail.mode;
+        const theme = e.detail.theme && e.detail.theme !== 'all' ? e.detail.theme : undefined;
+        const inferredSessionMode: GameSessionMode = m === 'timed'
+          ? 'contrarreloj'
+          : m === 'legend'
+            ? 'historia'
+            : theme === 'vocabulario'
+              ? 'vocabulario'
+              : theme
+                ? 'lugar'
+                : 'reto';
         setActiveGameMode(m === 'legend' || m === 'timed' ? m : 'levels');
-        setActiveGameTheme(e.detail.theme && e.detail.theme !== 'all' ? e.detail.theme : undefined);
+        setActiveGameTheme(theme);
+        setActiveGameSessionMode(e.detail.sessionMode || inferredSessionMode);
         setActiveGameId(e.detail.gameId);
       }
     };
@@ -801,7 +814,7 @@ export default function App() {
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} dictionaryVisible={dictionaryVisible} onOpenDictionary={() => setActivePanel('diccionario')} />}
-              {activePanel === 'juegos' && isAuthenticated && <JuegosPanel onPlayGame={(gameId, mode, theme) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme } }))} />}
+              {activePanel === 'juegos' && isAuthenticated && <JuegosPanel onPlayGame={(gameId, mode, theme, sessionMode) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme, sessionMode } }))} />}
               {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && (
                 <DictionaryPanel
                   initialEntryId={pendingDictionaryEntryId}
@@ -925,7 +938,7 @@ export default function App() {
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />
-      {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} onClose={() => { setActiveGameId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
+      {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameSessionMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} sessionMode={activeGameSessionMode} onClose={() => { setActiveGameId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
       {duelLoading && !duelPlay && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background"><div className="w-10 h-10 rounded-full border-4 border-primary/30 border-t-primary animate-spin" /></div>}
       {duelPlay && <DuelSession play={duelPlay.play} role={duelPlay.role} onExit={(submitted) => { setDuelPlay(null); if (submitted) setActivePanel('juegos'); }} />}
       {isAuthenticated && showDailyGlobal && <DailyQuestion onClose={() => setShowDailyGlobal(false)} />}
