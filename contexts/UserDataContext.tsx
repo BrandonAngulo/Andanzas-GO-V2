@@ -7,6 +7,7 @@ import { notificationsService } from '../services/notifications.service';
 import { gamificationService } from '../services/gamification.service';
 import { routesService } from '../services/routes.service';
 import { Star, Award } from 'lucide-react'; // Using Lucide names purely for type consistency if needed, though mostly strings here
+import { USER_PROGRESS_UPDATED_EVENT } from '../lib/user-progress';
 
 // Type for the icon in notifications - usually passed as a component or string
 // In App.tsx it was casting standard Lucide icons as "any" or specific types. 
@@ -23,12 +24,14 @@ interface UserDataContextType {
 
     // Actions
     setUserProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>;
+    refreshUserProfile: () => Promise<UserProfile | null>;
     toggleFav: (id: string, siteName: string) => Promise<void>;
     addReview: (siteId: string, text: string, rating: number, fotos: File[]) => Promise<void>;
     addNotification: (notif: Omit<Notificacion, 'id' | 'fecha'>) => void;
     registerEarnedBadge: (badgeId: string) => void;
     markAsRead: (id: string) => void;
     markAsConsulted: (id: string) => void;
+    markMatchingAsConsulted: (type: string, targetId?: string) => void;
     markAllAsRead: () => void;
 
     // Route progress (could arguably be in RouteContext, but it's user data)
@@ -50,6 +53,16 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
     const [routesCompleted, setRoutesCompleted] = useState<string[]>([]);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
+    const refreshUserProfile = useCallback(async (): Promise<UserProfile | null> => {
+        if (!isAuthenticated || !user) {
+            setUserProfile(null);
+            return null;
+        }
+        const profile = await userService.getProfile(user.id);
+        setUserProfile(profile);
+        return profile;
+    }, [isAuthenticated, user]);
+
     useEffect(() => {
         let active = true;
         if (isAuthenticated && user) {
@@ -60,7 +73,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                 if (active) notificationsService.getUserNotifications(user.id).then(n => { if (active) setNotifications(n); });
             });
             gamificationService.getUserBadgeIds(user.id).then(setEarnedInsignias);
-            userService.getProfile(user.id).then(setUserProfile);
+            void refreshUserProfile();
             routesService.getUserRouteProgress(user.id).then(progress => {
                 if (!active) return;
                 setRoutesInProgress(progress.inProgress);
@@ -98,7 +111,14 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                 ]);
             });
         }
-    }, [isAuthenticated, user]);
+    }, [isAuthenticated, user, refreshUserProfile]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const refresh = () => { void refreshUserProfile(); };
+        window.addEventListener(USER_PROGRESS_UPDATED_EVENT, refresh);
+        return () => window.removeEventListener(USER_PROGRESS_UPDATED_EVENT, refresh);
+    }, [refreshUserProfile]);
 
     const registerEarnedBadge = (badgeId: string) => {
         if (!badgeId) return;
@@ -192,6 +212,17 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         setNotifications(prev => prev.map(n => n.id === id ? { ...n, leida: true, consultada_at: consultedAt } : n));
         if (!id.startsWith('n_')) notificationsService.markAsConsulted(id);
     };
+    const markMatchingAsConsulted = (type: string, targetId?: string) => {
+        const consultedAt = new Date().toISOString();
+        setNotifications(prev => prev.map(notification => {
+            const matchesType = notification.tipo === type;
+            const matchesTarget = !targetId || notification.target_id === targetId;
+            return matchesType && matchesTarget
+                ? { ...notification, leida: true, consultada_at: consultedAt }
+                : notification;
+        }));
+        void notificationsService.markMatchingAsConsulted(type, targetId);
+    };
     const markAllAsRead = () => {
         setNotifications(prev => prev.map(n => ({ ...n, leida: true })));
         if (user) notificationsService.markAllAsRead(user.id);
@@ -213,12 +244,14 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             routesCompleted,
             userProfile,
             setUserProfile,
+            refreshUserProfile,
             toggleFav,
             addReview,
             addNotification,
             registerEarnedBadge,
             markAsRead,
             markAsConsulted,
+            markMatchingAsConsulted,
             markAllAsRead,
             updateRouteProgress
         }}>

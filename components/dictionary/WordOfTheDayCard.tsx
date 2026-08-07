@@ -7,6 +7,7 @@ import { dictionaryService } from '../../services/dictionary.service';
 import { useAuth } from '../../contexts/AuthContext';
 import { useUserData } from '../../contexts/UserDataContext';
 import type { DictionaryEntry } from '../../types';
+import { notifyUserProgressUpdated } from '../../lib/user-progress';
 
 interface WordOfTheDayCardProps {
   onOpen: (entry: DictionaryEntry) => void;
@@ -14,7 +15,7 @@ interface WordOfTheDayCardProps {
 
 export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element | null {
   const { user } = useAuth();
-  const { addNotification, registerEarnedBadge } = useUserData();
+  const { addNotification, registerEarnedBadge, markMatchingAsConsulted } = useUserData();
   const [entry, setEntry] = useState<DictionaryEntry | null>(null);
   const [loading, setLoading] = useState(true);
   const [streak, setStreak] = useState(0);
@@ -74,9 +75,12 @@ export function WordOfTheDayCard({ onOpen }: WordOfTheDayCardProps): JSX.Element
             });
             toast.success(`¡Insignia desbloqueada: ${result.badgeName ?? 'Caleñólogo'}! 🏅`);
           }
+          markMatchingAsConsulted('word_of_day');
+          notifyUserProgressUpdated('word_of_the_day');
         } else if (result.alreadyClaimed) {
           setClaimedToday(true);
           setStreak(result.streak);
+          markMatchingAsConsulted('word_of_day');
         }
       } catch (error) {
         console.error('No se pudo reclamar la palabra del día:', error);

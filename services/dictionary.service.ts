@@ -1,6 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
 import type { AppFeature, DictionaryAdminEntry, DictionaryAdminSort, DictionaryEntry, DictionaryEntryInput, DictionaryFacets, DictionaryRegion, DictionaryRegionFacet, DictionarySearchParams, DictionarySource, DictionaryTag, DictionaryTagOption } from '../types';
-import { notificationsService } from './notifications.service';
 
 export const DICTIONARY_FEATURE_KEY = 'dictionary_caleno';
 
@@ -319,9 +318,6 @@ export const dictionaryService = {
       badgeUnlocked: Boolean(r.badge_unlocked),
       badgeName: (r.badge_name as string | null) ?? null,
     };
-    if (result.ok || result.alreadyClaimed) {
-      void notificationsService.markMatchingAsConsulted('word_of_day');
-    }
     return result;
   },
 

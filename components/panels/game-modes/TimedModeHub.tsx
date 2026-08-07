@@ -14,10 +14,10 @@ import {
     Timer,
     Zap,
 } from 'lucide-react';
-import { gamificationService, type EconomySummary } from '../../../services/gamification.service';
 import { gamesService, type Game, type GameModeSessionSummary } from '../../../services/games.service';
 import type { GameModifier } from '../../../services/modifier.service';
 import { Button } from '../../ui/button';
+import { useLiveEconomy } from '../../../hooks/useLiveEconomy';
 import { InfoTooltip } from '../../ui/tooltip';
 import { ModeLobbyShell } from './ModeLobbyShell';
 
@@ -45,21 +45,16 @@ const explainModifier = (modifier: GameModifier) => {
 };
 
 export const TimedModeHub: React.FC<Props> = ({ game, modifier, onClose, onPlay }) => {
-    const [economy, setEconomy] = useState<EconomySummary | null>(null);
+    const { economy, loadingEconomy } = useLiveEconomy();
     const [summary, setSummary] = useState<GameModeSessionSummary | null>(null);
-    const [loadingEconomy, setLoadingEconomy] = useState(true);
 
     useEffect(() => {
         let alive = true;
         void Promise.allSettled([
-            gamificationService.getEconomySummary(),
             gamesService.getMyGameModeSummary(game.id, 'contrarreloj'),
-        ]).then(([economyResult, summaryResult]) => {
+        ]).then(([summaryResult]) => {
             if (!alive) return;
-            if (economyResult.status === 'fulfilled') setEconomy(economyResult.value);
             if (summaryResult.status === 'fulfilled') setSummary(summaryResult.value);
-        }).finally(() => {
-            if (alive) setLoadingEconomy(false);
         });
         return () => { alive = false; };
     }, [game.id]);

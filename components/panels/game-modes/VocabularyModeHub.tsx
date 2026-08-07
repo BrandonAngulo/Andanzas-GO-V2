@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BookOpenText, CheckCircle2, Coins, Gem, Heart, HelpCircle, Languages, Lightbulb, Loader2, MessageCircleQuestion, Play, RefreshCw, Shuffle, Sparkles, Trophy } from 'lucide-react';
-import { gamificationService, type EconomySummary } from '../../../services/gamification.service';
 import { gamesService, type Game, type GameModeSessionSummary, type ThemeQuestionStats, type UserCategoryProgress } from '../../../services/games.service';
 import { Button } from '../../ui/button';
 import { InfoTooltip } from '../../ui/tooltip';
 import { ModeLobbyShell } from './ModeLobbyShell';
+import { useLiveEconomy } from '../../../hooks/useLiveEconomy';
 
 interface Props {
     game: Game;
@@ -18,7 +18,7 @@ export const VocabularyModeHub: React.FC<Props> = ({ game, onClose, onPlay }) =>
     const [progress, setProgress] = useState<UserCategoryProgress | null>(null);
     const [stats, setStats] = useState<ThemeQuestionStats>(EMPTY_STATS);
     const [summary, setSummary] = useState<GameModeSessionSummary | null>(null);
-    const [economy, setEconomy] = useState<EconomySummary | null>(null);
+    const { economy } = useLiveEconomy();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -27,13 +27,11 @@ export const VocabularyModeHub: React.FC<Props> = ({ game, onClose, onPlay }) =>
             gamesService.getMyCategoryProgress(game.id, 'Vocabulario'),
             gamesService.getThemeQuestionStats(game.id, 'vocabulario'),
             gamesService.getMyGameModeSummary(game.id, 'vocabulario', 'vocabulario'),
-            gamificationService.getEconomySummary(),
-        ]).then(([categoryProgress, questionStats, modeSummary, economySummary]) => {
+        ]).then(([categoryProgress, questionStats, modeSummary]) => {
             if (!alive) return;
             if (categoryProgress.status === 'fulfilled') setProgress(categoryProgress.value);
             if (questionStats.status === 'fulfilled') setStats(questionStats.value);
             if (modeSummary.status === 'fulfilled') setSummary(modeSummary.value);
-            if (economySummary.status === 'fulfilled') setEconomy(economySummary.value);
         }).finally(() => {
             if (alive) setLoading(false);
         });
