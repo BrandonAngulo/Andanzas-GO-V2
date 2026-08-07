@@ -3,18 +3,18 @@ import { useGameEngine, checkAnswerCorrectness, TIMED_ROUND_SECONDS } from '../.
 import { Button } from '../ui/button';
 import { X, CheckCircle2, XCircle, Trophy, Flame, Clock, Star, Users, Heart, Target, Flag, RotateCcw, Coins, Gem, Zap, Sparkles, TrendingUp, ArrowUpRight } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
-import { gamesService } from '../../services/games.service';
+import { gamesService, type GameSessionMode } from '../../services/games.service';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserData } from '../../contexts/UserDataContext';
 import { toast } from 'sonner';
 import { QuestionRenderer } from './QuestionRenderer';
 import { LazyImage } from '../ui/lazy-image';
-import { GameMascot, MascotState } from './GameMascot';
 import ReactConfetti from 'react-confetti';
 import { dictionaryService } from '../../services/dictionary.service';
 import { DictionaryDetail } from '../dictionary/DictionaryDetail';
 import { TextWithDictionaryLinks } from '../shared/TextWithDictionaryLinks';
 import type { DictionaryEntry } from '../../types';
+import { isTriviaGo } from '../../lib/gameIdentity';
 
 interface GameSessionModalProps {
     gameId: string;
@@ -23,9 +23,20 @@ interface GameSessionModalProps {
     onRetry?: () => void;
     mode?: 'levels' | 'legend' | 'timed';
     theme?: string;
+    sessionMode?: GameSessionMode;
 }
 
-export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, mode = 'levels', theme }) => {
+const QUESTION_ANDI_IMAGE = '/images/games/trivia-go/characters/andi-thinking-question-v1.png';
+const SESSION_MODE_LABELS: Record<GameSessionMode, string> = {
+    reto: 'Reto',
+    clasica: 'Partida clásica',
+    contrarreloj: 'Contrarreloj',
+    lugar: 'Jugar por lugar',
+    vocabulario: 'Vocabulario caleño',
+    historia: 'Historia',
+};
+
+export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onClose, onNavigate, onRetry, mode = 'levels', theme, sessionMode = 'reto' }) => {
     const isLegend = mode === 'legend';
     const isTimed = mode === 'timed';
     const { userProfile } = useUserData();
@@ -52,7 +63,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
         purchaseLives,
         sessionId,
         livesRemaining
-    } = useGameEngine(gameId, userProfile?.id, mode, theme);
+    } = useGameEngine(gameId, userProfile?.id, mode, theme, sessionMode);
 
     const [isCreatingChallenge, setIsCreatingChallenge] = useState(false);
     const [purchasingOffer, setPurchasingOffer] = useState<string | null>(null);
@@ -100,7 +111,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     }, []);
 
     // Reacción visual de la mascota del juego según el estado de la pregunta actual
-    const mascotState: MascotState = !isChecking ? 'idle' : (game?.type === 'quiz' ? 'idle' : (isCorrect ? 'correct' : 'wrong'));
+    const mascotState = !isChecking ? 'idle' : (game?.type === 'quiz' ? 'idle' : (isCorrect ? 'correct' : 'wrong'));
 
     // Ráfaga de confeti al alcanzar una racha importante (cada 3 respuestas correctas seguidas)
     React.useEffect(() => {
@@ -247,6 +258,11 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     // Identidad visual del juego: cada trivia trae su propio color de acento (theme_accent).
     // Se declara antes de los early-returns para que la pantalla de resultados también la use.
     const accent = game?.theme_accent || '#10B981';
+    const triviaGo = isTriviaGo(game);
+    const timerTotal = isTimed ? TIMED_ROUND_SECONDS : Math.max(1, currentQuestion?.time_limit_sec || 30);
+    const timerPercent = Math.max(0, Math.min(100, (timeRemaining / timerTotal) * 100));
+    const timerCritical = isTimed ? timeRemaining <= 10 : timeRemaining <= 5;
+    const modeLabel = SESSION_MODE_LABELS[sessionMode] || game.title;
 
     if (isFinished) {
         return (
@@ -383,32 +399,38 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
     }
 
     return (
-        <div className="fixed inset-0 flex flex-col bg-slate-950 text-slate-50 overflow-hidden font-sans" style={{ zIndex: 99999 }}>
-            {/* Dynamic Background — tematizado por juego */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full blur-[120px]" style={{ backgroundColor: `${accent}33` }} />
-                <div className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full blur-[100px]" style={{ backgroundColor: `${accent}22` }} />
-                <div className="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] rounded-full blur-[130px]" style={{ backgroundColor: `${accent}1A` }} />
+        <div className="fixed inset-0 flex flex-col overflow-hidden bg-[#06272d] font-sans text-slate-50" style={{ zIndex: 99999 }}>
+            {/* Escenario ilustrado, compartido por TRIVIA GO sin tapar la legibilidad. */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                {triviaGo ? <div className="absolute inset-0 bg-[url('/images/games/trivia-go/aventura-sabores-cali-scroll-background-v5.webp')] bg-cover bg-center opacity-[0.24]" /> : null}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#06272d]/96 via-[#063c40]/92 to-slate-950/95" />
+                <div className="absolute -left-[12%] -top-[24%] h-[55vw] w-[55vw] rounded-full blur-[130px]" style={{ backgroundColor: `${accent}32` }} />
+                <div className="absolute -bottom-[30%] right-[2%] h-[55vw] w-[55vw] rounded-full bg-amber-300/10 blur-[150px]" />
+                <div className="absolute inset-0 opacity-[0.035] [background-image:radial-gradient(circle_at_center,white_0.8px,transparent_0.8px)] [background-size:18px_18px]" />
             </div>
 
-            {/* HUD (Floating Pill) */}
-            <div className="relative z-10 flex w-full justify-center px-4 pb-1 pt-3">
-                <div className="flex items-center gap-3 rounded-full border border-white/10 bg-slate-900/60 px-4 py-1.5 shadow-2xl backdrop-blur-xl sm:gap-5">
-                    <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full w-8 h-8 text-white/70 hover:text-white transition-colors" onClick={() => setShowExitConfirm(true)}>
-                        <X className="w-5 h-5" />
+            {/* HUD compacto: identidad de la partida y estado del jugador. */}
+            <div className="relative z-20 px-2.5 pt-2.5 sm:px-4 sm:pt-3">
+                <div className="mx-auto flex min-h-12 w-full max-w-6xl items-center gap-2 rounded-2xl border border-white/15 bg-[#063c40]/78 px-2 py-1.5 shadow-[0_12px_35px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:gap-3 sm:px-3">
+                    <Button variant="ghost" size="icon" aria-label="Salir de la partida" className="h-9 w-9 shrink-0 rounded-xl text-white/75 transition-colors hover:bg-white/10 hover:text-white" onClick={() => setShowExitConfirm(true)}>
+                        <X className="h-5 w-5" />
                     </Button>
-                    <div className="h-6 w-[1px] bg-white/20" />
-                    
-                    <div className="flex items-center gap-2 font-bold text-lg text-white">
-                        <Star className="w-5 h-5 text-yellow-400 fill-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" /> {score}
+                    <div className="min-w-0 flex-1 border-l border-white/10 pl-2.5 sm:pl-3">
+                        <p className="truncate text-[7px] font-black uppercase tracking-[0.18em] text-amber-300">TRIVIA GO · {modeLabel}</p>
+                        <p className="truncate text-[11px] font-black text-white sm:text-xs">{game.title}</p>
+                    </div>
+
+                    <div className="flex h-9 items-center gap-1.5 rounded-xl border border-white/10 bg-black/15 px-2.5 font-black text-white" aria-label={`${score} puntos`}>
+                        <Star className="h-4 w-4 fill-amber-300 text-amber-300 drop-shadow-[0_0_8px_rgba(250,204,21,0.45)]" />
+                        <span className="tabular-nums">{score}</span>
                     </div>
 
                     {(isLegend || game?.mechanic_type === 'lives') && (
                         <>
-                            <div className="h-6 w-[1px] bg-white/20" />
-                            <div className="flex items-center gap-1.5 text-red-500">
+                            <div className="hidden h-6 w-px bg-white/15 sm:block" />
+                            <div className="hidden items-center gap-1 text-red-400 sm:flex" aria-label={`${livesRemaining} vidas disponibles`}>
                                 {Array.from({ length: Math.max(3, game?.lives_count || 3) }).map((_, i) => (
-                                    <Heart key={i} className={`w-5 h-5 transition-all duration-300 ${i < livesRemaining ? 'fill-current text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)] scale-110' : 'fill-transparent stroke-white/30 text-transparent scale-90'}`} strokeWidth={2} />
+                                    <Heart key={i} className={`h-4 w-4 transition-all duration-300 ${i < livesRemaining ? 'scale-110 fill-current text-red-400' : 'scale-90 fill-transparent stroke-white/25 text-transparent'}`} strokeWidth={2} />
                                 ))}
                             </div>
                         </>
@@ -416,12 +438,13 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
 
                     {(streak >= 3 || (isTimed && streak >= 1)) && (
                         <>
-                            <div className="h-6 w-[1px] bg-white/20" />
+                            <div className="hidden h-6 w-px bg-white/15 sm:block" />
                             <motion.div
                                 initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                className="flex items-center gap-1 text-orange-400 font-bold"
+                                className="flex h-9 items-center gap-1 rounded-xl bg-orange-400/10 px-2 text-xs font-black text-orange-300"
+                                aria-label={`Racha de ${streak}`}
                             >
-                                <Flame className="w-5 h-5 fill-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.5)]" /> x{game?.mechanic_type === 'multiplier' ? Math.min(streak, 5) : streak}
+                                <Flame className="h-4 w-4 fill-orange-300" /> x{game?.mechanic_type === 'multiplier' ? Math.min(streak, 5) : streak}
                             </motion.div>
                         </>
                     )}
@@ -466,7 +489,7 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
             )}
 
             {/* Main Area */}
-            <div className="scrollbar-none relative z-10 mx-auto flex h-full w-full max-w-4xl flex-1 flex-col items-center overflow-x-hidden overflow-y-auto overscroll-contain p-2.5 sm:p-4">
+            <div className="scrollbar-none relative z-10 mx-auto flex h-full w-full max-w-6xl flex-1 flex-col items-center overflow-x-hidden overflow-y-auto overscroll-contain px-2.5 pb-3 pt-2 sm:px-4 sm:pb-4 sm:pt-3">
                 <AnimatePresence mode="wait">
                     {isShuffling ? (
                         <motion.div 
@@ -474,110 +497,93 @@ export const GameSessionModal: React.FC<GameSessionModalProps> = ({ gameId, onCl
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 1.2 }}
-                            className="flex flex-col items-center justify-center space-y-3 py-8"
+                            className="my-auto flex flex-col items-center justify-center space-y-2 py-8"
                         >
-                            <span className="text-white/50 uppercase tracking-widest text-sm font-bold">Categoría</span>
-                            <h2 className="animate-pulse text-3xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] sm:text-4xl">{shuffledCategory}</h2>
+                            <motion.img src={QUESTION_ANDI_IMAGE} alt="Andi piensa en la próxima categoría" className="h-40 w-40 object-contain drop-shadow-2xl sm:h-52 sm:w-52" animate={{ y: [0, -6, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }} />
+                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-amber-300">Preparando tu pregunta</span>
+                            <h2 className="animate-pulse text-2xl font-black text-white sm:text-3xl">{shuffledCategory}</h2>
                         </motion.div>
                     ) : (
                         <motion.div 
                             key="question"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="w-full flex flex-col flex-1 my-auto"
+                            className="my-auto flex w-full flex-1 flex-col justify-center"
                         >
-                            <div className="mx-auto mb-3 flex w-full max-w-xl flex-col items-center">
-                                {/* Mascota del juego con anillo de tiempo alrededor */}
-                                <div className="relative mb-1 flex h-20 w-20 items-center justify-center sm:mb-2">
-                                    {game?.type !== 'quiz' && (
-                                        <svg className="absolute inset-0 h-20 w-20 -rotate-90" viewBox="0 0 96 96">
-                                            <circle cx="48" cy="48" r="42" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="6" />
-                                            <motion.circle
-                                                cx="48" cy="48" r="42" fill="none"
-                                                stroke={(isTimed ? timeRemaining <= 10 : timeRemaining <= 5) ? '#EF4444' : accent}
-                                                strokeWidth="6" strokeLinecap="round"
-                                                strokeDasharray={2 * Math.PI * 42}
-                                                animate={{ strokeDashoffset: 2 * Math.PI * 42 * (1 - timeRemaining / (isTimed ? TIMED_ROUND_SECONDS : (currentQuestion?.time_limit_sec || 30))) }}
-                                                transition={{ duration: 1, ease: 'linear' }}
-                                                style={{ filter: `drop-shadow(0 0 6px ${(isTimed ? timeRemaining <= 10 : timeRemaining <= 5) ? '#EF4444' : accent})` }}
-                                            />
-                                        </svg>
-                                    )}
-                                    <div
-                                        className="flex h-14 w-14 items-center justify-center rounded-full transition-shadow duration-300"
-                                        style={{
-                                            backgroundColor: `${accent}22`,
-                                            boxShadow: mascotState === 'correct'
-                                                ? `0 0 24px 4px ${accent}66`
-                                                : mascotState === 'wrong'
-                                                    ? '0 0 24px 4px rgba(239,68,68,0.4)'
-                                                    : `0 0 16px -2px ${accent}4D`
-                                        }}
-                                    >
-                                        {isTimed ? (
-                                            <span className={`text-2xl font-black tabular-nums ${timeRemaining <= 10 ? 'text-red-400' : 'text-white'}`}>{timeRemaining}</span>
-                                        ) : (
-                                            <GameMascot icon={game?.theme_icon} accent={accent} size={38} state={mascotState} />
-                                        )}
+                            <section className="relative w-full overflow-hidden rounded-[1.65rem] border border-white/15 bg-[#082f35]/84 shadow-[0_22px_70px_rgba(0,0,0,0.38)] backdrop-blur-2xl sm:rounded-[2rem]">
+                                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.06] via-transparent to-amber-300/[0.04]" />
+                                <div className="relative border-b border-white/10 px-3 py-3 sm:px-5 sm:py-4">
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <span className="rounded-full px-2.5 py-1 text-[8px] font-black uppercase tracking-[0.16em] text-white" style={{ backgroundColor: `${accent}CC` }}>{currentQuestion?.category || 'Cultura general'}</span>
+                                                <span className="text-[8px] font-black uppercase tracking-[0.17em] text-white/50">{isLegend ? `Pregunta ${currentQuestionIndex + 1}` : `${currentQuestionIndex + 1} de ${questions.length}`}</span>
+                                            </div>
+                                        </div>
+
+                                        {game?.type !== 'quiz' ? <div className={`w-36 shrink-0 rounded-xl border px-2.5 py-2 sm:w-44 ${timerCritical ? 'border-red-300/35 bg-red-500/[0.12]' : 'border-white/10 bg-black/15'}`} aria-label={`${timeRemaining} segundos restantes`}>
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className={`flex items-center gap-1 text-[7px] font-black uppercase tracking-[0.12em] ${timerCritical ? 'text-red-200' : 'text-white/55'}`}><Clock className="h-3.5 w-3.5" />{isTimed ? 'Ronda' : 'Tiempo'}</span>
+                                                <strong className={`text-sm font-black tabular-nums ${timerCritical ? 'text-red-300' : 'text-white'}`}>{timeRemaining}s</strong>
+                                            </div>
+                                            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-black/30">
+                                                <motion.div className={`h-full rounded-full ${timerCritical ? 'bg-gradient-to-r from-red-500 to-orange-400' : 'bg-gradient-to-r from-amber-300 to-emerald-400'}`} animate={{ width: `${timerPercent}%` }} transition={{ duration: 0.8, ease: 'linear' }} />
+                                            </div>
+                                        </div> : <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[8px] font-black uppercase tracking-wider text-white/60">Sin reloj</span>}
                                     </div>
+
+                                    {!isLegend ? <div className="mt-3 flex gap-1" aria-label={`Progreso: pregunta ${currentQuestionIndex + 1} de ${questions.length}`}>
+                                        {questions.map((question, idx) => {
+                                            const isPast = idx < currentQuestionIndex;
+                                            const isCurrent = idx === currentQuestionIndex;
+                                            const isSafeZone = (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && (idx + 1) % 5 === 0;
+                                            return <span key={question.id || idx} className={`relative h-1.5 min-w-0 flex-1 overflow-visible rounded-full transition-all duration-300 ${idx > currentQuestionIndex ? 'bg-white/10' : ''}`} style={(isPast || isCurrent) ? { backgroundColor: accent } : undefined}>
+                                                {isSafeZone ? <span className={`absolute -right-0.5 -top-1 h-3 w-1 rounded-full ${idx <= currentQuestionIndex ? 'bg-amber-200' : 'bg-amber-300/45'}`} /> : null}
+                                            </span>;
+                                        })}
+                                    </div> : null}
                                 </div>
 
-                                <span className="text-white/50 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-3">
-                                    {isLegend ? `Modo Historia · Pregunta ${currentQuestionIndex + 1}` : `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`}
-                                </span>
-
-                                {/* Puntos de progreso: una perla por pregunta de la partida.
-                                    Las zonas seguras (cada 5 preguntas, ver useGameEngine finishGame) se marcan
-                                    con un anillo dorado para motivar al jugador a alcanzarlas.
-                                    En Historia no hay total fijo, así que se omite. */}
-                                <div className="flex items-center gap-1.5 flex-wrap justify-center max-w-xs">
-                                    {!isLegend && questions.map((_, idx) => {
-                                        const isPast = idx < currentQuestionIndex;
-                                        const isCurrent = idx === currentQuestionIndex;
-                                        const isSafeZone = (!game?.mechanic_type || game.mechanic_type === 'safe_zones') && (idx + 1) % 5 === 0;
-                                        const baseSize = isCurrent ? 10 : (isSafeZone ? 8 : 6);
-                                        return (
-                                            <span
-                                                key={idx}
-                                                className="rounded-full transition-all duration-300"
-                                                style={{
-                                                    width: baseSize,
-                                                    height: baseSize,
-                                                    backgroundColor: (isPast || isCurrent) ? accent : (isSafeZone ? 'rgba(250,204,21,0.3)' : 'rgba(255,255,255,0.15)'),
-                                                    opacity: idx <= currentQuestionIndex ? 1 : 0.9,
-                                                    boxShadow: isSafeZone && !isPast && !isCurrent ? '0 0 0 2px rgba(250,204,21,0.7)' : undefined
-                                                }}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            <div className="relative flex w-full flex-shrink-0 flex-col items-center overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-900/40 p-4 text-center shadow-2xl backdrop-blur-2xl sm:rounded-[2rem] sm:p-6">
-                                <h2 className="mb-4 mt-0.5 text-xl font-extrabold leading-tight text-white drop-shadow-md sm:mb-5 sm:mt-1 sm:text-2xl lg:text-3xl">
-                                    {currentQuestion?.question_text}
-                                </h2>
-
-                                {currentQuestion?.prompt_image_url && (
-                                    <div className="mx-auto mb-4 flex max-h-[26vh] w-full max-w-sm items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-1 sm:mb-5">
-                                        <LazyImage src={currentQuestion.prompt_image_url} alt="" className="max-h-[24vh] w-auto rounded-xl object-contain" />
-                                    </div>
-                                )}
-
-                                <div className="scrollbar-none max-h-[46vh] w-full overflow-y-auto pb-1">
-                                    {currentQuestion && (
-                                        <QuestionRenderer
-                                            question={currentQuestion}
-                                            gameType={game?.type}
-                                            isChecking={isChecking}
-                                            hasTimedOut={hasTimedOut}
-                                            selectedAnswer={selectedOption}
-                                            onSubmit={handleAnswerSelect}
-                                            accent={accent}
+                                <div className="relative grid items-stretch lg:grid-cols-[9.5rem_minmax(0,1fr)]">
+                                    {triviaGo ? <aside className="relative hidden min-h-[24rem] overflow-hidden border-r border-white/10 bg-gradient-to-b from-emerald-400/10 to-transparent lg:flex lg:items-end lg:justify-center">
+                                        <div className="absolute left-3 top-4 rounded-2xl border border-white/10 bg-black/15 px-3 py-2 text-[9px] font-bold leading-relaxed text-white/70">Andi está pensando<br /><strong className="text-amber-200">¿Cuál elegirías?</strong></div>
+                                        <motion.img
+                                            src={QUESTION_ANDI_IMAGE}
+                                            alt="Andi piensa mientras eliges una respuesta"
+                                            className="h-56 w-56 max-w-none translate-y-5 object-contain drop-shadow-[0_15px_24px_rgba(0,0,0,0.38)]"
+                                            animate={mascotState === 'correct' ? { y: [0, -10, 0], rotate: [0, -2, 2, 0] } : mascotState === 'wrong' ? { x: [0, -5, 5, -3, 3, 0] } : { y: [0, -4, 0] }}
+                                            transition={mascotState === 'idle' ? { duration: 2.4, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.55 }}
                                         />
-                                    )}
+                                    </aside> : null}
+
+                                    <div className="min-w-0 p-3 sm:p-5 lg:p-6">
+                                        {triviaGo ? <div className="mb-2 flex items-center gap-2 lg:hidden"><img src={QUESTION_ANDI_IMAGE} alt="" aria-hidden="true" className="h-11 w-11 object-contain drop-shadow-lg" /><span className="rounded-2xl rounded-bl-sm bg-white/[0.08] px-3 py-2 text-[9px] font-semibold text-white/70">Piensa con calma y elige tu mejor respuesta.</span></div> : null}
+                                        <h2 className="mx-auto max-w-4xl text-center text-xl font-black leading-tight text-white sm:text-2xl lg:text-3xl">
+                                            {currentQuestion?.question_text}
+                                        </h2>
+
+                                        {currentQuestion?.prompt_image_url && (
+                                            <div className="mx-auto mb-4 mt-4 flex max-h-[25vh] w-full max-w-md items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-black/20 p-1 shadow-xl">
+                                                <LazyImage src={currentQuestion.prompt_image_url} alt="Referencia visual de la pregunta" className="max-h-[23vh] w-auto rounded-xl object-contain" />
+                                            </div>
+                                        )}
+
+                                        <div className="scrollbar-none mt-4 max-h-[46vh] w-full overflow-y-auto pb-1 sm:mt-5">
+                                            {currentQuestion && (
+                                                <QuestionRenderer
+                                                    question={currentQuestion}
+                                                    gameType={game?.type}
+                                                    isChecking={isChecking}
+                                                    hasTimedOut={hasTimedOut}
+                                                    selectedAnswer={selectedOption}
+                                                    onSubmit={handleAnswerSelect}
+                                                    accent={accent}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </section>
                         </motion.div>
                     )}
                 </AnimatePresence>

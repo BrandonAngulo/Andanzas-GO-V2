@@ -58,6 +58,7 @@ import { ChallengeLobby } from './components/views/ChallengeLobby';
 import { ChallengeVerdict } from './components/views/ChallengeVerdict';
 import { DuelSession } from './components/views/DuelSession';
 import { challengeService, DuelPlay } from './services/challenge.service';
+import type { GameSessionMode } from './services/games.service';
 import { DailyQuestion } from './components/views/DailyQuestion';
 import { DictionaryPanel } from './components/panels/DictionaryPanel';
 import { EmailConfirmationPage } from './components/auth/EmailConfirmationPage';
@@ -254,6 +255,7 @@ export default function App() {
   const duelStartingRef = useRef(false);
   const [activeGameMode, setActiveGameMode] = useState<'levels' | 'legend' | 'timed'>('levels');
   const [activeGameTheme, setActiveGameTheme] = useState<string | undefined>(undefined);
+  const [activeGameSessionMode, setActiveGameSessionMode] = useState<GameSessionMode>('reto');
   // Se incrementa en cada "Reintentar" para forzar un remount limpio de GameSessionModal
   // (mismo gameId no cambia por sí solo, así que se necesita este nonce en la key).
   const [gameSessionNonce, setGameSessionNonce] = useState(0);
@@ -399,8 +401,19 @@ export default function App() {
           return;
         }
         const m = e.detail.mode;
+        const theme = e.detail.theme && e.detail.theme !== 'all' ? e.detail.theme : undefined;
+        const inferredSessionMode: GameSessionMode = m === 'timed'
+          ? 'contrarreloj'
+          : m === 'legend'
+            ? 'historia'
+            : theme === 'vocabulario'
+              ? 'vocabulario'
+              : theme
+                ? 'lugar'
+                : 'reto';
         setActiveGameMode(m === 'legend' || m === 'timed' ? m : 'levels');
-        setActiveGameTheme(e.detail.theme && e.detail.theme !== 'all' ? e.detail.theme : undefined);
+        setActiveGameTheme(theme);
+        setActiveGameSessionMode(e.detail.sessionMode || inferredSessionMode);
         setActiveGameId(e.detail.gameId);
       }
     };
@@ -595,7 +608,7 @@ export default function App() {
 
       {/* Header */}
       <header className={cn("z-[1000] mx-auto w-full flex-shrink-0 pt-[env(safe-area-inset-top)] transition-all duration-300 md:max-w-[100rem] md:px-4 md:pt-3", activeGuidedRoute && "hidden")}>
-        <div className="glass-panel flex w-full items-center gap-1.5 border-b px-2 py-2 shadow-sm sm:gap-2 sm:px-3 md:gap-3 md:rounded-2xl md:border md:px-4 md:py-3 md:shadow-md">
+        <div className="glass-panel flex w-full items-center gap-1.5 border-b px-2 py-1.5 shadow-sm sm:gap-2 sm:px-3 md:gap-2.5 md:rounded-xl md:border md:px-3.5 md:py-2 md:shadow-md">
           <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full md:h-10 md:w-10" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="mr-1 flex shrink-0 items-center gap-2 md:mr-2"><Logo /></div>
 
@@ -750,7 +763,7 @@ export default function App() {
         <section className="relative h-full flex flex-col min-h-0 w-full">
           <Card className="flex h-full flex-col overflow-hidden rounded-none border-none bg-card/80 shadow-none ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10 md:rounded-xl md:shadow-medium">
             <CardHeader className={cn(
-              "flex min-h-[3.2rem] flex-row items-center justify-between border-b bg-muted/30 px-3 py-2 md:min-h-0 md:px-5 md:py-2.5",
+              "flex min-h-[3rem] flex-row items-center justify-between border-b bg-muted/30 px-3 py-1.5 md:min-h-0 md:px-4 md:py-2",
               panelOwnsDesktopHeader && "md:hidden",
             )}>
               <CardTitle className="flex min-w-0 items-center gap-1.5 text-base text-foreground/80 md:gap-2 md:text-lg">
@@ -767,7 +780,7 @@ export default function App() {
               </CardTitle>
               {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="h-9 shrink-0 rounded-full px-3 text-xs shadow-lg shadow-primary/20 md:text-sm"><Route className="mr-1 h-4 w-4" /><span className="hidden min-[390px]:inline">{language === 'es' ? 'Vivir / Crear Ruta' : 'Live / Create Route'}</span><span className="min-[390px]:hidden">{language === 'es' ? 'Crear ruta' : 'Create'}</span></Button>}
             </CardHeader>
-            <CardContent className="relative min-h-0 flex-1 overflow-hidden p-0">
+            <CardContent className="ui-density-balanced relative min-h-0 flex-1 overflow-hidden p-0">
               {/* PANELS */}
               {activePanel === 'mapa' && (
                 <MapaGoogle
@@ -801,7 +814,7 @@ export default function App() {
               {activePanel === 'soporte' && <SoportePanel />}
               {activePanel === 'noticias' && <NoticiasPanel feed={feed} onOpenSite={openSite} sites={sites} />}
               {activePanel === 'paquesepas' && <PaQueSepasPanel entries={learnEntries} isLoading={isLoading} onOpenSite={(id) => openSite(getSiteById(id)!)} initialEntryId={pendingLearnEntryId} onInitialConsumed={() => setPendingLearnEntryId(null)} dictionaryVisible={dictionaryVisible} onOpenDictionary={() => setActivePanel('diccionario')} />}
-              {activePanel === 'juegos' && isAuthenticated && <JuegosPanel onPlayGame={(gameId, mode, theme) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme } }))} />}
+              {activePanel === 'juegos' && isAuthenticated && <JuegosPanel onPlayGame={(gameId, mode, theme, sessionMode) => window.dispatchEvent(new CustomEvent('open-game', { detail: { gameId, mode, theme, sessionMode } }))} />}
               {activePanel === 'diccionario' && dictionaryVisible && isAuthenticated && (
                 <DictionaryPanel
                   initialEntryId={pendingDictionaryEntryId}
@@ -925,7 +938,7 @@ export default function App() {
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
       <AppTutorialModal />
       <LegalAcceptanceModal />
-      {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} onClose={() => { setActiveGameId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
+      {isAuthenticated && activeGameId && <GameSessionModal key={`${activeGameId}-${activeGameMode}-${activeGameSessionMode}-${activeGameTheme || 'all'}-${gameSessionNonce}`} gameId={activeGameId} mode={activeGameMode} theme={activeGameTheme} sessionMode={activeGameSessionMode} onClose={() => { setActiveGameId(null); }} onNavigate={(panel) => { setActivePanel(panel as ActivePanelType); setActiveGameId(null); }} onRetry={() => setGameSessionNonce(n => n + 1)} />}
       {duelLoading && !duelPlay && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background"><div className="w-10 h-10 rounded-full border-4 border-primary/30 border-t-primary animate-spin" /></div>}
       {duelPlay && <DuelSession play={duelPlay.play} role={duelPlay.role} onExit={(submitted) => { setDuelPlay(null); if (submitted) setActivePanel('juegos'); }} />}
       {isAuthenticated && showDailyGlobal && <DailyQuestion onClose={() => setShowDailyGlobal(false)} />}

@@ -9,7 +9,7 @@
 
 - Un **capítulo** (ej. "Sabores de Cali") tiene **10 niveles narrativos**.
 - Cada **nivel** muestra **5 preguntas** en un recorrido.
-- Meta editorial: **150 preguntas aprobadas por capítulo** (~15 por nivel para antirrepetición).
+- Meta editorial del piloto: **200 preguntas aprobadas** (~20 por nivel): 150 generales + 50 preguntas visuales adicionales, distribuidas entre niveles y modos.
 - **NO** se usa `game_questions.level` para el nivel narrativo: hay una **relación de asignación**
   propia (una pregunta conserva su dificultad técnica y se asigna a un nivel por tema/orden).
 - **Desbloqueo del personaje** (ej. Pandebono): `10 niveles completados AND ≥30 correctas ÚNICAS
@@ -75,12 +75,14 @@ Se inserta (idempotente) cuando el usuario acierta una pregunta del capítulo; `
   contador de correctas únicas y meta del personaje.
 - **Intro de nivel** (narrativa) → jugar (reusa el motor/`GameSessionModal` con el set asignado).
 - **Celebración de desbloqueo** del personaje al cumplir la regla.
+- **Cierre de campaña** integrado en el mapa: el nivel final comunica la recompensa y una puerta
+  enlaza el siguiente capítulo únicamente cuando ese capítulo existe y es visible para el usuario.
 
 **Admin:**
 - CRUD de capítulos (portada, personaje, umbrales, estado/versión).
 - Editor de los 10 niveles (título, narrativa, propósito).
 - **Asignador de preguntas** a cada nivel (buscar en el banco por categoría/nivel/formato y
-  asignar con orden). Muestra cobertura por nivel (cuántas asignadas vs meta ~15).
+  asignar con orden). Muestra cobertura por nivel (cuántas asignadas vs meta ~20), incluida la cobertura visual.
 
 ## 5. Enganche con elegibilidad por modo
 
@@ -94,8 +96,7 @@ publique un capítulo, sin duplicar preguntas.
 2. **RPCs de servidor**: get_chapter_map, start/submit_chapter_level, desbloqueo.
 3. **Admin**: CRUD capítulos/niveles + asignador de preguntas.
 4. **Jugador**: entrada + mapa + intro + juego + celebración.
-5. **Contenido**: clasificar las 51 candidatas de Sabores de Cali en los 10 niveles y crear las
-   ~92–99 nuevas para llegar a 150 (frente editorial, separado).
+5. **Contenido**: completar 150 preguntas generales y sumar 50 preguntas visuales para llegar a 200. Las imágenes siguen la dirección artística de Andanzas GO y se administran desde el editor.
 
 ## 7. Decisiones confirmadas (2026-07-29)
 
@@ -116,6 +117,10 @@ publique un capítulo, sin duplicar preguntas.
   `20260729_aventura_rpcs.sql`. Verificado end-to-end con el usuario de prueba.
 - ✅ **Scaffolding del piloto sembrado:** personajes ANDI + Pandebono; capítulo "Sabores de Cali"
   (**draft**) con los 10 niveles; 5 preguntas de Gastronomía asignadas al nivel 1 como semilla.
-- ⏳ **Incremento 3 (admin):** CRUD de capítulos/niveles + asignador de preguntas. Pendiente.
-- ⏳ **Incremento 4 (jugador):** entrada Aventura + mapa + intro + juego + celebración. Pendiente.
-- ⏳ **Contenido:** clasificar las 51 candidatas en los 10 niveles y crear ~92–99 nuevas (→150).
+- ✅ **Incremento 3 (admin):** CRUD de capítulos/niveles + asignador de preguntas integrado
+  en el panel actual de Juegos.
+- ✅ **Incremento 4 (jugador):** entrada Aventura + mapa ilustrado + intro + juego + resultado
+  y celebración implementados dentro de Andanzas GO.
+- ✅ **Iteración visual del mapa:** progreso y ayuda integrados en el escenario, nivel 10 distinguido,
+  Pandebono asociado a la meta y puerta de siguiente campaña sin navegación simulada.
+- ⏳ **Contenido:** completar 150 generales + 50 visuales (→200). Existen 6 `image_choice` en borrador y ninguna imagen subida.

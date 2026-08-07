@@ -117,7 +117,7 @@ export default function InsigniasModal({
         </div>
 
         <ScrollArea className="min-h-0 flex-1 bg-muted/20">
-          <div className="space-y-8 p-4 sm:p-6">
+          <div className="space-y-5 p-3.5 sm:p-4">
             {(Object.keys(GROUP_TITLES) as BadgeGroup[]).map((group) => {
               const badges = grouped[group];
               if (!badges?.length) return null;
@@ -143,7 +143,7 @@ export default function InsigniasModal({
             })}
 
             {Object.keys(grouped).length === 0 && (
-              <div className="rounded-3xl border border-dashed bg-card p-10 text-center">
+              <div className="rounded-2xl border border-dashed bg-card p-6 text-center">
                 <Award className="mx-auto h-10 w-10 text-muted-foreground" />
                 <p className="mt-3 font-bold">Todavía no hay insignias en esta vista.</p>
               </div>

@@ -182,17 +182,16 @@ const GameInstructionsDialog: React.FC<GameInstructionsDialogProps> = ({
                                     <div className="flex items-start gap-3">
                                         <div className="rounded-xl bg-emerald-50 p-2.5 text-emerald-700"><MapPinned className="h-5 w-5" /></div>
                                         <div>
-                                            <h4 className="font-black text-emerald-950">El mundo cabe en una pregunta</h4>
+                                            <h4 className="font-black text-emerald-950">Explora el mundo por territorios</h4>
                                             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                                                Elige una partida mundial o pon a prueba lo que sabes de Cali, el Valle del Cauca y Colombia. También puedes jugar con palabras y expresiones del vocabulario caleño.
+                                                Mundo organiza tus destinos: elige Colombia, el Valle del Cauca o Cali. Cada recorrido usa preguntas propias del territorio seleccionado.
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mt-4 flex flex-wrap gap-2">
-                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-800"><Sparkles className="h-3.5 w-3.5" /> Mundo</span>
-                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-100 px-3 py-1.5 text-xs font-bold text-sky-800"><MapPinned className="h-3.5 w-3.5" /> Colombia y Cali</span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-100 px-3 py-1.5 text-xs font-bold text-sky-800"><MapPinned className="h-3.5 w-3.5" /> Colombia</span>
                                         <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-800"><MapPinned className="h-3.5 w-3.5" /> Valle del Cauca</span>
-                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-100 px-3 py-1.5 text-xs font-bold text-violet-800"><Lightbulb className="h-3.5 w-3.5" /> Vocabulario caleño</span>
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-800"><MapPinned className="h-3.5 w-3.5" /> Cali</span>
                                     </div>
                                 </div>
                             </TabsContent>

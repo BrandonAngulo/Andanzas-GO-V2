@@ -36,31 +36,31 @@ export const WeeklyGoals: React.FC = () => {
     if (loading || goals.length === 0) return null;
 
     return (
-        <div className="rounded-3xl border border-border/70 bg-card/80 p-4">
-            <div className="mb-3 flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary"><Target className="h-4 w-4" /></span>
-                <h3 className="text-sm font-bold">Metas de la semana</h3>
+        <div className="rounded-2xl border border-border/70 bg-card/80 p-3">
+            <div className="mb-2 flex items-center gap-2">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary"><Target className="h-3.5 w-3.5" /></span>
+                <h3 className="text-xs font-bold">Metas de la semana</h3>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-2 sm:grid-cols-2">
                 {goals.map(g => {
                     const pct = Math.min(100, Math.round((g.progress / g.target) * 100));
                     return (
-                        <div key={g.key} className="rounded-2xl bg-muted/40 p-3">
+                        <div key={g.key} className="rounded-xl bg-muted/40 p-2.5">
                             <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0">
-                                    <div className="text-sm font-bold leading-tight">{g.title}</div>
-                                    <div className="mt-0.5 text-xs text-muted-foreground">{g.description}</div>
+                                    <div className="text-xs font-bold leading-tight">{g.title}</div>
+                                    <div className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">{g.description}</div>
                                 </div>
                                 <span className="flex shrink-0 items-center gap-1 text-xs font-bold text-amber-500"><Coins className="h-3.5 w-3.5" /> {g.reward_coins}</span>
                             </div>
-                            <div className="mt-2 flex items-center gap-2">
+                            <div className="mt-1.5 flex items-center gap-2">
                                 <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
                                     <div className={`h-full transition-[width] ${g.completed ? 'bg-emerald-500' : 'bg-primary'}`} style={{ width: `${pct}%` }} />
                                 </div>
                                 <span className="text-[11px] font-semibold text-muted-foreground">{g.progress}/{g.target}</span>
                             </div>
                             {g.claimed ? (
-                                <div className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400"><Check className="h-3.5 w-3.5" /> Reclamada</div>
+                                <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400"><Check className="h-3 w-3" /> Reclamada</div>
                             ) : g.completed ? (
                                 <motion.button
                                     type="button"
@@ -77,7 +77,7 @@ export const WeeklyGoals: React.FC = () => {
                                     transition={{ duration: 1.25, repeat: Infinity, ease: 'easeInOut' }}
                                     whileHover={{ scale: 1.09 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-3.5 py-1 text-xs font-black text-white shadow-sm disabled:opacity-60"
+                                    className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-0.5 text-[11px] font-black text-white shadow-sm disabled:opacity-60"
                                 >
                                     {claiming === g.key ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />} ¡Reclamar premio!
                                 </motion.button>

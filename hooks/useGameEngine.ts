@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Game, GameQuestion, gamesService } from '../services/games.service';
+import { Game, GameQuestion, gamesService, type GameSessionMode } from '../services/games.service';
 import type { EconomySummary } from '../services/gamification.service';
 import { analyticsService } from '../services/analytics.service';
 import { modifierService, GameModifier } from '../services/modifier.service';
@@ -92,7 +92,7 @@ const diversifyByTemplate = (selected: any[], pool: any[], cap: number): any[] =
     return out.sort((a, b) => (Number(a.level) || 1) - (Number(b.level) || 1));
 };
 
-export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' | 'timed' = 'levels', theme?: string) => {
+export const useGameEngine = (gameId: string, userId: string | undefined, mode: 'levels' | 'legend' | 'timed' = 'levels', theme?: string, sessionMode: GameSessionMode = 'reto') => {
     const [state, setState] = useState<GameEngineState>({
         game: null,
         questions: [],
@@ -121,6 +121,8 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
     // Modo activo (levels = corto por niveles; legend = sin fin con vidas; timed = contrarreloj).
     const modeRef = useRef<'levels' | 'legend' | 'timed'>(mode);
     modeRef.current = mode;
+    const sessionModeRef = useRef<GameSessionMode>(sessionMode);
+    sessionModeRef.current = sessionMode;
     const globalTimerStartedRef = useRef(false);
     const finishedRef = useRef(false); // evita finalizar la partida dos veces (p. ej. reloj + acción del usuario)
     // Modificador controlado activo (dormido si no hay ninguno). Cambia reglas por un tiempo.
@@ -132,7 +134,7 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             initGame();
         }
         return () => stopTimer();
-    }, [gameId, userId, mode, theme]);
+    }, [gameId, userId, mode, theme, sessionMode]);
 
     // Contrarreloj: un único cronómetro global para toda la ronda.
     useEffect(() => {
@@ -233,8 +235,10 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             const activeTheme = (theme && theme !== 'all') ? theme : null;
             const themed = activeTheme
                 ? questionsData.filter(q => q.category === activeTheme || (q as any).campaign === activeTheme)
-                : questionsData.filter(q => !(q as any).campaign);
-            const source = themed.length > 0 ? themed : questionsData; // salvaguarda: nunca dejar la partida vacía
+                : questionsData;
+            // Un territorio nunca debe degradarse silenciosamente al banco general: si no
+            // tiene preguntas, la partida se detiene y conserva la diferencia con Clásica.
+            const source = activeTheme ? themed : questionsData;
 
             // Ordena una lista poniendo primero las no vistas recientemente (cada grupo barajado).
             const freshFirst = (arr: any[]) => {
@@ -340,7 +344,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
                     game_id: gameId,
                     user_id: userId,
                     total_questions: questions.length,
-                    modifier_key: activeModifier?.key ?? null
+                    modifier_key: activeModifier?.key ?? null,
+                    mode_key: sessionMode,
+                    theme_key: theme && theme !== 'all' ? theme : null,
                 })
                 .select()
                 .single();
@@ -350,7 +356,8 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             // Instrumentación (Fase 0): inicio de partida. Fire-and-forget, no bloquea el juego.
             analyticsService.trackEvent('game_started', 'game_session', sessionData.id, {
                 game_id: gameId,
-                mode,
+                mode: sessionMode,
+                engine_mode: mode,
                 theme: theme || 'all',
                 question_count: questions.length,
                 modifier: activeModifier?.key ?? null
@@ -653,7 +660,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
         // Instrumentación (Fase 0): fin de partida y recompensa otorgada.
         analyticsService.trackEvent('game_completed', 'game_session', state.sessionId ?? undefined, {
             game_id: gameId,
-            mode: modeRef.current,
+            mode: sessionModeRef.current,
+            engine_mode: modeRef.current,
+            theme: theme || 'all',
             score: finalScore,
             accuracy_percent: Math.round(accuracy),
             answered: answeredCount,

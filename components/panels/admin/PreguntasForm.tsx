@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import React, { useState, useEffect, useMemo } from 'react';
-import { GameQuestion, QuestionEditorialCheck, gamesService, GAME_MODES, type GameMode, type QuestionModeEligibility } from '../../../services/games.service';
+import { GameQuestion, QuestionEditorialCheck, gamesService, GAME_MODES, type GameMode, type GameQuestionCategory, type GameQuestionScope, type QuestionModeEligibility } from '../../../services/games.service';
 import { learningService } from '../../../services/learning.service';
 import { LearnEntry } from '../../../types';
 import { Button } from '../../ui/button';
@@ -22,6 +22,8 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [levelFilter, setLevelFilter] = useState('all');
     const [categoryFilter, setCategoryFilter] = useState('all');
+    const [scopeFilter, setScopeFilter] = useState('all');
+    const [batchFilter, setBatchFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [page, setPage] = useState(1);
     const [bulkStatus, setBulkStatus] = useState<GameQuestion['status']>('review');
@@ -30,6 +32,12 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     const [editorialChecks, setEditorialChecks] = useState<Record<string, QuestionEditorialCheck>>({});
     const [modeElig, setModeElig] = useState<QuestionModeEligibility[] | null>(null);
     const [modeEligBusy, setModeEligBusy] = useState<GameMode | null>(null);
+    const [questionScopes, setQuestionScopes] = useState<GameQuestionScope[]>([]);
+    const [questionCategories, setQuestionCategories] = useState<GameQuestionCategory[]>([]);
+    const [newScopeLabel, setNewScopeLabel] = useState('');
+    const [newScopeKind, setNewScopeKind] = useState<GameQuestionScope['kind']>('place');
+    const [newScopeParent, setNewScopeParent] = useState('none');
+    const [savingScope, setSavingScope] = useState(false);
 
     // Carga la elegibilidad por modo de la pregunta en edición (solo aplica a publicadas).
     useEffect(() => {
@@ -72,7 +80,12 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
         archived: 'bg-zinc-200 text-zinc-700'
     };
 
-    const categories = useMemo(() => Array.from(new Set(questions.map(q => q.category).filter(Boolean) as string[])).sort(), [questions]);
+    const categories = useMemo(() => Array.from(new Set([
+        ...questionCategories.map(category => category.label),
+        ...(questions.map(q => q.category).filter(Boolean) as string[]),
+    ])).sort((a, b) => a.localeCompare(b, 'es')), [questions, questionCategories]);
+    const scopeLabels = useMemo(() => new Map(questionScopes.map(scope => [scope.key, scope.label])), [questionScopes]);
+    const batches = useMemo(() => Array.from(new Set(questions.map(q => q.content_batch).filter(Boolean) as string[])).sort(), [questions]);
     const statusCounts = useMemo(() => questions.reduce<Record<string, number>>((acc, q) => {
         acc[q.status] = (acc[q.status] || 0) + 1;
         return acc;
@@ -83,9 +96,11 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
             (statusFilter === 'all' || q.status === statusFilter) &&
             (levelFilter === 'all' || q.level === Number(levelFilter)) &&
             (categoryFilter === 'all' || q.category === categoryFilter) &&
+            (scopeFilter === 'all' || (scopeFilter === 'core' ? !q.campaign : q.campaign === scopeFilter)) &&
+            (batchFilter === 'all' || q.content_batch === batchFilter) &&
             (!query || q.question_text.toLocaleLowerCase('es').includes(query) || q.explanation?.toLocaleLowerCase('es').includes(query))
         );
-    }, [questions, statusFilter, levelFilter, categoryFilter, searchQuery]);
+    }, [questions, statusFilter, levelFilter, categoryFilter, scopeFilter, batchFilter, searchQuery]);
     const pageCount = Math.max(1, Math.ceil(filteredQuestions.length / pageSize));
     const pageQuestions = filteredQuestions.slice((page - 1) * pageSize, page * pageSize);
     const allPageSelected = pageQuestions.length > 0 && pageQuestions.every(q => selectedIds.has(q.id));
@@ -93,7 +108,7 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
     useEffect(() => {
         setPage(1);
         setSelectedIds(new Set());
-    }, [gameId, statusFilter, levelFilter, categoryFilter, searchQuery]);
+    }, [gameId, statusFilter, levelFilter, categoryFilter, scopeFilter, batchFilter, searchQuery]);
 
     useEffect(() => {
         if (page > pageCount) setPage(pageCount);
@@ -111,8 +126,14 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
 
     const loadQuestions = async () => {
         setLoading(true);
-        const data = await gamesService.getQuestionsByGame(gameId);
+        const [data, scopes, catalogCategories] = await Promise.all([
+            gamesService.getQuestionsByGame(gameId),
+            gamesService.getQuestionScopes(gameId, true),
+            gamesService.getQuestionCategories(gameId),
+        ]);
         setQuestions(data);
+        setQuestionScopes(scopes);
+        setQuestionCategories(catalogCategories);
         try {
             const checks = await gamesService.getQuestionEditorialChecks(data.map(q => q.id));
             setEditorialChecks(Object.fromEntries(checks.map(check => [check.question_id, check])));
@@ -120,6 +141,32 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
             console.error('No se pudieron cargar las validaciones editoriales:', error);
         }
         setLoading(false);
+    };
+
+    const addQuestionScope = async () => {
+        const label = newScopeLabel.trim();
+        if (!label) return;
+        setSavingScope(true);
+        try {
+            await gamesService.upsertQuestionScope({
+                game_id: gameId,
+                key: label,
+                label,
+                kind: newScopeKind,
+                parent_key: newScopeParent === 'none' ? null : newScopeParent,
+                is_playable: newScopeKind !== 'global',
+                is_active: true,
+                sort_order: (questionScopes[questionScopes.length - 1]?.sort_order ?? 0) + 10,
+                icon_key: null,
+            });
+            setQuestionScopes(await gamesService.getQuestionScopes(gameId, true));
+            setNewScopeLabel('');
+            toast.success('Ámbito agregado al catálogo del juego.');
+        } catch (error: any) {
+            toast.error(error?.message || 'No se pudo agregar el ámbito.');
+        } finally {
+            setSavingScope(false);
+        }
     };
 
     // Estructura por defecto de 'options'/'correct_answer' para cada tipo de pregunta.
@@ -426,15 +473,28 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
             {/* Editorial question inbox */}
             {!editingQuestion && (
                 <div className="space-y-4">
+                    <details className="rounded-xl border border-border bg-muted/20 p-3">
+                        <summary className="cursor-pointer text-sm font-semibold text-foreground">Catálogo de ámbitos y recorridos</summary>
+                        <p className="mt-1 text-xs text-muted-foreground">Los lotes futuros pueden reutilizar estos ámbitos. Un ámbito nuevo queda disponible para asignar preguntas y alimentará automáticamente el selector correspondiente.</p>
+                        <div className="mt-3 flex flex-wrap gap-1.5">{questionScopes.map(scope => <span key={scope.key} className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${scope.is_active ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-100 text-slate-500'}`}>{scope.label} · {scope.kind}{!scope.is_playable ? ' · interno' : ''}</span>)}</div>
+                        <div className="mt-3 grid gap-2 md:grid-cols-[minmax(12rem,1fr)_10rem_12rem_auto]">
+                            <Input value={newScopeLabel} onChange={event => setNewScopeLabel(event.target.value)} placeholder="Nombre del nuevo ámbito" />
+                            <Select value={newScopeKind} onValueChange={value => setNewScopeKind(value as GameQuestionScope['kind'])}><SelectTrigger aria-label="Tipo del nuevo ámbito"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="country">País</SelectItem><SelectItem value="region">Región</SelectItem><SelectItem value="city">Ciudad</SelectItem><SelectItem value="place">Lugar</SelectItem><SelectItem value="topic">Tema especial</SelectItem></SelectContent></Select>
+                            <Select value={newScopeParent} onValueChange={setNewScopeParent}><SelectTrigger aria-label="Ámbito padre"><SelectValue placeholder="Ámbito padre" /></SelectTrigger><SelectContent><SelectItem value="none">Sin ámbito padre</SelectItem>{questionScopes.map(scope => <SelectItem key={scope.key} value={scope.key}>{scope.label}</SelectItem>)}</SelectContent></Select>
+                            <Button type="button" variant="outline" onClick={addQuestionScope} disabled={!newScopeLabel.trim() || savingScope}>{savingScope ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}Agregar</Button>
+                        </div>
+                    </details>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                         <button type="button" onClick={() => setStatusFilter('all')} className={`text-left rounded-lg border p-3 ${statusFilter === 'all' ? 'border-primary bg-primary/5' : 'border-border'}`}><span className="block text-xs text-muted-foreground">Total</span><strong>{questions.length}</strong></button>
                         {(['draft', 'review', 'published', 'archived'] as GameQuestion['status'][]).map(status => <button key={status} type="button" onClick={() => setStatusFilter(status)} className={`text-left rounded-lg border p-3 ${statusFilter === status ? 'border-primary bg-primary/5' : 'border-border'}`}><span className="block text-xs text-muted-foreground">{statusLabels[status]}</span><strong>{statusCounts[status] || 0}</strong></button>)}
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-[minmax(220px,1fr)_180px_180px_180px] gap-2">
-                        <div className="relative"><Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" /><Input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Buscar pregunta o explicación" className="pl-9" /></div>
+                    <div className="grid grid-cols-1 gap-2 md:grid-cols-3 xl:grid-cols-6">
+                        <div className="relative md:col-span-2 xl:col-span-1"><Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" /><Input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Buscar pregunta o explicación" className="pl-9" /></div>
                         <Select value={statusFilter} onValueChange={setStatusFilter}><SelectTrigger aria-label="Filtrar por estado"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Todos los estados</SelectItem>{(['draft', 'review', 'published', 'archived'] as GameQuestion['status'][]).map(s => <SelectItem key={s} value={s}>{statusLabels[s]}</SelectItem>)}</SelectContent></Select>
                         <Select value={levelFilter} onValueChange={setLevelFilter}><SelectTrigger aria-label="Filtrar por nivel"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Todos los niveles</SelectItem>{[1,2,3,4,5].map(l => <SelectItem key={l} value={String(l)}>Nivel {l}</SelectItem>)}</SelectContent></Select>
                         <Select value={categoryFilter} onValueChange={setCategoryFilter}><SelectTrigger aria-label="Filtrar por categoría"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Todas las categorías</SelectItem>{categories.map(category => <SelectItem key={category} value={category}>{category}</SelectItem>)}</SelectContent></Select>
+                        <Select value={scopeFilter} onValueChange={setScopeFilter}><SelectTrigger aria-label="Filtrar por ámbito jugable"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Todos los ámbitos</SelectItem><SelectItem value="core">Banco sin ámbito</SelectItem>{questionScopes.map(scope => <SelectItem key={scope.key} value={scope.key}>{scope.label}</SelectItem>)}</SelectContent></Select>
+                        <Select value={batchFilter} onValueChange={setBatchFilter}><SelectTrigger aria-label="Filtrar por lote editorial"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Todos los lotes</SelectItem>{batches.map(batch => <SelectItem key={batch} value={batch}>{batch}</SelectItem>)}</SelectContent></Select>
                     </div>
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 p-3">
                         <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={allPageSelected} onChange={toggleCurrentPage} aria-label="Seleccionar preguntas de esta página" />{selectedIds.size ? `${selectedIds.size} seleccionadas` : `Seleccionar esta página (${pageQuestions.length})`}</label>
@@ -443,7 +503,7 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                     <p className="text-xs text-muted-foreground">Mostrando {pageQuestions.length} de {filteredQuestions.length} preguntas filtradas. Solo las publicadas están activas para el juego.</p>
                     {questions.length === 0 ? <p className="text-sm text-muted-foreground text-center py-4">No hay preguntas configuradas.</p> : filteredQuestions.length === 0 ? <p className="text-sm text-muted-foreground text-center py-8">No hay preguntas que coincidan con los filtros.</p> : pageQuestions.map((q, i) => (
                         <div key={q.id} className={`flex flex-col md:flex-row md:justify-between md:items-center gap-3 p-3 border rounded-lg bg-background ${selectedIds.has(q.id) ? 'border-primary ring-1 ring-primary/20' : 'border-border'}`}>
-                            <div className="flex items-start gap-3 min-w-0"><input type="checkbox" className="mt-1" checked={selectedIds.has(q.id)} onChange={() => toggleSelected(q.id)} aria-label={`Seleccionar pregunta: ${q.question_text}`} /><div className="min-w-0"><span className="font-medium text-sm mr-2">{(page - 1) * pageSize + i + 1}.</span><span className="text-sm">{q.question_text}</span><div className="flex flex-wrap gap-1.5 mt-2"><span className={`text-[10px] uppercase tracking-wide font-bold px-1.5 py-0.5 rounded ${statusClasses[q.status]}`}>{statusLabels[q.status]}</span>{editorialChecks[q.id] && <span title={[...(editorialChecks[q.id].issues || []), ...(editorialChecks[q.id].warnings || [])].join(' · ')} className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${editorialChecks[q.id].issues?.length ? 'bg-red-100 text-red-800' : editorialChecks[q.id].warnings?.length ? 'bg-orange-100 text-orange-800' : 'bg-emerald-100 text-emerald-800'}`}>Calidad {editorialChecks[q.id].score}/100</span>}<span className="text-[10px] uppercase tracking-wide font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{({ multiple_choice: 'Opción múltiple', multi_select: 'Selección múltiple', ordering: 'Ordenar', matching: 'Relacionar', image_choice: 'Imagen' } as Record<string, string>)[q.question_type] || q.question_type}</span><span className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Nivel {q.level}</span>{q.category && <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{q.category}</span>}</div></div></div>
+                            <div className="flex items-start gap-3 min-w-0"><input type="checkbox" className="mt-1" checked={selectedIds.has(q.id)} onChange={() => toggleSelected(q.id)} aria-label={`Seleccionar pregunta: ${q.question_text}`} /><div className="min-w-0"><span className="font-medium text-sm mr-2">{(page - 1) * pageSize + i + 1}.</span><span className="text-sm">{q.question_text}</span><div className="flex flex-wrap gap-1.5 mt-2"><span className={`text-[10px] uppercase tracking-wide font-bold px-1.5 py-0.5 rounded ${statusClasses[q.status]}`}>{statusLabels[q.status]}</span>{editorialChecks[q.id] && <span title={[...(editorialChecks[q.id].issues || []), ...(editorialChecks[q.id].warnings || [])].join(' · ')} className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${editorialChecks[q.id].issues?.length ? 'bg-red-100 text-red-800' : editorialChecks[q.id].warnings?.length ? 'bg-orange-100 text-orange-800' : 'bg-emerald-100 text-emerald-800'}`}>Calidad {editorialChecks[q.id].score}/100</span>}<span className="text-[10px] uppercase tracking-wide font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{({ multiple_choice: 'Opción múltiple', multi_select: 'Selección múltiple', ordering: 'Ordenar', matching: 'Relacionar', image_choice: 'Imagen' } as Record<string, string>)[q.question_type] || q.question_type}</span><span className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Nivel {q.level}</span>{q.category && <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{q.category}</span>}{q.campaign && <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">Ámbito: {scopeLabels.get(q.campaign) || q.campaign}</span>}{q.content_batch && <span className="rounded bg-violet-50 px-1.5 py-0.5 text-[10px] font-bold text-violet-700">Lote: {q.content_batch}</span>}</div></div></div>
                             <div className="flex items-center gap-2 shrink-0"><Select value={q.status} onValueChange={value => changeSingleStatus(q, value as GameQuestion['status'])}><SelectTrigger className="w-[135px] h-8" aria-label={`Estado de ${q.question_text}`}><SelectValue /></SelectTrigger><SelectContent>{(['draft', 'review', 'published', 'archived'] as GameQuestion['status'][]).map(s => <SelectItem key={s} value={s}>{statusLabels[s]}</SelectItem>)}</SelectContent></Select><Button size="icon" variant="ghost" onClick={() => handleEdit(q)} aria-label="Editar pregunta"><Edit2 className="w-4 h-4" /></Button><Button size="icon" variant="ghost" className="text-red-500 hover:text-red-600" onClick={() => handleDelete(q.id)} aria-label="Eliminar pregunta"><Trash2 className="w-4 h-4" /></Button></div>
                         </div>
                     ))}
@@ -503,10 +563,13 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                         <div className="space-y-2">
                             <label className="text-xs font-medium text-foreground">Categoría</label>
                             <Input 
+                                list="trivia-question-categories"
                                 value={editingQuestion.category || ''} 
                                 onChange={e => setEditingQuestion({ ...editingQuestion, category: e.target.value })} 
                                 placeholder="Ej: Historia"
                             />
+                            <datalist id="trivia-question-categories">{categories.map(category => <option key={category} value={category} />)}</datalist>
+                            <p className="text-[10px] text-muted-foreground">Elige una categoría existente o escribe una nueva; quedará registrada en el catálogo.</p>
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-medium text-foreground">Nivel Dificultad (1-5)</label>
@@ -535,6 +598,25 @@ export const PreguntasForm = ({ gameId }: { gameId: string }) => {
                                 value={editingQuestion.points_reward || 10} 
                                 onChange={e => setEditingQuestion({ ...editingQuestion, points_reward: parseInt(e.target.value) || 10 })} 
                             />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 rounded-lg border border-border/50 bg-muted/20 p-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Ámbito o colección jugable</label>
+                            <Select value={editingQuestion.campaign || 'core'} onValueChange={value => setEditingQuestion({ ...editingQuestion, campaign: value === 'core' ? null : value })}>
+                                <SelectTrigger><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="core">Banco general · sin recorrido específico</SelectItem>
+                                    {questionScopes.filter(scope => scope.is_active).map(scope => <SelectItem key={scope.key} value={scope.key}>{scope.label}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            <p className="text-xs text-muted-foreground">Define dónde puede aparecer la pregunta. Solo los ámbitos registrados generan recorridos para el jugador.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground">Lote editorial</label>
+                            <Input value={editingQuestion.content_batch || ''} onChange={event => setEditingQuestion({ ...editingQuestion, content_batch: event.target.value || null })} placeholder="Ej: expansion_300_2026" />
+                            <p className="text-xs text-muted-foreground">Sirve para importar, auditar y filtrar contenido. No crea un modo, territorio o escala.</p>
                         </div>
                     </div>
 

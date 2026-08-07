@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Game, GameTheme, gamesService } from '../../services/games.service';
+import { Game, GameTheme, gamesService, type GameSessionMode } from '../../services/games.service';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
-import { Gamepad2, Clock, Trophy, PlayCircle, CalendarDays, Info, Timer, ChevronRight, ChevronLeft, Music, Mic2, Headphones, Swords, Sparkles, MapPinned, Zap, Globe2, Languages, BookOpen } from 'lucide-react';
+import { Gamepad2, Clock, Trophy, PlayCircle, CalendarDays, Info, Timer, ChevronRight, ChevronLeft, Music, Mic2, Headphones, Swords, Sparkles, MapPinned, Zap, Globe2, Languages } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
@@ -21,9 +21,15 @@ import { WeeklyGoals } from '../views/WeeklyGoals';
 import { modifierService, GameModifier } from '../../services/modifier.service';
 import { GamePresentationCard } from './GamePresentationCard';
 import { isLegacyValleStandalone, isTriviaGo } from '../../lib/gameIdentity';
+import { AdventureExperience } from './AdventureExperience';
+import { PlaceModeHub } from './game-modes/PlaceModeHub';
+import { TimedModeHub } from './game-modes/TimedModeHub';
+import { DuelModeHub } from './game-modes/DuelModeHub';
+import { ClassicModeHub } from './game-modes/ClassicModeHub';
+import { VocabularyModeHub } from './game-modes/VocabularyModeHub';
 
 interface JuegosPanelProps {
-    onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string) => void;
+    onPlayGame: (gameId: string, mode?: 'levels' | 'legend' | 'timed', theme?: string, sessionMode?: GameSessionMode) => void;
 }
 
 export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
@@ -31,6 +37,12 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
     const [loading, setLoading] = useState(true);
     const [activeInstructionsGame, setActiveInstructionsGame] = useState<Game | null>(null);
     const [modeChoiceGame, setModeChoiceGame] = useState<Game | null>(null);
+    const [adventureGame, setAdventureGame] = useState<Game | null>(null);
+    const [placeHubGame, setPlaceHubGame] = useState<Game | null>(null);
+    const [timedHubGame, setTimedHubGame] = useState<Game | null>(null);
+    const [duelHubGame, setDuelHubGame] = useState<Game | null>(null);
+    const [classicHubGame, setClassicHubGame] = useState<Game | null>(null);
+    const [vocabularyHubGame, setVocabularyHubGame] = useState<Game | null>(null);
     const [themeChoices, setThemeChoices] = useState<GameTheme[]>([]);
     const [modeMenuView, setModeMenuView] = useState<'modes' | 'places'>('modes');
     const [showDaily, setShowDaily] = useState(false);
@@ -52,6 +64,13 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
             setThemeChoices(await gamesService.getGameThemes(game.id));
         }
         else onPlayGame(game.id);
+    };
+
+    const openPlaceHub = async (game: Game) => {
+        const themes = await gamesService.getGameThemes(game.id);
+        setThemeChoices(themes);
+        setModeChoiceGame(null);
+        setPlaceHubGame(game);
     };
 
     useEffect(() => {
@@ -151,7 +170,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         <div className="mb-4 flex items-center gap-3 rounded-2xl border border-amber-400/40 bg-gradient-to-r from-amber-500/15 to-orange-500/15 px-4 py-3">
                             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-400 text-amber-950"><Zap className="h-5 w-5" /></span>
                             <div className="min-w-0 flex-1">
-                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">Modificador de la semana</div>
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">Regla especial de la semana</div>
                                 <div className="font-bold leading-tight">{activeModifier.label}</div>
                                 <div className="text-xs text-muted-foreground">{activeModifier.description}</div>
                             </div>
@@ -264,20 +283,20 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         </Card>
                     )
                 })}
-                        <aside className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                        <aside className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
                             <button
                                 type="button"
                                 onClick={() => setShowDaily(true)}
-                                className="group flex min-h-[7.2rem] items-center gap-4 overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-50 via-orange-50 to-fuchsia-50 p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-amber-400/60 hover:shadow-lg dark:from-amber-950/30 dark:via-orange-950/20 dark:to-fuchsia-950/20"
+                                className="group flex min-h-[5rem] items-center gap-3 overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-50 via-orange-50 to-fuchsia-50 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-amber-400/60 hover:shadow-lg dark:from-amber-950/30 dark:via-orange-950/20 dark:to-fuchsia-950/20"
                             >
-                                <div className="relative rounded-2xl bg-amber-400 p-3 text-amber-950 shadow-md">
-                                    <CalendarDays className="h-6 w-6" />
-                                    <span className="absolute -right-1 -top-1 h-3 w-3 animate-pulse rounded-full bg-fuchsia-500 ring-2 ring-white" />
+                                <div className="relative rounded-xl bg-amber-400 p-2.5 text-amber-950 shadow-md">
+                                    <CalendarDays className="h-5 w-5" />
+                                    <span className="absolute -right-1 -top-1 h-2.5 w-2.5 animate-pulse rounded-full bg-fuchsia-500 ring-2 ring-white" />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                     <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">Vuelve cada día</p>
                                     <h3 className="mt-0.5 font-black text-foreground">Pregunta del día</h3>
-                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Responde la de hoy y mantén viva tu racha.</p>
+                                    <p className="mt-0.5 text-xs leading-tight text-muted-foreground">Responde la de hoy y mantén viva tu racha.</p>
                                 </div>
                                 <ChevronRight className="h-5 w-5 shrink-0 text-orange-500 transition-transform group-hover:translate-x-1" />
                             </button>
@@ -285,25 +304,21 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             {/* Metas semanales flexibles: progreso real, reclamo de monedas. */}
                             <div className="sm:col-span-2 lg:col-span-1"><WeeklyGoals /></div>
 
-                            <div className="relative min-h-[7.2rem] overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-700 via-purple-700 to-fuchsia-600 p-4 text-white shadow-sm">
-                                <Sparkles className="absolute -right-3 -top-3 h-20 w-20 text-white/10" />
-                                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-violet-100">Tú eliges el ritmo</p>
-                                <h3 className="mt-1 font-black">Elige tu próxima partida</h3>
-                                <div className="mt-3 flex flex-wrap gap-1.5 text-[0.68rem] font-bold">
-                                    <span className="rounded-full bg-white/15 px-2.5 py-1">📖 Historia</span>
-                                    <span className="rounded-full bg-white/15 px-2.5 py-1">⏱ Contrarreloj</span>
-                                    <span className="rounded-full bg-white/15 px-2.5 py-1">⚔️ Duelo</span>
-                                </div>
-                            </div>
+                            <button type="button" onClick={() => { const g = games.find(isTriviaGo); if (g) setAdventureGame(g); }} className="group relative min-h-[5rem] overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-700 via-purple-700 to-fuchsia-600 p-3 text-left text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+                                <Sparkles className="absolute -right-2 -top-4 h-16 w-16 text-white/10" />
+                                <p className="text-[9px] font-black uppercase tracking-[0.16em] text-violet-100">Modo principal</p>
+                                <div className="mt-0.5 flex items-center justify-between gap-3"><div><h3 className="font-black">Continuar Aventura</h3><p className="mt-0.5 text-[11px] text-white/70">Vuelve al mapa de Sabores de Cali.</p></div><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15 transition-transform group-hover:translate-x-1"><ChevronRight className="h-5 w-5" /></span></div>
+                            </button>
 
-                            <div className="flex min-h-[7.2rem] items-start gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 shadow-sm sm:col-span-2 lg:col-span-1">
-                                <div className="rounded-xl bg-emerald-100 p-2.5 text-emerald-700"><MapPinned className="h-5 w-5" /></div>
-                                <div>
-                                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">El mundo también se juega</p>
-                                    <h3 className="mt-1 font-black text-foreground">Pon a prueba lo que sabes de cada lugar</h3>
-                                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Viaja con preguntas de Cali, el Valle, Colombia y el mundo, o atrévete con el vocabulario caleño.</p>
+                            <button type="button" onClick={() => { const g = games.find(isTriviaGo); if (g) openPlaceHub(g); }} className="group flex min-h-[5rem] items-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-500/40 sm:col-span-2 lg:col-span-1">
+                                <div className="rounded-xl bg-emerald-100 p-2 text-emerald-700"><MapPinned className="h-5 w-5" /></div>
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-[9px] font-black uppercase tracking-[0.16em] text-emerald-700">El mundo también se juega</p>
+                                    <h3 className="mt-0.5 truncate font-black text-foreground">Jugar por lugar</h3>
+                                    <p className="mt-0.5 line-clamp-1 text-xs leading-tight text-muted-foreground">Cali, el Valle, Colombia y el mundo.</p>
                                 </div>
-                            </div>
+                                <ChevronRight className="h-5 w-5 shrink-0 text-emerald-600 transition-transform group-hover:translate-x-1" />
+                            </button>
                         </aside>
                     </div>
                 </TabsContent>
@@ -342,7 +357,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
             )}
 
             <Dialog open={!!modeChoiceGame} onOpenChange={(open) => !open && setModeChoiceGame(null)}>
-                <DialogContent className="max-h-[92vh] max-w-lg overflow-y-auto p-0">
+                <DialogContent className="max-h-[92vh] max-w-lg overflow-y-auto p-0 [&>button]:right-3 [&>button]:top-3 [&>button]:z-30 [&>button]:flex [&>button]:h-9 [&>button]:w-9 [&>button]:items-center [&>button]:justify-center [&>button]:rounded-full [&>button]:border [&>button]:border-slate-200 [&>button]:bg-white [&>button]:text-[#073c43] [&>button]:opacity-100 [&>button]:shadow-lg [&>button]:transition-transform [&>button:hover]:scale-105">
                     <div className="relative overflow-hidden bg-gradient-to-br from-[#073c43] via-[#08705d] to-[#14a866] px-5 py-4 text-white">
                         <DialogHeader className="max-w-[68%] text-left">
                             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-300">Andi te acompaña</p>
@@ -373,11 +388,11 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             >
                                 <ChevronLeft className="h-4 w-4" /> Volver a los modos
                             </button>
-                            {themeChoices.filter(theme => theme.kind === 'place').map(theme => (
+                            {themeChoices.filter(theme => theme.kind === 'place' && theme.key !== 'world_general').map(theme => (
                                 <button
                                     key={theme.key}
                                     type="button"
-                                    onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', theme.key); }}
+                                    onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', theme.key, 'lugar'); }}
                                     className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-emerald-500 hover:bg-emerald-500/5"
                                 >
                                     <div className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-600"><MapPinned className="h-5 w-5" /></div>
@@ -393,77 +408,92 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                         <>
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', 'world_general'); }}
-                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-emerald-500 hover:bg-emerald-500/5"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) setAdventureGame(g); }}
+                            className="group relative flex min-h-[8.5rem] w-full items-center overflow-hidden rounded-[1.4rem] border-2 border-amber-300/70 bg-gradient-to-r from-amber-50 via-[#fff9e9] to-emerald-50 text-left text-[#073c43] shadow-[0_10px_28px_rgba(7,60,67,0.16)] transition-all hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-[0_15px_34px_rgba(7,60,67,0.23)]"
                         >
-                            <div className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-600"><Globe2 className="h-5 w-5" /></div>
-                            <div className="flex-1">
+                            <div className="relative ml-3 h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white shadow-lg ring-2 ring-amber-300/70 sm:h-28 sm:w-28">
+                                <img src="/images/games/trivia-go/aventura-sabores-cali-game-map-v4.webp" alt="" className="absolute inset-0 h-full w-full object-cover object-[center_28%] transition duration-700 group-hover:scale-110" />
+                                <div className="absolute inset-0 bg-[#073c43]/10" />
+                            </div>
+                            <img src="/images/games/trivia-go/andi-adventure-guide-v1.png" alt="Andi te invita al modo Aventura" className="absolute -bottom-4 left-8 z-10 h-[7.2rem] w-[7.2rem] object-contain drop-shadow-xl transition-transform group-hover:-translate-y-1" />
+                            <div className="relative z-10 min-w-0 flex-1 p-3.5 pl-3">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-amber-300 px-2 py-0.5 text-[8px] font-black uppercase tracking-[0.15em] text-amber-950"><Sparkles className="h-3 w-3" /> Modo principal</span>
+                                <div className="mt-1.5 text-xl font-black leading-none">Aventura</div>
+                                <div className="mt-1 text-xs font-medium leading-relaxed text-slate-600">10 niveles, una categoría por dominar y nuevos amigos por descubrir.</div>
+                                <span className="mt-2 inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-[#08705d]">Entrar al mapa <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" /></span>
+                            </div>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) setClassicHubGame(g); }}
+                            className="group relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50/70 p-3 text-left transition-all hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md"
+                        >
+                            <Globe2 className="absolute -right-2 -top-3 h-20 w-20 text-emerald-600/[0.07]" />
+                            <div className="relative rounded-xl bg-emerald-600 p-2.5 text-white shadow"><Globe2 className="h-5 w-5" /></div>
+                            <div className="relative flex-1">
+                                <div className="text-[8px] font-black uppercase tracking-[0.15em] text-emerald-700">Explora sin límites</div>
                                 <div className="font-bold">Partida clásica</div>
-                                <div className="text-xs text-muted-foreground">15 preguntas para viajar por culturas, ciencia, historia y lugares del mundo.</div>
+                                <div className="text-xs text-muted-foreground">Una mezcla general de temas, formatos y territorios del banco completo.</div>
                             </div>
-                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            <ChevronRight className="relative h-5 w-5 text-emerald-600 transition-transform group-hover:translate-x-1" />
                         </button>
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'legend', 'world_general'); }}
-                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-orange-500 hover:bg-orange-500/5"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) setTimedHubGame(g); }}
+                            className="group relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-sky-200 bg-gradient-to-r from-sky-50 to-cyan-50/70 p-3 text-left transition-all hover:-translate-y-0.5 hover:border-sky-400 hover:shadow-md"
                         >
-                            <div className="rounded-xl bg-orange-500/10 p-2.5 text-orange-500"><BookOpen className="h-5 w-5" /></div>
-                            <div className="flex-1">
-                                <div className="font-bold">Historia</div>
-                                <div className="text-xs text-muted-foreground">Avanza capítulo a capítulo, cuida tus 3 vidas y llega tan lejos como puedas.</div>
-                            </div>
-                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'timed', 'world_general'); }}
-                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-sky-500 hover:bg-sky-500/5"
-                        >
-                            <div className="rounded-xl bg-sky-500/10 p-2.5 text-sky-500"><Timer className="h-5 w-5" /></div>
-                            <div className="flex-1">
+                            <Timer className="absolute -right-2 -top-3 h-20 w-20 text-sky-600/[0.07]" />
+                            <div className="relative rounded-xl bg-sky-500 p-2.5 text-white shadow"><Timer className="h-5 w-5" /></div>
+                            <div className="relative flex-1">
+                                <div className="text-[8px] font-black uppercase tracking-[0.15em] text-sky-700">Piensa rápido</div>
                                 <div className="font-bold">Contrarreloj</div>
                                 <div className="text-xs text-muted-foreground">2 minutos, 15 preguntas y un solo error: piensa rápido y llega al final.</div>
                             </div>
-                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            <ChevronRight className="relative h-5 w-5 text-sky-600 transition-transform group-hover:translate-x-1" />
                         </button>
                         <button
                             type="button"
-                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) window.dispatchEvent(new CustomEvent('start-duel', { detail: { gameId: g.id } })); }}
-                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-primary hover:bg-primary/5"
+                            onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) setDuelHubGame(g); }}
+                            className="group relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-violet-200 bg-gradient-to-r from-violet-50 to-rose-50/70 p-3 text-left transition-all hover:-translate-y-0.5 hover:border-violet-400 hover:shadow-md"
                         >
-                            <div className="rounded-xl bg-primary/10 p-2.5 text-primary"><Swords className="h-5 w-5" /></div>
-                            <div className="flex-1">
+                            <Swords className="absolute -right-2 -top-3 h-20 w-20 text-violet-600/[0.07]" />
+                            <div className="relative rounded-xl bg-violet-600 p-2.5 text-white shadow"><Swords className="h-5 w-5" /></div>
+                            <div className="relative flex-1">
+                                <div className="text-[8px] font-black uppercase tracking-[0.15em] text-violet-700">Reta a alguien</div>
                                 <div className="font-bold">Duelo</div>
                                 <div className="text-xs text-muted-foreground">Responde 10 preguntas, comparte el reto y descubre quién conoce más.</div>
                             </div>
-                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            <ChevronRight className="relative h-5 w-5 text-violet-600 transition-transform group-hover:translate-x-1" />
                         </button>
                         <button
                             type="button"
-                            onClick={() => setModeMenuView('places')}
-                            className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-amber-500 hover:bg-amber-500/5"
+                            onClick={() => { const g = modeChoiceGame; if (g) openPlaceHub(g); }}
+                            className="group relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50/70 p-3 text-left transition-all hover:-translate-y-0.5 hover:border-orange-400 hover:shadow-md"
                         >
-                            <div className="rounded-xl bg-amber-500/10 p-2.5 text-amber-600"><MapPinned className="h-5 w-5" /></div>
-                            <div className="flex-1">
+                            <MapPinned className="absolute -right-2 -top-3 h-20 w-20 text-orange-600/[0.07]" />
+                            <div className="relative rounded-xl bg-orange-500 p-2.5 text-white shadow"><MapPinned className="h-5 w-5" /></div>
+                            <div className="relative flex-1">
+                                <div className="text-[8px] font-black uppercase tracking-[0.15em] text-orange-700">Elige un destino</div>
                                 <div className="font-bold">Jugar por lugar</div>
                                 <div className="text-xs text-muted-foreground">Elige un país, una región o una ciudad y demuestra cuánto conoces.</div>
                             </div>
-                            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            <ChevronRight className="relative h-5 w-5 text-orange-600 transition-transform group-hover:translate-x-1" />
                         </button>
                         {themeChoices.filter(theme => theme.kind === 'topic').map(theme => (
                             <button
                                 key={theme.key}
                                 type="button"
-                                onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) onPlayGame(g.id, 'levels', theme.key); }}
-                                className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors hover:border-violet-500 hover:bg-violet-500/5"
+                                onClick={() => { const g = modeChoiceGame; setModeChoiceGame(null); if (g) setVocabularyHubGame(g); }}
+                                className="group relative flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-fuchsia-200 bg-gradient-to-r from-fuchsia-50 to-violet-50/70 p-3 text-left transition-all hover:-translate-y-0.5 hover:border-fuchsia-400 hover:shadow-md"
                             >
-                                <div className="rounded-xl bg-violet-500/10 p-2.5 text-violet-600"><Languages className="h-5 w-5" /></div>
-                                <div className="flex-1">
+                                <Languages className="absolute -right-2 -top-3 h-20 w-20 text-fuchsia-600/[0.07]" />
+                                <div className="relative rounded-xl bg-fuchsia-600 p-2.5 text-white shadow"><Languages className="h-5 w-5" /></div>
+                                <div className="relative flex-1">
+                                    <div className="text-[8px] font-black uppercase tracking-[0.15em] text-fuchsia-700">Habla como en Cali</div>
                                     <div className="font-bold">{theme.label}</div>
                                     <div className="text-xs text-muted-foreground">Palabras y expresiones para hablar como se habla en Cali.</div>
                                 </div>
-                                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                                <ChevronRight className="relative h-5 w-5 text-fuchsia-600 transition-transform group-hover:translate-x-1" />
                             </button>
                         ))}
                         </>
@@ -473,6 +503,12 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
             </Dialog>
 
             {showDaily && <DailyQuestion onClose={() => setShowDaily(false)} />}
+            {adventureGame && <AdventureExperience gameId={adventureGame.id} onClose={() => setAdventureGame(null)} />}
+            {classicHubGame && <ClassicModeHub game={classicHubGame} onClose={() => setClassicHubGame(null)} onPlay={() => { const g = classicHubGame; setClassicHubGame(null); if (g) onPlayGame(g.id, 'levels', undefined, 'clasica'); }} />}
+            {placeHubGame && <PlaceModeHub game={placeHubGame} themes={themeChoices} onClose={() => setPlaceHubGame(null)} onPlay={(theme) => { const g = placeHubGame; setPlaceHubGame(null); if (g) onPlayGame(g.id, 'levels', theme.key, 'lugar'); }} />}
+            {timedHubGame && <TimedModeHub game={timedHubGame} modifier={activeModifier} onClose={() => setTimedHubGame(null)} onPlay={() => { const g = timedHubGame; setTimedHubGame(null); if (g) onPlayGame(g.id, 'timed', undefined, 'contrarreloj'); }} />}
+            {duelHubGame && <DuelModeHub game={duelHubGame} onClose={() => setDuelHubGame(null)} onStart={() => { const g = duelHubGame; setDuelHubGame(null); if (g) window.dispatchEvent(new CustomEvent('start-duel', { detail: { gameId: g.id } })); }} />}
+            {vocabularyHubGame && <VocabularyModeHub game={vocabularyHubGame} onClose={() => setVocabularyHubGame(null)} onPlay={() => { const g = vocabularyHubGame; setVocabularyHubGame(null); if (g) onPlayGame(g.id, 'levels', 'vocabulario', 'vocabulario'); }} />}
             </div>
         </ScrollArea>
     );

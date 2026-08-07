@@ -118,10 +118,10 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ notifications, 
           </div>
             </ScrollArea>
           </TabsContent>
-          <TabsContent value="noticias" className="m-0 p-6 flex flex-col items-center justify-center text-center h-[340px] bg-muted/10">
+          <TabsContent value="noticias" className="m-0 flex min-h-60 flex-col items-center justify-center bg-muted/10 p-4 text-center">
             <Activity className="h-12 w-12 text-primary/30 mb-4" />
             <h4 className="font-bold mb-2">El Pulso de la Ciudad</h4>
-            <p className="text-sm text-muted-foreground mb-6">
+            <p className="mb-4 text-sm text-muted-foreground">
               Descubre reseñas de usuarios, anuncios oficiales y novedades en tiempo real.
             </p>
             <Button className="w-full rounded-xl" onClick={onOpenNews}>

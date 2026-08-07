@@ -1,28 +1,29 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { challengeService, DuelPlay, DuelAnswer, DuelRunResult, DuelReview } from '../services/challenge.service';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { challengeService, type DuelAnswer, type DuelPlay, type DuelReview, type DuelRunResult } from '../services/challenge.service';
 
-// Motor del Duelo (modo propio). El set y las reglas vienen congelados del servidor; el
-// cliente NO conoce la respuesta correcta (verificación en servidor). Doble reloj EFECTIVO:
-// 25s por pregunta + 180s de partida; ambos se pausan al responder (el feedback no cuenta).
-// Al terminar (10 respondidas, agotar 180s o abandonar) se envía la corrida completa.
+// El set y las reglas vienen congelados del servidor. El cliente nunca recibe la
+// respuesta correcta antes de enviar la corrida. Hay un reloj por pregunta y otro global;
+// agotar cualquiera termina la corrida y el servidor la registra como derrota por tiempo.
 
 export type DuelPhase = 'playing' | 'submitting' | 'review' | 'error';
+export type DuelEndReason = 'question_timeout' | 'round_timeout' | 'abandoned' | null;
 
 export interface DuelEngineState {
     phase: DuelPhase;
     index: number;
     total: number;
-    perQMs: number;   // ms restantes de la pregunta actual (25s)
-    matchMs: number;  // ms restantes de la partida (180s, presupuesto compartido)
-    locked: boolean;  // respuesta registrada: breve confirmación, el reloj está pausado
+    perQMs: number;
+    matchMs: number;
+    locked: boolean;
     selected: string | null;
     result: DuelRunResult | null;
     review: DuelReview | null;
     error: string | null;
+    endReason: DuelEndReason;
 }
 
-const TICK = 200;      // resolución del reloj (ms)
-const LOCK_MS = 850;   // confirmación breve tras responder (NO cuenta como tiempo efectivo)
+const TICK = 200;
+const LOCK_MS = 850;
 
 export function useDuelEngine(play: DuelPlay) {
     const perQTotal = (play.ruleset?.per_question_seconds ?? 25) * 1000;
@@ -30,9 +31,17 @@ export function useDuelEngine(play: DuelPlay) {
     const questions = play.questions || [];
 
     const [state, setState] = useState<DuelEngineState>({
-        phase: 'playing', index: 0, total: questions.length,
-        perQMs: perQTotal, matchMs: matchTotal, locked: false, selected: null,
-        result: null, review: null, error: null,
+        phase: 'playing',
+        index: 0,
+        total: questions.length,
+        perQMs: perQTotal,
+        matchMs: matchTotal,
+        locked: false,
+        selected: null,
+        result: null,
+        review: null,
+        error: null,
+        endReason: null,
     });
 
     const answersRef = useRef<DuelAnswer[]>([]);
@@ -41,85 +50,126 @@ export function useDuelEngine(play: DuelPlay) {
     const indexRef = useRef(0);
     const lockedRef = useRef(false);
     const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const transitionRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const finishingRef = useRef(false);
 
-    const clearTick = () => { if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; } };
+    const clearTick = useCallback(() => {
+        if (tickRef.current) {
+            clearInterval(tickRef.current);
+            tickRef.current = null;
+        }
+    }, []);
+    const clearTransition = useCallback(() => {
+        if (transitionRef.current) {
+            clearTimeout(transitionRef.current);
+            transitionRef.current = null;
+        }
+    }, []);
 
     const submitRun = useCallback(async () => {
         if (finishingRef.current) return;
         finishingRef.current = true;
         clearTick();
-        setState(s => ({ ...s, phase: 'submitting' }));
+        clearTransition();
+        setState(current => ({ ...current, phase: 'submitting' }));
         try {
             const result = await challengeService.submitDuelRun(play.challenge_id, answersRef.current);
             let review: DuelReview | null = null;
-            try { review = await challengeService.getDuelReview(play.challenge_id); } catch { /* review es opcional */ }
-            setState(s => ({ ...s, phase: 'review', result, review }));
-        } catch (e: any) {
-            finishingRef.current = false; // permitir reintento
-            setState(s => ({ ...s, phase: 'error', error: e?.message || 'No se pudo enviar el duelo.' }));
+            try {
+                review = await challengeService.getDuelReview(play.challenge_id);
+            } catch {
+                // El repaso es complementario; el resultado autoritativo ya quedó registrado.
+            }
+            setState(current => ({ ...current, phase: 'review', result, review }));
+        } catch (error: any) {
+            finishingRef.current = false;
+            setState(current => ({ ...current, phase: 'error', error: error?.message || 'No se pudo enviar el duelo.' }));
         }
-    }, [play.challenge_id]);
+    }, [clearTick, clearTransition, play.challenge_id]);
 
     const goNext = useCallback(() => {
         const next = indexRef.current + 1;
-        if (next >= questions.length || matchRef.current <= 0) { submitRun(); return; }
+        if (next >= questions.length || matchRef.current <= 0) {
+            void submitRun();
+            return;
+        }
         indexRef.current = next;
         perQRef.current = perQTotal;
         lockedRef.current = false;
-        setState(s => ({ ...s, index: next, perQMs: perQTotal, locked: false, selected: null }));
-    }, [questions.length, perQTotal, submitRun]);
+        setState(current => ({ ...current, index: next, perQMs: perQTotal, locked: false, selected: null }));
+    }, [perQTotal, questions.length, submitRun]);
 
-    // Registra la respuesta (o null = timeout), pausa el reloj y avanza tras una breve confirmación.
-    const selectAnswer = useCallback((selected: string | null) => {
+    const selectAnswer = useCallback((selected: string) => {
         if (lockedRef.current || finishingRef.current) return;
         lockedRef.current = true;
         clearTick();
         const timeMs = Math.max(0, Math.min(perQTotal - perQRef.current, perQTotal));
-        const q = questions[indexRef.current];
-        if (q) answersRef.current.push({ question_id: q.id, selected, time_ms: timeMs });
-        setState(s => ({ ...s, locked: true, selected }));
-        setTimeout(goNext, LOCK_MS);
-    }, [perQTotal, questions, goNext]);
+        const question = questions[indexRef.current];
+        if (question) answersRef.current.push({ question_id: question.id, selected, time_ms: timeMs });
+        setState(current => ({ ...current, locked: true, selected }));
+        transitionRef.current = setTimeout(goNext, LOCK_MS);
+    }, [clearTick, goNext, perQTotal, questions]);
 
-    // Relojes: corren solo mientras se juega y la pregunta no está bloqueada.
+    const endRun = useCallback((reason: Exclude<DuelEndReason, null>) => {
+        if (finishingRef.current || (lockedRef.current && reason !== 'abandoned')) return;
+        lockedRef.current = true;
+        clearTick();
+        clearTransition();
+        const question = questions[indexRef.current];
+        const timeMs = reason === 'question_timeout'
+            ? perQTotal
+            : Math.max(0, Math.min(perQTotal - Math.max(perQRef.current, 0), perQTotal));
+        const alreadyAnswered = question && answersRef.current.some(answer => answer.question_id === question.id);
+        if (question && !alreadyAnswered) answersRef.current.push({ question_id: question.id, selected: null, time_ms: timeMs, forfeited: true });
+        setState(current => ({
+            ...current,
+            locked: true,
+            selected: null,
+            perQMs: Math.max(perQRef.current, 0),
+            matchMs: Math.max(matchRef.current, 0),
+            endReason: reason,
+        }));
+        transitionRef.current = setTimeout(() => { void submitRun(); }, LOCK_MS);
+    }, [clearTick, clearTransition, perQTotal, questions, submitRun]);
+
     useEffect(() => {
         if (state.phase !== 'playing' || state.locked) return;
         clearTick();
         tickRef.current = setInterval(() => {
             perQRef.current -= TICK;
             matchRef.current -= TICK;
+
             if (matchRef.current <= 0) {
                 matchRef.current = 0;
-                if (!lockedRef.current) {
-                    lockedRef.current = true;
-                    const q = questions[indexRef.current];
-                    if (q) answersRef.current.push({ question_id: q.id, selected: null, time_ms: Math.max(0, perQTotal - Math.max(perQRef.current, 0)) });
-                }
-                clearTick();
-                setState(s => ({ ...s, matchMs: 0, perQMs: Math.max(perQRef.current, 0) }));
-                submitRun();
+                endRun('round_timeout');
                 return;
             }
             if (perQRef.current <= 0) {
                 perQRef.current = 0;
-                clearTick();
-                setState(s => ({ ...s, perQMs: 0, matchMs: Math.max(matchRef.current, 0) }));
-                selectAnswer(null); // se agotó la pregunta => incorrecta, avanza
+                endRun('question_timeout');
                 return;
             }
-            setState(s => ({ ...s, perQMs: Math.max(perQRef.current, 0), matchMs: Math.max(matchRef.current, 0) }));
+            setState(current => ({
+                ...current,
+                perQMs: Math.max(perQRef.current, 0),
+                matchMs: Math.max(matchRef.current, 0),
+            }));
         }, TICK);
         return clearTick;
-    }, [state.phase, state.locked, state.index, questions, perQTotal, selectAnswer, submitRun]);
+    }, [clearTick, endRun, state.index, state.locked, state.phase]);
 
-    useEffect(() => () => clearTick(), []);
+    useEffect(() => () => {
+        clearTick();
+        clearTransition();
+    }, [clearTick, clearTransition]);
 
     return {
         ...state,
         question: questions[state.index],
-        perQTotal, matchTotal,
+        perQTotal,
+        matchTotal,
         selectAnswer,
+        forfeit: () => endRun('abandoned'),
         retrySubmit: submitRun,
     };
 }

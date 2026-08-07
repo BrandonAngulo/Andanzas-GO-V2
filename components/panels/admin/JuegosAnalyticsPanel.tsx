@@ -4,6 +4,14 @@ import { gamesService, GAME_MODES, type ModePoolSize } from '../../../services/g
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { Activity, AlertTriangle, XCircle, CheckCircle2, Filter, Layers, Gauge, SlidersHorizontal } from 'lucide-react';
 
+const SESSION_MODE_LABELS: Record<string, string> = {
+    reto: 'Reto anterior',
+    clasica: 'Partida clásica',
+    contrarreloj: 'Contrarreloj',
+    lugar: 'Jugar por lugar',
+    vocabulario: 'Vocabulario caleño',
+    historia: 'Historia',
+};
 export const JuegosAnalyticsPanel = () => {
     const [loading, setLoading] = useState(true);
     const [metrics, setMetrics] = useState({
@@ -12,15 +20,16 @@ export const JuegosAnalyticsPanel = () => {
         abandonRate: 0,
         topFailed: [] as { text: string, fails: number }[],
         reports: [] as { id: string, text: string, reason: string, date: string, status: string }[],
-        // Instrumentación Fase 0 (desde analytics_events + game_answers)
+        // Embudo desde eventos; distribución de partidas desde sesiones persistidas.
         funnel: { viewed: 0, started: 0, completed: 0 },
-        byMode: [] as { mode: string, started: number, completed: number }[],
+        byMode: [] as { mode: string, theme: string | null, started: number, completed: number, accuracy: number, bestScore: number }[],
         accuracyByLevel: [] as { level: number, correct: number, total: number }[],
         // Monotonía del banco: % de preguntas con una "gemela" (misma forma) en su categoría.
         templateConcentration: [] as { category: string, total: number, con_gemela: number, pct_monotonia: number }[],
         // Tamaño del pool elegible por modo (regla automática + overrides).
         modePools: [] as ModePoolSize[]
     });
+    const [themeLabels, setThemeLabels] = useState(new Map<string, string>());
 
     const TRIVIA_GO_ID = '81111111-1111-1111-1111-111111111111';
 
@@ -31,10 +40,15 @@ export const JuegosAnalyticsPanel = () => {
     const loadMetrics = async () => {
         setLoading(true);
         try {
-            // 1. Sessions & Abandonment
-            const { data: sessions } = await supabase.from('game_sessions').select('status');
-            const total = sessions?.length || 0;
-            const completed = sessions?.filter(s => s.status === 'completed').length || 0;
+            // 1. Sesiones autoritativas con modalidad/tema persistidos.
+            try {
+                const scopes = await gamesService.getQuestionScopes(TRIVIA_GO_ID, true);
+                setThemeLabels(new Map(scopes.map(scope => [scope.key, scope.label])));
+            } catch { /* compatibilidad con catálogos anteriores */ }
+            let persistedModeMetrics = [] as Awaited<ReturnType<typeof gamesService.getGameSessionModeMetrics>>;
+            try { persistedModeMetrics = await gamesService.getGameSessionModeMetrics(TRIVIA_GO_ID); } catch { /* compatibilidad con esquemas anteriores */ }
+            const total = persistedModeMetrics.reduce((sum, row) => sum + row.started, 0);
+            const completed = persistedModeMetrics.reduce((sum, row) => sum + row.completed, 0);
             const abandon = total > 0 ? ((total - completed) / total) * 100 : 0;
 
             // 2. Failed questions (Simplified: get recent answers and aggregate)
@@ -78,7 +92,7 @@ export const JuegosAnalyticsPanel = () => {
                 status: r.status
             }));
 
-            // 4. Instrumentación Fase 0: embudo y partidas por modo (analytics_events).
+            // 4. Instrumentación Fase 0: el embudo conserva analytics_events.
             const { data: events } = await supabase
                 .from('analytics_events')
                 .select('event_name, metadata')
@@ -89,17 +103,14 @@ export const JuegosAnalyticsPanel = () => {
                 started: evList.filter(e => e.event_name === 'game_started').length,
                 completed: evList.filter(e => e.event_name === 'game_completed').length
             };
-            const modeMap: Record<string, { started: number, completed: number }> = {};
-            evList.forEach(e => {
-                if (e.event_name !== 'game_started' && e.event_name !== 'game_completed') return;
-                const mode = (e.metadata?.mode as string) || 'desconocido';
-                if (!modeMap[mode]) modeMap[mode] = { started: 0, completed: 0 };
-                if (e.event_name === 'game_started') modeMap[mode].started++;
-                else modeMap[mode].completed++;
-            });
-            const byMode = Object.entries(modeMap)
-                .map(([mode, v]) => ({ mode, ...v }))
-                .sort((a, b) => b.started - a.started);
+            const byMode = persistedModeMetrics.map(row => ({
+                mode: row.mode_key,
+                theme: row.theme_key,
+                started: row.started,
+                completed: row.completed,
+                accuracy: row.average_accuracy,
+                bestScore: row.best_score,
+            }));
 
             // 5. Exactitud por dificultad (game_answers + nivel de la pregunta).
             // A escala esto debería ser un RPC; con los volúmenes actuales basta el cruce en cliente.
@@ -234,9 +245,9 @@ export const JuegosAnalyticsPanel = () => {
                         ) : (
                             <ul className="space-y-2 text-sm">
                                 {metrics.byMode.map(m => (
-                                    <li key={m.mode} className="flex justify-between items-center bg-muted/30 p-2 rounded">
-                                        <span className="font-medium capitalize">{m.mode}</span>
-                                        <span className="text-xs text-muted-foreground">{m.started} inic · {m.completed} compl</span>
+                                    <li key={`${m.mode}:${m.theme || 'all'}`} className="flex items-center justify-between gap-3 rounded bg-muted/30 p-2">
+                                        <span className="min-w-0"><span className="block truncate font-medium">{SESSION_MODE_LABELS[m.mode] || m.mode}</span>{m.theme ? <span className="block truncate text-[10px] text-muted-foreground">{themeLabels.get(m.theme) || m.theme}</span> : null}</span>
+                                        <span className="shrink-0 text-right text-xs text-muted-foreground">{m.started} inic · {m.completed} compl<br />{m.accuracy}% precisión · mejor {m.bestScore}</span>
                                     </li>
                                 ))}
                             </ul>

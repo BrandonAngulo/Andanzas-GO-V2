@@ -9,6 +9,7 @@ import { Textarea } from '../../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Save, X } from 'lucide-react';
 import { PreguntasForm } from './PreguntasForm';
+import { AdminAventuraPanel } from './AdminAventuraPanel';
 import { ImageWithPositionField } from '../../shared/ImageWithPositionField';
 
 interface JuegoFormProps {
@@ -325,6 +326,11 @@ export const JuegoForm: React.FC<JuegoFormProps> = ({ game, onSave, onCancel }) 
             {game?.id && (
                 <div className="mt-6 rounded-xl border border-border/50 bg-card p-4 shadow-sm sm:p-6">
                     <PreguntasForm gameId={game.id} />
+                </div>
+            )}
+            {game?.id && game.type === 'trivia' && (
+                <div className="mt-6 rounded-xl border border-border/50 bg-card p-4 shadow-sm sm:p-6">
+                    <AdminAventuraPanel gameId={game.id} />
                 </div>
             )}
         </div>

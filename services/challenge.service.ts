@@ -21,6 +21,8 @@ export interface GameChallenge {
     challenged_time_ms?: number | null;
     challenger_correct?: number | null;
     challenged_correct?: number | null;
+    challenger_forfeited?: boolean;
+    challenged_forfeited?: boolean;
     created_at: string;
     completed_at?: string | null;
 }
@@ -54,6 +56,7 @@ export interface DuelAnswer {
     question_id: string;
     selected: string | null; // null = no respondida / timeout => incorrecta en servidor
     time_ms: number;         // tiempo efectivo de esa pregunta (pausado durante el feedback)
+    forfeited?: boolean;     // true si la corrida terminó por agotar el tiempo
 }
 
 export interface DuelRunResult {
@@ -64,6 +67,7 @@ export interface DuelRunResult {
     answered?: number;
     time_ms?: number;
     resolved?: boolean;
+    forfeited?: boolean;
 }
 
 export interface DuelReviewItem {
@@ -84,6 +88,15 @@ export interface DuelReview {
     score: number;
     time_ms: number;
     review: DuelReviewItem[];
+}
+
+export interface DuelSummary {
+    played: number;
+    wins: number;
+    draws: number;
+    awaitingOpponent: number;
+    bestScore: number;
+    latestAwaitingId: string | null;
 }
 
 export const challengeService = {
@@ -134,6 +147,37 @@ export const challengeService = {
         const { data, error } = await supabase.rpc('get_duel_review', { p_challenge_id: challengeId });
         if (error) throw error;
         return data as DuelReview;
+    },
+
+    // Resumen del jugador para la antesala. Se deriva de duelos reales; no mezcla
+    // sesiones de trivia clásica ni presenta marcadores simulados.
+    async getMyDuelSummary(gameId?: string): Promise<DuelSummary | null> {
+        const { data: authData, error: authError } = await supabase.auth.getUser();
+        const userId = authData.user?.id;
+        if (authError || !userId) return null;
+
+        let query = supabase
+            .from('game_challenges')
+            .select('id,game_id,challenger_id,challenged_id,status,winner_id,challenger_score,challenged_score,created_at')
+            .or(`challenger_id.eq.${userId},challenged_id.eq.${userId}`)
+            .order('created_at', { ascending: false });
+        if (gameId) query = query.eq('game_id', gameId);
+
+        const { data, error } = await query;
+        if (error) throw error;
+        const rows = data ?? [];
+        const completed = rows.filter(row => row.status === 'completed');
+        const awaiting = rows.filter(row => row.challenger_id === userId && row.status === 'awaiting_opponent');
+        const scoreFor = (row: typeof rows[number]) => Number(row.challenger_id === userId ? row.challenger_score : row.challenged_score) || 0;
+
+        return {
+            played: completed.length,
+            wins: completed.filter(row => row.winner_id === userId).length,
+            draws: completed.filter(row => !row.winner_id).length,
+            awaitingOpponent: awaiting.length,
+            bestScore: completed.reduce((best, row) => Math.max(best, scoreFor(row)), 0),
+            latestAwaitingId: awaiting[0]?.id ?? null,
+        };
     },
 
     // Metadatos del reto (lobby / veredicto). SELECT es público por RLS.
