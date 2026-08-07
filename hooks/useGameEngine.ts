@@ -236,7 +236,9 @@ export const useGameEngine = (gameId: string, userId: string | undefined, mode: 
             const themed = activeTheme
                 ? questionsData.filter(q => q.category === activeTheme || (q as any).campaign === activeTheme)
                 : questionsData;
-            const source = activeTheme && themed.length === 0 ? questionsData : themed; // salvaguarda: nunca dejar la partida vacía
+            // Un territorio nunca debe degradarse silenciosamente al banco general: si no
+            // tiene preguntas, la partida se detiene y conserva la diferencia con Clásica.
+            const source = activeTheme ? themed : questionsData;
 
             // Ordena una lista poniendo primero las no vistas recientemente (cada grupo barajado).
             const freshFirst = (arr: any[]) => {

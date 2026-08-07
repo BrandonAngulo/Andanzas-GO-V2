@@ -388,7 +388,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             >
                                 <ChevronLeft className="h-4 w-4" /> Volver a los modos
                             </button>
-                            {themeChoices.filter(theme => theme.kind === 'place').map(theme => (
+                            {themeChoices.filter(theme => theme.kind === 'place' && theme.key !== 'world_general').map(theme => (
                                 <button
                                     key={theme.key}
                                     type="button"
@@ -433,7 +433,7 @@ export const JuegosPanel: React.FC<JuegosPanelProps> = ({ onPlayGame }) => {
                             <div className="relative flex-1">
                                 <div className="text-[8px] font-black uppercase tracking-[0.15em] text-emerald-700">Explora sin límites</div>
                                 <div className="font-bold">Partida clásica</div>
-                                <div className="text-xs text-muted-foreground">15 preguntas para viajar por culturas, ciencia, historia y lugares del mundo.</div>
+                                <div className="text-xs text-muted-foreground">Una mezcla general de temas, formatos y territorios del banco completo.</div>
                             </div>
                             <ChevronRight className="relative h-5 w-5 text-emerald-600 transition-transform group-hover:translate-x-1" />
                         </button>

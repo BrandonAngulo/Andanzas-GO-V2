@@ -112,6 +112,27 @@ export interface GameTheme {
     isCampaign: boolean;
     kind: 'place' | 'topic' | 'category';
     questionCount?: number;
+    sortOrder?: number;
+}
+
+export interface GameQuestionScope {
+    game_id: string;
+    key: string;
+    label: string;
+    kind: 'global' | 'country' | 'region' | 'city' | 'place' | 'topic';
+    parent_key: string | null;
+    is_playable: boolean;
+    is_active: boolean;
+    sort_order: number;
+    icon_key: string | null;
+}
+
+export interface GameQuestionCategory {
+    game_id: string;
+    key: string;
+    label: string;
+    is_active: boolean;
+    sort_order: number;
 }
 
 export interface GameModeSessionSummary {
@@ -152,16 +173,12 @@ export interface GameModeSessionMetric {
 }
 
 export const GAME_QUESTION_SCOPES = [
-    { key: 'world_general', label: 'Mundo', kind: 'place' },
-    { key: 'country_colombia', label: 'Colombia', kind: 'place' },
-    { key: 'region_valle_del_cauca', label: 'Valle del Cauca', kind: 'place' },
-    { key: 'city_cali', label: 'Cali', kind: 'place' },
-    { key: 'vocabulario', label: 'Vocabulario caleño', kind: 'topic' },
-] as const;
-
-const playableScopeByKey = new Map<string, (typeof GAME_QUESTION_SCOPES)[number]>(
-    GAME_QUESTION_SCOPES.map(scope => [scope.key, scope]),
-);
+    { key: 'world_general', label: 'Banco global (Clásica)', kind: 'global', parent_key: null, is_playable: false, is_active: true, sort_order: 0, icon_key: 'globe' },
+    { key: 'country_colombia', label: 'Colombia', kind: 'country', parent_key: 'world_general', is_playable: true, is_active: true, sort_order: 10, icon_key: 'colombia' },
+    { key: 'region_valle_del_cauca', label: 'Valle del Cauca', kind: 'region', parent_key: 'country_colombia', is_playable: true, is_active: true, sort_order: 20, icon_key: 'sugar_cane' },
+    { key: 'city_cali', label: 'Cali', kind: 'city', parent_key: 'region_valle_del_cauca', is_playable: true, is_active: true, sort_order: 30, icon_key: 'salsa' },
+    { key: 'vocabulario', label: 'Vocabulario caleño', kind: 'topic', parent_key: 'city_cali', is_playable: true, is_active: true, sort_order: 40, icon_key: 'vocabulary' },
+] as const satisfies ReadonlyArray<Omit<GameQuestionScope, 'game_id'>>;
 
 export const gamesService = {
     // ---- ADMIN / GAMES CRUD ----
@@ -198,30 +215,80 @@ export const gamesService = {
         return data as Game;
     },
 
+    async getQuestionScopes(gameId: string, includeInactive = false): Promise<GameQuestionScope[]> {
+        let query = supabase
+            .from('game_question_scopes')
+            .select('game_id,key,label,kind,parent_key,is_playable,is_active,sort_order,icon_key')
+            .eq('game_id', gameId)
+            .order('sort_order', { ascending: true })
+            .order('label', { ascending: true });
+        if (!includeInactive) query = query.eq('is_active', true);
+        const { data, error } = await query;
+        if (!error) return (data || []) as GameQuestionScope[];
+
+        // Compatibilidad durante una restauración anterior a la migración del catálogo.
+        console.warn('Question scope catalog unavailable; using local defaults.', error);
+        return GAME_QUESTION_SCOPES.map(scope => ({ game_id: gameId, ...scope })) as GameQuestionScope[];
+    },
+
+    async upsertQuestionScope(scope: GameQuestionScope): Promise<GameQuestionScope> {
+        const normalizedKey = scope.key.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+        const { data, error } = await supabase.from('game_question_scopes').upsert({
+            ...scope,
+            key: normalizedKey,
+            parent_key: scope.parent_key || null,
+            updated_at: new Date().toISOString(),
+        }, { onConflict: 'game_id,key' }).select('game_id,key,label,kind,parent_key,is_playable,is_active,sort_order,icon_key').single();
+        if (error) throw error;
+        return data as GameQuestionScope;
+    },
+
+    async getQuestionCategories(gameId: string): Promise<GameQuestionCategory[]> {
+        const { data, error } = await supabase
+            .from('game_question_categories')
+            .select('game_id,key,label,is_active,sort_order')
+            .eq('game_id', gameId)
+            .eq('is_active', true)
+            .order('sort_order', { ascending: true })
+            .order('label', { ascending: true });
+        if (!error) return (data || []) as GameQuestionCategory[];
+
+        const questions = await this.getQuestionsByGame(gameId);
+        return Array.from(new Set(questions.map(question => question.category).filter(Boolean) as string[]))
+            .sort((a, b) => a.localeCompare(b, 'es'))
+            .map((label, index) => ({ game_id: gameId, key: label, label, is_active: true, sort_order: index }));
+    },
+
     // Experiencias jugables registradas explícitamente. Un lote editorial no se convierte
     // en tema por el solo hecho de existir en el banco.
     async getGameThemes(gameId: string): Promise<GameTheme[]> {
-        const { data, error } = await supabase
-            .from('game_questions')
-            .select('category, campaign')
-            .eq('game_id', gameId)
-            .eq('status', 'published');
+        const [scopeRows, questionResult] = await Promise.all([
+            this.getQuestionScopes(gameId),
+            supabase.from('game_questions')
+                .select('category, campaign')
+                .eq('game_id', gameId)
+                .eq('status', 'published'),
+        ]);
+        const { data, error } = questionResult;
         if (error) { console.error('Error fetching game themes:', error); return []; }
+        const scopeByKey = new Map(scopeRows.map(scope => [scope.key, scope]));
         const map = new Map<string, GameTheme>();
         for (const row of (data || []) as any[]) {
             const cat = row.category as string | null;
             const campaign = row.campaign as string | null;
             if (campaign) {
-                const scope = playableScopeByKey.get(campaign);
-                if (!scope) continue;
+                const scope = scopeByKey.get(campaign);
+                // Los ámbitos nuevos quedan ocultos hasta que un editor los activa.
+                if (!scope?.is_active || !scope.is_playable || scope.kind === 'global') continue;
                 const mapKey = `campaign:${campaign}`;
                 const current = map.get(mapKey);
                 map.set(mapKey, current ? { ...current, questionCount: (current.questionCount || 0) + 1 } : {
                     key: campaign,
                     label: scope.label,
                     isCampaign: true,
-                    kind: scope.kind,
+                    kind: scope.kind === 'topic' ? 'topic' : 'place',
                     questionCount: 1,
+                    sortOrder: scope.sort_order,
                 });
             } else if (cat) {
                 const mapKey = `category:${cat}`;
@@ -236,7 +303,7 @@ export const gamesService = {
             }
         }
         return Array.from(map.values())
-            .sort((a, b) => Number(a.isCampaign) - Number(b.isCampaign) || a.label.localeCompare(b.label, 'es'));
+            .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999) || Number(a.isCampaign) - Number(b.isCampaign) || a.label.localeCompare(b.label, 'es'));
     },
 
     async getPublishedQuestionCount(gameId: string): Promise<number> {

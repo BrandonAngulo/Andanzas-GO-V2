@@ -48,8 +48,8 @@ export const ClassicModeHub: React.FC<Props> = ({ game, onClose, onPlay }) => {
                     <div className="relative z-10 grid items-center gap-3 sm:grid-cols-[1fr_9rem]">
                         <div>
                             <span className="inline-flex items-center gap-1 rounded-full bg-amber-300 px-2.5 py-1 text-[8px] font-black uppercase tracking-[0.16em] text-amber-950"><Sparkles className="h-3 w-3" /> El banco completo</span>
-                            <h2 className="mt-2 text-3xl font-black leading-none sm:text-4xl">Una ronda.<br />Todo un mundo.</h2>
-                            <p className="mt-2 max-w-xl text-xs leading-relaxed text-white/75 sm:text-sm">Combina lugares, cultura, naturaleza, historia y sabores en una partida distinta cada vez.</p>
+                            <h2 className="mt-2 text-3xl font-black leading-none sm:text-4xl">Una ronda.<br />Todo el banco.</h2>
+                            <p className="mt-2 max-w-xl text-xs leading-relaxed text-white/75 sm:text-sm">Mezcla temas, formatos, categorías y territorios en una partida general distinta cada vez.</p>
                         </div>
                         <img src="/brand/andi/andi-app-mark-512.png" alt="Andi te invita a una partida clásica" className="mx-auto hidden h-32 w-32 rounded-full object-cover shadow-2xl ring-4 ring-white/20 sm:block" />
                     </div>

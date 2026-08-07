@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
-import { gamesService, GAME_MODES, GAME_QUESTION_SCOPES, type ModePoolSize } from '../../../services/games.service';
+import { gamesService, GAME_MODES, type ModePoolSize } from '../../../services/games.service';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { Activity, AlertTriangle, XCircle, CheckCircle2, Filter, Layers, Gauge, SlidersHorizontal } from 'lucide-react';
 
@@ -12,8 +12,6 @@ const SESSION_MODE_LABELS: Record<string, string> = {
     vocabulario: 'Vocabulario caleño',
     historia: 'Historia',
 };
-const SESSION_THEME_LABELS = new Map<string, string>(GAME_QUESTION_SCOPES.map(scope => [scope.key, scope.label]));
-
 export const JuegosAnalyticsPanel = () => {
     const [loading, setLoading] = useState(true);
     const [metrics, setMetrics] = useState({
@@ -31,6 +29,7 @@ export const JuegosAnalyticsPanel = () => {
         // Tamaño del pool elegible por modo (regla automática + overrides).
         modePools: [] as ModePoolSize[]
     });
+    const [themeLabels, setThemeLabels] = useState(new Map<string, string>());
 
     const TRIVIA_GO_ID = '81111111-1111-1111-1111-111111111111';
 
@@ -42,6 +41,10 @@ export const JuegosAnalyticsPanel = () => {
         setLoading(true);
         try {
             // 1. Sesiones autoritativas con modalidad/tema persistidos.
+            try {
+                const scopes = await gamesService.getQuestionScopes(TRIVIA_GO_ID, true);
+                setThemeLabels(new Map(scopes.map(scope => [scope.key, scope.label])));
+            } catch { /* compatibilidad con catálogos anteriores */ }
             let persistedModeMetrics = [] as Awaited<ReturnType<typeof gamesService.getGameSessionModeMetrics>>;
             try { persistedModeMetrics = await gamesService.getGameSessionModeMetrics(TRIVIA_GO_ID); } catch { /* compatibilidad con esquemas anteriores */ }
             const total = persistedModeMetrics.reduce((sum, row) => sum + row.started, 0);
@@ -243,7 +246,7 @@ export const JuegosAnalyticsPanel = () => {
                             <ul className="space-y-2 text-sm">
                                 {metrics.byMode.map(m => (
                                     <li key={`${m.mode}:${m.theme || 'all'}`} className="flex items-center justify-between gap-3 rounded bg-muted/30 p-2">
-                                        <span className="min-w-0"><span className="block truncate font-medium">{SESSION_MODE_LABELS[m.mode] || m.mode}</span>{m.theme ? <span className="block truncate text-[10px] text-muted-foreground">{SESSION_THEME_LABELS.get(m.theme) || m.theme}</span> : null}</span>
+                                        <span className="min-w-0"><span className="block truncate font-medium">{SESSION_MODE_LABELS[m.mode] || m.mode}</span>{m.theme ? <span className="block truncate text-[10px] text-muted-foreground">{themeLabels.get(m.theme) || m.theme}</span> : null}</span>
                                         <span className="shrink-0 text-right text-xs text-muted-foreground">{m.started} inic · {m.completed} compl<br />{m.accuracy}% precisión · mejor {m.bestScore}</span>
                                     </li>
                                 ))}

@@ -4,6 +4,43 @@
 
 **Método:** contraste de plan, código, migraciones y estado agregado de Supabase.
 
+## Ruta dinámica y enfoque en la parada actual
+
+El mapa de Aventura deja de depender de textos, candados y botones ubicados sobre coordenadas fijas de una ilustración. La escena sigue aportando identidad y atmósfera, pero la navegación pasa a una ruta vertical compuesta por elementos de interfaz independientes:
+
+- al abrir el mapa o volver de una partida, la vista se enfoca automáticamente en la parada actual;
+- las paradas completadas permanecen arriba y se pueden repetir; las siguientes aparecen abajo y explican cómo se desbloquean;
+- cada parada conserva título, estado, mejor resultado y acción legibles sin depender de la perspectiva del fondo;
+- una cabecera compacta y fija mantiene visibles la campaña, la parada actual y el progreso esencial;
+- una acción inferior permite regresar a la parada actual o comenzar a jugar sin recorrer de nuevo toda la pantalla;
+- el nivel final se presenta como un hito especial con el personaje misterioso, sin revelar su identidad antes de obtenerlo;
+- el acceso a una campaña posterior es una tarjeta de transición independiente y solo se activa cuando la lógica real lo permite.
+- el fondo `aventura-sabores-cali-scroll-background-v5.webp` reemplaza el mapa ilustrado con posiciones fijas: conserva cielo, Farallones, ciudad, río, caña, cacao, barrios y mercado en los bordes, mientras mantiene el centro libre de caminos, podios, puertas, textos y marcadores;
+- cada tarjeta usa un recorte diferente de la misma escena para conservar la sensación de viaje sin convertir la ilustración en la fuente de navegación.
+
+Este patrón permite agregar, reordenar o administrar capítulos y niveles sin volver a generar una ilustración con coordenadas nuevas. Los premios adicionales por parada quedan pendientes de una definición operativa real; la interfaz no simula monedas, cofres ni recompensas que todavía no existan en la lógica del juego.
+
+## Recursos de Aventura y separación entre Clásica y Mundo
+
+La cabecera persistente de Aventura incorpora información real del jugador sin crear recursos exclusivos artificiales:
+
+- nivel y XP general de Andanzas;
+- monedas, gemas y vidas de la billetera compartida de TRIVIA GO;
+- explicación contextual de que Aventura consulta ese saldo, pero no lo descuenta al recorrer la campaña;
+- paradas completadas y aciertos distintos como progreso específico de esta modalidad.
+
+La revisión inicial del banco confirmó que **Partida clásica** y `world_general` no consultaban exactamente lo mismo: Clásica usa todo el banco publicado, mientras `world_general` es un ámbito editorial global. La redundancia estaba en la experiencia de producto, porque “Mundo” se ofrecía como una partida adicional de cultura general.
+
+Desde este ajuste:
+
+- **Clásica** es la única modalidad de mezcla general: combina el banco publicado completo sin elegir destino;
+- **Mundo** es la raíz del selector de Jugar por lugar y no inicia una ronda;
+- Colombia, Valle del Cauca y Cali son los destinos actualmente jugables y cada uno conserva su propio filtro e historial;
+- `world_general` pasa a identificarse en gestión como `Contenido global (Clásica)`: sus preguntas se conservan y continúan disponibles en Clásica hasta que una futura taxonomía territorial las distribuya entre continentes, países u otros destinos;
+- si un territorio no tiene preguntas elegibles, el motor ya no sustituye silenciosamente su pool por el banco general. La ausencia de contenido se informa en vez de convertir la partida territorial en una Clásica encubierta.
+
+Esta jerarquía permite que Mundo evolucione posteriormente hacia una capa cartográfica o un árbol territorial sin cambiar la identidad de Partida clásica.
+
 ## Estado general
 
 La lógica de soporte avanzó de forma importante, pero la capa visual pública todavía no comenzó. El proyecto está preparado para construirla sin rehacer el motor.
@@ -282,3 +319,29 @@ La información de Aventura dejó de presentarse como un tablero externo al mapa
 - la puerta solo permite avanzar cuando la campaña actual está completada y existe otro capítulo visible para el usuario;
 - si todavía no existe una campaña posterior, comunica `Nueva aventura · próximamente` y no simula navegación;
 - el arte de Pandebono y el nuevo mapa `aventura-sabores-cali-game-map-v4.webp` se guardan como recursos versionados del proyecto; la identidad del personaje continúa admitiendo una URL administrada.
+
+## Banco progresivo y catálogo administrable
+
+La ampliación `world_v2_2026` incorporó 600 preguntas publicadas al ámbito `world_general`. El banco global quedó con 750 preguntas y TRIVIA GO con 1.751 preguntas publicadas. La carga cubre los cinco niveles y combina opción múltiple, selección múltiple, ordenamiento y relación de elementos.
+
+La solución ya no interpreta una lista fija de territorios o categorías desde los componentes. Se añadieron catálogos administrables y reglas de crecimiento:
+
+- `game_question_scopes` define cada ámbito, su tipo, jerarquía, orden, icono, visibilidad y disponibilidad como recorrido;
+- `game_question_categories` registra las categorías canónicas y `game_question_category_aliases` normaliza variantes editoriales;
+- el editor permite crear ámbitos, activar recorridos y seleccionar categorías sin modificar componentes;
+- un ámbito nuevo encontrado durante una importación se registra como **interno e inactivo**: conserva el contenido sin publicar accidentalmente una experiencia incompleta;
+- al activarlo como jugable desde gestión, aparece automáticamente en Jugar por lugar y en los selectores que correspondan;
+- `content_batch` sigue siendo trazabilidad operativa y nunca crea por sí solo una modalidad, territorio o tarjeta pública;
+- la elegibilidad de cada modalidad continúa resolviéndose mediante `fn_mode_default_eligible`, más las excepciones administradas en `game_mode_eligibility`;
+- un índice de texto normalizado evita duplicados exactos entre preguntas no archivadas, incluso en cargas futuras;
+- la analítica obtiene los nombres de ámbitos desde el catálogo y no desde constantes del cliente.
+
+### Regla para las próximas importaciones
+
+Cada pregunta debe indicar `campaign` como ámbito editorial, `category` como categoría canónica o alias conocido, `content_batch` como identificador de la entrega y `status = published` únicamente cuando esté aprobada. El disparador de catálogo registra dimensiones nuevas y la función de composición vuelve a calcular los pools sin requerir cambios de código. Aventura permanece fuera del pool general porque recibe preguntas por asignación explícita de capítulo.
+
+La migración base es `20260807000856_progressive_question_bank.sql`. El lote de 600 preguntas se aplicó en doce migraciones idempotentes `20260807001200`–`20260807001402` para evitar transferencias parciales y permitir auditoría por bloques.
+
+## Cabecera integrada del recorrido de Aventura
+
+La franja rígida que quedaba fuera del escenario fue sustituida por un HUD flotante y compacto dentro del lenguaje visual del mapa. La cabecera agrupa campaña, parada actual, progreso, recursos y ayuda en una sola cápsula translúcida; reduce información en móvil sin ocultar el detalle accesible y conserva el avance como una línea integrada. Así la navegación sigue siendo legible sin competir con la ilustración ni crear una segunda interfaz encima del juego.
