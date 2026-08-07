@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Brain, Coins, Gem, Globe2, Heart, HelpCircle, Loader2, Play, RotateCcw, Sparkles, Target, Trophy } from 'lucide-react';
-import { gamificationService, type EconomySummary } from '../../../services/gamification.service';
 import { gamesService, type Game, type GameModeSessionSummary } from '../../../services/games.service';
 import { Button } from '../../ui/button';
 import { InfoTooltip } from '../../ui/tooltip';
 import { ModeLobbyShell } from './ModeLobbyShell';
+import { useLiveEconomy } from '../../../hooks/useLiveEconomy';
 
 interface Props {
     game: Game;
@@ -14,7 +14,7 @@ interface Props {
 
 export const ClassicModeHub: React.FC<Props> = ({ game, onClose, onPlay }) => {
     const [summary, setSummary] = useState<GameModeSessionSummary | null>(null);
-    const [economy, setEconomy] = useState<EconomySummary | null>(null);
+    const { economy } = useLiveEconomy();
     const [questionCount, setQuestionCount] = useState(0);
     const [loading, setLoading] = useState(true);
 
@@ -22,12 +22,10 @@ export const ClassicModeHub: React.FC<Props> = ({ game, onClose, onPlay }) => {
         let alive = true;
         void Promise.allSettled([
             gamesService.getMyGameModeSummary(game.id, 'clasica'),
-            gamificationService.getEconomySummary(),
             gamesService.getPublishedQuestionCount(game.id),
-        ]).then(([modeSummary, economySummary, published]) => {
+        ]).then(([modeSummary, published]) => {
             if (!alive) return;
             if (modeSummary.status === 'fulfilled') setSummary(modeSummary.value);
-            if (economySummary.status === 'fulfilled') setEconomy(economySummary.value);
             if (published.status === 'fulfilled') setQuestionCount(published.value);
         }).finally(() => {
             if (alive) setLoading(false);

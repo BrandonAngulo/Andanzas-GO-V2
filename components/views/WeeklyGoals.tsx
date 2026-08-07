@@ -4,6 +4,7 @@ import { weeklyService, WeeklyGoal } from '../../services/weekly.service';
 import { Target, Coins, Check, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { WeeklyGoalRewardModal } from './WeeklyGoalRewardModal';
+import { notifyUserProgressUpdated, USER_PROGRESS_UPDATED_EVENT } from '../../lib/user-progress';
 
 // Metas semanales flexibles (manual §4.2): toleran ausencias, se reclaman al completar.
 // Tarjeta compacta pensada para vivir dentro del panel de Juegos.
@@ -19,7 +20,12 @@ export const WeeklyGoals: React.FC = () => {
         catch { /* sin sesión o sin datos: la tarjeta simplemente no se muestra */ }
         finally { setLoading(false); }
     };
-    useEffect(() => { load(); }, []);
+    useEffect(() => {
+        void load();
+        const refresh = () => { void load(); };
+        window.addEventListener(USER_PROGRESS_UPDATED_EVENT, refresh);
+        return () => window.removeEventListener(USER_PROGRESS_UPDATED_EVENT, refresh);
+    }, []);
 
     const claim = async (g: WeeklyGoal) => {
         if (claiming) return;
@@ -29,6 +35,7 @@ export const WeeklyGoals: React.FC = () => {
             if (res.claimed) setReward({ coins: res.coins ?? g.reward_coins, title: g.title });
             else if (res.already_claimed) toast.info('Esta meta ya estaba reclamada.');
             await load();
+            if (res.claimed) notifyUserProgressUpdated('weekly_goal');
         } catch { toast.error('No se pudo reclamar la meta.'); }
         finally { setClaiming(null); }
     };

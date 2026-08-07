@@ -242,8 +242,26 @@ const PaQueSepasPanel: React.FC<PaQueSepasPanelProps> = ({ entries, onOpenSite, 
                         </button>
                     </div>
                     <div className="grid gap-4 md:grid-cols-3">
-                        <button type="button" onClick={() => storiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/15 via-violet-500/10 to-sky-500/10 p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><BookOpen className="mb-3 h-6 w-6 text-indigo-600" /><h3 className="font-bold">Historias y saberes</h3><p className="mt-1 text-sm text-muted-foreground">Relatos, personajes y claves para entender lo que ves mientras andás.</p><span className="mt-3 inline-flex items-center text-xs font-bold text-indigo-700">Explorar historias <ChevronRight className="h-4 w-4" /></span></button>
-                        {dictionaryVisible && <button type="button" onClick={onOpenDictionary} className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"><Library className="mb-3 h-6 w-6 text-emerald-600" /><h3 className="font-bold">Diccionario de jergas y culturas</h3><p className="mt-1 text-sm text-muted-foreground">Palabras, expresiones, usos y contextos, capítulo por capítulo. Empezamos por la caleñidad.</p><span className="mt-3 inline-flex items-center text-xs font-bold text-emerald-700">Abrir diccionario <ChevronRight className="h-4 w-4" /></span></button>}
+                        <button type="button" onClick={() => storiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="group relative isolate min-h-[13.5rem] overflow-hidden rounded-2xl border border-indigo-500/20 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                            <img src="/images/learn/historias-saberes-card-v1.webp" alt="" className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#faf7ef] from-40% via-[#faf7ef]/95 via-62% to-[#faf7ef]/10 dark:from-slate-950 dark:via-slate-950/90 dark:to-slate-950/20" />
+                            <div className="relative z-10 flex h-full max-w-[74%] flex-col items-start p-5">
+                                <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/80 text-indigo-700 shadow-sm backdrop-blur"><BookOpen className="h-5 w-5" /></span>
+                                <h3 className="font-black text-slate-950 dark:text-white">Historias y saberes</h3>
+                                <p className="mt-1 text-sm leading-snug text-slate-700 dark:text-slate-200">Relatos, personajes y claves para entender lo que ves mientras andás.</p>
+                                <span className="mt-auto inline-flex items-center pt-3 text-xs font-black text-indigo-700 dark:text-indigo-300">Explorar historias <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
+                            </div>
+                        </button>
+                        {dictionaryVisible && <button type="button" onClick={onOpenDictionary} className="group relative isolate min-h-[13.5rem] overflow-hidden rounded-2xl border border-emerald-500/20 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                            <img src="/images/learn/diccionario-jergas-card-v1.webp" alt="" className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#f2faf2] from-40% via-[#f2faf2]/95 via-62% to-[#f2faf2]/10 dark:from-slate-950 dark:via-slate-950/90 dark:to-slate-950/20" />
+                            <div className="relative z-10 flex h-full max-w-[76%] flex-col items-start p-5">
+                                <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/80 text-emerald-700 shadow-sm backdrop-blur"><Library className="h-5 w-5" /></span>
+                                <h3 className="font-black leading-tight text-slate-950 dark:text-white">Diccionario de jergas y culturas</h3>
+                                <p className="mt-1 text-sm leading-snug text-slate-700 dark:text-slate-200">Palabras, expresiones, usos y contextos. Empezamos por la caleñidad.</p>
+                                <span className="mt-auto inline-flex items-center pt-3 text-xs font-black text-emerald-700 dark:text-emerald-300">Abrir diccionario <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
+                            </div>
+                        </button>}
                         <div className="rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-500/12 via-amber-500/10 to-rose-500/10 p-5"><Headphones className="mb-3 h-6 w-6 text-orange-600" /><h3 className="font-bold">Narraciones y audios</h3><p className="mt-1 text-sm text-muted-foreground">Próximamente: historias contadas para disfrutar mientras recorrés la ciudad.</p><span className="mt-3 inline-flex rounded-full bg-orange-500/10 px-3 py-1 text-xs font-bold text-orange-700">Próximamente</span></div>
                     </div>
                 </section>

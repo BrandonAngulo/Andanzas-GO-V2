@@ -31,6 +31,7 @@ import { imagePositionStyle, normalizeImagePosition } from '../shared/ImagePosit
 
 import { getTranslated, getMacroCategory, cn } from '../../lib/utils';
 import { COLOMBIAN_CITIES } from '../../lib/locations';
+import { useLiveEconomy } from '../../hooks/useLiveEconomy';
 
 // Hardcoded avatars for immediate rendering in UI
 const HARDCODED_AVATARS = [
@@ -451,7 +452,7 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
     const [successMsg, setSuccessMsg] = useState('');
     const [loading, setLoading] = useState(false);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-    const [economy, setEconomy] = useState<{ level: number; experience_points: number; level_start_xp: number; next_level_xp: number; app_points: number; coins: number; gems: number; lives: number; max_lives: number } | null>(null);
+    const { economy } = useLiveEconomy();
     const [gameSummary, setGameSummary] = useState({ sessions: 0, score: 0, questions: 0, correct: 0, accuracy: 0, bestStreak: 0 });
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [allBadges, setAllBadges] = useState<Insignia[]>([]);
@@ -509,7 +510,6 @@ const PerfilPanel: React.FC<PerfilPanelProps> = ({ favCount, reviewsCount, rutas
                     setEditCity(profile.city || user.user_metadata?.city || "");
                 }
             });
-            gamificationService.getEconomySummary().then(setEconomy);
             gamificationService.getUserGameSummary(user.id).then(setGameSummary).catch(error => console.error('Error loading game summary', error));
 
             // Load badges

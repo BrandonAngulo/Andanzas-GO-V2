@@ -4,11 +4,14 @@ import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { CalendarDays, Flame, Check, X, Share2, Loader2, AlertTriangle, Coins, Gem, Shield, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
+import { useUserData } from '../../contexts/UserDataContext';
+import { notifyUserProgressUpdated } from '../../lib/user-progress';
 
 const optionValue = (opt: any): string => (typeof opt === 'string' ? opt : (opt?.label ?? String(opt)));
 const asText = (v: any): string => (v == null ? '' : (typeof v === 'string' ? v : String(v)));
 
 export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+    const { markMatchingAsConsulted } = useUserData();
     const [data, setData] = useState<DailyQuestionData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -48,6 +51,10 @@ export const DailyQuestion: React.FC<{ onClose: () => void }> = ({ onClose }) =>
             setResult(res);
             if (typeof res.protectors === 'number') setProtectors(res.protectors);
             if (res.protector_used) setArmed(false); // se consumió: queda desarmado
+            markMatchingAsConsulted('daily_question');
+            if (!res.already_answered) {
+                notifyUserProgressUpdated('daily_question');
+            }
         }
         catch { toast.error('No se pudo registrar tu respuesta.'); setPicked(null); }
         finally { setAnswering(false); }

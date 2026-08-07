@@ -1,6 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
 import { analyticsService } from './analytics.service';
-import { notificationsService } from './notifications.service';
 
 export interface DailyQuestionData {
     day: string;
@@ -64,7 +63,6 @@ export const dailyService = {
         if (!res.already_answered) {
             analyticsService.trackEvent('daily_question_answered', 'daily', undefined, { is_correct: res.is_correct ?? null, protector_used: res.protector_used ?? false });
         }
-        void notificationsService.markMatchingAsConsulted('daily_question');
         return res;
     },
 

@@ -13,6 +13,7 @@ import { imagePositionStyle } from '../shared/ImagePositioner';
 import { Badge } from '../ui/badge';
 import { CategoryCarousel } from '../shared/CategoryCarousel';
 import { Accessibility, Ear, Eye, Compass, Music, Utensils, Paintbrush, BookOpen, Trees, Landmark, ArrowRight, Sparkles, Library, Map, Route, CalendarDays, Gamepad2 } from 'lucide-react';
+import { useUserData } from '../../contexts/UserDataContext';
 
 // --- Reusable Card Components for the Feed ---
 
@@ -80,10 +81,18 @@ interface ExplorarPanelProps {
 
 const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite, onNavigateToRoutes, onOpenRoute, onNavigateToAprende, onOpenLearnEntry, rutasTematicas, onNavigateToTab }) => {
   const { language } = useI18n();
+  const { markMatchingAsConsulted } = useUserData();
 
   // Abre la historia de "Pa' que sepás" ligada al dato curioso; si no hay vínculo,
   // (o la historia ya no existe) cae a la vista general de Pa' que sepás.
   const openRelatedStory = () => {
+    if (randomFact) {
+      const notificationTarget = randomFact.related_entry_id
+        || randomFact.related_route_id
+        || randomFact.related_game_id
+        || randomFact.id;
+      markMatchingAsConsulted('daily_fact', notificationTarget);
+    }
     if (randomFact?.related_entry_id && onOpenLearnEntry) onOpenLearnEntry(randomFact.related_entry_id);
     else onNavigateToAprende?.();
   };
@@ -260,8 +269,9 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
       {/* Sabías que Banner */}
       {!query && !categoryFilter && randomFact && (
         <div className="px-4 md:px-6 mb-5">
-          <div
-            className="bg-card border border-primary/20 rounded-2xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-3 relative overflow-hidden"
+          <button
+            type="button"
+            className="w-full bg-card border border-primary/20 rounded-2xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-all group flex items-start gap-3 relative overflow-hidden text-left"
             onClick={openRelatedStory}
           >
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
@@ -273,6 +283,12 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
             </div>
 
             <div className="flex-1 relative z-10">
+              <div className="mb-1.5 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/15 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-700 dark:text-amber-300">
+                  <CalendarDays className="h-3.5 w-3.5" /> Dato del día
+                </span>
+                <span className="text-[11px] font-semibold text-muted-foreground">Una historia nueva cada día</span>
+              </div>
               <h4 className="font-bold text-lg text-primary mb-1">
                 {randomFact.title || "Pa' que sepás"}
               </h4>
@@ -280,10 +296,10 @@ const ExplorarPanel: React.FC<ExplorarPanelProps> = ({ sites, query, onOpenSite,
                 {randomFact.text}
               </p>
               <div className="flex items-center text-xs font-bold text-primary group-hover:underline">
-                Aprender más sobre cultura local <ArrowRight className="w-3 h-3 ml-1" />
+                Leer el dato completo <ArrowRight className="w-3 h-3 ml-1" />
               </div>
             </div>
-          </div>
+          </button>
         </div>
       )}
 

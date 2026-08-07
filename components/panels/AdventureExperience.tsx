@@ -3,11 +3,12 @@ import { createPortal } from 'react-dom';
 import { ArrowLeft, Check, ChevronRight, Coins, Gem, Heart, HelpCircle, Lock, MapPinned, Play, Sparkles, Star, Trophy, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { adventureService, AdventureMap, AdventureMapLevel, AdventureResult, AdventureRun, GameChapter } from '../../services/adventure.service';
-import { gamificationService, type EconomySummary } from '../../services/gamification.service';
 import type { GameQuestion } from '../../services/games.service';
 import { QuestionRenderer } from '../views/QuestionRenderer';
 import { Button } from '../ui/button';
 import { LazyImage } from '../ui/lazy-image';
+import { useLiveEconomy } from '../../hooks/useLiveEconomy';
+import type { EconomySummary } from '../../services/gamification.service';
 
 interface Props { gameId: string; onClose: () => void }
 type RunQuestion = AdventureRun['questions'][number];
@@ -23,7 +24,7 @@ export const AdventureExperience: React.FC<Props> = ({ gameId, onClose }) => {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [result, setResult] = useState<AdventureResult | null>(null);
-    const [economy, setEconomy] = useState<EconomySummary | null>(null);
+    const { economy, refreshEconomy } = useLiveEconomy();
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
@@ -38,7 +39,6 @@ export const AdventureExperience: React.FC<Props> = ({ gameId, onClose }) => {
 
     useEffect(() => {
         let mounted = true;
-        void gamificationService.getEconomySummary().then(value => { if (mounted) setEconomy(value); });
         adventureService.getChapters(gameId).then(async data => {
             if (!mounted) return;
             setChapters(data);
@@ -79,7 +79,7 @@ export const AdventureExperience: React.FC<Props> = ({ gameId, onClose }) => {
 
     const returnToMap = async () => {
         setIntroLevel(null); setActiveLevel(null); setResult(null); setQuestions([]);
-        const refreshedEconomy = gamificationService.getEconomySummary().then(setEconomy);
+        const refreshedEconomy = refreshEconomy();
         if (selectedChapter) await Promise.all([loadMap(selectedChapter), refreshedEconomy]);
         else await refreshedEconomy;
     };
