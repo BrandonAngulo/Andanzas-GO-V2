@@ -42,7 +42,7 @@ const eventLabel = (name: string) => EVENT_LABELS[name] || name;
 
 function MetricCard({ title, value, detail, icon: Icon, tone = 'default' }: { title: string; value: number | string; detail: string; icon: React.ElementType; tone?: 'default' | 'warning' | 'success' }) {
     const toneClass = tone === 'warning' ? 'bg-amber-500/10 border-amber-500/20' : tone === 'success' ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-muted/30';
-    return <Card className={toneClass}><CardContent className="p-4"><div className="flex items-start justify-between gap-3"><div><p className="text-xs font-medium text-muted-foreground">{title}</p><p className="text-2xl font-black mt-1">{value}</p><p className="text-[11px] text-muted-foreground mt-1">{detail}</p></div><Icon className="w-5 h-5 text-primary" /></div></CardContent></Card>;
+    return <Card className={toneClass}><CardContent className="p-3.5"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="truncate text-xs font-medium text-muted-foreground">{title}</p><p className="mt-0.5 text-2xl font-black leading-none">{value}</p><p className="mt-1 line-clamp-1 text-[11px] text-muted-foreground">{detail}</p></div><Icon className="h-5 w-5 shrink-0 text-primary" /></div></CardContent></Card>;
 }
 
 export const AdminMetricas: React.FC = () => {
@@ -59,34 +59,34 @@ export const AdminMetricas: React.FC = () => {
 
     useEffect(() => { loadMetrics(); }, []);
 
-    if (loading) return <div className="py-20 text-center text-muted-foreground animate-pulse">Actualizando indicadores de gestión…</div>;
+    if (loading) return <div className="animate-pulse py-12 text-center text-muted-foreground">Actualizando indicadores de gestión…</div>;
     const completionRate = metrics.games.sessions ? Math.round((metrics.games.completed / metrics.games.sessions) * 100) : 0;
 
-    return <div className="space-y-8">
+    return <div className="space-y-5">
         <div className="flex items-start justify-between gap-4"><div><h3 className="text-xl font-bold flex items-center gap-2"><Gauge className="w-5 h-5 text-primary" />Indicadores de gestión</h3><p className="text-sm text-muted-foreground">Uso, calidad editorial, progresión y economía en una sola lectura.</p></div><Button variant="outline" size="sm" onClick={loadMetrics}><RefreshCcw className="w-4 h-4 mr-2" />Actualizar</Button></div>
 
-        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Users className="w-4 h-4" />Usuarios y uso</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <section className="space-y-2"><h4 className="font-semibold text-sm flex items-center gap-2"><Users className="w-4 h-4" />Usuarios y uso</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <MetricCard title="Usuarios" value={metrics.users.total} detail={`${metrics.users.suspended} suspendidos`} icon={Users} />
             <MetricCard title="Activos hoy" value={metrics.users.active_today} detail={`${metrics.users.active_7d} en los últimos 7 días`} icon={CalendarDays} />
             <MetricCard title="Sesiones de navegación" value={metrics.activity.sessions} detail={`${metrics.activity.events_7d} eventos esta semana`} icon={Activity} />
             <MetricCard title="Progresión promedio" value={`Nivel ${metrics.users.average_level}`} detail={`${metrics.users.average_xp} XP promedio`} icon={Sparkles} />
         </div></section>
 
-        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Map className="w-4 h-4" />Rutas, avance e inscripciones</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <section className="space-y-2"><h4 className="font-semibold text-sm flex items-center gap-2"><Map className="w-4 h-4" />Rutas, avance e inscripciones</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <MetricCard title="Rutas disponibles" value={metrics.routes.total} detail="Rutas registradas en el sistema" icon={Map} />
             <MetricCard title="Recorridos activos" value={metrics.routes.active_progress} detail={`${metrics.routes.completed_progress} completados`} icon={Activity} />
             <MetricCard title="Inscripciones confirmadas" value={metrics.routes.confirmed_registrations} detail={`${metrics.routes.waitlist_registrations} en lista de espera`} icon={ClipboardCheck} tone="success" />
             <MetricCard title="Solicitudes personalizadas" value={metrics.routes.custom_requests_open} detail="Pendientes o en gestión" icon={FileWarning} tone={metrics.routes.custom_requests_open ? 'warning' : 'default'} />
         </div></section>
 
-        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Gamepad2 className="w-4 h-4" />Juegos y calidad editorial</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <section className="space-y-2"><h4 className="font-semibold text-sm flex items-center gap-2"><Gamepad2 className="w-4 h-4" />Juegos y calidad editorial</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <MetricCard title="Partidas" value={metrics.games.sessions} detail={`${completionRate}% completadas`} icon={Gamepad2} />
             <MetricCard title="Precisión promedio" value={`${metrics.games.average_accuracy}%`} detail={`${metrics.games.active} partidas activas`} icon={Gauge} />
             <MetricCard title="Preguntas publicadas" value={metrics.games.questions_published} detail={`${metrics.games.questions_draft} borradores`} icon={MousePointerClick} tone="success" />
             <MetricCard title="Revisión editorial" value={metrics.games.questions_review} detail={`${metrics.games.reports_open} reportes abiertos`} icon={FileWarning} tone={metrics.games.questions_review ? 'warning' : 'default'} />
         </div></section>
 
-        <section className="space-y-3"><h4 className="font-semibold text-sm flex items-center gap-2"><Coins className="w-4 h-4" />Economía y recompensas</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <section className="space-y-2"><h4 className="font-semibold text-sm flex items-center gap-2"><Coins className="w-4 h-4" />Economía y recompensas</h4><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <MetricCard title="Puntos Andanzas" value={metrics.economy.points_in_wallets} detail="Saldo total de usuarios" icon={Sparkles} />
             <MetricCard title="Monedas" value={metrics.economy.coins_in_wallets} detail={`${metrics.economy.coins_awarded_30d} entregadas en 30 días`} icon={Coins} />
             <MetricCard title="Gemas" value={metrics.economy.gems_in_wallets} detail={`${metrics.economy.gems_awarded_30d} entregadas en 30 días`} icon={Gem} />

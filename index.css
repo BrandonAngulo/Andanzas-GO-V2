@@ -123,6 +123,56 @@ html[data-high-contrast="true"] .text-muted-foreground { color: #ddd !important;
    CardHeader se pega al header (padding-top 0), como en el patrón original. */
 .ui-card-header + .ui-card-content { padding-top: 0; }
 
+/* Densidad de trabajo para paneles con muchas herramientas. Mantiene los
+   controles táctiles intactos y compacta únicamente separación y relleno. */
+.ui-density-compact .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.ui-density-compact .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.ui-density-compact .gap-8 { gap: 1.25rem; }
+.ui-density-compact .gap-6 { gap: 1rem; }
+.ui-density-compact .p-8 { padding: 1.25rem; }
+.ui-density-compact .p-6 { padding: 1rem; }
+.ui-density-compact .py-8 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+.ui-density-compact .py-6 { padding-top: 1rem; padding-bottom: 1rem; }
+.ui-density-compact .mt-8 { margin-top: 1.25rem; }
+.ui-density-compact .mt-6 { margin-top: 1rem; }
+.ui-density-compact .mb-8 { margin-bottom: 1.25rem; }
+.ui-density-compact .mb-6 { margin-bottom: 1rem; }
+.ui-density-compact .pb-24,
+.ui-density-compact .pb-20 { padding-bottom: 4rem; }
+
+/* Escala general de la aplicación: reduce la acumulación de espacios grandes
+   sin alterar tamaños mínimos de botones, campos ni otros objetivos táctiles. */
+.ui-density-balanced .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+.ui-density-balanced .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+.ui-density-balanced .gap-8 { gap: 1.5rem; }
+.ui-density-balanced .gap-6 { gap: 1.25rem; }
+.ui-density-balanced .p-8 { padding: 1.5rem; }
+.ui-density-balanced .p-6 { padding: 1.25rem; }
+.ui-density-balanced .py-8 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.ui-density-balanced .py-6 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+.ui-density-balanced .mt-8 { margin-top: 1.5rem; }
+.ui-density-balanced .mb-8 { margin-bottom: 1.5rem; }
+.ui-density-balanced .mt-6 { margin-top: 1.25rem; }
+.ui-density-balanced .mb-6 { margin-bottom: 1.25rem; }
+
+@media (min-width: 768px) {
+  .ui-density-compact .min-h-\[85vh\] { min-height: 0; }
+  .ui-density-compact .pb-24,
+  .ui-density-compact .pb-20 { padding-bottom: 1rem; }
+}
+
 /* Micro-animaciones para los iconos de economía (Puntos, Monedas, Gemas, Vidas) */
 @keyframes heartbeat { 0%,100% { transform: scale(1); } 10% { transform: scale(1.28); } 20% { transform: scale(1); } 30% { transform: scale(1.18); } 42% { transform: scale(1); } }
 @keyframes coinBob { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-3px) rotate(-10deg); } }

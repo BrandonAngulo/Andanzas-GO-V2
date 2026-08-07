@@ -345,3 +345,18 @@ La migración base es `20260807000856_progressive_question_bank.sql`. El lote de
 ## Cabecera integrada del recorrido de Aventura
 
 La franja rígida que quedaba fuera del escenario fue sustituida por un HUD flotante y compacto dentro del lenguaje visual del mapa. La cabecera agrupa campaña, parada actual, progreso, recursos y ayuda en una sola cápsula translúcida; reduce información en móvil sin ocultar el detalle accesible y conserva el avance como una línea integrada. Así la navegación sigue siendo legible sin competir con la ilustración ni crear una segunda interfaz encima del juego.
+
+## Panel activo de preguntas
+
+La pantalla donde se responde dejó atrás el contador circular SVG y la composición genérica de tarjeta oscura. El nuevo panel conserva el motor y las reglas de todas las modalidades, pero actualiza la experiencia visual:
+
+- HUD compacto con modalidad, juego, puntaje, vidas y racha;
+- cronómetro numérico acompañado por una barra horizontal, con estado crítico claramente diferenciado;
+- progreso por segmentos y marcas discretas de zona segura;
+- escenario ilustrado con la atmósfera de TRIVIA GO y una tarjeta unificada de mayor contraste;
+- variante propia de Andi en actitud de pensamiento, visible como acompañante lateral en escritorio y en formato reducido en móvil;
+- opciones identificadas con letras y color, sin depender de glifos SVG decorativos;
+- respuestas e imágenes con áreas táctiles amplias, mejor separación y estados de selección, acierto y error conservados;
+- lectura pública depurada: no se muestran claves internas de territorio, lotes ni nombres técnicos.
+
+La ilustración `andi-thinking-question-v1.png` fue creada específicamente para este momento del juego y se almacena como recurso versionado del proyecto.

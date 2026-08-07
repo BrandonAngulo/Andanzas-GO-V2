@@ -5,21 +5,7 @@ import { Check, X as XIcon, ArrowRight } from 'lucide-react';
 import { GameQuestion } from '../../services/games.service';
 import { deriveOptionPalette } from './colorUtils';
 
-// Cada opción se identifica por una forma + color fija (no solo una letra), para que el jugador
-// la reconozca de un vistazo, al estilo de los mejores juegos de trivia — sin copiar ninguno en particular.
-const ShapeIcon: React.FC<{ shapeIndex: number; color: string; size?: number }> = ({ shapeIndex, color, size = 20 }) => {
-    const shapes = [
-        <circle cx="12" cy="12" r="9" />,
-        <polygon points="12,3 21,19 3,19" />,
-        <rect x="4" y="4" width="16" height="16" rx="3" />,
-        <polygon points="12,2 21,7.5 21,16.5 12,22 3,16.5 3,7.5" />,
-    ];
-    return (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
-            {shapes[shapeIndex % shapes.length]}
-        </svg>
-    );
-};
+const optionLabel = (index: number) => String.fromCharCode(65 + index);
 
 interface QuestionRendererProps {
     question: GameQuestion;
@@ -62,8 +48,8 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
         if (!isChecking || hasTimedOut) {
             if (hasTimedOut && isChecking && isThisCorrect) return "bg-emerald-500/20 border-emerald-500 text-emerald-400";
             return isThisSelected
-                ? "bg-white/10 border-white/30 text-white"
-                : "bg-white/5 border-white/10 hover:bg-white/10 text-white/90";
+                ? "bg-white/[0.12] border-white/35 text-white shadow-lg"
+                : "bg-white/[0.055] border-white/15 hover:border-white/30 hover:bg-white/[0.10] text-white/90";
         }
         if (gameType === 'quiz') {
             return isThisSelected ? "bg-primary/20 border-primary text-primary" : "opacity-30 border-white/5 text-white/90";
@@ -79,19 +65,19 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
         return (
             <div className="w-full">
                 {label && <p className="mb-3 text-[0.68rem] font-bold uppercase tracking-widest text-white/40">{label}</p>}
-                <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
+                <div className="grid w-full grid-cols-1 gap-2.5 sm:gap-3 md:grid-cols-2">
                     {question.options.map((opt: string, idx: number) => (
                         <Button
                             key={idx}
                             variant="outline"
-                            className={`h-auto w-full justify-start rounded-xl border-2 px-4 py-3.5 text-left transition-all duration-300 ${stateClassFor(opt === question.correct_answer, opt === selectedAnswer)} ${!isChecking ? 'hover:scale-[1.01]' : ''}`}
+                            className={`group h-auto min-h-[4.4rem] w-full justify-start rounded-2xl border px-3.5 py-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-300 sm:px-4 ${stateClassFor(opt === question.correct_answer, opt === selectedAnswer)} ${!isChecking ? 'hover:-translate-y-0.5 hover:shadow-xl' : ''}`}
                             onClick={() => !isChecking && onSubmit(opt)}
                             disabled={isChecking}
                         >
-                            <span className="mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/10">
-                                <ShapeIcon shapeIndex={idx} color={palette[idx % palette.length]} size={18} />
+                            <span className="mr-3 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl border text-xs font-black shadow-inner transition-transform group-hover:scale-105" style={{ color: palette[idx % palette.length], borderColor: `${palette[idx % palette.length]}66`, backgroundColor: `${palette[idx % palette.length]}1F` }}>
+                                {optionLabel(idx)}
                             </span>
-                            <span className="whitespace-normal text-sm font-semibold sm:text-base">{opt}</span>
+                            <span className="whitespace-normal text-sm font-bold leading-relaxed sm:text-[0.95rem]">{opt}</span>
                         </Button>
                     ))}
                 </div>
@@ -110,9 +96,10 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
                             key={idx}
                             onClick={() => !isChecking && onSubmit(opt.label)}
                             disabled={isChecking}
-                            className={`relative rounded-2xl overflow-hidden border-2 transition-all duration-300 aspect-square ${stateClassFor(opt.label === question.correct_answer, opt.label === selectedAnswer)} ${!isChecking ? 'hover:scale-[1.02]' : ''}`}
+                            className={`relative aspect-square overflow-hidden rounded-2xl border-2 shadow-xl transition-all duration-300 ${stateClassFor(opt.label === question.correct_answer, opt.label === selectedAnswer)} ${!isChecking ? 'hover:-translate-y-1 hover:shadow-2xl' : ''}`}
                         >
                             <LazyImage src={opt.image_url} alt={opt.label} className="w-full h-full object-cover" />
+                            <span className="absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-xl border border-white/25 bg-slate-950/65 text-xs font-black text-white shadow-lg backdrop-blur">{optionLabel(idx)}</span>
                             <div className="absolute inset-x-0 bottom-0 bg-slate-950/70 px-2 py-1.5 backdrop-blur-sm sm:px-3 sm:py-2">
                                 <span className="text-xs font-bold text-white sm:text-sm">{opt.label}</span>
                             </div>
@@ -145,12 +132,12 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, ga
                             <Button
                                 key={idx}
                                 variant="outline"
-                                className={`h-auto w-full justify-start rounded-xl border-2 px-4 py-3.5 text-left transition-all duration-300 ${stateClassFor(correctSet.includes(opt), isSelected)}`}
+                                className={`group h-auto min-h-[4.2rem] w-full justify-start rounded-2xl border px-3.5 py-3 text-left transition-all duration-300 sm:px-4 ${stateClassFor(correctSet.includes(opt), isSelected)}`}
                                 onClick={() => toggle(opt)}
                                 disabled={isChecking}
                             >
-                                <span className="relative mr-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/10">
-                                    <ShapeIcon shapeIndex={idx} color={palette[idx % palette.length]} size={18} />
+                                <span className="relative mr-3 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl border text-xs font-black" style={{ color: palette[idx % palette.length], borderColor: `${palette[idx % palette.length]}66`, backgroundColor: `${palette[idx % palette.length]}1F` }}>
+                                    {optionLabel(idx)}
                                     {isSelected && (
                                         <span className="absolute -top-1 -right-1 bg-white rounded-full p-0.5">
                                             <Check className="w-3 h-3 text-slate-900" />

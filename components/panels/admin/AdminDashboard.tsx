@@ -102,14 +102,14 @@ const AdminOverview = () => {
     }, []);
 
     return (
-        <div className="mt-4 space-y-8 animate-in fade-in slide-in-from-bottom-2">
+        <div className="mt-3 space-y-4 animate-in fade-in slide-in-from-bottom-2">
             {/* Seccin de Usuarios */}
-            <div className="bg-background rounded-2xl p-6 border shadow-sm">
-                <h3 className="text-xl font-bold mb-6 border-b pb-3 flex items-center gap-2 text-primary">
+            <div className="rounded-xl border bg-background p-4 shadow-sm">
+                <h3 className="mb-4 flex items-center gap-2 border-b pb-2 text-lg font-bold text-primary">
                     <Users className="h-5 w-5" /> 
                     Métricas de Usuarios y Actividad
                 </h3>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
                     <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
                         <CardHeader className="flex flex-col items-center space-y-2 pb-2">
                             <Users className="h-6 w-6 text-primary mb-1" />
@@ -164,12 +164,12 @@ const AdminOverview = () => {
             </div>
 
             {/* Seccin de Contenido */}
-            <div className="bg-background rounded-2xl p-6 border shadow-sm">
-                <h3 className="text-xl font-bold mb-6 border-b pb-3 flex items-center gap-2 text-primary">
+            <div className="rounded-xl border bg-background p-4 shadow-sm">
+                <h3 className="mb-4 flex items-center gap-2 border-b pb-2 text-lg font-bold text-primary">
                     <Landmark className="h-5 w-5" />
                     Métricas de Contenido de la App
                 </h3>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
                     <Card className="border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors flex flex-col items-center text-center py-4">
                         <CardHeader className="flex flex-col items-center space-y-2 pb-2">
                             <Landmark className="h-6 w-6 text-primary mb-1" />
@@ -259,7 +259,7 @@ const AdminOverview = () => {
 };
 
 const AdminGeneral = () => (
-    <Tabs defaultValue="indicadores" className="space-y-6">
+    <Tabs defaultValue="indicadores" className="space-y-3">
         <TabsList className="h-auto w-full justify-start gap-1 overflow-x-auto p-1 scrollbar-none">
             <TabsTrigger value="indicadores" className="min-w-max flex-none py-2">Indicadores</TabsTrigger>
             <TabsTrigger value="inventario" className="min-w-max flex-none py-2">Inventario</TabsTrigger>
@@ -315,10 +315,10 @@ const AdminDashboard: React.FC = () => {
 
     return (
         <ScrollArea className="h-full bg-muted/20">
-            <div className="mx-auto max-w-[92rem] p-3 md:p-5">
+            <div className="mx-auto max-w-[96rem] p-2 sm:p-3 md:p-4">
                 <AdminIntroModal isOpen={showIntroModal} isAdmin={isAdmin} onClose={() => setShowIntroModal(false)} onComplete={completeIntro} />
-                <div className="mb-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+                <div className="mb-3">
+                    <div className="mb-1.5 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
                         <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight md:text-3xl">
                             <ShieldAlert className="h-7 w-7 text-primary md:h-8 md:w-8" />
                             Panel de Administración
@@ -332,7 +332,7 @@ const AdminDashboard: React.FC = () => {
                     </p>
                 </div>
 
-                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-4 flex flex-nowrap gap-1.5 overflow-x-auto rounded-2xl border bg-background/95 p-2 shadow-sm backdrop-blur-md scrollbar-none [&>button]:h-9 [&>button]:shrink-0 [&>button]:px-3 [&>button]:text-xs [&>button>svg]:mr-1.5 [&>button>svg]:h-3.5 [&>button>svg]:w-3.5">
+                <nav aria-label="Secciones de administración" className="sticky top-0 z-20 mb-2.5 flex flex-nowrap gap-1 overflow-x-auto rounded-xl border bg-background/95 p-1.5 shadow-sm backdrop-blur-md scrollbar-none [&>button]:h-9 [&>button]:shrink-0 [&>button]:px-2.5 [&>button]:text-xs [&>button>svg]:mr-1.5 [&>button>svg]:h-3.5 [&>button>svg]:w-3.5">
                     <Button 
                         variant={activeTab === 'overview' ? 'default' : 'outline'} 
                         onClick={() => setActiveTab('overview')}
@@ -470,7 +470,7 @@ const AdminDashboard: React.FC = () => {
                     )}
                 </nav>
 
-                <div className="min-h-[420px] rounded-xl border bg-card p-2 shadow-sm sm:p-4 md:min-h-[500px] md:p-6">
+                <div className="ui-density-compact min-h-0">
                     {activeTab === 'overview' && <AdminGeneral />}
                     {activeTab === 'avatares' && <AdminAvatarsManager />}
                     {activeTab === 'sabias_que' && <CuriousFactsManager />}

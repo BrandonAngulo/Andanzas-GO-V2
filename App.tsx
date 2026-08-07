@@ -608,7 +608,7 @@ export default function App() {
 
       {/* Header */}
       <header className={cn("z-[1000] mx-auto w-full flex-shrink-0 pt-[env(safe-area-inset-top)] transition-all duration-300 md:max-w-[100rem] md:px-4 md:pt-3", activeGuidedRoute && "hidden")}>
-        <div className="glass-panel flex w-full items-center gap-1.5 border-b px-2 py-2 shadow-sm sm:gap-2 sm:px-3 md:gap-3 md:rounded-2xl md:border md:px-4 md:py-3 md:shadow-md">
+        <div className="glass-panel flex w-full items-center gap-1.5 border-b px-2 py-1.5 shadow-sm sm:gap-2 sm:px-3 md:gap-2.5 md:rounded-xl md:border md:px-3.5 md:py-2 md:shadow-md">
           <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0 rounded-full md:h-10 md:w-10" aria-label={t('openMenu')} onClick={() => setOpenMenu(true)}><Menu className="h-5 w-5" /></Button>
           <div className="mr-1 flex shrink-0 items-center gap-2 md:mr-2"><Logo /></div>
 
@@ -763,7 +763,7 @@ export default function App() {
         <section className="relative h-full flex flex-col min-h-0 w-full">
           <Card className="flex h-full flex-col overflow-hidden rounded-none border-none bg-card/80 shadow-none ring-1 ring-black/5 backdrop-blur-sm dark:ring-white/10 md:rounded-xl md:shadow-medium">
             <CardHeader className={cn(
-              "flex min-h-[3.2rem] flex-row items-center justify-between border-b bg-muted/30 px-3 py-2 md:min-h-0 md:px-5 md:py-2.5",
+              "flex min-h-[3rem] flex-row items-center justify-between border-b bg-muted/30 px-3 py-1.5 md:min-h-0 md:px-4 md:py-2",
               panelOwnsDesktopHeader && "md:hidden",
             )}>
               <CardTitle className="flex min-w-0 items-center gap-1.5 text-base text-foreground/80 md:gap-2 md:text-lg">
@@ -780,7 +780,7 @@ export default function App() {
               </CardTitle>
               {activePanel === "mapa" && <Button variant="default" size="sm" onClick={startNewRoute} className="h-9 shrink-0 rounded-full px-3 text-xs shadow-lg shadow-primary/20 md:text-sm"><Route className="mr-1 h-4 w-4" /><span className="hidden min-[390px]:inline">{language === 'es' ? 'Vivir / Crear Ruta' : 'Live / Create Route'}</span><span className="min-[390px]:hidden">{language === 'es' ? 'Crear ruta' : 'Create'}</span></Button>}
             </CardHeader>
-            <CardContent className="relative min-h-0 flex-1 overflow-hidden p-0">
+            <CardContent className="ui-density-balanced relative min-h-0 flex-1 overflow-hidden p-0">
               {/* PANELS */}
               {activePanel === 'mapa' && (
                 <MapaGoogle

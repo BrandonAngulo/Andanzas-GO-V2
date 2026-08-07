@@ -76,7 +76,7 @@ const DialogContent: React.FC<React.PropsWithChildren<{ className?: string; show
       <div
         role="dialog"
         aria-modal="true"
-        className={cn("relative z-10 max-h-[96dvh] w-full max-w-lg rounded-t-3xl bg-popover p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-popover-foreground shadow-xl animate-in fade-in-0 zoom-in-95 duration-200 sm:rounded-lg sm:p-6", className)}
+        className={cn("relative z-10 max-h-[96dvh] w-full max-w-lg rounded-t-3xl bg-popover p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-popover-foreground shadow-xl animate-in fade-in-0 zoom-in-95 duration-200 sm:rounded-xl sm:p-5", className)}
       >
         {showCloseButton && (
           <button type="button" aria-label="Cerrar" onClick={() => onOpenChange(false)} className="absolute right-3 top-3 z-50 grid h-11 w-11 place-items-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground sm:right-4 sm:top-4 sm:h-9 sm:w-9">
@@ -91,7 +91,7 @@ const DialogContent: React.FC<React.PropsWithChildren<{ className?: string; show
 };
 
 const DialogHeader: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => (
-  <div className={cn("flex flex-col space-y-1.5 text-center sm:text-left mb-4", className)}>{children}</div>
+  <div className={cn("mb-3 flex flex-col space-y-1 text-center sm:text-left", className)}>{children}</div>
 );
 
 const DialogTitle: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => (
@@ -103,7 +103,7 @@ const DialogDescription: React.FC<React.PropsWithChildren<{ className?: string }
 );
 
 const DialogFooter: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => (
-  <div className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-6", className)}>{children}</div>
+  <div className={cn("mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}>{children}</div>
 );
 
 export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter };

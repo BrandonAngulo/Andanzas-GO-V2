@@ -70,8 +70,8 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
 
     return (
         <div className={cn(
-            "relative mb-4 overflow-hidden rounded-[2rem] border border-primary/10 shadow-sm",
-            compact ? "p-4 md:p-6" : "p-4 sm:p-6 md:p-10",
+            "relative mb-3 overflow-hidden rounded-[1.5rem] border border-primary/10 shadow-sm sm:rounded-[1.75rem]",
+            compact ? "p-3.5 sm:p-4 md:p-5" : "p-4 sm:p-5 md:p-7",
             marginClass === "mx-2" ? "mx-0 sm:mx-2" : marginClass,
         )}>
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -86,9 +86,9 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
                 <div className={cn("absolute inset-0 bg-gradient-to-r", gradientClass)}></div>
             </div>
 
-            <div className={cn("relative z-10 flex flex-col", compact ? "gap-3" : "gap-4 md:gap-6")}>
+            <div className={cn("relative z-10 flex flex-col", compact ? "gap-2.5" : "gap-3 md:gap-4")}>
                 <div className="w-full max-w-xl">
-                    <div className={cn("flex items-center gap-2.5 sm:gap-3", compact ? "mb-2" : "mb-3 md:mb-4")}>
+                    <div className={cn("flex items-center gap-2.5", compact ? "mb-1.5" : "mb-2 md:mb-3")}>
                         {icon}
                         <h2 className={titleClassName}>{title}</h2>
                     </div>
@@ -105,7 +105,7 @@ export const PanelBanner: React.FC<PanelBannerProps> = ({
 
             {/* Andi Floating Button inside Banner */}
             {andiMessage && (
-                <div className="absolute bottom-4 right-4 z-20 md:bottom-8 md:right-10">
+                <div className="absolute bottom-3 right-3 z-20 md:bottom-5 md:right-6">
                     <AndiGuia
                         message={andiMessage}
                         title={andiTitle}
