@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient';
 import { Ruta, RouteProgress } from '../types';
+import { CULTURAL_ROUTES } from '../data/routes';
 
 export interface RouteRegistrationResult {
     success: boolean;
@@ -162,11 +163,17 @@ export const routesService = {
             .eq('is_published', true);
 
         if (error) {
-            console.error('Error fetching all routes from Supabase:', error);
-            return [];
+            console.error('Error fetching all routes from Supabase, using local fallback:', error);
+            return CULTURAL_ROUTES;
         }
 
-        return data?.map(mapRoute) || [];
+        const dbRoutes = data?.map(mapRoute) || [];
+        
+        // Combine DB routes and local routes, prioritizing DB routes
+        const dbRouteIds = new Set(dbRoutes.map(r => r.id));
+        const uniqueLocalRoutes = CULTURAL_ROUTES.filter((r: Ruta) => !dbRouteIds.has(r.id));
+        
+        return [...dbRoutes, ...uniqueLocalRoutes];
     },
 
     async getAllAdmin(): Promise<Ruta[]> {

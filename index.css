@@ -41,11 +41,11 @@
     --secondary-foreground: 210 20% 98%;
     --muted: 224 15% 15%;
     --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 224 15% 15%;
+    --accent: 224 15% 18%;
     --accent-foreground: 210 20% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 224 15% 16%;
+    --border: 224 15% 22%;
     --input: 224 15% 16%;
     --ring: 152 75% 35%;
   }
@@ -190,7 +190,7 @@ html[data-high-contrast="true"] .text-muted-foreground { color: #ddd !important;
   justify-content: center;
   font-size: 22px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .emoji-marker:hover {
@@ -201,8 +201,8 @@ html[data-high-contrast="true"] .text-muted-foreground { color: #ddd !important;
 
 .glass-panel {
   background-color: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
@@ -211,7 +211,7 @@ html[data-high-contrast="true"] .text-muted-foreground { color: #ddd !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
-.card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+.card-hover { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
 .card-hover:hover {
   transform: translateY(-4px) scale(1.01) !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03) !important;
@@ -227,3 +227,12 @@ html[data-high-contrast="true"] .text-muted-foreground { color: #ddd !important;
   -webkit-text-fill-color: transparent !important;
 }
 .neon-glow { box-shadow: 0 0 20px -3px hsl(var(--primary) / 0.3) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
